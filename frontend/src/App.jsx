@@ -1,9 +1,14 @@
-const App = () => {
-  return (
-    <h1 className="text-3xl font-mono text-center pt-3">
-      Hello Dev!
-    </h1>
-  )
-}
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Landing } from "./pages/Landing";
 
-export default App
+const App = () => {
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Landing />} />
+			</Routes>
+		</Router>
+	);
+};
+
+export default App;
