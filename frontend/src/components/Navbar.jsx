@@ -4,9 +4,7 @@ import avatar from "../assets/noavatar.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import {
 	UserIcon,
-	Cog6ToothIcon,
 	ArrowLeftStartOnRectangleIcon,
-	Bars3BottomRightIcon,
 } from "@heroicons/react/24/solid";
 
 export default function Navbar() {
@@ -16,10 +14,6 @@ export default function Navbar() {
 
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-
-	if (isLoading) {
-		return <p>Loading</p>;
-	}
 
 	return (
 		<>
@@ -44,21 +38,20 @@ export default function Navbar() {
 						{/*      <!-- Mobile trigger --> */}
 						<button
 							className={`relative order-10 block h-10 w-10 self-center lg:hidden
-                ${
-									isToggleOpen
-										? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
-										: ""
-								}
+              ${
+								isToggleOpen
+									? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
+									: ""
+							}
             `}
 							onClick={() => setIsToggleOpen(!isToggleOpen)}
 							aria-expanded={isToggleOpen ? "true" : "false"}
 							aria-label="Toggle navigation"
 						>
-							<Bars3BottomRightIcon className="h-10 w-10 text-slate-900" />
 							<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform">
 								<span
 									aria-hidden="true"
-									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-slate-900 transition-all duration-300"
+									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-slate-900   transition-all duration-300"
 								></span>
 								<span
 									aria-hidden="true"
@@ -80,7 +73,7 @@ export default function Navbar() {
 									: "invisible opacity-0"
 							}`}
 						>
-							<li role="none" className="flex items-stretch">
+							<li role="none" className="flex items-center ">
 								<a
 									role="menuitem"
 									aria-haspopup="false"
@@ -90,7 +83,7 @@ export default function Navbar() {
 									<span>Blog</span>
 								</a>
 							</li>
-							<li role="none" className="flex items-stretch">
+							<li role="none" className="flex items-center">
 								<a
 									role="menuitem"
 									aria-current="page"
@@ -101,7 +94,7 @@ export default function Navbar() {
 									<span>Jobs</span>
 								</a>
 							</li>
-							<li role="none" className="flex items-stretch">
+							<li role="none" className="flex items-center">
 								<a
 									role="menuitem"
 									aria-haspopup="false"
@@ -146,16 +139,6 @@ export default function Navbar() {
 															aria-hidden="true"
 														/>
 														Profile
-													</a>
-													<a
-														href="/settings"
-														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-													>
-														<Cog6ToothIcon
-															className="h-5 w-5 text-gray-700"
-															aria-hidden="true"
-														/>
-														Settings
 													</a>
 													<a
 														href="#"
