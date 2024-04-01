@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/HS-logo.png";
+import mascot from '../assets/mascot.png'
 import avatar from "../assets/noavatar.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import {
@@ -32,7 +32,7 @@ export default function Navbar() {
 							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none lg:flex-1"
 							href="/"
 						>
-							<img src={logo} alt="logo" width={50} height={50} />
+							<img src={mascot} alt="logo" width={40} height={40} />
 							<span className="text-2xl">HireSphere</span>
 						</a>
 						{/*      <!-- Mobile trigger --> */}
