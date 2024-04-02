@@ -1,5 +1,6 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,9 @@ export const GetStarted = () => {
 		<>
 			<Navbar />
 			<div className="bg-gray-100 flex flex-col items-center justify-center h-screen mx-auto p-10 relative">
-				<p className="text-3xl absolute top-40 left-40">I am a...</p>
+				<p className="text-3xl absolute top-40 left-40">
+					What describes you best?
+				</p>
 				<div className="flex flex-col items-center text-xl gap-4 w-full md:w-1/2 lg:w-1/4">
 					<Link
 						to="./cd"
@@ -34,6 +37,7 @@ export const GetStarted = () => {
 					</Link>
 				</div>
 			</div>
+			<Footer />
 		</>
 	);
 };

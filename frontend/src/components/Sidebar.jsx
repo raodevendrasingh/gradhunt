@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { FaAward, FaGear } from "react-icons/fa6";
 
-export default function Sidebar() {
+export const Sidebar = () => {
 	const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
 	return (

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import mascot from '../assets/mascot.png'
+import mascot from "../assets/mascot.png";
 import avatar from "../assets/noavatar.png";
+import gradhunt from "../assets/gradhunt.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import {
 	UserIcon,
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 
-export default function Navbar() {
+export const Navbar = () => {
 	const { login, logout, user, isAuthenticated, isLoading } = useKindeAuth();
 
 	console.log("user:", user);
@@ -17,11 +18,11 @@ export default function Navbar() {
 
 	return (
 		<>
-			<header className="border-b-1 fixed top-0 z-20 w-full border-b border-slate-200 bg-white/90 shadow-lg shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
+			<header className=" fixed top-0 z-20 w-full border-b-1 border-b border-slate-200 bg-white/90 shadow-md shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
 				<div className="relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]">
 					<nav
 						aria-label="main navigation"
-						className="flex h-[5.5rem] items-stretch justify-between font-medium text-slate-700"
+						className="flex h-20 items-stretch justify-between font-medium text-slate-800"
 						role="navigation"
 					>
 						{/*      <!-- Brand logo --> */}
@@ -29,21 +30,19 @@ export default function Navbar() {
 							id="ws"
 							aria-label="logo"
 							aria-current="page"
-							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none lg:flex-1"
+							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none"
 							href="/"
 						>
-							<img src={mascot} alt="logo" width={40} height={40} />
-							<span className="text-2xl">HireSphere</span>
+							<img src={gradhunt} alt="logo"  className="aspect-auto w-40" />
+							
 						</a>
 						{/*      <!-- Mobile trigger --> */}
 						<button
 							className={`relative order-10 block h-10 w-10 self-center lg:hidden
-              ${
-								isToggleOpen
-									? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
-									: ""
-							}
-            `}
+                                    ${isToggleOpen
+                                        ? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
+                                        : "" }
+                            `}
 							onClick={() => setIsToggleOpen(!isToggleOpen)}
 							aria-expanded={isToggleOpen ? "true" : "false"}
 							aria-label="Toggle navigation"
@@ -67,11 +66,11 @@ export default function Navbar() {
 						<ul
 							role="menubar"
 							aria-label="Select page"
-							className={`absolute top-0 left-0 z-[-1] h-[28.5rem] w-full justify-center overflow-hidden  overflow-y-auto overscroll-contain bg-white/90 px-8 pb-12 pt-24 font-medium transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0  lg:z-0 lg:flex lg:h-full lg:w-auto lg:items-stretch lg:overflow-visible lg:bg-white/0 lg:px-0 lg:py-0  lg:pt-0 lg:opacity-100 ${
-								isToggleOpen
-									? "visible opacity-100 backdrop-blur-sm"
-									: "invisible opacity-0"
-							}`}
+							className={`flex flex-col lg:flex-row justify-center items-center  absolute top-0 left-0 z-[-1] h-[28.5rem] w-full overflow-hidden overflow-y-auto overscroll-contain bg-white/90 px-8 pb-12 pt-24 font-medium transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0  lg:z-0 lg:h-full lg:w-auto lg:overflow-visible lg:bg-white/0 lg:px-0 lg:py-0  lg:pt-0 lg:opacity-100 ${
+                                isToggleOpen
+                                    ? "visible opacity-100 backdrop-blur-sm"
+                                    : "invisible opacity-0"
+                            }`}
 						>
 							<li role="none" className="flex items-center ">
 								<a
@@ -135,7 +134,7 @@ export default function Navbar() {
 														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
 													>
 														<UserIcon
-															className="h-5 w-5 text-gray-700"
+															className="h-5 w-5 text-gray-800"
 															aria-hidden="true"
 														/>
 														Profile
@@ -162,7 +161,7 @@ export default function Navbar() {
 								<button
 									onClick={login}
 									type="button"
-									className="bg-green-500 rounded-md text-white px-3 py-2 m-5"
+									className="bg-green-600 rounded-md text-white px-3 py-2 m-5"
 								>
 									Log In
 								</button>
@@ -173,4 +172,4 @@ export default function Navbar() {
 			</header>
 		</>
 	);
-}
+};

@@ -1,9 +1,10 @@
-import Navbar from "../components/Navbar";
+import { Accordian } from "../components/Accordian";
+import { Footer } from "../components/Footer";
+import { Navbar } from "../components/Navbar";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
-
 export const Landing = () => {
-    const { register } = useKindeAuth();
+	const { register } = useKindeAuth();
 	return (
 		<>
 			<Navbar />
@@ -37,29 +38,27 @@ export const Landing = () => {
 					</div>
 					<div className="text-center">
 						<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                        Transforming Job Search and Recruitment
+                        Unlock Your Potential Propel Your Career 
 						</h1>
 						<p className="mt-6 text-lg leading-8 text-gray-600">
-                        We provide a seamless experience for job seekers and hiring managers, making the recruitment process efficient and effective.
+							We provide a seamless experience for job seekers and hiring
+							managers, making the recruitment process efficient and effective.
 						</p>
 						<div className="mt-10 flex items-center justify-center gap-x-2">
-							{/* <button
-								type="button"
-								className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-							>
-								View Docs
-							</button> */}
 							<button
 								type="button"
-                                onClick={register}
-								className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+								onClick={register}
+								className="rounded-md border border-black px-3 py-2 text-lg font-semibold text-black hover:text-white hover:bg-gray-800 transition duration-500 shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
 							>
 								Get Started
 							</button>
+							
 						</div>
 					</div>
 				</div>
 			</div>
+			<Accordian />
+			<Footer />
 		</>
 	);
 };
