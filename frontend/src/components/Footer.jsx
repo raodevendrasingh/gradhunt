@@ -1,5 +1,4 @@
 import React from "react";
-import mascot from "../assets/mascot.png";
 import gradhunt from "../assets/gradhunt.png";
 import { FaGithub, FaInstagram, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 

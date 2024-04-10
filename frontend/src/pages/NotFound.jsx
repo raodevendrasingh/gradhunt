@@ -1,6 +1,5 @@
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
-import { NavbarNew } from "../components/NavbarNew";
 
 export default function NotFound() {
 	return (
