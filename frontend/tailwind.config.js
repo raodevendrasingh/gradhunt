@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import withMT from "@material-tailwind/react/utils/withMT";
-import colors from 'tailwindcss/colors'
+import colors from "tailwindcss/colors";
+import form from "@tailwindcss/forms";
 
 export default withMT({
 	content: ["./index.html", "./src/**/*.{js,jsx}"],
@@ -9,8 +10,8 @@ export default withMT({
 			fontFamily: {
 				Nunito: ["Nunito", "sans-serif"],
 			},
-            colors: colors,
+			colors: colors,
 		},
 	},
-	plugins: [],
+	plugins: [form],
 });

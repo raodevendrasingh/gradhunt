@@ -4,9 +4,9 @@ import { Profile } from "./pages/Profile";
 import { GetStarted } from "./pages/GetStarted";
 import { Home } from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import { CandidateForm } from "./pages/CandidateForm";
+import { ManagerForm } from "./pages/ManagerForm";
 
-// pnpm add @material-tailwind/react
-// mui
 
 const App = () => {
 	return (
@@ -15,6 +15,8 @@ const App = () => {
 				<Route path="/" element={<Landing />} />
 				<Route path="/home" element={<Home />} />
 				<Route path="/get-started" element={<GetStarted />} />
+                <Route path="/get-started/cad" element={<CandidateForm/>} />
+                <Route path="/get-started/hrm" element={<ManagerForm/> } />
 				<Route path="/profile" element={<Profile />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import mascot from "../assets/mascot.png";
 import avatar from "../assets/noavatar.png";
 import gradhunt from "../assets/gradhunt.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
@@ -11,7 +10,7 @@ import {
 export const Navbar = () => {
 	const { login, logout, user, isAuthenticated, isLoading } = useKindeAuth();
 
-	console.log("user:", user);
+	// console.log("user:", user);
 
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
@@ -126,12 +125,12 @@ export const Navbar = () => {
 										/>
 									</a>
 									{isOpen && (
-										<div className="absolute right-0 top-16 w-32 rounded-lg shadow-lg transition">
-											<div className="rounded-md bg-white shadow-xs">
-												<div className="py-1">
+										<div className="absolute  right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
+											<div className="rounded-md bg-gray-100 shadow-xs">
+												<div className="p-1">
 													<a
 														href="/profile"
-														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
 													>
 														<UserIcon
 															className="h-5 w-5 text-gray-800"
@@ -144,7 +143,7 @@ export const Navbar = () => {
 														onClick={() =>
 															logout({ returnTo: window.location.origin })
 														}
-														className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+														className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
 													>
 														<ArrowLeftStartOnRectangleIcon
 															className="h-5 w-5 text-red-700"

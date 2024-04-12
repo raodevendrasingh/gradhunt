@@ -14,7 +14,7 @@ export const GetStarted = () => {
 				</p>
 				<div className="flex flex-col items-center text-xl gap-4 w-full md:w-1/2 lg:w-1/4">
 					<Link
-						to="./cd"
+						to="/get-started/cad"
 						className="hover:bg-gray-700 hover:text-white rounded-lg flex justify-between border-2 border-gray-700 px-10 py-5 w-full min-w-full md:min-w-0 transition duration-300"
 					>
 						<span className="flex flex-col items-start">
@@ -25,7 +25,7 @@ export const GetStarted = () => {
 						<FaLongArrowAltRight className="w-10 h-10" />
 					</Link>
 					<Link
-						to="./hr"
+						to="/get-started/hrm"
 						className="hover:bg-gray-700 hover:text-white rounded-lg flex justify-between border-2 border-gray-700 px-10 py-5 w-full min-w-full md:min-w-0 transition duration-300"
 					>
 						<span className="flex flex-col items-start">
