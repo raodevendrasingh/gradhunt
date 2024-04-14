@@ -11,11 +11,12 @@ export const ManagerForm = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
+        trigger
 	} = useForm();
 
 	// zustand store
 	const setUserType = useStore((state) => state.setUserType); // Get the setter function for userType
-    const setUserId = useStore((state) => state.setUserId);
+	const setUserName = useStore((state) => state.setUserName);
 
 	// const onSubmit = (data) => console.log(data);
 	const onSubmit = async (data) => {
@@ -26,6 +27,7 @@ export const ManagerForm = () => {
 
 		// Prepare the data to be sent
 		const personalDetails = {
+			userName: data.userName,
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email,
@@ -50,15 +52,16 @@ export const ManagerForm = () => {
 		})
 			.then((response) => {
 				console.log(response.data);
-				console.log(response.data.userId);
-                const newUserId = response.data.id;
-                setUserId(newUserId);
+				// console.log(response.data.userId);
+				const newUserName = response.data.userName;
+				setUserName(newUserName);
 			})
 			.catch((error) => {
 				if (error.response) {
 					// The request was made and the server responded with a status code
 					// that falls out of the range of 2xx
-					console.log(error.response.data);
+					// console.log(error.response.data);
+					console.log(error.request);
 					console.log(error.response.status);
 					console.log(error.response.headers);
 				} else if (error.request) {
@@ -86,6 +89,98 @@ export const ManagerForm = () => {
 									<h2 className="text-xl font-medium text-gray-900">
 										Personal Details
 									</h2>
+								</div>
+								{/* <div className="col-span-6">
+									<input
+										{...register("userName", {
+											required: "Username is required",
+											validate: {
+												maxLength: {
+													value: 16,
+													message: "Username cannot be more than 16 characters",
+												},
+												minLength: {
+													value: 4,
+													message: "Username must be at least 4 characters",
+												},
+												pattern: {
+													value: /^[A-Za-z][A-Za-z0-9._]*$/i,
+													message:
+														"Username can only contain alphanumeric characters, periods, and underscores, and cannot start with a symbol",
+												},
+												exists: async (value) => {
+													try {
+														const response = await axios.get(
+															`http://localhost:8000/api/check-username?username=${value}`
+														);
+														return (
+															!response.data.exists || "Username already exists"
+														);
+													} catch (error) {
+														console.error(error);
+														return "Error checking username";
+													}
+												},
+											},
+										})}
+                                        aria-invalid={errors.userName ? "true" : "false"}
+										type="text"
+										name="userName"
+										placeholder="Username"
+										className="mt-1 focus:ring-0 focus:outline-none text-lg w-full rounded-lg border-gray-200 bg-white text-gray-700 shadow-sm"
+                                        // onBlur={handleSubmit((data) => console.log(data))}
+									/>
+									{errors.userName && (
+										<p className="text-red-500 text-sm" role="alert">
+											{errors.userName.message}
+										</p>
+									)}
+								</div> */}
+								<div className="col-span-6">
+									<input
+										{...register("userName", {
+											required: "Username is required",
+											maxLength: {
+												value: 16,
+												message: "Username cannot be more than 16 characters",
+											},
+											minLength: {
+												value: 4,
+												message: "Username must be at least 4 characters",
+											},
+											pattern: {
+												value: /^[A-Za-z][A-Za-z0-9._]*$/i,
+												message:
+													"Username can only contain alphanumeric characters, periods, and underscores, and cannot start with a symbol",
+											},
+											validate: async (value) => {
+												try {
+													const response = await axios.get(
+														`http://localhost:8000/api/check-username?username=${value}`
+													);
+													return (
+														!response.data.exists || "Username already exists"
+													);
+												} catch (error) {
+													console.error(error);
+													return "Error checking username";
+												}
+											},
+										})}
+										onBlur={async () => {
+											await trigger("userName");
+										}}
+										aria-invalid={errors.userName ? "true" : "false"}
+										type="text"
+										name="userName"
+										placeholder="Username"
+										className="mt-1 focus:ring-0 focus:outline-none text-lg w-full rounded-lg border-gray-200 bg-white text-gray-700 shadow-sm"
+									/>
+									{errors.userName && (
+										<p className="text-red-500 text-sm" role="alert">
+											{errors.userName.message}
+										</p>
+									)}
 								</div>
 								<div className="col-span-6 sm:col-span-3">
 									<input
@@ -136,10 +231,25 @@ export const ManagerForm = () => {
 									<input
 										{...register("email", {
 											required: "Email Address is required",
-											validate: (value) => {
-												const pattern =
-													/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-												return pattern.test(value) || "Invalid email address";
+											validate: {
+												pattern: (value) => {
+													const pattern =
+														/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+													return pattern.test(value) || "Invalid email address";
+												},
+												exists: async (value) => {
+													try {
+														const response = await axios.get(
+															`http://localhost:8000/api/check-email?email=${value}`
+														);
+														return (
+															!response.data.exists || "Email already exists"
+														);
+													} catch (error) {
+														console.error(error);
+														return "Error checking email";
+													}
+												},
 											},
 										})}
 										aria-invalid={errors.email ? "true" : "false"}
@@ -147,6 +257,7 @@ export const ManagerForm = () => {
 										name="email"
 										placeholder="email@company.com"
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+										onBlur={handleSubmit((data) => console.log(data))}
 									/>
 									{errors.email && (
 										<p className="text-red-500 text-sm" role="alert">
