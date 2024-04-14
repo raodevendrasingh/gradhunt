@@ -1,6 +1,8 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import *
 
 urlpatterns = [
-    path('', views.UserView, name='home'),
+    path('', home, name='home'),
+    path('api/managers/', create_manager, name='create_manager'),
 ]

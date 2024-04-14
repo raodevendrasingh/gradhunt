@@ -15,10 +15,12 @@ export const ManagerForm = () => {
 
 	// zustand store
 	const setUserType = useStore((state) => state.setUserType); // Get the setter function for userType
+    const setUserId = useStore((state) => state.setUserId);
 
 	// const onSubmit = (data) => console.log(data);
 	const onSubmit = async (data) => {
-		// Set the user type
+		console.log(data);
+		console.log(errors);
 		const userType = "hiring-manager";
 		setUserType(userType);
 
@@ -27,32 +29,47 @@ export const ManagerForm = () => {
 			firstName: data.firstName,
 			lastName: data.lastName,
 			email: data.email,
-			dob: data.dateOfBirth,
+			dateOfBirth: data.dateOfBirth,
 			gender: data.gender,
 			country: data.country,
 			timezone: data.timezone,
 		};
 
 		const employmentDetails = {
-			companyname: data.companyName,
-			jobtitle: data.jobTitle,
-			dateofjoining: data.dateOfJoining,
-			companylocation: data.companyLocation,
+			companyName: data.companyName,
+			jobTitle: data.jobTitle,
+			start_date: data.dateOfJoining,
+			companyLocation: data.companyLocation,
 		};
-
-		// Combine personal and employment details with the user type
 		const postData = { userType, personalDetails, employmentDetails };
 
-		try {
-			// Send a POST request to the backend
-			const response = await axios.post("/api/endpoint", postData);
-
-			// Handle the response
-			console.log(response.data);
-		} catch (error) {
-			// Handle the error
-			console.error(error);
-		}
+		axios({
+			url: "http://localhost:8000/api/managers/",
+			method: "POST",
+			data: postData,
+		})
+			.then((response) => {
+				console.log(response.data);
+				console.log(response.data.userId);
+                const newUserId = response.data.id;
+                setUserId(newUserId);
+			})
+			.catch((error) => {
+				if (error.response) {
+					// The request was made and the server responded with a status code
+					// that falls out of the range of 2xx
+					console.log(error.response.data);
+					console.log(error.response.status);
+					console.log(error.response.headers);
+				} else if (error.request) {
+					// The request was made but no response was received
+					console.log(error.request);
+				} else {
+					// Something happened in setting up the request that triggered an Error
+					console.log("Error", error.message);
+				}
+				console.log(error.config);
+			});
 	};
 	return (
 		<>
@@ -63,7 +80,6 @@ export const ManagerForm = () => {
 						<div className="max-w-xl min-w-3xl lg:max-w-3xl ">
 							<form
 								onSubmit={handleSubmit(onSubmit)}
-								action="#"
 								className="mt-8 grid grid-cols-6 gap-6"
 							>
 								<div className="col-span-6 pt-3 pb-1">
@@ -140,7 +156,7 @@ export const ManagerForm = () => {
 								</div>
 								<div className="col-span-6 sm:col-span-3">
 									<input
-										{...register("dob", {
+										{...register("dateOfBirth", {
 											required: "Date of Birth is required",
 											validate: (value) => {
 												const today = new Date();
@@ -166,9 +182,9 @@ export const ManagerForm = () => {
 										name="dateOfBirth"
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
-									{errors.dob && (
+									{errors.dateOfBirth && (
 										<p className="text-red-500 text-xs mt-1">
-											{errors.dob.message}
+											{errors.dateOfBirth.message}
 										</p>
 									)}
 								</div>
@@ -280,7 +296,7 @@ export const ManagerForm = () => {
 
 								<div className="col-span-6 sm:col-span-3">
 									<input
-										{...register("doj", {
+										{...register("dateOfJoining", {
 											required: "Date of joining is required",
 											validate: (value) => {
 												const joinDate = new Date(value);
@@ -300,9 +316,9 @@ export const ManagerForm = () => {
 										name="dateOfJoining"
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
-									{errors.doj && (
+									{errors.dateOfJoining && (
 										<p className="text-red-500 text-sm" role="alert">
-											{errors.doj.message}
+											{errors.dateOfJoining.message}
 										</p>
 									)}
 								</div>

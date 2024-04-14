@@ -13,7 +13,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-mmz1tng^saerbpj*8xnbm8h89i@7e-k!y16-t7#i3y*kzdww=u'
 SECRET_KEY = getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -48,6 +48,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'gradHunt.urls'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  
+]
 
 TEMPLATES = [
     {
@@ -88,7 +92,6 @@ DATABASES = {
         'PORT': getenv('PGPORT', 5432),
     }
 }
-
 
 
 # Password validation
