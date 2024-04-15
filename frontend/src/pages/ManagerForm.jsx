@@ -1,31 +1,47 @@
 import { useForm } from "react-hook-form";
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { Navbar } from "../components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../store/userStore";
 import axios from "axios";
 
 export const ManagerForm = () => {
+	const { user, isAuthenticated } = useKindeAuth();
+
+	function generateUsername(firstName) {
+		const randomDigits = Math.floor(1000 + Math.random() * 9000);
+		return `${firstName.toLowerCase()}${randomDigits}`;
+	}
+
 	const [dateTypeDOB, setDateTypeDOB] = useState("text");
 	const [dateTypeDOJ, setDateTypeDOJ] = useState("text");
 	const {
 		register,
 		handleSubmit,
+		trigger,
+		setValue,
 		formState: { errors },
-        trigger
 	} = useForm();
 
+	useEffect(() => {
+		if (isAuthenticated) {
+			setValue("userName", isAuthenticated ? generateUsername(user.given_name) : "");
+			setValue("firstName", user.given_name);
+			setValue("lastName", user.family_name);
+			setValue("email", user.email);
+		}
+	}, [isAuthenticated, setValue, user]);
+
 	// zustand store
-	const setUserType = useStore((state) => state.setUserType); // Get the setter function for userType
+	const setUserType = useStore((state) => state.setUserType);
 	const setUserName = useStore((state) => state.setUserName);
 
-	// const onSubmit = (data) => console.log(data);
 	const onSubmit = async (data) => {
 		console.log(data);
 		console.log(errors);
 		const userType = "hiring-manager";
 		setUserType(userType);
 
-		// Prepare the data to be sent
 		const personalDetails = {
 			userName: data.userName,
 			firstName: data.firstName,
@@ -51,24 +67,18 @@ export const ManagerForm = () => {
 			data: postData,
 		})
 			.then((response) => {
-				console.log(response.data);
-				// console.log(response.data.userId);
+				// console.log(response.data);
 				const newUserName = response.data.userName;
 				setUserName(newUserName);
 			})
 			.catch((error) => {
 				if (error.response) {
-					// The request was made and the server responded with a status code
-					// that falls out of the range of 2xx
-					// console.log(error.response.data);
 					console.log(error.request);
 					console.log(error.response.status);
 					console.log(error.response.headers);
 				} else if (error.request) {
-					// The request was made but no response was received
 					console.log(error.request);
 				} else {
-					// Something happened in setting up the request that triggered an Error
 					console.log("Error", error.message);
 				}
 				console.log(error.config);
@@ -90,52 +100,6 @@ export const ManagerForm = () => {
 										Personal Details
 									</h2>
 								</div>
-								{/* <div className="col-span-6">
-									<input
-										{...register("userName", {
-											required: "Username is required",
-											validate: {
-												maxLength: {
-													value: 16,
-													message: "Username cannot be more than 16 characters",
-												},
-												minLength: {
-													value: 4,
-													message: "Username must be at least 4 characters",
-												},
-												pattern: {
-													value: /^[A-Za-z][A-Za-z0-9._]*$/i,
-													message:
-														"Username can only contain alphanumeric characters, periods, and underscores, and cannot start with a symbol",
-												},
-												exists: async (value) => {
-													try {
-														const response = await axios.get(
-															`http://localhost:8000/api/check-username?username=${value}`
-														);
-														return (
-															!response.data.exists || "Username already exists"
-														);
-													} catch (error) {
-														console.error(error);
-														return "Error checking username";
-													}
-												},
-											},
-										})}
-                                        aria-invalid={errors.userName ? "true" : "false"}
-										type="text"
-										name="userName"
-										placeholder="Username"
-										className="mt-1 focus:ring-0 focus:outline-none text-lg w-full rounded-lg border-gray-200 bg-white text-gray-700 shadow-sm"
-                                        // onBlur={handleSubmit((data) => console.log(data))}
-									/>
-									{errors.userName && (
-										<p className="text-red-500 text-sm" role="alert">
-											{errors.userName.message}
-										</p>
-									)}
-								</div> */}
 								<div className="col-span-6">
 									<input
 										{...register("userName", {
@@ -174,10 +138,13 @@ export const ManagerForm = () => {
 										type="text"
 										name="userName"
 										placeholder="Username"
+										defaultValue={
+											isAuthenticated ? generateUsername(user.given_name) : ""
+										}
 										className="mt-1 focus:ring-0 focus:outline-none text-lg w-full rounded-lg border-gray-200 bg-white text-gray-700 shadow-sm"
 									/>
 									{errors.userName && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.userName.message}
 										</p>
 									)}
@@ -199,7 +166,7 @@ export const ManagerForm = () => {
 										className="mt-1 focus:ring-0 focus:outline-none text-lg w-full rounded-lg border-gray-200 bg-white text-gray-700 shadow-sm"
 									/>
 									{errors.firstName && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.firstName.message}
 										</p>
 									)}
@@ -222,7 +189,7 @@ export const ManagerForm = () => {
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
 									{errors.lastName && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.lastName.message}
 										</p>
 									)}
@@ -260,7 +227,7 @@ export const ManagerForm = () => {
 										onBlur={handleSubmit((data) => console.log(data))}
 									/>
 									{errors.email && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.email.message}
 										</p>
 									)}
@@ -379,7 +346,7 @@ export const ManagerForm = () => {
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
 									{errors.companyName && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.companyName.message}
 										</p>
 									)}
@@ -399,7 +366,7 @@ export const ManagerForm = () => {
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
 									{errors.jobTitle && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.jobTitle.message}
 										</p>
 									)}
@@ -414,10 +381,17 @@ export const ManagerForm = () => {
 												const currentDate = new Date();
 												const experience =
 													currentDate.getFullYear() - joinDate.getFullYear();
-												return (
-													experience <= 30 ||
-													"Experience should not exceed 30 years"
-												);
+												const isFutureDate = joinDate > currentDate;
+
+												if (experience > 30) {
+													return "Experience should not exceed 30 years";
+												}
+
+												if (isFutureDate) {
+													return "Date of joining cannot be in the future";
+												}
+
+												return true;
 											},
 										})}
 										type={dateTypeDOJ}
@@ -428,7 +402,7 @@ export const ManagerForm = () => {
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
 									{errors.dateOfJoining && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.dateOfJoining.message}
 										</p>
 									)}
@@ -449,7 +423,7 @@ export const ManagerForm = () => {
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 									/>
 									{errors.companyLocation && (
-										<p className="text-red-500 text-sm" role="alert">
+										<p className="text-red-500 text-xs" role="alert">
 											{errors.companyLocation.message}
 										</p>
 									)}
