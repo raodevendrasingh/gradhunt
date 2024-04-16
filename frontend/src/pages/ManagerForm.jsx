@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { Navbar } from "../components/Navbar";
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import axios from "axios";
 
 export const ManagerForm = () => {
 	const { user, isAuthenticated } = useKindeAuth();
+	const navigate = useNavigate();
 
 	function generateUsername(firstName) {
 		const randomDigits = Math.floor(1000 + Math.random() * 9000);
@@ -25,7 +27,10 @@ export const ManagerForm = () => {
 
 	useEffect(() => {
 		if (isAuthenticated) {
-			setValue("userName", isAuthenticated ? generateUsername(user.given_name) : "");
+			setValue(
+				"userName",
+				isAuthenticated ? generateUsername(user.given_name) : ""
+			);
 			setValue("firstName", user.given_name);
 			setValue("lastName", user.family_name);
 			setValue("email", user.email);
@@ -39,7 +44,7 @@ export const ManagerForm = () => {
 	const onSubmit = async (data) => {
 		console.log(data);
 		console.log(errors);
-		const userType = "hiring-manager";
+		const userType = "manager";
 		setUserType(userType);
 
 		const personalDetails = {
@@ -70,6 +75,7 @@ export const ManagerForm = () => {
 				// console.log(response.data);
 				const newUserName = response.data.userName;
 				setUserName(newUserName);
+				navigate("/profile");
 			})
 			.catch((error) => {
 				if (error.response) {

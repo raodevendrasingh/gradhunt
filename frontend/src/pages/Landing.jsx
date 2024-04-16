@@ -1,4 +1,4 @@
-import { Accordian } from "../components/Accordian";
+import { Accordion } from "../components/Accordion";
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
@@ -57,7 +57,7 @@ export const Landing = () => {
 					</div>
 				</div>
 			</div>
-			<Accordian />
+			<Accordion />
 			<Footer />
 		</>
 	);

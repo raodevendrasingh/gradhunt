@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { CandidateForm } from "./pages/CandidateForm";
 import { ManagerForm } from "./pages/ManagerForm";
+import { UserSettings } from "./pages/UserSettings";
 
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 				<Route path="/get-started" element={<GetStarted />} />
                 <Route path="/get-started/cad" element={<CandidateForm/>} />
                 <Route path="/get-started/hrm" element={<ManagerForm/> } />
-				<Route path="/profile" element={<Profile />} />
+				<Route path="/profile/*" element={<Profile />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</Router>
