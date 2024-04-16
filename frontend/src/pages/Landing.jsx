@@ -8,7 +8,7 @@ export const Landing = () => {
 	return (
 		<>
 			<Navbar />
-			<div className="relative isolate z-0 bg-white px-6 mt-24 lg:px-8">
+			<section className="relative isolate z-0 bg-white px-6 mt-24 lg:px-8 min-h-[calc(100vh-80px)]">
 				<div className="relative mx-auto max-w-2xl py-24">
 					<div className="absolute inset-x-0 -top-[4rem] -z-10 transform-gpu overflow-hidden blur-3xl md:-top-[10rem]">
 						<svg
@@ -38,7 +38,7 @@ export const Landing = () => {
 					</div>
 					<div className="text-center">
 						<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                        Unlock Your Potential Propel Your Career 
+							Unlock Your Potential Propel Your Career
 						</h1>
 						<p className="mt-6 text-lg leading-8 text-gray-600">
 							We provide a seamless experience for job seekers and hiring
@@ -52,12 +52,15 @@ export const Landing = () => {
 							>
 								Get Started
 							</button>
-							
 						</div>
 					</div>
 				</div>
-			</div>
-			<Accordion />
+			</section>
+			<section className="min-h-[80vh] pt-20 md:pt-24 border-t-[1px]">
+				{" "}
+				<Accordion />{" "}
+			</section>
+
 			<Footer />
 		</>
 	);
