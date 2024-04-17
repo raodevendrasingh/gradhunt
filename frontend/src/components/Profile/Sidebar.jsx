@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useStore } from "../store/userStore";
+import { useStore } from "../../store/userStore";
 import {
 	ChevronDoubleLeftIcon,
 	ChevronDoubleRightIcon,
@@ -85,64 +85,64 @@ export const Sidebar = () => {
 									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="./postings"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
-										aria-current="page"
+										// aria-current="page"
 									>
 										<TbTablePlus className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Job Postings
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="./candidates"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaUsers className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Candidate Pool
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="./interviews"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaLaptopCode className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Interviews
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="./reports"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaChartColumn className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Reports
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
 						<div>
 							<ul className="flex flex-1 flex-col gap-1 py-3">
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="./notifications"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaBell className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Notifications
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
@@ -176,8 +176,8 @@ export const Sidebar = () => {
 						<div>
 							<ul className="flex flex-1 flex-col gap-1 py-3">
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<Squares2X2Icon className="h-5 w-5" />
@@ -185,11 +185,11 @@ export const Sidebar = () => {
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Dashboard
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 										aria-current="page"
 									>
@@ -197,102 +197,102 @@ export const Sidebar = () => {
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Education
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaRankingStar className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Skills
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaAward className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Certifications
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaBuilding className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Experience
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaTrophy className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Achievements
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaNewspaper className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Applications
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
 						<div>
 							<ul className="flex flex-1 flex-col gap-1 py-3">
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaInbox className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Inbox
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaBell className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Notifications
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
 					</nav>
 					<footer className="border-t border-slate-200 p-3">
-						<a
-							href="#"
+						<Link
+							to="#"
 							className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
 						>
 							<FaGear className="h-5 w-5" />
 							<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
 								Settings
 							</div>
-						</a>
+						</Link>
 					</footer>
 				</aside>
 			)}
@@ -324,8 +324,8 @@ export const Sidebar = () => {
 									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 										aria-current="page"
 									>
@@ -333,44 +333,44 @@ export const Sidebar = () => {
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Job Postings
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaUsers className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Users
 										</div>
-									</a>
+									</Link>
 								</li>
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaChartColumn className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Reports
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
 						<div>
 							<ul className="flex flex-1 flex-col gap-1 py-3">
 								<li className="px-3">
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
 										<FaBell className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
 											Notifications
 										</div>
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>
