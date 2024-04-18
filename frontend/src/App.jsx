@@ -6,7 +6,6 @@ import { Home } from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { CandidateForm } from "./pages/CandidateForm";
 import { ManagerForm } from "./pages/ManagerForm";
-import { UserSettings } from "./pages/UserSettings";
 
 
 const App = () => {

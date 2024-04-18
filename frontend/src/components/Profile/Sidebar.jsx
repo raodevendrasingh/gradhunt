@@ -34,7 +34,7 @@ export const Sidebar = () => {
 				type="button"
 				className={`fixed top-1/2 left-0 transform -translate-y-1/2 z-40 order-10 block h-10 w-10 self-center rounded opacity-100 lg:hidden ${
 					isSideNavOpen
-						? "left-[300px] transform -translate-y-1/2 -translate-x-1/2"
+						? "left-64 transform -translate-y-1/2 -translate-x-1/2"
 						: "left-0"
 				}`}
 				aria-haspopup="menu"
@@ -46,12 +46,12 @@ export const Sidebar = () => {
 				<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform">
 					{isSideNavOpen ? (
 						<ChevronDoubleLeftIcon
-							className="h-6 w-6 text-slate-400"
+							className="h-6 w-6 text-slate-800"
 							aria-hidden="true"
 						/>
 					) : (
 						<ChevronDoubleRightIcon
-							className="h-6 w-6 text-slate-400"
+							className="h-6 w-6 text-slate-800"
 							aria-hidden="true"
 						/>
 					)}
@@ -62,7 +62,7 @@ export const Sidebar = () => {
 				<aside
 					id="nav-menu-2"
 					aria-label="Side navigation"
-					className={`fixed top-[90px] bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
+					className={` fixed top-[90px] bottom-2 left-2 z-40 flex w-60 flex-col border border-slate-200 rounded-lg bg-white transition-transform lg:translate-x-0 ${
 						isSideNavOpen ? "translate-x-0" : " -translate-x-full"
 					}`}
 				>
@@ -138,9 +138,9 @@ export const Sidebar = () => {
 										to="./notifications"
 										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
 									>
-										<FaBell className="h-5 w-5" />
+										<FaInbox className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
-											Notifications
+											Inbox
 										</div>
 									</Link>
 								</li>

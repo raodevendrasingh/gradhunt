@@ -1,13 +1,13 @@
 import { useRoutes } from 'react-router-dom';
 import { Navbar } from "../components/Navbar";
 import { Sidebar } from "../components/Profile/Sidebar";
-import { UserSettings } from './UserSettings';
+import { UserSettings } from '../components/Profile/UserSettings';
 import { Dashboard } from '../components/Profile/Dashboard';
 import { JobPostings } from '../components/Profile/manager/JobPostings';
 import { CandidatesPool } from '../components/Profile/manager/CandidatesPool';
 import { InterviewsScheduled } from '../components/Profile/manager/InterviewsScheduled';
 import { Reports } from '../components/Profile/manager/Reports';
-import { Notifications } from '../components/Profile/Notifications';
+import { Inbox } from '../components/Profile/Inbox';
 
 export const Profile = () => {
     let routes = useRoutes([
@@ -16,7 +16,7 @@ export const Profile = () => {
         { path: '/candidates', element: <CandidatesPool/>},
         { path: 'interviews', element: <InterviewsScheduled/>},
         { path: 'reports', element: <Reports/>},
-        { path: 'notifications', element: <Notifications/> },
+        { path: 'inbox', element: <Inbox/> },
         { path: 'settings', element: <UserSettings/> },
         // ... other routes
     ]);

@@ -11,6 +11,10 @@ export default withMT({
 				Nunito: ["Nunito", "sans-serif"],
 			},
 			colors: colors,
+            screens: {
+                'xs': '475px',
+                // => @media (min-width: 992px) { ... }
+              },
 		},
 	},
 	plugins: [form],
