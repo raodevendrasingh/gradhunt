@@ -40,12 +40,13 @@ export const ManagerForm = () => {
 	// zustand store
 	const setUserType = useStore((state) => state.setUserType);
 	const setUserName = useStore((state) => state.setUserName);
+	const setUserID = useStore((state) => state.setUserID);
 
 	const onSubmit = async (data) => {
 		console.log(data);
 		console.log(errors);
 		const userType = "manager";
-		setUserType(userType);
+        useStore.getState().setUserID(userType);
 
 		const personalDetails = {
 			userName: data.userName,
@@ -73,8 +74,14 @@ export const ManagerForm = () => {
 		})
 			.then((response) => {
 				// console.log(response.data);
-				const newUserName = response.data.userName;
-				setUserName(newUserName);
+				const newUserID = response.data.id;
+                useStore.getState().setUserID(newUserID);
+				const newUserName = response.data.username;
+                useStore.getState().setUserID(newUserID);
+
+                console.log('User ID:', newUserID);
+                console.log('Username:', newUserName);
+
 				navigate("/profile");
 			})
 			.catch((error) => {
@@ -230,7 +237,7 @@ export const ManagerForm = () => {
 										name="email"
 										placeholder="email@company.com"
 										className="mt-1 w-full rounded-md border-gray-200 bg-white text-lg text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-										onBlur={handleSubmit((data) => console.log(data))}
+										onBlur={handleSubmit}
 									/>
 									{errors.email && (
 										<p className="text-red-500 text-xs" role="alert">

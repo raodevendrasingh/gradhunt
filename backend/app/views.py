@@ -1,35 +1,44 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 from django.http import JsonResponse
 from django.views import View
-from django.http import HttpResponse
 from .models import *
-from .serializers import PersonalSerializer, EmploymentSerializer
+from .serializers import *
 
 
-def home(request):
-    return HttpResponse('This is the home page', status=200)
+class HomeView(APIView):
+    def get(self, request):
+        return Response('This is the API home page', status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def create_manager(request):
-    if request.method == 'POST':
+class CreateManagerView(APIView):
+    def post(self, request):
         data = request.data
 
         personal_serializer = PersonalSerializer(data=data['personalDetails'])
         if not personal_serializer.is_valid():
-            return Response({'status': 'error', 'errors': personal_serializer.errors}, status=400)
+            return Response({'status': 'error', 'errors': personal_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
         personal_details_instance = personal_serializer.save()
 
         employment_data = data['employmentDetails']
-        employment_data['userName'] = personal_details_instance.userName
+        employment_data['personal_details'] = personal_details_instance.id
         employment_serializer = EmploymentSerializer(data=employment_data)
         if not employment_serializer.is_valid():
-            return Response({'status': 'error', 'errors': employment_serializer.errors}, status=400)
+            return Response({'status': 'error', 'errors': employment_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        employment_serializer.save()
-        return Response({'status': 'success'}, status=200)
+        employment_instance = employment_serializer.save()
+        return Response(
+            {
+                'status': 'success',
+                'message': 'Manager created successfully',
+                'id': personal_details_instance.id,
+                'username': personal_details_instance.userName
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class CheckUsernameView(View):
@@ -51,3 +60,24 @@ class CheckEmailView(View):
 
         exists = PersonalDetails.objects.filter(email__iexact=email).exists()
         return JsonResponse({'exists': exists})
+
+
+class ListManagersView(APIView):
+    def get(self, request):
+        managers = EmploymentDetails.objects.all()
+        data = [{'personal_details': manager.personal_details,
+                 'employment_details': manager} for manager in managers]
+        serializer = ShowDataSerializer(data, many=True)
+        return Response(serializer.data)
+
+
+class GetManagerView(APIView):
+    def get(self, request, id):
+        try:
+            manager = EmploymentDetails.objects.get(personal_details__id=id)
+            data = {'personal_details': manager.personal_details,
+                    'employment_details': manager}
+            serializer = ShowDataSerializer(data)
+            return Response(serializer.data)
+        except EmploymentDetails.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Manager not found'}, status=404)

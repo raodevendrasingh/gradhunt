@@ -2,7 +2,8 @@ from django.db import models
 
 
 class PersonalDetails(models.Model):
-    userName = models.CharField(max_length=100, unique=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    userName = models.CharField(max_length=100, unique=True)
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
@@ -15,12 +16,12 @@ class PersonalDetails(models.Model):
         return self.userName
 
     class Meta:
-        verbose_name = "PersonalDetails"
-        verbose_name_plural = "PersonalDetails"
+        verbose_name = "Personal Details"
+        verbose_name_plural = "Personal Details"
 
 
 class EmploymentDetails(models.Model):
-    userName = models.ForeignKey(
+    personal_details = models.ForeignKey(
         PersonalDetails, on_delete=models.CASCADE, related_name='employment_details')
     companyName = models.CharField(max_length=100)
     jobTitle = models.CharField(max_length=100)
@@ -32,5 +33,5 @@ class EmploymentDetails(models.Model):
         return self.companyName
 
     class Meta:
-        verbose_name = "EmploymentDetails"
-        verbose_name_plural = "EmploymentDetails"
+        verbose_name = "Employment Details"
+        verbose_name_plural = "Employment Details"

@@ -1,4 +1,23 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useStore } from "../../store/userStore";
+
 export const Dashboard = () => {
+	const { userID, userName } = useStore();
+	const [user, setUser] = useState("");
+	console.log(userID, userName);
+
+	useEffect(() => {
+		axios
+			.get(`http://localhost:8000/api/managers/${userID}/`)
+			.then((response) => {
+				setUser(response.data);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}, [userID]);
+
 	return (
 		<>
 			<div className="w-full pt-24 mx-auto h-screen ">
@@ -14,28 +33,44 @@ export const Dashboard = () => {
 											className="aspect-auto border rounded-lg"
 										/>
 									</div>
-
-									<div className="flex flex-col flex-grow h-auto border border-gray-100 bg-gray-100   p-3  rounded-lg">
-										<h1 className="text-3xl">Jason Roy</h1>
-										<h3 className="text-sm">@jsonroy123</h3>
-										<p className="pt-5 ">Male</p>
-									</div>
+									{user ? (
+										<div className="flex flex-col flex-grow h-32 border border-gray-100 bg-gray-100   p-3  rounded-lg">
+											<h1 className="text-3xl">
+												{user.personal_details.firstName}{" "}
+												{user.personal_details.lastName}
+											</h1>
+											<h3 className="text-sm">
+												@{user.personal_details.userName}
+											</h3>
+											<p className="pt-3 ">{user.personal_details.gender}</p>
+										</div>
+									) : (
+										<p>Loading...</p>
+									)}
 								</div>
-								<div className="flex flex-col xs:flex-row w-full h-auto  gap-1 ">
-									<div className="w-full h-auto border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg ">
-										<h1 className="">jason.roy@email.com</h1>
-										<h3 className="">+1 123456789</h3>
-									</div>
-									<div className="w-full h-auto border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg">
-										<h3>United Kingdom</h3>
-										<p className="text-sm">British Summer Time (UTC+01:00)</p>
-									</div>
+								<div className="flex flex-col xs:flex-row w-full h-32 gap-1 ">
+									{user ? (
+										<>
+											<div className="w-full h-auto border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg ">
+												<h1 className="">{user.personal_details.email}</h1>
+												<h3 className="">+1 123456789</h3>
+											</div>
+											<div className="w-full h-32 border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg">
+												<h3>{user.personal_details.country}</h3>
+												<p className="text-sm">
+													{user.personal_details.timezone}
+												</p>
+											</div>
+										</>
+									) : (
+										<p>Loading...</p>
+									)}
 								</div>
 							</div>
 						</div>
 
 						{/* experience section*/}
-						<div className="flex flex-col w-full border border-gray-100 bg-gray-100 h-auto p-2 rounded-lg my-2">
+						<div className="flex pt-2 flex-col w-full border border-gray-100 bg-gray-100 h-auto p-2 rounded-lg my-2">
 							<div>
 								<h3 className="text-2xl py-2">Experience</h3>
 							</div>
