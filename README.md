@@ -1,3 +1,3 @@
-# HireSphere - Job Listing Platform
+# GradHunt - Job Listing Platform
 
-### Tech Stack: ReactJS, Django Rest Framework, TailwindCSS, PostgreSQL
+#### Tech Stack: ReactJS, Django Rest Framework, TailwindCSS, PostgreSQL
