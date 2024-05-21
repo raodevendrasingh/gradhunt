@@ -10,6 +10,7 @@ export const ManagerForm = () => {
 	const { user, isAuthenticated } = useKindeAuth();
 	const navigate = useNavigate();
 
+    // to generated unique username
 	function generateUsername(firstName) {
 		const randomDigits = Math.floor(1000 + Math.random() * 9000);
 		return `${firstName.toLowerCase()}${randomDigits}`;
@@ -17,6 +18,7 @@ export const ManagerForm = () => {
 
 	const [dateTypeDOB, setDateTypeDOB] = useState("text");
 	const [dateTypeDOJ, setDateTypeDOJ] = useState("text");
+
 	const {
 		register,
 		handleSubmit,
@@ -37,16 +39,18 @@ export const ManagerForm = () => {
 		}
 	}, [isAuthenticated, setValue, user]);
 
-	// zustand store
-	const setUserType = useStore((state) => state.setUserType);
-	const setUserName = useStore((state) => state.setUserName);
-	const setUserID = useStore((state) => state.setUserID);
+	// // zustand store
+	// const setUserType = useStore((state) => state.setUserType);
+	// const setUserName = useStore((state) => state.setUserName);
+	// const setUserID = useStore((state) => state.setUserID);
 
 	const onSubmit = async (data) => {
 		console.log(data);
 		console.log(errors);
+
+        // set usertype globally
 		const userType = "manager";
-        useStore.getState().setUserID(userType);
+        useStore.getState().setUserType(userType);
 
 		const personalDetails = {
 			userName: data.userName,
@@ -74,15 +78,20 @@ export const ManagerForm = () => {
 		})
 			.then((response) => {
 				// console.log(response.data);
+
+                // set userid globally
 				const newUserID = response.data.id;
                 useStore.getState().setUserID(newUserID);
+                
+                // set username globally
 				const newUserName = response.data.username;
-                useStore.getState().setUserID(newUserID);
+                useStore.getState().setUserName(newUserName);
+                
+				navigate("/profile");
 
                 console.log('User ID:', newUserID);
                 console.log('Username:', newUserName);
 
-				navigate("/profile");
 			})
 			.catch((error) => {
 				if (error.response) {
