@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.custom-phone-input .PhoneInputInput {
+		@apply w-full text-sm rounded-md rounded-l-none border-none outline-none ring-0 !important;
+	}
+
+	.form-section {
+		@apply w-full border-2 bg-gray-100 border-gray-100 rounded-md flex flex-col mx-auto;
+	}
+
+	.form-heading {
+		@apply text-xl font-bold px-5 pt-5;
+	}
+
+	.form-input {
+		@apply w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm outline-none ring-0 !important;
+	}
+
+    .form-error {
+        @apply text-red-500 text-xs
+    }
+	
+	*:focus {
+		@apply outline-none ring-0 !important;
+	}
+}

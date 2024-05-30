@@ -5,7 +5,7 @@ import { GetStarted } from "./pages/GetStarted";
 import { Home } from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { CandidateForm } from "./pages/CandidateForm";
-import { ManagerForm } from "./pages/ManagerForm";
+import { RecruiterForm } from "./pages/RecruiterForm";
 
 
 const App = () => {
@@ -15,8 +15,8 @@ const App = () => {
 				<Route path="/" element={<Landing />} />
 				<Route path="/home" element={<Home />} />
 				<Route path="/get-started" element={<GetStarted />} />
-                <Route path="/get-started/cad" element={<CandidateForm/>} />
-                <Route path="/get-started/hrm" element={<ManagerForm/> } />
+                <Route path="/get-started/candidate-profile" element={<CandidateForm/>} />
+                <Route path="/get-started/recruiter-profile" element={<RecruiterForm/>} />
 				<Route path="/profile/*" element={<Profile />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>

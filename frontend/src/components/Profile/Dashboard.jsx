@@ -72,7 +72,7 @@ export const Dashboard = () => {
 						{/* experience section*/}
 						<div className="flex pt-2 flex-col w-full border border-gray-100 bg-gray-100 h-auto p-2 rounded-lg my-2">
 							<div>
-								<h3 className="text-2xl py-2">Experience</h3>
+								<h3 className="text-2xl py-2">Current Employment</h3>
 							</div>
 							<div className="flex">
 								<div className="w-full border border-gray-50 bg-gray-50 h-auto p-2 rounded-lg">
