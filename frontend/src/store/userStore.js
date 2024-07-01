@@ -8,9 +8,9 @@ const UserStore = (set) => ({
         set({ userType });
     },
     userName: null,
-    setUserName: (uname) => {
-        localStorage.setItem('userName', uname);
-        set({ uname })
+    setUserName: (userName) => {
+        localStorage.setItem('userName', userName);
+        set({ userName })
     },
     userID: null,
     setUserID: (userID) => {

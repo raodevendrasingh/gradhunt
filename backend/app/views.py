@@ -1,11 +1,11 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
-from django.http import JsonResponse
-from django.views import View
 from .models import *
 from .serializers import *
+from django.views import View
+from django.db import transaction
+from rest_framework import status
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class HomeView(APIView):
@@ -13,29 +13,41 @@ class HomeView(APIView):
         return Response('This is the API home page', status=status.HTTP_200_OK)
 
 
-class CreateManagerView(APIView):
+class SaveRecruiterFormData(APIView):
+    @transaction.atomic
     def post(self, request):
         data = request.data
 
-        personal_serializer = PersonalSerializer(data=data['personalDetails'])
-        if not personal_serializer.is_valid():
-            return Response({'status': 'error', 'errors': personal_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        user_serializer = UserSerializer(data=data['userDetails'])
+        if not user_serializer.is_valid():
+            return Response({'status': 'error', 'errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        personal_details_instance = personal_serializer.save()
+        user_instance = user_serializer.save()
 
-        employment_data = data['employmentDetails']
-        employment_data['personal_details'] = personal_details_instance.id
-        employment_serializer = EmploymentSerializer(data=employment_data)
-        if not employment_serializer.is_valid():
-            return Response({'status': 'error', 'errors': employment_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        recruiter_data = data['recruiterDetails']
+        recruiter_data['user'] = user_instance.id
+        recruiter_serializer = RecruiterSerializer(data=recruiter_data)
+        if not recruiter_serializer.is_valid():
+            return Response({'status': 'error', 'errors': recruiter_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-        employment_instance = employment_serializer.save()
+        recruiter_instance = recruiter_serializer.save()
+
+        hiring_pref_data = data['hiringPreferences']
+        hiring_pref_data['recruiter'] = recruiter_instance.id
+        hiring_pref_serializer = HiringPreferenceSerializer(
+            data=hiring_pref_data)
+        if not hiring_pref_serializer.is_valid():
+            return Response({'status': 'error', 'errors': hiring_pref_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        hiring_pref_instance = hiring_pref_serializer.save()
+
         return Response(
             {
                 'status': 'success',
-                'message': 'Manager created successfully',
-                'id': personal_details_instance.id,
-                'username': personal_details_instance.userName
+                'message': 'Recruiter Details Saved Successfully',
+                'id': user_instance.id,
+                'username': user_instance.username,
+                'usertype': user_instance.usertype
             },
             status=status.HTTP_200_OK
         )
@@ -47,8 +59,8 @@ class CheckUsernameView(View):
         if username is None:
             return JsonResponse({'error': 'Missing username parameter.'}, status=400)
 
-        exists = PersonalDetails.objects.filter(
-            userName__iexact=username).exists()
+        exists = UserDetails.objects.filter(
+            username__iexact=username).exists()
         return JsonResponse({'exists': exists})
 
 
@@ -58,26 +70,33 @@ class CheckEmailView(View):
         if email is None:
             return JsonResponse({'error': 'Missing email parameter.'}, status=400)
 
-        exists = PersonalDetails.objects.filter(email__iexact=email).exists()
+        exists = UserDetails.objects.filter(email__iexact=email).exists()
         return JsonResponse({'exists': exists})
 
 
-class ListManagersView(APIView):
-    def get(self, request):
-        managers = EmploymentDetails.objects.all()
-        data = [{'personal_details': manager.personal_details,
-                 'employment_details': manager} for manager in managers]
-        serializer = ShowDataSerializer(data, many=True)
-        return Response(serializer.data)
-
-
-class GetManagerView(APIView):
-    def get(self, request, id):
+class GetRecruiterDetails(APIView):
+    def get(self, request, username):
         try:
-            manager = EmploymentDetails.objects.get(personal_details__id=id)
-            data = {'personal_details': manager.personal_details,
-                    'employment_details': manager}
-            serializer = ShowDataSerializer(data)
+            user = UserDetails.objects.get(username__iexact=username)
+            recruiter = Recruiter.objects.get(user__exact=user.id)
+            hiring_preferences = HiringPreference.objects.get(recruiter__exact=recruiter.id)
+            job_postings = Posting.objects.filter(recruiter__exact=recruiter.id).first()
+            awards = Award.objects.filter(user=user.id).first()
+
+            data = {
+                'user_details': user,
+                'recruiter_details': recruiter,
+                'hiring_preference': hiring_preferences,
+                'job_postings': job_postings,
+                'awards': awards
+            }
+            serializer = RecruiterDataSerializer(data)
+
             return Response(serializer.data)
-        except EmploymentDetails.DoesNotExist:
-            return Response({'status': 'error', 'message': 'Manager not found'}, status=404)
+
+        except UserDetails.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
+        except Recruiter.DoesNotExist:
+            return JsonResponse({'error': 'Recruiter details not found'}, status=404)
+        except HiringPreference.DoesNotExist:
+            return JsonResponse({'error': 'Hiring preferences not found'}, status=404)

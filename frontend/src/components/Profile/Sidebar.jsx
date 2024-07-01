@@ -58,7 +58,7 @@ export const Sidebar = () => {
 				</div>
 			</button>
 			{/*  <!-- Side Navigation --> */}
-			{userType === "manager" && (
+			{userType === "recruiter" && (
 				<aside
 					id="nav-menu-2"
 					aria-label="Side navigation"

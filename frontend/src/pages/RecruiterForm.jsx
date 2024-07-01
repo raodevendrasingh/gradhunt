@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // third party imports
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import axios from "axios";
+import { toast } from "sonner";
 
 // ui library components
 import PhoneInput from "react-phone-number-input";
@@ -33,12 +34,22 @@ import { selectFieldStyle } from "../helper/styles";
 // placeholder image
 import blankUser from "../assets/blank-user.png";
 
+const TimezoneSelectWrapper = React.forwardRef(function TimezoneSelectWrapper(
+	props,
+	ref
+) {
+	return <TimezoneSelect {...props} inputRef={ref} />;
+});
+
 export const RecruiterForm = () => {
 	const { user, isAuthenticated } = useKindeAuth();
 	const [image, setImage] = useState(null);
 	const [mobileNum, setMobileNum] = useState();
 	const [dateTypeDOJ, setDateTypeDOJ] = useState("text");
 	const [country, setCountry] = useState(countryList().getData());
+	const [timezoneSelect, setTimezoneSelect] = useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	);
 
 	const navigate = useNavigate();
 
@@ -67,6 +78,7 @@ export const RecruiterForm = () => {
 	} = useForm({
 		defaultValues: {
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			userType: "recruiter", // default value
 		},
 	});
 
@@ -78,52 +90,56 @@ export const RecruiterForm = () => {
 		}
 	}, [isAuthenticated, setValue, user]);
 
+	// set usertype globally
+	const userType = "recruiter";
+	useStore.getState().setUserType(userType);
+
 	// form submit logic
 	const onSubmit = async (data) => {
 		console.log(data);
 		console.log(errors);
 
-		// set usertype globally
-		const userType = "manager";
-		useStore.getState().setUserType(userType);
+        const transformedSkills = data.skills.map(skill => skill.value);
 
-		const personalDetails = {
+		const userDetails = {
 			profilePicture: data.profilePicture,
-			userName: data.username,
-			firstName: data.firstName,
-			lastName: data.lastName,
+			username: data.userName,
+			usertype: data.userType,
+			firstname: data.firstName,
+			lastname: data.lastName,
 			email: data.email,
+			mobileNumber: data.mobileNum,
 			timezone: data.timezone,
 		};
 
-		const employmentDetails = {
+		const recruiterDetails = {
 			companyName: data.companyName,
 			jobTitle: data.jobTitle,
-			start_date: data.dateOfJoining,
-			companyAddress1: data.companyAddress1,
-			companyAddress2: data.companyAddress2,
+			startDate: data.dateOfJoining,
+			Address1: data.companyAddress1,
+			Address2: data.companyAddress2,
 			city: data.city,
 			state: data.state,
-			country: data.country,
+			country: data.country.label,
 			zipcode: data.zipcode,
 		};
 
-		const hiringPreference = {
-			experience: data.experience,
-			industry: data.industry,
-			function: data.function,
-			skills: data.skills,
+		const hiringPreferences = {
+			experience: data.experience.value,
+			levels: data.levels,
+			industry: data.sectors,
+			function: data.functions,
+			skills: transformedSkills,
 		};
 
 		const postData = {
-			userType,
-			personalDetails,
-			employmentDetails,
-			hiringPreference,
+			userDetails,
+			recruiterDetails,
+			hiringPreferences,
 		};
 
 		axios({
-			url: "http://localhost:8000/api/managers/",
+			url: "http://localhost:8000/api/save-recruiter-form-data/",
 			method: "POST",
 			data: postData,
 		})
@@ -139,21 +155,23 @@ export const RecruiterForm = () => {
 				useStore.getState().setUserName(newUserName);
 
 				navigate("/profile");
+				toast.success("Recruiter Profile Created!");
 
 				console.log("User ID:", newUserID);
 				console.log("Username:", newUserName);
 			})
 			.catch((error) => {
+				toast.error("Error occured while creating profile. Try again! ");
 				if (error.response) {
-					console.log(error.request);
-					console.log(error.response.status);
-					console.log(error.response.headers);
+					console.log("Error Status: ", error.response.status);
+					console.log("Error Message: ", error.message);
+					console.log("Error Response: ", error.response);
+					console.log("Error Data: ", error.response.data);
 				} else if (error.request) {
-					console.log(error.request);
+					console.log("Error Request: ", error.request);
 				} else {
-					console.log("Error", error.message);
+					console.log("Error Message: ", error.message);
 				}
-				console.log(error.config);
 			});
 	};
 	return (
@@ -226,6 +244,7 @@ export const RecruiterForm = () => {
 													"Username can only contain alphanumeric characters, periods, and underscores, and cannot start with a symbol",
 											},
 											validate: async (value) => {
+												// Changed from 'exists' to 'validate' for clarity
 												try {
 													const response = await axios.get(
 														`http://localhost:8000/api/check-username?username=${value}`
@@ -245,18 +264,30 @@ export const RecruiterForm = () => {
 										aria-invalid={errors.userName ? "true" : "false"}
 										type="text"
 										name="userName"
+										id="uname"
 										placeholder="Username"
 										defaultValue={
 											isAuthenticated ? generateUsername(user.given_name) : ""
 										}
 										className="form-input"
 									/>
-									{errors.firstName && (
+									{errors.userName && (
 										<p className="form-error" role="alert">
-											{errors.firstName.message}
+											{errors.userName.message}
 										</p>
 									)}
 								</div>
+
+								{/* default usertype */}
+								<div className="hidden">
+									<input
+										{...register("userType")}
+										type="text"
+										id="usertype"
+										name="userType"
+									/>
+								</div>
+
 								<div className="w-full">
 									<label htmlFor="fname" className="text-sm">
 										First Name
@@ -391,6 +422,7 @@ export const RecruiterForm = () => {
 										</p>
 									)}
 								</div>
+
 								<div className="w-full">
 									<label htmlFor="timezone" className="text-sm">
 										Timezone
@@ -402,8 +434,13 @@ export const RecruiterForm = () => {
 											required: "Timezone is required",
 										}}
 										render={({ field }) => (
-											<TimezoneSelect
+											<TimezoneSelectWrapper
 												{...field}
+												value={timezoneSelect}
+												onChange={(tz) => {
+													setTimezoneSelect(tz);
+													field.onChange(tz.value);
+												}}
 												id="timezone"
 												styles={selectFieldStyle}
 											/>
@@ -605,8 +642,8 @@ export const RecruiterForm = () => {
 													required: "State is required",
 													maxLength: 20,
 													minLength: {
-														value: 3,
-														message: "State should be 3 characters atleast.",
+														value: 2,
+														message: "State should be 2 characters atleast.",
 													},
 												})}
 												aria-invalid={errors.state ? "true" : "false"}
@@ -656,10 +693,15 @@ export const RecruiterForm = () => {
 											<input
 												{...register("zipcode", {
 													required: "Zipcode is required",
-													maxLength: 6,
+													maxLength: {
+														value: 10,
+														message:
+															"Zipcode should be of atmost 10 characters.",
+													},
 													minLength: {
-														value: 6,
-														message: "Zipcode should be of 6 numbers.",
+														value: 4,
+														message:
+															"Zipcode should be of atleast 4 characters.",
 													},
 												})}
 												aria-invalid={errors.zipcode ? "true" : "false"}
@@ -690,6 +732,7 @@ export const RecruiterForm = () => {
 										</label>
 										<Controller
 											name="experience"
+											id="experience"
 											control={control}
 											rules={{
 												required: "Experience is required",

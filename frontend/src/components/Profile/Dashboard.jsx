@@ -3,21 +3,20 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../store/userStore";
 
 export const Dashboard = () => {
-	const { userID, userName } = useStore();
+	const { userName } = useStore();
 	const [user, setUser] = useState("");
-	console.log(userID, userName);
+	// console.log(userName);
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8000/api/managers/${userID}/`)
+			.get(`http://localhost:8000/api/recruiter/${userName}`)
 			.then((response) => {
 				setUser(response.data);
 			})
 			.catch((error) => {
 				console.error(error);
 			});
-	}, [userID]);
-
+	}, [userName]);
 	return (
 		<>
 			<div className="w-full pt-24 mx-auto h-screen ">
@@ -36,13 +35,13 @@ export const Dashboard = () => {
 									{user ? (
 										<div className="flex flex-col flex-grow h-32 border border-gray-100 bg-gray-100   p-3  rounded-lg">
 											<h1 className="text-3xl">
-												{user.personal_details.firstName}{" "}
-												{user.personal_details.lastName}
+												{user.user_details.firstname}{" "}
+												{user.user_details.lastname}
 											</h1>
 											<h3 className="text-sm">
-												@{user.personal_details.userName}
+												@{user.user_details.username}
 											</h3>
-											<p className="pt-3 ">{user.personal_details.gender}</p>
+											
 										</div>
 									) : (
 										<p>Loading...</p>
@@ -52,13 +51,13 @@ export const Dashboard = () => {
 									{user ? (
 										<>
 											<div className="w-full h-auto border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg ">
-												<h1 className="">{user.personal_details.email}</h1>
+												<h1 className="">{user.user_details.email}</h1>
 												<h3 className="">+1 123456789</h3>
 											</div>
 											<div className="w-full h-32 border border-gray-100 bg-gray-100 p-3 flex flex-col justify-center rounded-lg">
-												<h3>{user.personal_details.country}</h3>
+												<h3>{user.recruiter_details.country}</h3>
 												<p className="text-sm">
-													{user.personal_details.timezone}
+													{user.user_details.timezone}
 												</p>
 											</div>
 										</>

@@ -28,6 +28,7 @@
         "react-select": "^5.8.0",
         "react-select-country-list": "^2.2.3",
         "react-timezone-select": "^3.2.5",
+        "sonner": "^1.5.0",
         "tailwind-merge": "^2.3.0",
         "tw-elements-react": "1.0.0-alpha2",
         "zustand": "^4.5.2"
