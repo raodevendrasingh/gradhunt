@@ -11,6 +11,7 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
     timezone = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -34,7 +35,7 @@ class Recruiter(models.Model):
     zipcode = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.companyName
+        return f"{self.user.username} from {self.companyName}"
 
     class Meta:
         verbose_name = "Recruiter Details"
@@ -56,6 +57,9 @@ class HiringPreference(models.Model):
         max_length=200), blank=True, default=list)
     skills = ArrayField(models.CharField(max_length=200),
                         blank=True, default=list)
+    
+    def __str__(self):
+        return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
 
     class Meta:
         verbose_name = "Hiring Preference"
@@ -79,7 +83,7 @@ class Posting(models.Model):
     postedDate = models.DateField()
 
     def __str__(self):
-        return self.jobtitle
+        return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
 
     class Meta:
         verbose_name = "Job Postings"
@@ -92,8 +96,8 @@ class Award(models.Model):
     yearReceived = models.IntegerField()
 
     def __str__(self):
-        return self.awardName
+        return f"{self.awardName} [{self.user.username}]"
 
     class Meta:
-        verbose_name = "Award"
-        verbose_name_plural = "Award"
+        verbose_name = "Awards"
+        verbose_name_plural = "Awards"

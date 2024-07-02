@@ -45,9 +45,9 @@ class SaveRecruiterFormData(APIView):
             {
                 'status': 'success',
                 'message': 'Recruiter Details Saved Successfully',
-                'id': user_instance.id,
-                'username': user_instance.username,
-                'usertype': user_instance.usertype
+                # 'id': user_instance.id,
+                # 'username': user_instance.username,
+                # 'usertype': user_instance.usertype
             },
             status=status.HTTP_200_OK
         )
@@ -79,8 +79,10 @@ class GetRecruiterDetails(APIView):
         try:
             user = UserDetails.objects.get(username__iexact=username)
             recruiter = Recruiter.objects.get(user__exact=user.id)
-            hiring_preferences = HiringPreference.objects.get(recruiter__exact=recruiter.id)
-            job_postings = Posting.objects.filter(recruiter__exact=recruiter.id).first()
+            hiring_preferences = HiringPreference.objects.get(
+                recruiter__exact=recruiter.id)
+            job_postings = Posting.objects.filter(
+                recruiter__exact=recruiter.id).first()
             awards = Award.objects.filter(user=user.id).first()
 
             data = {
@@ -100,3 +102,38 @@ class GetRecruiterDetails(APIView):
             return JsonResponse({'error': 'Recruiter details not found'}, status=404)
         except HiringPreference.DoesNotExist:
             return JsonResponse({'error': 'Hiring preferences not found'}, status=404)
+
+
+class GetAllRecruiters(APIView):
+    def get(self, request):
+        try:
+            recruiters = Recruiter.objects.all()
+
+            data = []
+            for recruiter in recruiters:
+                user_serializer = UserSerializer(recruiter.user)
+                recruiter_serializer = RecruiterSerializer(recruiter)
+                hiring_preference_serializer = HiringPreferenceSerializer(
+                    HiringPreference.objects.filter(recruiter=recruiter).first())
+
+                job_posting = Posting.objects.filter(
+                    recruiter=recruiter).first()
+                job_posting_serializer = PostingSerializer(
+                    job_posting) if job_posting else None
+
+                award = Award.objects.filter(user=recruiter.user).first()
+                award_serializer = AwardSerializer(award) if award else None
+
+                recruiter_data = {
+                    'user_details': user_serializer.data,
+                    'recruiter_details': recruiter_serializer.data,
+                    'hiring_preference': hiring_preference_serializer.data,
+                    'job_postings': job_posting_serializer.data if job_posting_serializer else None,
+                    'awards': award_serializer.data if award_serializer else None
+                }
+                data.append(recruiter_data)
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
