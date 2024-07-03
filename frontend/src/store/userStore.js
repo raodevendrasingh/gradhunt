@@ -7,22 +7,17 @@ const UserStore = (set) => ({
         localStorage.setItem('userType', userType);
         set({ userType });
     },
-    userName: null,
+    userName: localStorage.getItem('userName') || null,
     setUserName: (userName) => {
         localStorage.setItem('userName', userName);
         set({ userName })
     },
-    userID: null,
-    setUserID: (userID) => {
-        localStorage.setItem('userID', userID);
-        set({ userID });
-    }
 });
 
 export const useStore = create(
     devtools(
         persist(UserStore, {
-            name: "userStorage",
+            name: "gradhunt_user",
         })
     )
 );

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { TbEdit } from "react-icons/tb";
 import { FaTrashCan } from "react-icons/fa6";
+import { useStore } from "../../store/userStore";
 
 export const UserSettings = () => {
+    const { userName } = useStore();
+
 	const [toggleEmail, setToggleEmail] = useState(false);
 	const [toggleAppNotify, setToggleAppNotify] = useState(false);
 	const [checkEmail, setCheckEmail] = useState(false);
@@ -26,7 +29,7 @@ export const UserSettings = () => {
 									<input
 										type="text"
 										className="rounded-lg h-10 max-w-sm focus:ring-transparent disabled:text-gray-400 disabled:cursor-not-allowed"
-										value={"johndower"}
+										value={userName}
 										disabled
 									/>
 									{/* <span className="p-2 border rounded-lg">

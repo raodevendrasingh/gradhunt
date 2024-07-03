@@ -45,9 +45,9 @@ class SaveRecruiterFormData(APIView):
             {
                 'status': 'success',
                 'message': 'Recruiter Details Saved Successfully',
-                # 'id': user_instance.id,
-                # 'username': user_instance.username,
-                # 'usertype': user_instance.usertype
+                'id': user_instance.id,
+                'username': user_instance.username,
+                'usertype': user_instance.usertype
             },
             status=status.HTTP_200_OK
         )

@@ -10,7 +10,7 @@ class UserDetails(models.Model):
     lastname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
-    timezone = models.CharField(max_length=100)
+    timezone = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import avatar from "../assets/noavatar.png";
+import avatar from "../assets/noUserBlank.png";
 import gradhunt from "../assets/gradhunt.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import {
 	UserIcon,
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
+import { BsBuildingsFill } from "react-icons/bs";
+import { FaBriefcase } from "react-icons/fa";
+import { FaGraduationCap } from "react-icons/fa6";
 
 export const Navbar = () => {
-	const { login, logout, user, isAuthenticated, isLoading } = useKindeAuth();
-
-	// console.log("user:", user);
+	const { login, logout, user, isAuthenticated } = useKindeAuth();
 
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +19,13 @@ export const Navbar = () => {
 	return (
 		<>
 			<header className=" fixed top-0 z-20 w-full border-b-1 border-b border-slate-200 bg-white/90 shadow-md shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
-				<div className="relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]">
+				<div className="relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl">
 					<nav
 						aria-label="main navigation"
-						className="flex h-20 items-stretch justify-between font-medium text-slate-800"
+						className="flex h-16 items-stretch justify-between font-medium text-slate-800"
 						role="navigation"
 					>
-						{/*      <!-- Brand logo --> */}
+						{/* Brand logo */}
 						<a
 							id="ws"
 							aria-label="logo"
@@ -32,15 +33,16 @@ export const Navbar = () => {
 							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none"
 							href="/"
 						>
-							<img src={gradhunt} alt="logo"  className="aspect-auto w-40" />
-							
+							<img src={gradhunt} alt="logo" className="aspect-auto w-40" />
 						</a>
-						{/*      <!-- Mobile trigger --> */}
+						{/* Mobile trigger */}
 						<button
 							className={`relative order-10 block h-10 w-10 self-center lg:hidden
-                                    ${isToggleOpen
-                                        ? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
-                                        : "" }
+                                    ${
+																			isToggleOpen
+																				? "visible opacity-100 [&_span:nth-child(1)]:w-6 [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45 [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 "
+																				: ""
+																		}
                             `}
 							onClick={() => setIsToggleOpen(!isToggleOpen)}
 							aria-expanded={isToggleOpen ? "true" : "false"}
@@ -61,45 +63,52 @@ export const Navbar = () => {
 								></span>
 							</div>
 						</button>
-						{/*      <!-- Navigation links --> */}
+						{/* Navigation links */}
 						<ul
 							role="menubar"
 							aria-label="Select page"
 							className={`flex flex-col lg:flex-row justify-center items-center  absolute top-0 left-0 z-[-1] h-[28.5rem] w-full overflow-hidden overflow-y-auto overscroll-contain bg-white/90 px-8 pb-12 pt-24 font-medium transition-[opacity,visibility] duration-300 lg:visible lg:relative lg:top-0  lg:z-0 lg:h-full lg:w-auto lg:overflow-visible lg:bg-white/0 lg:px-0 lg:py-0  lg:pt-0 lg:opacity-100 ${
-                                isToggleOpen
-                                    ? "visible opacity-100 backdrop-blur-sm"
-                                    : "invisible opacity-0"
-                            }`}
+								isToggleOpen
+									? "visible opacity-100 backdrop-blur-sm"
+									: "invisible opacity-0"
+							}`}
 						>
 							<li role="none" className="flex items-center ">
 								<a
 									role="menuitem"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
 									href="#"
 								>
-									<span>Blog</span>
+									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
+										<FaGraduationCap /> Talent
+									</span>
 								</a>
 							</li>
 							<li role="none" className="flex items-center">
 								<a
 									role="menuitem"
-									aria-current="page"
+									// aria-current="page"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 text-emerald-500 transition-colors duration-300 hover:text-emerald-600 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
 									href="#"
 								>
-									<span>Jobs</span>
+									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
+										<FaBriefcase />
+										Jobs
+									</span>
 								</a>
 							</li>
 							<li role="none" className="flex items-center">
 								<a
 									role="menuitem"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
 									href="#"
 								>
-									<span>Companies</span>
+									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
+										<BsBuildingsFill /> Companies
+									</span>
 								</a>
 							</li>
 						</ul>
@@ -116,7 +125,7 @@ export const Navbar = () => {
 										}}
 									>
 										<img
-											src={user?.picture || avatar}
+											src={avatar}
 											alt="user name"
 											title="user name"
 											width="40"
@@ -125,7 +134,7 @@ export const Navbar = () => {
 										/>
 									</a>
 									{isOpen && (
-										<div className="absolute  right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
+										<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
 											<div className="rounded-md bg-gray-100 shadow-xs">
 												<div className="p-1">
 													<a

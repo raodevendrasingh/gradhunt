@@ -8,9 +8,6 @@ import axios from "axios";
 import { toast } from "sonner";
 
 // ui library components
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
-import TimezoneSelect from "react-timezone-select";
 import countryList from "react-select-country-list";
 import Select from "react-select";
 
@@ -32,24 +29,13 @@ import {
 import { selectFieldStyle } from "../helper/styles";
 
 // placeholder image
-import blankUser from "../assets/blank-user.png";
-
-const TimezoneSelectWrapper = React.forwardRef(function TimezoneSelectWrapper(
-	props,
-	ref
-) {
-	return <TimezoneSelect {...props} inputRef={ref} />;
-});
+import blankUser from "../assets/blankUser.png";
 
 export const RecruiterForm = () => {
 	const { user, isAuthenticated } = useKindeAuth();
 	const [image, setImage] = useState(null);
-	const [mobileNum, setMobileNum] = useState();
 	const [dateTypeDOJ, setDateTypeDOJ] = useState("text");
 	const [country, setCountry] = useState(countryList().getData());
-	const [timezoneSelect, setTimezoneSelect] = useState(
-		Intl.DateTimeFormat().resolvedOptions().timeZone
-	);
 
 	const navigate = useNavigate();
 
@@ -77,8 +63,7 @@ export const RecruiterForm = () => {
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
-			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			userType: "recruiter", // default value
+			userType: "recruiter",
 		},
 	});
 
@@ -96,9 +81,6 @@ export const RecruiterForm = () => {
 
 	// form submit logic
 	const onSubmit = async (data) => {
-		console.log(data);
-		console.log(errors);
-
         const transformedSkills = data.skills.map(skill => skill.value);
 
 		const userDetails = {
@@ -108,8 +90,6 @@ export const RecruiterForm = () => {
 			firstname: data.firstName,
 			lastname: data.lastName,
 			email: data.email,
-			mobileNumber: data.mobileNum,
-			timezone: data.timezone,
 		};
 
 		const recruiterDetails = {
@@ -146,10 +126,6 @@ export const RecruiterForm = () => {
 			.then((response) => {
 				console.log(response.data);
 
-				// set userid globally
-				const newUserID = response.data.id;
-				useStore.getState().setUserID(newUserID);
-
 				// set username globally
 				const newUserName = response.data.username;
 				useStore.getState().setUserName(newUserName);
@@ -157,7 +133,6 @@ export const RecruiterForm = () => {
 				navigate("/profile");
 				toast.success("Recruiter Profile Created!");
 
-				console.log("User ID:", newUserID);
 				console.log("Username:", newUserName);
 			})
 			.catch((error) => {
@@ -384,74 +359,7 @@ export const RecruiterForm = () => {
 									)}
 								</div>
 
-								<div className="w-full">
-									<label htmlFor="mobile" className="text-sm">
-										Mobile Number
-									</label>
-									<Controller
-										control={control}
-										name="mobile"
-										rules={{
-											required: "Mobile number is required",
-											pattern: {
-												value: /^\+\d{1,3}\s?\d{1,14}$/,
-												message: "Invalid mobile number",
-											},
-										}}
-										render={({ field }) => (
-											<PhoneInput
-												{...field}
-												id="mobile"
-												value={mobileNum}
-												// onChange={setMobileNum}
-												onChange={(num) => {
-													setMobileNum(num);
-													field.onChange(num); // call the onChange handler with the new value
-												}}
-												international
-												defaultCountry="IN"
-												withCountryCallingCode
-												countryCallingCodeEditable={false}
-												className="pl-2 border custom-phone-input w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-											/>
-										)}
-									/>
-									{errors.mobile && (
-										<p className="form-error" role="alert">
-											{errors.mobile.message}
-										</p>
-									)}
-								</div>
-
-								<div className="w-full">
-									<label htmlFor="timezone" className="text-sm">
-										Timezone
-									</label>
-									<Controller
-										control={control}
-										name="timezone"
-										rules={{
-											required: "Timezone is required",
-										}}
-										render={({ field }) => (
-											<TimezoneSelectWrapper
-												{...field}
-												value={timezoneSelect}
-												onChange={(tz) => {
-													setTimezoneSelect(tz);
-													field.onChange(tz.value);
-												}}
-												id="timezone"
-												styles={selectFieldStyle}
-											/>
-										)}
-									/>
-									{errors.timezone && (
-										<p className="form-error" role="alert">
-											{errors.timezone.message}
-										</p>
-									)}
-								</div>
+								
 							</div>
 						</div>
 

@@ -62,7 +62,7 @@ export const Sidebar = () => {
 				<aside
 					id="nav-menu-2"
 					aria-label="Side navigation"
-					className={` fixed top-[90px] bottom-2 left-2 z-40 flex w-60 flex-col border border-slate-200 rounded-lg bg-white transition-transform lg:translate-x-0 ${
+					className={` fixed top-[70px] shadow-md bottom-2 left-2 z-40 flex w-60 flex-col border border-slate-200 rounded-lg bg-white transition-transform lg:translate-x-0 ${
 						isSideNavOpen ? "translate-x-0" : " -translate-x-full"
 					}`}
 				>
@@ -75,7 +75,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="/profile"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<Squares2X2Icon className="h-5 w-5" />
 
@@ -87,7 +87,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="./postings"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 										// aria-current="page"
 									>
 										<TbTablePlus className="h-5 w-5" />
@@ -99,7 +99,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="./candidates"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaUsers className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -110,7 +110,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="./interviews"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaLaptopCode className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -121,7 +121,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="./reports"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaChartColumn className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -136,7 +136,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="./notifications"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaInbox className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -150,7 +150,7 @@ export const Sidebar = () => {
 					<footer className="border-t border-slate-200 p-3">
 						<Link
 							to="./settings"
-							className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
+							className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:text-green-600 "
 						>
 							<FaGear className="h-5 w-5" />
 							<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
@@ -165,7 +165,7 @@ export const Sidebar = () => {
 				<aside
 					id="nav-menu-2"
 					aria-label="Side navigation"
-					className={`fixed top-[90px] bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
+					className={`fixed shadow-md top-[70px] bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
 						isSideNavOpen ? "translate-x-0" : " -translate-x-full"
 					}`}
 				>
@@ -178,7 +178,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<Squares2X2Icon className="h-5 w-5" />
 
@@ -190,7 +190,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 										aria-current="page"
 									>
 										<FaGraduationCap className="h-5 w-5" />
@@ -202,7 +202,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaRankingStar className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -213,7 +213,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaAward className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -224,7 +224,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaBuilding className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -235,7 +235,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaTrophy className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -246,7 +246,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaNewspaper className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -261,7 +261,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaInbox className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -272,7 +272,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaBell className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -286,7 +286,7 @@ export const Sidebar = () => {
 					<footer className="border-t border-slate-200 p-3">
 						<Link
 							to="#"
-							className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
+							className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:text-green-600 "
 						>
 							<FaGear className="h-5 w-5" />
 							<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
@@ -301,7 +301,7 @@ export const Sidebar = () => {
 				<aside
 					id="nav-menu-2"
 					aria-label="Side navigation"
-					className={`fixed top-[90px] bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
+					className={`fixed shadow-md top-[70px] bottom-0 left-0 z-40 flex w-72 flex-col border-r border-r-slate-200 bg-white transition-transform lg:translate-x-0 ${
 						isSideNavOpen ? "translate-x-0" : " -translate-x-full"
 					}`}
 				>
@@ -314,7 +314,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="/profile"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<Squares2X2Icon className="h-5 w-5" />
 
@@ -326,7 +326,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 										aria-current="page"
 									>
 										<TbTablePlus className="h-5 w-5" />
@@ -338,7 +338,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaUsers className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -349,7 +349,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaChartColumn className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -364,7 +364,7 @@ export const Sidebar = () => {
 								<li className="px-3">
 									<Link
 										to="#"
-										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 aria-[current=page]:bg-emerald-50 aria-[current=page]:text-emerald-500 "
+										className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 aria-[current=page]:bg-green-50 aria-[current=page]:text-green-600 "
 									>
 										<FaBell className="h-5 w-5" />
 										<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm">
@@ -378,7 +378,7 @@ export const Sidebar = () => {
 					<footer className="border-t border-slate-200 p-3">
 						<Link
 							to="./settings"
-							className="flex items-center gap-3 rounded p-3 text-slate-900 transition-colors hover:text-emerald-500 "
+							className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:text-green-600 "
 						>
 							<FaUserGear className="h-5 w-5" />
 							<div className="flex w-full flex-1 flex-col items-start justify-center gap-0 overflow-hidden truncate text-sm font-medium">
