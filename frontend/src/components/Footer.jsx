@@ -1,5 +1,5 @@
 import React from "react";
-import gradhunt from "../assets/gradhunt.png";
+import gradhunt from "../assets/gh_full_shade2.png";
 import { FaGithub, FaInstagram, FaXTwitter, FaLinkedin } from "react-icons/fa6";
 
 export const Footer = () => {

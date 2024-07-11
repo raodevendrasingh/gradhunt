@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import avatar from "../assets/noUserBlank.png";
-import gradhunt from "../assets/gradhunt.png";
+import gradhunt from "../assets/gh_full_shade2.png";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import {
 	UserIcon,
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
-import { BsBuildingsFill } from "react-icons/bs";
-import { FaBriefcase } from "react-icons/fa";
-import { FaGraduationCap } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { Dropdown } from "./Dropdown";
 
-export const Navbar = () => {
+let employerOptions = [
+	{ title: "Recruiter Login", path: "#" },
+	{ title: "Pricing Suite", path: "#" },
+];
+
+export const Header = () => {
 	const { login, logout, user, isAuthenticated } = useKindeAuth();
 
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
@@ -26,15 +30,15 @@ export const Navbar = () => {
 						role="navigation"
 					>
 						{/* Brand logo */}
-						<a
+						<Link
 							id="ws"
 							aria-label="logo"
 							aria-current="page"
 							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none"
-							href="/"
+							to="/"
 						>
-							<img src={gradhunt} alt="logo" className="aspect-auto w-40" />
-						</a>
+							<img src={gradhunt} alt="logo" className="aspect-auto w-44 " />
+						</Link>
 						{/* Mobile trigger */}
 						<button
 							className={`relative order-10 block h-10 w-10 self-center lg:hidden
@@ -74,50 +78,43 @@ export const Navbar = () => {
 							}`}
 						>
 							<li role="none" className="flex items-center ">
-								<a
+								<Link
 									role="menuitem"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
-									href="#"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700  focus:outline-none focus-visible:outline-none lg:px-8"
+									to="#"
 								>
-									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
-										<FaGraduationCap /> Talent
-									</span>
-								</a>
+									Talent
+								</Link>
 							</li>
 							<li role="none" className="flex items-center">
-								<a
+								<Link
 									role="menuitem"
 									// aria-current="page"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
-									href="#"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700 focus:outline-none focus-visible:outline-none lg:px-8"
+									to="#"
 								>
-									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
-										<FaBriefcase />
-										Jobs
-									</span>
-								</a>
+									Jobs
+								</Link>
 							</li>
 							<li role="none" className="flex items-center">
-								<a
+								<Link
 									role="menuitem"
 									aria-haspopup="false"
-									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-600  focus:outline-none focus-visible:outline-none lg:px-8"
-									href="#"
+									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700 focus:outline-none focus-visible:outline-none lg:px-8"
+									to="#"
 								>
-									<span className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-gray-100 transition duration-100">
-										<BsBuildingsFill /> Companies
-									</span>
-								</a>
+									Companies
+								</Link>
 							</li>
 						</ul>
 
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
 							{isAuthenticated ? (
 								<>
-									<a
-										href="#"
+									<Link
+										to="#"
 										className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
 										onClick={(e) => {
 											e.preventDefault();
@@ -132,13 +129,13 @@ export const Navbar = () => {
 											height="40"
 											className="max-w-full rounded-full"
 										/>
-									</a>
+									</Link>
 									{isOpen && (
 										<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
 											<div className="rounded-md bg-gray-100 shadow-xs">
 												<div className="p-1">
-													<a
-														href="/profile"
+													<Link
+														to="/profile"
 														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
 													>
 														<UserIcon
@@ -146,9 +143,9 @@ export const Navbar = () => {
 															aria-hidden="true"
 														/>
 														Profile
-													</a>
-													<a
-														href="#"
+													</Link>
+													<Link
+														to="#"
 														onClick={() =>
 															logout({ returnTo: window.location.origin })
 														}
@@ -159,20 +156,29 @@ export const Navbar = () => {
 															aria-hidden="true"
 														/>
 														Logout
-													</a>
+													</Link>
 												</div>
 											</div>
 										</div>
 									)}
 								</>
 							) : (
-								<button
-									onClick={login}
-									type="button"
-									className="bg-green-600 rounded-md text-white px-3 py-2 m-5"
-								>
-									Log In
-								</button>
+								<div className="flex items-center justify-center gap-2">
+									<Link to="/login">
+										<button
+											type="button"
+											className="bg-green-700 rounded-md text-sm text-white px-3 py-2"
+										>
+											Log In
+										</button>
+									</Link>
+
+									<Dropdown
+										title={"For Recruiter"}
+										options={employerOptions}
+										width={48}
+									/>
+								</div>
 							)}
 						</div>
 					</nav>

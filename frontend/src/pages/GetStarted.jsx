@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar } from "../components/Navbar";
+import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export const GetStarted = () => {
 	return (
 		<>
-			<Navbar />
+			<Header />
 			<div className="bg-gray-100 flex flex-col items-center justify-center h-screen mx-auto p-10 relative">
 				<p className="text-3xl absolute top-40 left-40">
 					What describes you best?

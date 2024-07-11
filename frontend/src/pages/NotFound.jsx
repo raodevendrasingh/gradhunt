@@ -1,10 +1,10 @@
-import { Navbar } from "../components/Navbar";
+import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
-export default function NotFound() {
+export const NotFound = () => {
 	return (
 		<>
-			<Navbar />
+			<Header />
 			<main className="grid min-h-screen place-items-center bg-gray-100 px-6 py-24 sm:py-32 lg:px-8">
 				<div className="text-center">
 					<p className="text-base font-semibold text-green-600">404</p>
