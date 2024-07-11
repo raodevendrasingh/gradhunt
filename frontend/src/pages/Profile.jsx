@@ -1,5 +1,5 @@
 import { useNavigate, useRoutes } from "react-router-dom";
-import { Navbar } from "../components/Navbar";
+import { Header } from "../components/Header";
 import { Sidebar } from "../components/Profile/Sidebar";
 import { UserSettings } from "../components/Profile/UserSettings";
 import { Dashboard } from "../components/Profile/Dashboard";
@@ -33,7 +33,7 @@ export const Profile = () => {
 
 	return (
 		<div className="bg-gray-100">
-			<Navbar />
+			<Header />
 			<Sidebar />
 			{routes}
 		</div>

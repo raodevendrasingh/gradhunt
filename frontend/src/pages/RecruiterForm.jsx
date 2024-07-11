@@ -12,7 +12,7 @@ import countryList from "react-select-country-list";
 import Select from "react-select";
 
 // local components
-import { Navbar } from "../components/Navbar";
+import { Header } from "../components/Header";
 import { MultiSelectDropdown } from "../components/MultiSelectDropdown";
 import { useStore } from "../store/userStore";
 
@@ -151,7 +151,7 @@ export const RecruiterForm = () => {
 	};
 	return (
 		<>
-			<Navbar />
+			<Header />
 			<section className="bg-white pt-20">
 				<main className=" py-10 max-w-screen-2xl text h-full mx-auto ">
 					<h1 className="text-2xl font-bold pb-5 pl-5">
