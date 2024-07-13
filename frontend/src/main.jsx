@@ -1,10 +1,17 @@
+// from react
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+// provider
 import { KindeProvider } from "@kinde-oss/kinde-auth-react";
 import { ThemeProvider } from "@material-tailwind/react";
-import App from "./App.jsx";
+
+
+import App from "@/App.jsx";
+import "@/index.css";
+
+// library
 import { Toaster } from "sonner";
-import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>

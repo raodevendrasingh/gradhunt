@@ -1,35 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LandingPage } from "./pages/Landing";
-import { Profile } from "./pages/Profile";
-import { GetStarted } from "./pages/GetStarted";
-import { Home } from "./pages/Home";
-import { NotFound } from "./pages/NotFound";
-import { CandidateForm } from "./pages/CandidateForm";
-import { RecruiterForm } from "./pages/RecruiterForm";
-import { LoginPage } from "./pages/LoginPage";
-import { SignUpPage } from "./pages/SignUpPage";
+import { BrowserRouter } from "react-router-dom";
+import { CandidateRoutes } from "@/pages/candidate/CandidateRoutes";
+import { RecruiterRoutes } from "@/pages/recruiter/RecruiterRoutes";
+import { AdminRoutes } from "@/pages/admin/AdminRoutes";
 
 const App = () => {
+	const host = window.location.hostname;
+
+	let subdomain;
+	const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
+
+	if (arr.length > 0) subdomain = arr[0];
+
+	const getRoutes = () => {
+		switch (subdomain) {
+			case "recruiter":
+				return <RecruiterRoutes />;
+			case "admin":
+				return <AdminRoutes />;
+			default:
+				return <CandidateRoutes />;
+		}
+	};
 	return (
-		<Router>
-			<Routes>
-				<Route path="/" element={<LandingPage />} />
-				<Route path="/home" element={<Home />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/signup" element={<SignUpPage />} />
-				<Route path="/get-started" element={<GetStarted />} />
-				<Route
-					path="/get-started/candidate-profile"
-					element={<CandidateForm />}
-				/>
-				<Route
-					path="/get-started/recruiter-profile"
-					element={<RecruiterForm />}
-				/>
-				<Route path="/profile/*" element={<Profile />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</Router>
+		<>
+			<BrowserRouter>{getRoutes()} </BrowserRouter>
+		</>
 	);
 };
 
