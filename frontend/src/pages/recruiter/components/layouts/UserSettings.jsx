@@ -1,7 +1,12 @@
+// hooks
 import { useState } from "react";
+
+// icons
 import { TbEdit } from "react-icons/tb";
 import { FaTrashCan } from "react-icons/fa6";
-import { useStore } from "../../store/userStore";
+
+// state
+import { useStore } from "@/store/userStore";
 
 export const UserSettings = () => {
     const { userName } = useStore();

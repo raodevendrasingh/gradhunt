@@ -2,9 +2,9 @@ export const CandidatesPool = () => {
 	return (
 		<div className="w-full pt-24 mx-auto h-screen border">
 			<div className="max-w-7xl mx-auto lg:ml-64 h-[80vh] border">
-				<div className="max-w-5xl mx-auto h-[80vh] flex flex-wrap justify-center gap-3 px-3 border">
+				<div className="max-w-5xl mx-auto h-[80vh] flex flex-wrap justify-start gap-3 px-3 border">
 					{/* user card */}
-					<div className="w-56  h-64 border rounded-lg flex flex-col items-center p-4">
+					<div className="w-56 h-64 border rounded-lg flex flex-col items-center p-4">
 						<img
 							src="https://via.placeholder.com/100"
 							alt="User"
