@@ -23,7 +23,7 @@ const App = () => {
 	};
 	return (
 		<>
-			<BrowserRouter>{getRoutes()} </BrowserRouter>
+			<BrowserRouter>{getRoutes()}</BrowserRouter>
 		</>
 	);
 };

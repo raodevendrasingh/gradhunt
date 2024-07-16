@@ -1,19 +1,20 @@
 // src/routes/recruiterRoutes.js
 import { Routes, Route } from "react-router-dom";
-import { RecruiterLayout } from "@/pages/recruiter/RecruiterLayout";
-import { RecruiterDashboard } from "@/pages/recruiter/Dashboard";
-import { JobsPosted } from "@/pages/recruiter/JobsPosted";
-import { NotFound } from "../common/NotFound";
+import { RecruiterLayout } from "./RecruiterLayout";
+import { RecruiterDashboard } from "./RecruiterDashboard";
+import { JobPostings } from "./JobPostings";
+import { NotFound } from "@/pages/common/NotFound";
 import { RecruiterView } from "./RecruiterView";
+import { ProfileRoutes } from "./ProfileRoutes";
 
 export const RecruiterRoutes = () => (
 	<Routes>
 		<Route element={<RecruiterLayout />}>
 			<Route path="/" element={<RecruiterView />} />
+			<Route path="/dev1618/*" element={<ProfileRoutes/>} /> {/* replace with username field, fetch on login */}
 			<Route path="/dashboard" element={<RecruiterDashboard />} />
-			<Route path="/jobs-posted" element={<JobsPosted />} />
+			<Route path="/jobs-posted" element={<JobPostings />} />
 			<Route path="*" element={<NotFound/> } />
-			{/* Add more recruiter routes as needed */}
 		</Route>
 	</Routes>
 );

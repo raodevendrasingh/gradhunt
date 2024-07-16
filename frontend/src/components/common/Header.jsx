@@ -10,7 +10,9 @@ import {
 	UserIcon,
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
+
 import { Link } from "react-router-dom";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 const recruiterUrl =
 	import.meta.env.NODE_ENV === "production"
@@ -170,20 +172,22 @@ export const Header = () => {
 									<Link to="/login">
 										<button
 											type="button"
-											className="bg-green-700 rounded-md text-sm text-white px-3 py-2"
+											className="bg-green-700 rounded-full text-sm text-white px-3 py-2"
 										>
 											Log In
 										</button>
 									</Link>
 
 									<Link to={recruiterUrl}>
-										<button
-											type="button"
-											className="bg-white rounded-md text-sm text-gray-700 px-3 py-2 hover:bg-green-50 hover:ring-1 hover:duration-200 hover:transition-all hover:ring-green-400 "
-										>
-											For Recruiter
-										</button>
+                                    <button className="px-3 py-1.5 flex text-sm items-center gap-2 rounded-full bg-green-100 text-green-700 border-2 border-b-4 active:border-2 border-green-700">
+										Post Jobs
+                                        <span>
+                                            <FaArrowUpRightFromSquare/>
+                                        </span>
+									</button>
 									</Link>
+
+                                    
 
 									{/* <Dropdown
 										title={"For Recruiter"}

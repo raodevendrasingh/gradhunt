@@ -4,9 +4,7 @@ import { useStore } from "@/store/userStore.js";
 
 // icons
 import { MdOutlineEdit, MdMail } from "react-icons/md";
-import { HiOutlineBolt, HiOutlineUsers } from "react-icons/hi2";
 import { FaPhone, FaLocationDot } from "react-icons/fa6";
-import { GoThumbsup, GoBriefcase } from "react-icons/go";
 import { FiPlus } from "react-icons/fi";
 import { FaBriefcase } from "react-icons/fa6";
 import { BsBuildingsFill } from "react-icons/bs";
@@ -17,13 +15,13 @@ import noUser from "@/assets/avatar/noUser.png";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-export const Dashboard = () => {
+export const RecruiterProfileView = () => {
 	const { userName } = useStore();
 	const [user, setUser] = useState("");
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8000/api/recruiter/${userName}`)
+			.get(`http://localhost:8000/api/recruiter/dev1618`)
 			.then((response) => {
 				setUser(response.data);
 			})
@@ -78,7 +76,7 @@ export const Dashboard = () => {
 												</div>
 											</div>
 											{/* badge */}
-											<span className="flex w-20 justify-center items-center gap-1 text-xs text-white p-0.5 rounded-full border border-green-500 bg-green-500">
+											<span className="flex w-24 justify-center items-center gap-1 text-xs text-white px-1 py-0.5 rounded-full border border-green-500 bg-green-500">
 												<FaBriefcase className="text-gray-50" />
 												<p>Recruiter</p>
 											</span>
@@ -134,78 +132,6 @@ export const Dashboard = () => {
 									</div>
 									<div className="flex gap-2">
 										<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-
-					{/* stats section */}
-					<section className="flex pt-2 flex-col w-full shadow-lg rounded-xl bg-white p-5 my-2">
-						<div>
-							<h3 className="text-xl font-bold tracking-tight py-2">
-								Analytics
-							</h3>
-						</div>
-						<div>
-							<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-								<div className="overflow-hidden bg-gray-100 border border-gray-50 rounded-lg">
-									<div className="px-4 py-6">
-										<div className="flex items-start">
-											<GoBriefcase className="text-green-700 size-10" />
-											<div className="ml-4">
-												<h4 className="text-3xl font-bold text-gray-900">10</h4>
-												<p className="mt-1.5 text-base font-medium leading-tight text-gray-500">
-													Jobs Posted
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div className="overflow-hidden bg-gray-100 border border-gray-50 rounded-lg">
-									<div className="px-4 py-6">
-										<div className="flex items-start">
-											<HiOutlineBolt className="text-green-700 size-10" />
-											<div className="ml-4">
-												<h4 className="text-3xl font-bold text-gray-900">6</h4>
-												<p className="mt-1.5 text-base font-medium leading-tight text-gray-500">
-													Active Jobs
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div className="overflow-hidden bg-gray-100 border border-gray-50 rounded-lg">
-									<div className="px-4 py-6">
-										<div className="flex items-start">
-											<HiOutlineUsers className="text-green-700 size-10" />
-											<div className="ml-3">
-												<h4 className="text-3xl font-bold text-gray-900">
-													1500
-												</h4>
-												<p className="mt-1.5 text-base font-medium leading-tight text-gray-500">
-													Application Received
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div className="overflow-hidden bg-gray-100 border border-gray-50 rounded-lg">
-									<div className="px-4 py-6">
-										<div className="flex items-start">
-											<GoThumbsup className="text-green-700 size-10" />
-											<div className="ml-4">
-												<h4 className="text-3xl font-bold text-gray-900">
-													150
-												</h4>
-												<p className="mt-1.5 text-base font-medium leading-tight text-gray-500">
-													Response Rate
-												</p>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -316,41 +242,6 @@ export const Dashboard = () => {
 									</div>
 									<h2 className="text-sm">{user.recruiter_details.jobTitle}</h2>
 								</div>
-							</div>
-						</div>
-					</section>
-
-					<section className="flex pt-2 flex-col w-full shadow-lg rounded-xl bg-white h-auto p-5 my-2">
-						<div className="flex justify-between items-center">
-							<h3 className="text-xl font-bold tracking-tight py-2">
-								Job Postings
-							</h3>
-							<div className="flex gap-2">
-								<FiPlus className="size-9 hover:bg-gray-100 rounded-full p-2" />
-								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
-							</div>
-						</div>
-
-						<div className="flex flex-col md:flex-row gap-1">
-							<div className="w-full md:w-1/4 border border-gray-50 bg-gray-100 h-28 p-2 rounded-lg">
-								<h1 className="text-xl">Position</h1>
-								<h2>experience required</h2>
-								<p>job description</p>
-							</div>
-							<div className="w-full md:w-1/4 border border-gray-50 bg-gray-100 h-28 p-2 rounded-lg">
-								<h1 className="text-xl">Position</h1>
-								<h2>experience required</h2>
-								<p>job description</p>
-							</div>
-							<div className="w-full md:w-1/4 border border-gray-50 bg-gray-100 h-28 p-2 rounded-lg">
-								<h1 className="text-xl">Position</h1>
-								<h2>experience required</h2>
-								<p>job description</p>
-							</div>
-							<div className="w-full md:w-1/4 border border-gray-50 bg-gray-100 h-28 p-2 rounded-lg">
-								<h1 className="text-xl">Position</h1>
-								<h2>experience required</h2>
-								<p>job description</p>
 							</div>
 						</div>
 					</section>

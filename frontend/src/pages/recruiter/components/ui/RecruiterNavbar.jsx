@@ -6,14 +6,23 @@ import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import avatar from "@/assets/avatar/noUserBlank.png";
 import gradhunt from "@/assets/brand/brandLogoFull.png";
 
+// icons
 import {
-	UserIcon,
-	ArrowLeftStartOnRectangleIcon,
-} from "@heroicons/react/24/solid";
+	FaUser,
+	FaArrowRightFromBracket,
+	FaArrowUpRightFromSquare,
+	FaChevronDown,
+} from "react-icons/fa6";
+
 import { Link } from "react-router-dom";
 
+const homepage =
+	import.meta.env.NODE_ENV === "production"
+		? "https://gradhunt.com"
+		: "http://localhost:5173";
+
 export const RecruiterNavbar = () => {
-	const { logout, isAuthenticated } = useKindeAuth();
+	const { user, logout, isAuthenticated } = useKindeAuth();
 
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
@@ -111,11 +120,11 @@ export const RecruiterNavbar = () => {
 						{/* </div> */}
 
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
-							{isAuthenticated && (
+							{isAuthenticated ? (
 								<>
 									<Link
 										to="#"
-										className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
+										className="relative inline-flex items-center justify-center gap-2 rounded-full border shadow-sm px-3 py-1.5 bg-gray-100"
 										onClick={(e) => {
 											e.preventDefault();
 											setIsOpen(!isOpen);
@@ -125,20 +134,23 @@ export const RecruiterNavbar = () => {
 											src={avatar}
 											alt="user name"
 											title="user name"
-											width="40"
-											height="40"
-											className="max-w-full rounded-full"
+											width="20"
+											height="20"
+											className="rounded-full"
 										/>
+										<FaChevronDown className="size-3" />
 									</Link>
 									{isOpen && (
 										<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
 											<div className="rounded-md bg-gray-100 shadow-xs">
 												<div className="p-1">
+													<span className="text-sm px-4 py-2">dev1618</span>{" "}
+													{/* replace with username field, fetched during login */}
 													<Link
 														to="/profile"
 														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
 													>
-														<UserIcon
+														<FaUser
 															className="h-5 w-5 text-gray-800"
 															aria-hidden="true"
 														/>
@@ -146,12 +158,10 @@ export const RecruiterNavbar = () => {
 													</Link>
 													<Link
 														to="#"
-														onClick={() =>
-															logout({ returnTo: window.location.origin })
-														}
+														onClick={() => logout()}
 														className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
 													>
-														<ArrowLeftStartOnRectangleIcon
+														<FaArrowRightFromBracket
 															className="h-5 w-5 text-red-700"
 															aria-hidden="true"
 														/>
@@ -162,6 +172,15 @@ export const RecruiterNavbar = () => {
 										</div>
 									)}
 								</>
+							) : (
+								<Link to={homepage}>
+									<button className="px-3 py-1.5 flex text-base items-center gap-2 rounded-md bg-sky-100 text-sky-700 border-2 border-b-4 active:border-2 border-sky-700">
+										Find Jobs
+										<span>
+											<FaArrowUpRightFromSquare />
+										</span>
+									</button>
+								</Link>
 							)}
 						</div>
 					</nav>

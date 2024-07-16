@@ -25,7 +25,7 @@ export const Tabs = () => {
 		e.preventDefault();
 		let userData = null;
 		try {
-			userData = await register({
+			userData = await login({
 				authUrlParams: {
 					connection_id: import.meta.env
 						.VITE_KINDE_EMAIL_PASSWORD_CONNECTION_ID,
@@ -34,7 +34,7 @@ export const Tabs = () => {
 			});
 		} catch (error) {
 			console.error(error);
-			toast.error("Error creating account!");
+			toast.error("Error Logging In!");
 		}
 	};
 
