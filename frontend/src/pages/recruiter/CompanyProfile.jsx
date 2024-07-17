@@ -74,7 +74,7 @@ export const CompanyProfile = () => {
 								{/* locations */}
 
 								<div className=" bg-gray-50 p-2 rounded-xl">
-									<span className="text-lg font-medium pl-2 border text-gray-800">
+									<span className="text-lg font-medium pl-2 text-gray-800">
 										Headquarters
 									</span>
 									<div className="flex items-center pl-3 pt-1">
