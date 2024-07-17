@@ -27,22 +27,27 @@ export const Experience = () => {
 								</div>
 								<div className="w-full">
 									<div className="flex items-baseline justify-between ">
-										<h1 className="text-xl font-semibold">
+										<div className="text-xl font-semibold">
 											<span className="text-lg text-blue-600 pl-3">
 												+ Add Company Name
 											</span>
-										</h1>
-										<h1 className="text-xs">
+										</div>
+										<div className="text-xs hidden xs:block">
 											<span className="text-sm text-blue-600 pl-3">
 												+ Add Duration
 											</span>
-										</h1>
+										</div>
 									</div>
-									<h2 className="text-sm">
-										<span className="text-xs text-blue-600 pl-3">
+									<div className="text-sm">
+										<span className="text-base text-blue-600 pl-3">
 											+ Add Job Title
 										</span>
-									</h2>
+									</div>
+									<div className="text-xs xs:hidden">
+										<span className="text-sm text-blue-600 pl-3">
+											+ Add Duration
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
