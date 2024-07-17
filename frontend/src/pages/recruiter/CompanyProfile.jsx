@@ -11,7 +11,7 @@ export const CompanyProfile = () => {
 		<div className="w-full pt-20 mx-auto">
 			<div className="max-w-7xl mx-auto lg:ml-64">
 				<div className="max-w-5xl mx-auto flex flex-col mb-3 gap-3 px-3">
-					<div className="bg-white px-2 p-2 border rounded-xl shadow">
+					<section className="bg-white px-2 p-2 border rounded-xl shadow">
 						<div className="flex justify-between items-center">
 							<span className="font-semibold text-lg pl-1 text-gray-800">
 								Company Profile
@@ -24,7 +24,7 @@ export const CompanyProfile = () => {
 								{/* cover pic box */}
 								<div className="bg-gray-400/80 h-32 p-2 rounded-t-xl"></div>
 								{/* logo box */}
-								<div className="relative -top-12 left-2 sm:left-4 bg-purple-300 size-24 sm:size-28 rounded-xl z-10">
+								<div className="relative -top-12 left-2 sm:left-4 size-24 sm:size-28 rounded-xl z-10">
 									<img src={CompanyLogo} alt="" />
 								</div>
 								<div className="relative -top-28  pb-2.5 sm:pb-6 bg-gray-100 p-2 flex flex-col sm:flex-row justify-start items-center gap-2 z-0 rounded-b-xl overflow-hidden">
@@ -114,7 +114,7 @@ export const CompanyProfile = () => {
 								</div>
 							</div>
 						</div>
-					</div>
+					</section>
 				</div>
 			</div>
 		</div>
