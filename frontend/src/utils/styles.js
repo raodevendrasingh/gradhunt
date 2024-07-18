@@ -25,3 +25,27 @@ export const selectFieldStyle = {
         fontSize: "0.8rem",
     }),
 };
+
+export const selectCompanyFieldStyle = {
+    control: (provided) => ({
+        ...provided,
+        width: "100%",
+        minHeight: "38px",
+        borderRadius: "0.5rem",
+        backgroundColor: "#FFFFFF",
+        fontSize: "0.875rem",
+        lineHeight: "1.25rem",
+        color: "#4B5563",
+        border: "2px solid #9ca3af",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        "&:focus": {
+            borderColor: "#3b82f6",
+            boxShadow: "none",
+            outline: "none",
+        },
+    }),
+    option: (provided) => ({
+        ...provided,
+        fontSize: "0.8rem",
+    }),
+};

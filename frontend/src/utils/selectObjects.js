@@ -1,3 +1,12 @@
+export const companySize = [
+    { label: '1 - 9 Employees', value: "1 - 9 Employees"},
+    { label: '10 - 49 Employees', value: "10 - 49 Employees"},
+    { label: '50 - 99 Employees', value: "50 - 99 Employees"},
+    { label: '100 - 249 Employees', value: "100 - 249 Employees"},
+    { label: 'More than 250 Employees', value: "More than 250 Employees"},
+];
+
+
 export const levels = [
 	{ label: "Junior Level", value: "Junior Level" },
 	{ label: "Mid Level", value: "Mid Level" },
@@ -25,6 +34,14 @@ export const experience = [
 ];
 
 export const sectors = [
+	{
+		label: "Computer Engineering",
+		value: "Computer Engineering",
+	},
+	{
+		label: "Product Engineering",
+		value: "Product Engineering",
+	},
 	{
 		label: "Information Technology",
 		value: "Information Technology",
