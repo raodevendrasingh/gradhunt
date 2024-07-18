@@ -147,7 +147,7 @@ export const RecruiterNavbar = () => {
 													<span className="text-sm px-4 py-2">dev1618</span>{" "}
 													{/* replace with username field, fetched during login */}
 													<Link
-														to="/profile"
+														to="/dev1618"
 														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
 													>
 														<FaUser

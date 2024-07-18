@@ -1,9 +1,11 @@
 from django.db import models
+from django.core.validators import MaxLengthValidator, URLValidator
 from django.contrib.postgres.fields import ArrayField
 
 
 class UserDetails(models.Model):
-    profilePicture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    profilePicture = models.ImageField(
+        upload_to='profile_pics/', null=True, blank=True)
     username = models.CharField(max_length=100)
     usertype = models.CharField(max_length=100)
     firstname = models.CharField(max_length=255)
@@ -57,7 +59,7 @@ class HiringPreference(models.Model):
         max_length=200), blank=True, default=list)
     skills = ArrayField(models.CharField(max_length=200),
                         blank=True, default=list)
-    
+
     def __str__(self):
         return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
 
@@ -101,3 +103,28 @@ class Award(models.Model):
     class Meta:
         verbose_name = "Awards"
         verbose_name_plural = "Awards"
+
+
+class CompanyProfile(models.Model):
+    recruiter = models.OneToOneField(
+        Recruiter, on_delete=models.CASCADE, primary_key=True)
+    companyLogo = models.ImageField(
+        upload_to='company_logo/', null=True, blank=True)
+    companyCover = models.ImageField(
+        upload_to='company_cover/', null=True, blank=True)
+    companyName = models.CharField(max_length=100)
+    website = models.CharField(max_length=100, validators=[URLValidator()])
+    employeeSize = models.IntegerField()
+    establishedYear = models.IntegerField()
+    industry = models.CharField(max_length=100)
+    headquarters = models.CharField(max_length=200)
+    branches = models.CharField(max_length=500, blank=True, null=True)
+    about = models.TextField()
+    values = models.TextField()
+
+    def __str__(self):
+        return f"{self.companyName}'s {self.recruiter.user.username}"
+
+    class Meta:
+        verbose_name = "Company Profile"
+        verbose_name_plural = "Company Profile"
