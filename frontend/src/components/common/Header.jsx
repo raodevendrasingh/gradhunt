@@ -2,17 +2,19 @@
 import { useState } from "react";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
+// external packages
+import { Link } from "react-router-dom";
+
 // assets
 import avatar from "@/assets/avatar/noUserBlank.png";
 import gradhunt from "@/assets/brand/brandLogoFull.png";
 
+// icons
 import {
 	UserIcon,
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
-
-import { Link } from "react-router-dom";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { GoArrowUpRight } from "react-icons/go";
 
 const recruiterUrl =
 	import.meta.env.NODE_ENV === "production"
@@ -60,7 +62,7 @@ export const Header = () => {
 							<div className="absolute top-1/2 left-1/2 w-6 -translate-x-1/2 -translate-y-1/2 transform">
 								<span
 									aria-hidden="true"
-									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-slate-900   transition-all duration-300"
+									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-slate-900 transition-all duration-300"
 								></span>
 								<span
 									aria-hidden="true"
@@ -95,7 +97,6 @@ export const Header = () => {
 							<li role="none" className="flex items-center">
 								<Link
 									role="menuitem"
-									// aria-current="page"
 									aria-haspopup="false"
 									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700 focus:outline-none focus-visible:outline-none lg:px-8"
 									to="#"
@@ -172,28 +173,20 @@ export const Header = () => {
 									<Link to="/login">
 										<button
 											type="button"
-											className="bg-green-700 rounded-full text-sm text-white px-3 py-2"
+											className="bg-green-700 rounded-[8px] text-sm text-white px-3 py-2 shadow"
 										>
 											Log In
 										</button>
 									</Link>
 
 									<Link to={recruiterUrl}>
-                                    <button className="px-3 py-1.5 flex text-sm items-center gap-2 rounded-full bg-green-100 text-green-700 border-2 border-b-4 active:border-2 border-green-700">
-										Post Jobs
-                                        <span>
-                                            <FaArrowUpRightFromSquare/>
-                                        </span>
-									</button>
+										<button className="px-3 py-2 flex text-sm items-center rounded-[8px] bg-green-100 hover:bg-green-200  hover:text-green-800 transition-all duration-300 text-green-700">
+											Post Jobs
+											<span>
+												<GoArrowUpRight className="size-5" />
+											</span>
+										</button>
 									</Link>
-
-                                    
-
-									{/* <Dropdown
-										title={"For Recruiter"}
-										options={employerOptions}
-										width={48}
-									/> */}
 								</div>
 							)}
 						</div>

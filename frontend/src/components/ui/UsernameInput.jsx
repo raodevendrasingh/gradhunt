@@ -6,10 +6,11 @@ export const UsernameInput = () => {
 	const [inputFocused, setIsFocused] = useState(false);
 	return (
 		<div className="mt-9">
-			<form className="relative flex flex-col gap-4 items-center">
+			<form className="relative flex flex-col gap-4 items-center ">
 				<div
 					tabIndex="0"
-                    className={`max-w-sm w-full pl-6 p-3 flex items-center h-14 justify-between transition duration-100 ease-in-out transform border ${inputFocused ? "border-green-800" : "border-gray-300"} rounded-full text-neutral-600 bg-gray-50 hover:ring-4 hover:ring-green-200`}				>
+					className={`max-w-sm w-full pl-6 p-3 flex items-center h-14 justify-between transition duration-100 ease-in-out shadow transform border ${inputFocused ? "border-green-800" : "border-gray-300"} rounded-full text-neutral-600 bg-gray-50 hover:ring-4 hover:ring-green-200`}
+				>
 					<div className="flex items-center gap-x-2">
 						{/* <div>
 							<img src={logoIcon} alt="logo" className="h-8 w-9" />

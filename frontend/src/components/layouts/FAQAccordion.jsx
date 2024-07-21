@@ -24,7 +24,7 @@ const FAQAccordion = ({ faqItems }) => {
 									openItemId === item.id
 										? `text-primary [box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:!text-primary-400 dark:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]`
 										: ""
-								} group relative flex w-full items-center border-0 px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800`}
+								} group relative flex w-full items-center border-0 px-5 py-4 text-left text-lg text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800`}
 								type="button"
 								onClick={() => toggleItem(item.id)}
 								aria-expanded={openItemId === item.id ? "true" : "false"}
@@ -41,7 +41,7 @@ const FAQAccordion = ({ faqItems }) => {
 							</button>
 						</h2>
 						{openItemId === item.id && (
-							<div className="px-5 py-4 rounded-t-lg border-t">{item.answer}</div>
+							<div className="px-5 py-4  border-t-2 border-slate-100">{item.answer}</div>
 						)}
 					</div>
 				))}
