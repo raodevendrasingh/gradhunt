@@ -1,9 +1,9 @@
 export const companySize = [
-    { label: '1 - 9 Employees', value: "1 - 9 Employees"},
-    { label: '10 - 49 Employees', value: "10 - 49 Employees"},
-    { label: '50 - 99 Employees', value: "50 - 99 Employees"},
-    { label: '100 - 249 Employees', value: "100 - 249 Employees"},
-    { label: 'More than 250 Employees', value: "More than 250 Employees"},
+    { label: '1 - 9 Employees', value: "1 - 9"},
+    { label: '10 - 49 Employees', value: "10 - 49"},
+    { label: '50 - 99 Employees', value: "50 - 99"},
+    { label: '100 - 249 Employees', value: "100 - 249"},
+    { label: 'More than 250 Employees', value: "More than 250"},
 ];
 
 
@@ -35,8 +35,8 @@ export const experience = [
 
 export const sectors = [
 	{
-		label: "Computer Engineering",
-		value: "Computer Engineering",
+		label: "Engineering",
+		value: "Engineering",
 	},
 	{
 		label: "Product Engineering",
