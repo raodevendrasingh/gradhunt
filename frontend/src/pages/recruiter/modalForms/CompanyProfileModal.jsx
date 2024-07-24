@@ -146,29 +146,26 @@ export const CompanyProfileModal = () => {
 			{showModal ? (
 				<>
 					<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
-						<div className="relative my-6 mx-10 sm:mx-auto  w-full min-w-[350px] sm:min-w-[500px] sm:max-w-lg md:max-w-2xl lg:max-w-3xl">
+						<div className="relative my-6 mx-10 sm:mx-auto  w-full min-w-[350px] sm:min-w-[500px] sm:max-w-lg md:max-w-2xl">
 							{/*content*/}
-							<div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[90vh] overflow-hidden">
+							<div className="border-0 p-3 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[90vh] overflow-hidden">
 								{/*header*/}
-								<div className="flex items-start justify-between p-3 border-b border-solid border-blueGray-200 rounded-t">
-									<h3 className="text-xl font-semibold">
+								<div className="flex items-start justify-between ml-1 rounded-t">
+									<h3 className="text-xl font-bold text-gray-800 mt-1">
 										Edit Company Profile
 									</h3>
 									<button
-										className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+										className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
 										onClick={() => setShowModal(false)}
 									>
-										<span className="bg-transparent text-gray-800 h-6 w-6 text-2xl block outline-none focus:outline-none">
-											<HiOutlineXMark />
+										<span className="bg-transparent text-gray-800">
+											<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
 										</span>
 									</button>
 								</div>
 
 								{/*body*/}
-								<div
-									className="p-6 overflow-y-auto"
-									style={{ maxHeight: "calc(90vh - 120px)" }}
-								>
+								<div className="p-6 overflow-y-auto h-[calc(90vh - 160px)] border rounded-xl">
 									<div className="flex flex-col gap-3">
 										<form
 											id="companyProfileForm"
@@ -243,7 +240,7 @@ export const CompanyProfileModal = () => {
 												</div>
 											</div>
 											{/* company stats section */}
-											<div className="flex flex-col md:flex-row w-full md:gap-2 lg:gap-2 border-b pb-6 mb-1">
+											<div className="flex flex-col md:flex-row w-full md:gap-2 lg:gap-2 border-b pb-4 mb-1">
 												<div className="flex justify-center items-center gap-2 w-full md:w-2/3">
 													<div className="w-1/2 flex flex-col h-20 relative">
 														<label
@@ -346,7 +343,7 @@ export const CompanyProfileModal = () => {
 												</div>
 											</div>
 											{/* company locations */}
-											<div className="flex flex-col w-full gap-2 border-b pb-6 mb-1">
+											<div className="flex flex-col w-full gap-2 border-b pb-5 mb-1">
 												<div className="w-full flex flex-col h-20 relative">
 													<label
 														htmlFor="headquarter"
@@ -390,7 +387,7 @@ export const CompanyProfileModal = () => {
 														</span>
 													)}
 												</div>
-												<div className="w-full flex flex-col h-20 relative">
+												<div className="w-full flex flex-col">
 													<label htmlFor="branch" className="text-sm pb-1 pt-2">
 														Other Branches
 													</label>
@@ -502,20 +499,13 @@ export const CompanyProfileModal = () => {
 									</div>
 								</div>
 								{/*footer*/}
-								<div className="flex items-center justify-end p-4 border-t border-solid border-blueGray-200 rounded-b">
+								<div className="flex items-center justify-end mt-3 rounded-b">
 									<button
-										className="text-red-500 font-semibold border rounded-xl px-6 py-3 text-sm outline-none focus:outline-none mr-1 mb-1 hover:bg-rose-500 hover:text-white ease-linear transition-all duration-150"
-										type="button"
-										onClick={() => setShowModal(false)}
-									>
-										Close
-									</button>
-									<button
-										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-xl text-sm px-6 py-3 shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="submit"
 										form="companyProfileForm"
 									>
-										Save Changes
+										Save
 									</button>
 								</div>
 							</div>

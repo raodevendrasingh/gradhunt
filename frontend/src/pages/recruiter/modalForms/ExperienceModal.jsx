@@ -111,25 +111,25 @@ export const ExperienceModal = () => {
 					<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none scrollbar scrollbar-track-transparent">
 						<div className="relative my-6 mx-10 sm:mx-auto  w-full min-w-[350px] sm:min-w-[500px] sm:max-w-lg md:max-w-2xl">
 							{/*content*/}
-							<div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[90vh] overflow-hidden">
+							<div className="border-0 p-3 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none max-h-[90vh] overflow-hidden">
 								{/*header*/}
-								<div className="flex items-start justify-between p-3 border-b border-solid border-blueGray-200 rounded-t">
-									<h3 className="text-xl font-semibold">Add Experience</h3>
+								<div className="flex items-start justify-between ml-1 rounded-t">
+									<h3 className="text-xl font-bold text-gray-800 mt-1">Add Experience</h3>
 									<button
-										className="p-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+										className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
 										onClick={() => setShowModal(false)}
 									>
-										<span className="bg-transparent text-gray-800 h-6 w-6 text-2xl block outline-none focus:outline-none">
-											<HiOutlineXMark />
+										<span className="bg-transparent text-gray-800">
+											<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2"/>
 										</span>
 									</button>
 								</div>
 
 								{/*body*/}
-								<div className="p-6 overflow-y-auto h-[calc(90vh - 160px)]">
+								<div className="p-6 overflow-y-auto h-[calc(90vh - 160px)] border rounded-xl">
 									<div className="flex flex-col gap-3">
 										<form
-											id="companyProfileForm"
+											id="experienceDataForm"
 											onSubmit={handleSubmit(onSubmit)}
 										>
 											{/* section */}
@@ -232,7 +232,7 @@ export const ExperienceModal = () => {
 												</div>
 											</div>
 
-											<div className="flex flex-col w-full gap-2 border-b pb-6 mb-1 mt-4">
+											<div className="flex flex-col w-full gap-2 border-b pb-3 mb-1 mt-4">
 												<div className="w-full flex items-center gap-2 relative">
 													<input
 														type="checkbox"
@@ -372,7 +372,7 @@ export const ExperienceModal = () => {
 													<Controller
 														name="jobLocation"
 														control={control}
-														// rules={{ required: "Job Location is required" }}
+														rules={{ required: "Job Location is required" }}
 														render={({ field }) => (
 															<Select
 																{...field}
@@ -473,19 +473,11 @@ export const ExperienceModal = () => {
 									</div>
 								</div>
 								{/*footer*/}
-
-								<div className="flex items-center justify-end gap-2 p-3 border-t border-solid border-blueGray-200 rounded-b">
+                                <div className="flex items-center justify-end mt-3 rounded-b">
 									<button
-										className="text-red-500 font-semibold border rounded-[10px] px-3 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 hover:bg-rose-500 hover:text-white ease-linear transition-all duration-150"
-										type="button"
-										onClick={() => setShowModal(false)}
-									>
-										Close
-									</button>
-									<button
-										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="submit"
-										form="companyProfileForm"
+										form="experienceDataForm"
 									>
 										Save
 									</button>
