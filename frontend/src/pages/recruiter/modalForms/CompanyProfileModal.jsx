@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 // Icons
 import { MdOutlineEdit } from "react-icons/md";
-import { FaXmark } from "react-icons/fa6";
+import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
 import { sectors, companySize } from "@/utils/selectObjects";
@@ -159,10 +159,11 @@ export const CompanyProfileModal = () => {
 										onClick={() => setShowModal(false)}
 									>
 										<span className="bg-transparent text-gray-800 h-6 w-6 text-2xl block outline-none focus:outline-none">
-											<FaXmark />
+											<HiOutlineXMark />
 										</span>
 									</button>
 								</div>
+
 								{/*body*/}
 								<div
 									className="p-6 overflow-y-auto"
@@ -418,7 +419,7 @@ export const CompanyProfileModal = () => {
 																		? "Type at least 2 characters to search"
 																		: error
 																			? error
-																			: "No options found"
+																			: "No cities found"
 																}
 															/>
 														)}

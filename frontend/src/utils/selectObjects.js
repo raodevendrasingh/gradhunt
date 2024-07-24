@@ -1,11 +1,188 @@
 export const companySize = [
-    { label: '1 - 9 Employees', value: "1 - 9"},
-    { label: '10 - 49 Employees', value: "10 - 49"},
-    { label: '50 - 99 Employees', value: "50 - 99"},
-    { label: '100 - 249 Employees', value: "100 - 249"},
-    { label: 'More than 250 Employees', value: "More than 250"},
+	{ label: "1 - 9 Employees", value: "1 - 9" },
+	{ label: "10 - 49 Employees", value: "10 - 49" },
+	{ label: "50 - 99 Employees", value: "50 - 99" },
+	{ label: "100 - 249 Employees", value: "100 - 249" },
+	{ label: "More than 250 Employees", value: "More than 250" },
 ];
 
+export const jobTitleOptions = [
+	{ label: "Software Developer", value: "Software Developer" },
+	{ label: "Data Scientist", value: "Data Scientist" },
+	{ label: "Nurse", value: "Nurse" },
+	{ label: "Teacher", value: "Teacher" },
+	{ label: "Sales Representative", value: "Sales Representative" },
+	{
+		label: "Customer Service Representative",
+		value: "Customer Service Representative",
+	},
+	{ label: "Marketing Manager", value: "Marketing Manager" },
+	{ label: "Accountant", value: "Accountant" },
+	{ label: "IT Project Manager", value: "IT Project Manager" },
+	{ label: "Graphic Designer", value: "Graphic Designer" },
+	{ label: "Web Developer", value: "Web Developer" },
+	{ label: "Human Resources Manager", value: "Human Resources Manager" },
+	{ label: "Operations Manager", value: "Operations Manager" },
+	{
+		label: "Business Development Manager",
+		value: "Business Development Manager",
+	},
+	{ label: "Mechanical Engineer", value: "Mechanical Engineer" },
+	{ label: "Electrical Engineer", value: "Electrical Engineer" },
+	{ label: "Civil Engineer", value: "Civil Engineer" },
+	{ label: "Consultant", value: "Consultant" },
+	{ label: "Manager", value: "Manager" },
+	{ label: "Administrative Assistant", value: "Administrative Assistant" },
+	{ label: "Logistics Coordinator", value: "Logistics Coordinator" },
+	{ label: "Recruiter", value: "Recruiter" },
+	{
+		label: "Digital Marketing Specialist",
+		value: "Digital Marketing Specialist",
+	},
+	{ label: "Financial Analyst", value: "Financial Analyst" },
+	{ label: "Network Engineer", value: "Network Engineer" },
+	{ label: "Database Administrator", value: "Database Administrator" },
+	{ label: "Cybersecurity Specialist", value: "Cybersecurity Specialist" },
+	{ label: "Product Manager", value: "Product Manager" },
+	{ label: "UX Designer", value: "UX Designer" },
+	{ label: "DevOps Engineer", value: "DevOps Engineer" },
+	{ label: "Full Stack Developer", value: "Full Stack Developer" },
+	{ label: "Backend Developer", value: "Backend Developer" },
+	{ label: "Frontend Developer", value: "Frontend Developer" },
+	{ label: "Pharmacist", value: "Pharmacist" },
+	{ label: "Doctor", value: "Doctor" },
+	{ label: "Lawyer", value: "Lawyer" },
+	{ label: "Dentist", value: "Dentist" },
+	{ label: "Veterinarian", value: "Veterinarian" },
+	{ label: "Architect", value: "Architect" },
+	{ label: "Interior Designer", value: "Interior Designer" },
+	{ label: "Event Planner", value: "Event Planner" },
+	{ label: "Travel Agent", value: "Travel Agent" },
+	{ label: "Hotel Manager", value: "Hotel Manager" },
+	{ label: "Restaurant Manager", value: "Restaurant Manager" },
+	{ label: "Retail Manager", value: "Retail Manager" },
+	{ label: "Supply Chain Manager", value: "Supply Chain Manager" },
+	{ label: "Business Analyst", value: "Business Analyst" },
+	{ label: "Data Analyst", value: "Data Analyst" },
+	{ label: "Marketing Analyst", value: "Marketing Analyst" },
+	{ label: "Sales Manager", value: "Sales Manager" },
+	{ label: "Customer Support Manager", value: "Customer Support Manager" },
+	{ label: "IT Support Specialist", value: "IT Support Specialist" },
+	{ label: "Network Administrator", value: "Network Administrator" },
+	{ label: "Software Engineer", value: "Software Engineer" },
+	{ label: "Systems Engineer", value: "Systems Engineer" },
+	{ label: "Security Guard", value: "Security Guard" },
+	{ label: "Firefighter", value: "Firefighter" },
+	{ label: "Police Officer", value: "Police Officer" },
+];
+
+export const startYearOptions = [
+	{ label: "2024", value: "2024" },
+	{ label: "2023", value: "2023" },
+	{ label: "2022", value: "2022" },
+	{ label: "2021", value: "2021" },
+	{ label: "2020", value: "2020" },
+	{ label: "2019", value: "2019" },
+	{ label: "2018", value: "2018" },
+	{ label: "2017", value: "2017" },
+	{ label: "2016", value: "2016" },
+	{ label: "2015", value: "2015" },
+	{ label: "2014", value: "2014" },
+	{ label: "2013", value: "2013" },
+	{ label: "2012", value: "2012" },
+	{ label: "2011", value: "2011" },
+	{ label: "2010", value: "2010" },
+	{ label: "2009", value: "2009" },
+	{ label: "2008", value: "2008" },
+	{ label: "2007", value: "2007" },
+	{ label: "2006", value: "2006" },
+	{ label: "2005", value: "2005" },
+	{ label: "2004", value: "2004" },
+	{ label: "2003", value: "2003" },
+	{ label: "2002", value: "2002" },
+	{ label: "2001", value: "2001" },
+	{ label: "2000", value: "2000" },
+	{ label: "1999", value: "1999" },
+	{ label: "1998", value: "1998" },
+	{ label: "1997", value: "1997" },
+	{ label: "1996", value: "1996" },
+	{ label: "1995", value: "1995" },
+];
+
+export const monthOptions = [
+	{ label: "January", value: "January" },
+	{ label: "February", value: "February" },
+	{ label: "March", value: "March" },
+	{ label: "April", value: "April" },
+	{ label: "May", value: "May" },
+	{ label: "June", value: "June" },
+	{ label: "July", value: "July" },
+	{ label: "August", value: "August" },
+	{ label: "September", value: "September" },
+	{ label: "October", value: "October" },
+	{ label: "November", value: "November" },
+	{ label: "December", value: "December" },
+];
+
+export const endYearOptions = [
+	{ label: "2030", value: "2030" },
+	{ label: "2029", value: "2029" },
+	{ label: "2028", value: "2028" },
+	{ label: "2027", value: "2027" },
+	{ label: "2026", value: "2026" },
+	{ label: "2025", value: "2025" },
+	{ label: "2024", value: "2024" },
+	{ label: "2023", value: "2023" },
+	{ label: "2022", value: "2022" },
+	{ label: "2021", value: "2021" },
+	{ label: "2020", value: "2020" },
+	{ label: "2019", value: "2019" },
+	{ label: "2018", value: "2018" },
+	{ label: "2017", value: "2017" },
+	{ label: "2016", value: "2016" },
+	{ label: "2015", value: "2015" },
+	{ label: "2014", value: "2014" },
+	{ label: "2013", value: "2013" },
+	{ label: "2012", value: "2012" },
+	{ label: "2011", value: "2011" },
+	{ label: "2010", value: "2010" },
+	{ label: "2009", value: "2009" },
+	{ label: "2008", value: "2008" },
+	{ label: "2007", value: "2007" },
+	{ label: "2006", value: "2006" },
+	{ label: "2005", value: "2005" },
+	{ label: "2004", value: "2004" },
+	{ label: "2003", value: "2003" },
+	{ label: "2002", value: "2002" },
+	{ label: "2001", value: "2001" },
+	{ label: "2000", value: "2000" },
+	{ label: "1999", value: "1999" },
+	{ label: "1998", value: "1998" },
+	{ label: "1997", value: "1997" },
+	{ label: "1996", value: "1996" },
+	{ label: "1995", value: "1995" },
+	{ label: "1994", value: "1994" },
+	{ label: "1993", value: "1993" },
+	{ label: "1992", value: "1992" },
+	{ label: "1991", value: "1991" },
+	{ label: "1990", value: "1990" },
+];
+
+export const employmentType = [
+	{ label: "Full Time", value: "Full Time" },
+	{ label: "Part Time", value: "Part Time" },
+	{ label: "Contract", value: "Contract" },
+	{ label: "Self-employed", value: "Self-employed" },
+	{ label: "Freelance", value: "Freelance" },
+	{ label: "Internship", value: "Internship" },
+	{ label: "Trainee", value: "Trainee" },
+];
+
+export const locationType = [
+	{ label: "Remote", value: "Remote" },
+	{ label: "On-Site", value: "On-Site" },
+	{ label: "Hybrid", value: "Hybrid" },
+];
 
 export const levels = [
 	{ label: "Junior Level", value: "Junior Level" },
@@ -124,143 +301,143 @@ export const sectors = [
 ];
 
 export const functions = [
-    {
-        label: "Software Development",
-        value: "Software Development",
-    },
-    { label: "Web Development", value: "Web Development" },
-    {
-        label: "Mobile App Development",
-        value: "Mobile App Development",
-    },
-    { label: "Cloud Computing", value: "Cloud Computing" },
-    {
-        label: "Artificial Intelligence",
-        value: "Artificial Intelligence",
-    },
-    {
-        label: "Machine Learning",
-        value: "Machine Learning",
-    },
-    { label: "Data Science", value: "Data Science" },
-    { label: "Cybersecurity", value: "Cybersecurity" },
-    {
-        label: "Network Administration",
-        value: "Network Administration",
-    },
-    { label: "IT Support", value: "IT Support" },
-    {
-        label: "Financial Analysis",
-        value: "Financial Analysis",
-    },
-    {
-        label: "Investment Banking",
-        value: "Investment Banking",
-    },
-    {
-        label: "Audit and Assurance",
-        value: "Audit and Assurance",
-    },
-    { label: "Risk Management", value: "Risk Management" },
-    {
-        label: "Corporate Finance",
-        value: "Corporate Finance",
-    },
-    {
-        label: "Digital Marketing",
-        value: "Digital Marketing",
-    },
-    {
-        label: "Social Media Marketing",
-        value: "Social Media Marketing",
-    },
-    {
-        label: "Content Marketing",
-        value: "Content Marketing",
-    },
-    { label: "Email Marketing", value: "Email Marketing" },
-    {
-        label: "Search Engine Optimization",
-        value: "Search Engine Optimization",
-    },
-    {
-        label: "Talent Acquisition",
-        value: "Talent Acquisition",
-    },
-    {
-        label: "Compensation and Benefits",
-        value: "Compensation and Benefits",
-    },
-    {
-        label: "Employee Relations",
-        value: "Employee Relations",
-    },
-    {
-        label: "Organizational Development",
-        value: "Organizational Development",
-    },
-    {
-        label: "Business Strategy",
-        value: "Business Strategy",
-    },
-    {
-        label: "Operations Management",
-        value: "Operations Management",
-    },
-    {
-        label: "Project Management",
-        value: "Project Management",
-    },
-    {
-        label: "Supply Chain Management",
-        value: "Supply Chain Management",
-    },
-    { label: "Corporate Law", value: "Corporate Law" },
-    { label: "Litigation", value: "Litigation" },
-    {
-        label: "Intellectual Property",
-        value: "Intellectual Property",
-    },
-    { label: "Nursing", value: "Nursing" },
-    { label: "Physician", value: "Physician" },
-    { label: "Pharmacist", value: "Pharmacist" },
-    {
-        label: "Medical Technologist",
-        value: "Medical Technologist",
-    },
-    {
-        label: "Clinical Research",
-        value: "Clinical Research",
-    },
-    {
-        label: "Construction Management",
-        value: "Construction Management",
-    },
-    {
-        label: "Civil Engineering",
-        value: "Civil Engineering",
-    },
-    {
-        label: "Mechanical Engineering",
-        value: "Mechanical Engineering",
-    },
-    {
-        label: "Electrical Engineering",
-        value: "Electrical Engineering",
-    },
-    {
-        label: "Industrial Engineering",
-        value: "Industrial Engineering",
-    },
-    {
-        label: "Quality Assurance",
-        value: "Quality Assurance",
-    },
-    {
-        label: "Manufacturing Engineering",
-        value: "Manufacturing Engineering",
-    },
-]
+	{
+		label: "Software Development",
+		value: "Software Development",
+	},
+	{ label: "Web Development", value: "Web Development" },
+	{
+		label: "Mobile App Development",
+		value: "Mobile App Development",
+	},
+	{ label: "Cloud Computing", value: "Cloud Computing" },
+	{
+		label: "Artificial Intelligence",
+		value: "Artificial Intelligence",
+	},
+	{
+		label: "Machine Learning",
+		value: "Machine Learning",
+	},
+	{ label: "Data Science", value: "Data Science" },
+	{ label: "Cybersecurity", value: "Cybersecurity" },
+	{
+		label: "Network Administration",
+		value: "Network Administration",
+	},
+	{ label: "IT Support", value: "IT Support" },
+	{
+		label: "Financial Analysis",
+		value: "Financial Analysis",
+	},
+	{
+		label: "Investment Banking",
+		value: "Investment Banking",
+	},
+	{
+		label: "Audit and Assurance",
+		value: "Audit and Assurance",
+	},
+	{ label: "Risk Management", value: "Risk Management" },
+	{
+		label: "Corporate Finance",
+		value: "Corporate Finance",
+	},
+	{
+		label: "Digital Marketing",
+		value: "Digital Marketing",
+	},
+	{
+		label: "Social Media Marketing",
+		value: "Social Media Marketing",
+	},
+	{
+		label: "Content Marketing",
+		value: "Content Marketing",
+	},
+	{ label: "Email Marketing", value: "Email Marketing" },
+	{
+		label: "Search Engine Optimization",
+		value: "Search Engine Optimization",
+	},
+	{
+		label: "Talent Acquisition",
+		value: "Talent Acquisition",
+	},
+	{
+		label: "Compensation and Benefits",
+		value: "Compensation and Benefits",
+	},
+	{
+		label: "Employee Relations",
+		value: "Employee Relations",
+	},
+	{
+		label: "Organizational Development",
+		value: "Organizational Development",
+	},
+	{
+		label: "Business Strategy",
+		value: "Business Strategy",
+	},
+	{
+		label: "Operations Management",
+		value: "Operations Management",
+	},
+	{
+		label: "Project Management",
+		value: "Project Management",
+	},
+	{
+		label: "Supply Chain Management",
+		value: "Supply Chain Management",
+	},
+	{ label: "Corporate Law", value: "Corporate Law" },
+	{ label: "Litigation", value: "Litigation" },
+	{
+		label: "Intellectual Property",
+		value: "Intellectual Property",
+	},
+	{ label: "Nursing", value: "Nursing" },
+	{ label: "Physician", value: "Physician" },
+	{ label: "Pharmacist", value: "Pharmacist" },
+	{
+		label: "Medical Technologist",
+		value: "Medical Technologist",
+	},
+	{
+		label: "Clinical Research",
+		value: "Clinical Research",
+	},
+	{
+		label: "Construction Management",
+		value: "Construction Management",
+	},
+	{
+		label: "Civil Engineering",
+		value: "Civil Engineering",
+	},
+	{
+		label: "Mechanical Engineering",
+		value: "Mechanical Engineering",
+	},
+	{
+		label: "Electrical Engineering",
+		value: "Electrical Engineering",
+	},
+	{
+		label: "Industrial Engineering",
+		value: "Industrial Engineering",
+	},
+	{
+		label: "Quality Assurance",
+		value: "Quality Assurance",
+	},
+	{
+		label: "Manufacturing Engineering",
+		value: "Manufacturing Engineering",
+	},
+];
 
 export const skills = [
 	{ label: "Java", value: "Java" },

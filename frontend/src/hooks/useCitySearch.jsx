@@ -74,16 +74,40 @@ export const useCitySearch = () => {
 		</div>
 	);
 
-	const handleSelection = (selectedOptions, onChange) => {
-		const formattedOptions = selectedOptions.map((option) => ({
-			value: `${option.city}, ${option.state}, ${option.country}`,
-			label: `${option.city}, ${option.state}, ${option.country}`,
-			city: option.city,
-			state: option.state,
-			country: option.country,
-		}));
-		onChange(formattedOptions);
-	};
+    const handleSelection = (selectedOptions, onChange) => {
+        // Check if selectedOptions is null or undefined and handle the cleared state
+        if (selectedOptions === null || selectedOptions === undefined) {
+            onChange(null); // or onChange('') or any other suitable value for your use case
+            return; // Exit the function early
+        }
+    
+        let formattedOptions;
+    
+        if (Array.isArray(selectedOptions)) {
+            // Handle the case for an array of cities
+            formattedOptions = selectedOptions.map((option) => ({
+                value: `${option.city}, ${option.state}, ${option.country}`,
+                label: `${option.city}, ${option.state}, ${option.country}`,
+                city: option.city,
+                state: option.state,
+                country: option.country,
+            }));
+        } else if (typeof selectedOptions === 'string') {
+            // Handle the case for a single city as a string
+            formattedOptions = selectedOptions;
+        } else {
+            // Handle the case for a single city object
+            formattedOptions = {
+                city: selectedOptions.city,
+                state: selectedOptions.state,
+                country: selectedOptions.country,
+                value: `${selectedOptions.city}, ${selectedOptions.state}, ${selectedOptions.country}`,
+                label: `${selectedOptions.city}, ${selectedOptions.state}, ${selectedOptions.country}`,
+            };
+        }
+    
+        onChange(formattedOptions);
+    };
     
 	return {
 		isLoading,

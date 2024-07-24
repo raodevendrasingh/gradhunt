@@ -1,8 +1,10 @@
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineEdit } from "react-icons/md";
+import { HiPencil } from "react-icons/hi2";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
+import { ExperienceModal } from "./modalForms/ExperienceModal";
 
 export const Experience = () => {
 	return (
@@ -15,12 +17,13 @@ export const Experience = () => {
 								Experience
 							</span>
 							<div className="flex gap-2">
-								<FiPlus className="size-9 hover:bg-gray-100 rounded-full p-2" />
-								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+								{/* <FiPlus className="size-9 hover:bg-gray-100 rounded-full p-2" /> */}
+                                <ExperienceModal/>
 							</div>
 						</div>
 						{/* fetch experience data */}
-						<div className="flex">
+						{/* <div className="flex">
+								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
 							<div className="w-full flex items-center gap-3 border border-gray-50 bg-gray-100 p-2 rounded-lg">
 								<div className="size-14 rounded-lg">
 									<img src={CompanyLogo} alt="company_logo" />
@@ -50,7 +53,7 @@ export const Experience = () => {
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</section>
 				</div>
 			</div>
