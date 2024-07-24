@@ -3,6 +3,7 @@ import { MdOutlineEdit } from "react-icons/md";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
+import { EducationModal } from "./modalForms/EducationModal";
 
 export const Education = () => {
 	return (
@@ -15,12 +16,11 @@ export const Education = () => {
 								Education
 							</span>
 							<div className="flex gap-2">
-								<FiPlus className="size-9 hover:bg-gray-100 rounded-full p-2" />
-								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+								<EducationModal/>
 							</div>
 						</div>
 						{/* fetch education data */}
-						<div className="flex">
+						{/* <div className="flex">
 							<div className="w-full flex items-center gap-3 border border-gray-50 bg-gray-100 p-2 rounded-lg">
 								<div className="size-14 rounded-lg">
 									<img src={CompanyLogo} alt="company_logo" />
@@ -50,7 +50,7 @@ export const Education = () => {
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</section>
 				</div>
 			</div>
