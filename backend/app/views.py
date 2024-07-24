@@ -120,12 +120,16 @@ class GetAllRecruiters(APIView):
                 recruiter_serializer = RecruiterSerializer(recruiter)
                 hiring_preference_serializer = HiringPreferenceSerializer(
                     HiringPreference.objects.filter(recruiter=recruiter).first())
-                
-                company_profile = CompanyProfile.objects.filter(recruiter=recruiter).first()
-                company_profile_serializer = CompanyProfileSerializer(company_profile) if company_profile else None
 
-                job_posting = Posting.objects.filter(recruiter=recruiter).first()
-                job_posting_serializer = PostingSerializer(job_posting) if job_posting else None
+                company_profile = CompanyProfile.objects.filter(
+                    recruiter=recruiter).first()
+                company_profile_serializer = CompanyProfileSerializer(
+                    company_profile) if company_profile else None
+
+                job_posting = Posting.objects.filter(
+                    recruiter=recruiter).first()
+                job_posting_serializer = PostingSerializer(
+                    job_posting) if job_posting else None
 
                 award = Award.objects.filter(user=recruiter.user).first()
                 award_serializer = AwardSerializer(award) if award else None

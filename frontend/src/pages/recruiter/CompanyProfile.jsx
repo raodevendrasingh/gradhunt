@@ -1,43 +1,15 @@
 // hooks
-import { useEffect, useState } from "react";
-
-import axios from "axios";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
 
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
-
 // local imports
 import { CompanyProfileModal } from "./modalForms/CompanyProfileModal";
-import { useStore } from "@/store/userStore.js";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { TbWorldWww } from "react-icons/tb";
+import { FetchCompanyData } from "./utils/FetchCompanyProfile";
 
 export const CompanyProfile = () => {
-	const { user } = useKindeAuth();
-	const { userName } = useStore();
-	const [companyData, setCompanyData] = useState(null);
-
-	useEffect(() => {
-		const url = `http://localhost:8000/api/recruiter/${userName}/get-company-data`;
-		const fetchCompanyProfile = async () => {
-			if (!userName) return;
-			try {
-				const response = await axios.get(url, {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-					},
-				});
-				setCompanyData(response.data);
-				console.log(response.data);
-			} catch (error) {
-				console.error("Error fetching company profile:", error);
-			}
-		};
-		fetchCompanyProfile();
-	}, [user, userName]);
+	const companyData = FetchCompanyData();
 
 	return (
 		<div className="w-full pt-20 mx-auto">
@@ -62,8 +34,7 @@ export const CompanyProfile = () => {
 									<img src={CompanyLogo} alt="company-logo" />
 								</div>
 								<div className="relative -top-28  pb-2.5 sm:pb-6 bg-gray-100 p-2 flex flex-col sm:flex-row justify-start items-center gap-2 z-0 rounded-b-xl overflow-hidden">
-									<div className="flex justify-between items-center ml-20 sm:ml-32 h-12 w-2/3 text-2xl p-2 ">
-										{/* <span>+ Add Company Name</span> */}
+									<div className="flex justify-between items-center ml-20 sm:ml-32 h-12 w-2/3 text-2xl p-2">
 										{companyData?.companyName ? (
 											<span className="text-2xl sm:text-3xl font-semibold text-gray-800 pl-3">
 												{companyData.companyName}
@@ -160,16 +131,44 @@ export const CompanyProfile = () => {
 									<span className="text-xl font-medium pl-2 text-gray-800">
 										Other Branches
 									</span>
+
 									<div className="flex items-center flex-wrap gap-3 text-sm pt-1 pl-3">
-										{companyData?.branches &&
-										typeof companyData.branches === "string" ? (
-											JSON.parse(companyData.branches).map((branch, index) => (
-												<div key={index} className="branch-info">
-													<span className="text-base">
-														{branch.city}, {branch.state}, {branch.country}
-													</span>
-												</div>
-											))
+										{companyData?.branches ? (
+											typeof companyData.branches === "string" ? (
+												(() => {
+													try {
+														return JSON.parse(companyData.branches).map(
+															(branch, index) => (
+																<div key={index} className="branch-info">
+																	<span className="text-sm px-2 py-1 rounded-full bg-slate-300 text-black">
+																		{branch.city}, {branch.state},{" "}
+																		{branch.country}
+																	</span>
+																</div>
+															)
+														);
+													} catch (error) {
+														console.error("Error parsing branches:", error);
+														return (
+															<span className="text-xs text-red-600">
+																Error loading branches
+															</span>
+														);
+													}
+												})()
+											) : Array.isArray(companyData.branches) ? (
+												companyData.branches.map((branch, index) => (
+													<div key={index} className="branch-info">
+														<span className="text-base">
+															{branch.city}, {branch.state}, {branch.country}
+														</span>
+													</div>
+												))
+											) : (
+												<span className="text-xs text-blue-600">
+													+ Add Location
+												</span>
+											)
 										) : (
 											<span className="text-xs text-blue-600">
 												+ Add Location
@@ -177,7 +176,6 @@ export const CompanyProfile = () => {
 										)}
 									</div>
 								</div>
-
 								<div className="flex flex-col gap-2 bg-gray-50 p-2 rounded-xl">
 									<span className="text-xl font-medium pl-2 text-gray-800">
 										About
@@ -186,22 +184,21 @@ export const CompanyProfile = () => {
 									{companyData?.about ? (
 										<span className="pl-2">{companyData.about}</span>
 									) : (
-										<p className="text-xs text-blue-600 pl-3">
+										<span className="text-xs text-blue-600 pl-3">
 											+ Add Description
-										</p>
+										</span>
 									)}
 								</div>
-
 								<div className="flex flex-col gap-2 bg-gray-50 p-2 rounded-xl">
 									<span className="text-xl font-medium pl-2 text-gray-800">
-										Company Mission and Values
+										Mission and Values
 									</span>
 									{companyData?.values ? (
 										<span className="pl-2">{companyData.values}</span>
 									) : (
-										<p className="text-xs text-blue-600 pl-3">
+										<span className="text-xs text-blue-600 pl-3">
 											+ Add Description
-										</p>
+										</span>
 									)}
 								</div>
 							</div>

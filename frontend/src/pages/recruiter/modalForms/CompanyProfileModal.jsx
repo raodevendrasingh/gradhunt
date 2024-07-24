@@ -1,103 +1,43 @@
-// hooks
-import { useCallback, useEffect, useMemo, useState } from "react";
+// Hooks
+import { useEffect, useState } from "react";
+import { useCitySearch } from "@/hooks/useCitySearch";
 
-// third party library
+// Third-party libraries
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { toast } from "sonner";
-import debounce from "lodash/debounce";
 
-// icons
+// Icons
 import { MdOutlineEdit } from "react-icons/md";
 import { FaXmark } from "react-icons/fa6";
 
-// local imports
-import { companySize } from "@/utils/selectObjects";
-import { sectors } from "@/utils/selectObjects";
+// Local imports
+import { sectors, companySize } from "@/utils/selectObjects";
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import axios from "axios";
-import { useStore } from "@/store/userStore.js";
+import { useStore } from "@/store/userStore";
+import { FetchCompanyData } from "../utils/FetchCompanyProfile";
 
 export const CompanyProfileModal = () => {
 	const [showModal, setShowModal] = useState(false);
 	const currentYear = new Date().getFullYear();
+	const companyData = FetchCompanyData();
 	const {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm();
 
-	const [cityOptions, setCityOptions] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
-
-	const fetchCities = useCallback(async (inputValue) => {
-		// console.log("Fetching cities for:", inputValue);
-
-		if (typeof inputValue !== "string" || inputValue.length < 2) {
-			console.log("Input value invalid, clearing options");
-			setCityOptions([]);
-			return;
-		}
-
-		setIsLoading(true);
-		setError(null);
-
-		const options = {
-			method: "GET",
-			url: "https://city-and-state-search-api.p.rapidapi.com/cities/search",
-			params: { q: inputValue },
-			headers: {
-				"x-rapidapi-key": import.meta.env.VITE_KINDE_RAPID_API_KEY,
-				"x-rapidapi-host": import.meta.env.VITE_KINDE_RAPID_API_HOST,
-			},
-		};
-
-		try {
-			// console.log("Making API request with options:", options);
-			const response = await axios.request(options);
-			// console.log("API response:", response.data);
-			const cities = response.data.map((city) => ({
-				value: `${city.name},${city.state_name},${city.country_name}`,
-				label: `${city.name}, ${city.state_name}, ${city.country_name}`,
-				city: city.name,
-				state: city.state_name,
-				country: city.country_name,
-			}));
-			setCityOptions(cities);
-		} catch (error) {
-			console.error("Error fetching cities:", error);
-			setError("Failed to fetch cities. Please try again.");
-			setCityOptions([]);
-		} finally {
-			setIsLoading(false);
-		}
-	}, []);
-
-	const debouncedFetchCities = useMemo(
-		() => debounce(fetchCities, 300),
-		[fetchCities]
-	);
-
-	const handleInputChange = useCallback(
-		(inputValue, { action }) => {
-			// console.log("handleInputChange called with:", inputValue, action);
-			if (action === "input-change") {
-				debouncedFetchCities(inputValue);
-			}
-			return inputValue;
-		},
-		[debouncedFetchCities]
-	);
-
-	const formatOptionLabel = ({ city, state, country }) => (
-		<div>
-			<span>{city}</span>
-			{state && <span>,{" "}{state}</span>}
-			{country && <span>,{" "}{country}</span>}
-		</div>
-	);
+	const {
+		isLoading,
+		error,
+		cityOptions,
+		handleInputChange,
+		formatOptionLabel,
+		handleSelection,
+	} = useCitySearch();
 
 	const { userName, setUserName } = useStore((state) => ({
 		userName: state.userName,
@@ -105,7 +45,6 @@ export const CompanyProfileModal = () => {
 	}));
 
 	useEffect(() => {
-		// Fetch userName from localStorage if it's not already set
 		if (!userName) {
 			const storedUserName = localStorage.getItem("userName");
 			if (storedUserName) {
@@ -114,7 +53,48 @@ export const CompanyProfileModal = () => {
 		}
 	}, [userName, setUserName]);
 
-	// console.log(userName);
+	useEffect(() => {
+		if (companyData) {
+			let parsedBranches = [];
+			if (typeof companyData.branches === "string") {
+				try {
+					parsedBranches = JSON.parse(companyData.branches);
+				} catch (error) {
+					console.error("Error parsing branches:", error);
+				}
+			} else if (Array.isArray(companyData.branches)) {
+				parsedBranches = companyData.branches;
+			}
+			reset({
+				companyName: companyData.companyName,
+				companyWebsite: companyData.website,
+				companySize: {
+					value: companyData.employeeSize,
+					label: companyData.employeeSize,
+				},
+				estdYear: companyData.establishedYear,
+				industry: { value: companyData.industry, label: companyData.industry },
+				headquarter: companyData.headquarters
+					? {
+							value: companyData.headquarters,
+							label: companyData.headquarters,
+							city: companyData.headquarters.split(",")[0],
+							state: companyData.headquarters.split(",")[1],
+							country: companyData.headquarters.split(",")[2],
+						}
+					: null,
+				branch: parsedBranches.map((b) => ({
+					value: `${b.city}, ${b.state}, ${b.country}`,
+					label: `${b.city}, ${b.state}, ${b.country}`,
+					city: b.city,
+					state: b.state,
+					country: b.country,
+				})),
+				about: companyData.about,
+				mission: companyData.values,
+			});
+		}
+	}, [companyData, reset]);
 
 	const onSubmit = async (data) => {
 		const companyProfileData = {
@@ -124,7 +104,7 @@ export const CompanyProfileModal = () => {
 			establishedYear: data.estdYear,
 			industry: data.industry.value,
 			headquarters: data.headquarter.value,
-			branch: data.branch || "N/A",
+			branch: data.branch || [],
 			about: data.about,
 			values: data.mission,
 		};
@@ -260,7 +240,6 @@ export const CompanyProfileModal = () => {
 														)}
 													</div>
 												</div>
-												
 											</div>
 											{/* company stats section */}
 											<div className="flex flex-col md:flex-row w-full md:gap-2 lg:gap-2 border-b pb-6 mb-1">
@@ -377,7 +356,7 @@ export const CompanyProfileModal = () => {
 													<Controller
 														name="headquarter"
 														control={control}
-														rules={{ required: "Headquarters is required" }}
+														rules={{ required: "Headquarter is required" }}
 														render={({ field }) => (
 															<Select
 																{...field}
@@ -385,10 +364,13 @@ export const CompanyProfileModal = () => {
 																isSearchable
 																isLoading={isLoading}
 																onInputChange={handleInputChange}
+																onChange={(option) =>
+																	handleSelection(option, field.onChange)
+																}
 																options={cityOptions}
 																formatOptionLabel={formatOptionLabel}
 																id="headquarter"
-																placeholder="Company headquarter"
+																placeholder="Company Headquarter"
 																styles={selectCompanyFieldStyle}
 																classNamePrefix="select"
 																noOptionsMessage={({ inputValue }) =>
@@ -396,7 +378,7 @@ export const CompanyProfileModal = () => {
 																		? "Type at least 2 characters to search"
 																		: error
 																			? error
-																			: "No options found"
+																			: "No cities found"
 																}
 															/>
 														)}
@@ -414,7 +396,6 @@ export const CompanyProfileModal = () => {
 													<Controller
 														name="branch"
 														control={control}
-														rules={{ required: "Headquarters is required" }}
 														render={({ field }) => (
 															<Select
 																{...field}
@@ -423,9 +404,12 @@ export const CompanyProfileModal = () => {
 																isSearchable
 																isLoading={isLoading}
 																onInputChange={handleInputChange}
+																onChange={(option) =>
+																	handleSelection(option, field.onChange)
+																}
 																options={cityOptions}
 																formatOptionLabel={formatOptionLabel}
-																id="headquarter"
+																id="branch"
 																placeholder="Company Branch"
 																styles={selectCompanyFieldStyle}
 																classNamePrefix="select"
