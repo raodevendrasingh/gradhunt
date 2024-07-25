@@ -75,7 +75,7 @@ export const ExperienceModal = () => {
 		console.log(experienceData);
 
 		axios({
-			url: `http://localhost:8000/api/recruiter/${userName}/update-experience-data`,
+			url: `http://localhost:8000/api/recruiter/${userName}/add-experience-data`,
 			method: "POST",
 			data: experienceData,
 			headers: {
@@ -92,7 +92,7 @@ export const ExperienceModal = () => {
 				if (error.response) {
 					console.log("Error Status: ", error.response.status);
 					console.log("Error Message: ", error.message);
-					// console.log("Error Response: ", error.response.request.response);
+					// console.log("Error Response: ", error.response.request);
 				} else if (error.request) {
 					console.log("Error Request: ", error.request);
 				} else {

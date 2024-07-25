@@ -54,15 +54,21 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         return instance
 
 
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = '__all__'
+
+
 class RecruiterDataSerializer(serializers.Serializer):
     user_details = UserSerializer()
     recruiter_details = RecruiterSerializer()
     hiring_preference = HiringPreferenceSerializer()
     company_profile = CompanyProfileSerializer()
+    experience_data = ExperienceSerializer(many=True)
     job_postings = PostingSerializer(allow_null=True)
     awards = AwardSerializer(allow_null=True)
 
-
-class Meta:
-    fields = ['user_details', 'recruiter_details',
-              'hiring_preference', 'company_profile', 'job_postings', 'awards']
+    class Meta:
+        fields = ['user_details', 'recruiter_details',
+                  'hiring_preference', 'company_profile', 'experience_data', 'job_postings', 'awards']

@@ -15,6 +15,43 @@ class HomeView(APIView):
         return Response('This is the API home page', status=status.HTTP_200_OK)
 
 
+class GetCompanyProfile(APIView):
+    def get(self, request, username):
+        try:
+            company_profile = CompanyProfile.objects.get(
+                recruiter__user__username=username)
+            serializer = CompanyProfileSerializer(company_profile)
+
+            return Response(serializer.data)
+
+        except CompanyProfile.DoesNotExist:
+            return Response(
+                {"error": "Company profile not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class CheckUsernameView(View):
+    def get(self, request, *args, **kwargs):
+        username = request.GET.get('username', None)
+        if username is None:
+            return JsonResponse({'error': 'Missing username parameter.'}, status=400)
+
+        exists = UserDetails.objects.filter(
+            username__iexact=username).exists()
+        return JsonResponse({'exists': exists})
+
+
+class CheckEmailView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email', None)
+        if email is None:
+            return JsonResponse({'error': 'Missing email parameter.'}, status=400)
+
+        exists = UserDetails.objects.filter(email__iexact=email).exists()
+        return JsonResponse({'exists': exists})
+
+
 class SaveRecruiterFormData(APIView):
     @transaction.atomic
     def post(self, request):
@@ -55,27 +92,6 @@ class SaveRecruiterFormData(APIView):
         )
 
 
-class CheckUsernameView(View):
-    def get(self, request, *args, **kwargs):
-        username = request.GET.get('username', None)
-        if username is None:
-            return JsonResponse({'error': 'Missing username parameter.'}, status=400)
-
-        exists = UserDetails.objects.filter(
-            username__iexact=username).exists()
-        return JsonResponse({'exists': exists})
-
-
-class CheckEmailView(View):
-    def get(self, request, *args, **kwargs):
-        email = request.GET.get('email', None)
-        if email is None:
-            return JsonResponse({'error': 'Missing email parameter.'}, status=400)
-
-        exists = UserDetails.objects.filter(email__iexact=email).exists()
-        return JsonResponse({'exists': exists})
-
-
 class GetRecruiterDetails(APIView):
     def get(self, request, username):
         try:
@@ -85,6 +101,7 @@ class GetRecruiterDetails(APIView):
                 recruiter__exact=recruiter.id)
             company_profile = CompanyProfile.objects.get(
                 recruiter__exact=recruiter.id)
+            experience_data = Experience.objects.filter(user=user)
             job_postings = Posting.objects.filter(
                 recruiter__exact=recruiter.id).first()
             awards = Award.objects.filter(user=user.id).first()
@@ -94,6 +111,7 @@ class GetRecruiterDetails(APIView):
                 'recruiter_details': recruiter,
                 'hiring_preference': hiring_preferences,
                 'company_profile': company_profile,
+                'experience_data': experience_data,
                 'job_postings': job_postings,
                 'awards': awards
             }
@@ -125,6 +143,11 @@ class GetAllRecruiters(APIView):
                     recruiter=recruiter).first()
                 company_profile_serializer = CompanyProfileSerializer(
                     company_profile) if company_profile else None
+                
+                experience_data = Experience.objects.filter(
+                    user=recruiter.user)
+                experience_data_serializer = ExperienceSerializer(
+                    experience_data, many=True)
 
                 job_posting = Posting.objects.filter(
                     recruiter=recruiter).first()
@@ -139,6 +162,7 @@ class GetAllRecruiters(APIView):
                     'recruiter_details': recruiter_serializer.data,
                     'hiring_preference': hiring_preference_serializer.data,
                     'company_profile': company_profile_serializer.data if company_profile_serializer else None,
+                    'experience_data': experience_data_serializer.data,
                     'job_postings': job_posting_serializer.data if job_posting_serializer else None,
                     'awards': award_serializer.data if award_serializer else None
                 }
@@ -207,17 +231,48 @@ class UpdateCompanyProfile(APIView):
         )
 
 
-class GetCompanyProfile(APIView):
-    def get(self, request, username):
+class AddExperienceData(APIView):
+    @transaction.atomic
+    def post(self, request, username):
         try:
-            company_profile = CompanyProfile.objects.get(
-                recruiter__user__username=username)
-            serializer = CompanyProfileSerializer(company_profile)
+            user = UserDetails.objects.get(username=username)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-            return Response(serializer.data)
+        data = request.data
+        experience_data = {}
 
-        except CompanyProfile.DoesNotExist:
-            return Response(
-                {"error": "Company profile not found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        # Dynamically map fields
+        for field in Experience._meta.fields:
+            field_name = field.name
+            if field_name == 'user':
+                experience_data[field_name] = user
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    experience_data[field_name] = data[field_name]['value']
+                else:
+                    experience_data[field_name] = data[field_name]
+            elif field_name == 'description' and 'about' in data:
+                experience_data[field_name] = data['about']
+
+        try:
+            experience = Experience.objects.create(**experience_data)
+            return Response({
+                "message": "Experience added successfully",
+                # "data": {
+                #     "id": experience.id,
+                #     "user_id": experience.user.id,
+                #     "companyName": experience.companyName,
+                #     "jobTitle": experience.jobTitle,
+                #     "jobType": experience.jobType,
+                #     "startMonth": experience.startMonth,
+                #     "startYear": experience.startYear,
+                #     "endMonth": experience.endMonth,
+                #     "endYear": experience.endYear,
+                #     "jobLocation": experience.jobLocation,
+                #     "locationType": experience.locationType,
+                #     "description": experience.description
+                # }
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

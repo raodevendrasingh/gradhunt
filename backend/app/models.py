@@ -128,3 +128,24 @@ class CompanyProfile(models.Model):
     class Meta:
         verbose_name = "Company Profile"
         verbose_name_plural = "Company Profile"
+
+
+class Experience(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    companyName = models.CharField(max_length=50)
+    jobTitle = models.CharField(max_length=50)
+    jobType = models.CharField(max_length=50)
+    startMonth = models.CharField(max_length=20)
+    startYear = models.CharField(max_length=4)
+    endMonth = models.CharField(max_length=20, blank=True)
+    endYear = models.CharField(max_length=4, blank=True)
+    jobLocation = models.CharField(max_length=60)
+    locationType = models.CharField(max_length=60)
+    description = models.TextField(blank=True, default='')
+
+    def __str__(self):
+        return f"{self.companyName} [{self.user.username}]"
+
+    class Meta:
+        verbose_name = "Experience"
+        verbose_name_plural = "Experience"
