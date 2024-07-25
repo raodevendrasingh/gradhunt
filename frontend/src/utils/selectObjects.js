@@ -179,12 +179,71 @@ export const employmentType = [
 ];
 
 export const degreeTypes = [
-	{ label: "Associate's Degree", value: "Associate's Degree" },
-	{ label: "Bachelor's Degree", value: "Bachelor's Degree" },
-	{ label: "Master's Degree", value: "Master's Degree" },
-	{ label: "Doctoral Degree", value: "Doctoral Degree" },
-	{ label: "Postdoctoral Degree", value: "Postdoctoral Degree" },
-	{ label: "Certificate", value: "Certificate" },
+	{ label: "Associate's in Arts", value: "Associate's in Arts" },
+	{ label: "Associate's in Science", value: "Associate's in Science" },
+	{ label: "Associate's in Commerce", value: "Associate's in Commerce" },
+	{ label: "Bachelor's in Arts", value: "Bachelor's in Arts" },
+	{ label: "Bachelor's in Science", value: "Bachelor's in Science" },
+	{ label: "Bachelor's in Commerce", value: "Bachelor's in Commerce" },
+	{ label: "Bachelor's in Technology", value: "Bachelor's in Technology" },
+	{ label: "Bachelor's in Engineering", value: "Bachelor's in Engineering" },
+	{ label: "Bachelor's in Law", value: "Bachelor's in Law" },
+	{ label: "Bachelor of Architecture", value: "Bachelor of Architecture" },
+	{ label: "Bachelor of Design", value: "Bachelor of Design" },
+	{ label: "Bachelor of Fine Arts", value: "Bachelor of Fine Arts" },
+	{ label: "Bachelor of Music", value: "Bachelor of Music" },
+	{ label: "Master's in Arts", value: "Master's in Arts" },
+	{ label: "Master's in Science", value: "Master's in Science" },
+	{ label: "Master's in Commerce", value: "Master's in Commerce" },
+	{ label: "Master's in Technology", value: "Master's in Technology" },
+	{ label: "Master's in Engineering", value: "Master's in Engineering" },
+	{ label: "Master's in Law", value: "Master's in Law" },
+	{
+		label: "Master's in Business Administration",
+		value: "Master's in Business Administration",
+	},
+	{ label: "Master of Architecture", value: "Master of Architecture" },
+	{ label: "Master of Design", value: "Master of Design" },
+	{ label: "Master of Fine Arts", value: "Master of Fine Arts" },
+	{ label: "Master of Music", value: "Master of Music" },
+	{ label: "Doctoral in Arts", value: "Doctoral in Arts" },
+	{ label: "Doctoral in Science", value: "Doctoral in Science" },
+	{ label: "Doctoral in Commerce", value: "Doctoral in Commerce" },
+	{ label: "Doctoral in Technology", value: "Doctoral in Technology" },
+	{ label: "Doctoral in Engineering", value: "Doctoral in Engineering" },
+	{ label: "Doctoral in Law", value: "Doctoral in Law" },
+	{
+		label: "Doctor of Philosophy in Arts",
+		value: "Doctor of Philosophy in Arts",
+	},
+	{
+		label: "Doctor of Philosophy in Science",
+		value: "Doctor of Philosophy in Science",
+	},
+	{
+		label: "Doctor of Philosophy in Commerce",
+		value: "Doctor of Philosophy in Commerce",
+	},
+	{
+		label: "Doctor of Philosophy in Engineering",
+		value: "Doctor of Philosophy in Engineering",
+	},
+	{
+		label: "Doctor of Philosophy in Law",
+		value: "Doctor of Philosophy in Law",
+	},
+	{ label: "Postdoctoral in Arts", value: "Postdoctoral in Arts" },
+	{ label: "Postdoctoral in Science", value: "Postdoctoral in Science" },
+	{ label: "Postdoctoral in Commerce", value: "Postdoctoral in Commerce" },
+	{ label: "Postdoctoral in Technology", value: "Postdoctoral in Technology" },
+	{
+		label: "Postdoctoral in Engineering",
+		value: "Postdoctoral in Engineering",
+	},
+	{ label: "Postdoctoral in Law", value: "Postdoctoral in Law" },
+	{ label: "Certificate in Arts", value: "Certificate in Arts" },
+	{ label: "Certificate in Science", value: "Certificate in Science" },
+	{ label: "Certificate in Commerce", value: "Certificate in Commerce" },
 	{
 		label: "Higher Secondary Certificate",
 		value: "Higher Secondary Certificate",
@@ -193,20 +252,130 @@ export const degreeTypes = [
 		label: "Senior Secondary Certificate",
 		value: "Senior Secondary Certificate",
 	},
-	{ label: "Diploma", value: "Diploma" },
-	{ label: "Foundation Degree", value: "Foundation Degree" },
+	{ label: "Diploma in Arts", value: "Diploma in Arts" },
+	{ label: "Diploma in Science", value: "Diploma in Science" },
+	{ label: "Diploma in Commerce", value: "Diploma in Commerce" },
+	{ label: "Foundation in Arts", value: "Foundation in Arts" },
+	{ label: "Foundation in Science", value: "Foundation in Science" },
+	{ label: "Foundation in Commerce", value: "Foundation in Commerce" },
 	{
-		label: "Higher National Diploma (HND)",
-		value: "Higher National Diploma (HND)",
+		label: "Higher National Diploma (HND) in Arts",
+		value: "Higher National Diploma (HND) in Arts",
 	},
 	{
-		label: "Higher National Certificate (HNC)",
-		value: "Higher National Certificate (HNC)",
+		label: "Higher National Diploma (HND) in Science",
+		value: "Higher National Diploma (HND) in Science",
 	},
-	{ label: "Postgraduate Certificate", value: "Postgraduate Certificate" },
-	{ label: "Postgraduate Diploma", value: "Postgraduate Diploma" },
-	{ label: "Professional Certificate", value: "Professional Certificate" },
-	{ label: "Professional Diploma", value: "Professional Diploma" },
+	{
+		label: "Higher National Diploma (HND) in Commerce",
+		value: "Higher National Diploma (HND) in Commerce",
+	},
+	{
+		label: "Higher National Certificate (HNC) in Arts",
+		value: "Higher National Certificate (HNC) in Arts",
+	},
+	{
+		label: "Higher National Certificate (HNC) in Science",
+		value: "Higher National Certificate (HNC) in Science",
+	},
+	{
+		label: "Higher National Certificate (HNC) in Commerce",
+		value: "Higher National Certificate (HNC) in Commerce",
+	},
+	{
+		label: "Postgraduate Certificate in Arts",
+		value: "Postgraduate Certificate in Arts",
+	},
+	{
+		label: "Postgraduate Certificate in Science",
+		value: "Postgraduate Certificate in Science",
+	},
+	{
+		label: "Postgraduate Certificate in Commerce",
+		value: "Postgraduate Certificate in Commerce",
+	},
+	{
+		label: "Postgraduate Diploma in Arts",
+		value: "Postgraduate Diploma in Arts",
+	},
+	{
+		label: "Postgraduate Diploma in Science",
+		value: "Postgraduate Diploma in Science",
+	},
+	{
+		label: "Postgraduate Diploma in Commerce",
+		value: "Postgraduate Diploma in Commerce",
+	},
+	{
+		label: "Professional Certificate in Arts",
+		value: "Professional Certificate in Arts",
+	},
+	{
+		label: "Professional Certificate in Science",
+		value: "Professional Certificate in Science",
+	},
+	{
+		label: "Professional Certificate in Commerce",
+		value: "Professional Certificate in Commerce",
+	},
+	{
+		label: "Professional Diploma in Arts",
+		value: "Professional Diploma in Arts",
+	},
+	{
+		label: "Professional Diploma in Science",
+		value: "Professional Diploma in Science",
+	},
+	{
+		label: "Professional Diploma in Commerce",
+		value: "Professional Diploma in Commerce",
+	},
+	{
+		label: "Bachelor of Business Administration",
+		value: "Bachelor of Business Administration",
+	},
+	{
+		label: "Master of Business Administration",
+		value: "Master of Business Administration",
+	},
+	{
+		label: "Doctor of Business Administration",
+		value: "Doctor of Business Administration",
+	},
+	{
+		label: "Certificate in Computer Science",
+		value: "Certificate in Computer Science",
+	},
+	{
+		label: "Diploma in Computer Science",
+		value: "Diploma in Computer Science",
+	},
+	{
+		label: "Bachelor of Computer Science",
+		value: "Bachelor of Computer Science",
+	},
+	{ label: "Master of Computer Science", value: "Master of Computer Science" },
+	{ label: "Doctor of Computer Science", value: "Doctor of Computer Science" },
+	{
+		label: "Certificate in Information Technology",
+		value: "Certificate in Information Technology",
+	},
+	{
+		label: "Diploma in Information Technology",
+		value: "Diploma in Information Technology",
+	},
+	{
+		label: "Bachelor of Information Technology",
+		value: "Bachelor of Information Technology",
+	},
+	{
+		label: "Master of Information Technology",
+		value: "Master of Information Technology",
+	},
+	{
+		label: "Doctor of Information Technology",
+		value: "Doctor of Information Technology",
+	},
 ];
 
 export const fieldsOfStudy = [

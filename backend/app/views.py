@@ -102,6 +102,7 @@ class GetRecruiterDetails(APIView):
             company_profile = CompanyProfile.objects.get(
                 recruiter__exact=recruiter.id)
             experience_data = Experience.objects.filter(user=user)
+            education_data = Education.objects.filter(user=user)
             job_postings = Posting.objects.filter(
                 recruiter__exact=recruiter.id).first()
             awards = Award.objects.filter(user=user.id).first()
@@ -112,6 +113,7 @@ class GetRecruiterDetails(APIView):
                 'hiring_preference': hiring_preferences,
                 'company_profile': company_profile,
                 'experience_data': experience_data,
+                'education_data': education_data,
                 'job_postings': job_postings,
                 'awards': awards
             }
@@ -143,11 +145,16 @@ class GetAllRecruiters(APIView):
                     recruiter=recruiter).first()
                 company_profile_serializer = CompanyProfileSerializer(
                     company_profile) if company_profile else None
-                
+
                 experience_data = Experience.objects.filter(
                     user=recruiter.user)
                 experience_data_serializer = ExperienceSerializer(
                     experience_data, many=True)
+                
+                education_data = Education.objects.filter(
+                    user=recruiter.user)
+                education_data_serializer = EducationSerializer(
+                    education_data, many=True)
 
                 job_posting = Posting.objects.filter(
                     recruiter=recruiter).first()
@@ -163,6 +170,7 @@ class GetAllRecruiters(APIView):
                     'hiring_preference': hiring_preference_serializer.data,
                     'company_profile': company_profile_serializer.data if company_profile_serializer else None,
                     'experience_data': experience_data_serializer.data,
+                    'education_data': education_data_serializer.data,
                     'job_postings': job_posting_serializer.data if job_posting_serializer else None,
                     'awards': award_serializer.data if award_serializer else None
                 }
@@ -259,20 +267,39 @@ class AddExperienceData(APIView):
             experience = Experience.objects.create(**experience_data)
             return Response({
                 "message": "Experience added successfully",
-                # "data": {
-                #     "id": experience.id,
-                #     "user_id": experience.user.id,
-                #     "companyName": experience.companyName,
-                #     "jobTitle": experience.jobTitle,
-                #     "jobType": experience.jobType,
-                #     "startMonth": experience.startMonth,
-                #     "startYear": experience.startYear,
-                #     "endMonth": experience.endMonth,
-                #     "endYear": experience.endYear,
-                #     "jobLocation": experience.jobLocation,
-                #     "locationType": experience.locationType,
-                #     "description": experience.description
-                # }
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddEducationData(APIView):
+    @transaction.atomic
+    def post(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+        education_data = {}
+
+        # Dynamically map fields
+        for field in Education._meta.fields:
+            field_name = field.name
+            if field_name == 'user':
+                education_data[field_name] = user
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    education_data[field_name] = data[field_name]['value']
+                else:
+                    education_data[field_name] = data[field_name]
+            elif field_name == 'description' and 'about' in data:
+                education_data[field_name] = data['about']
+
+        try:
+            education = Education.objects.create(**education_data)
+            return Response({
+                "message": "Education added successfully",
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -149,3 +149,24 @@ class Experience(models.Model):
     class Meta:
         verbose_name = "Experience"
         verbose_name_plural = "Experience"
+
+
+class Education(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    instituteName = models.CharField(max_length=50)
+    degreeTitle = models.CharField(max_length=50)
+    studyField = models.CharField(max_length=50)
+    startMonth = models.CharField(max_length=20)
+    startYear = models.CharField(max_length=4)
+    endMonth = models.CharField(max_length=20)
+    endYear = models.CharField(max_length=4)
+    instituteLocation = models.CharField(max_length=60)
+    grade = models.CharField(max_length=10, blank=True)
+    description = models.TextField(blank=True, default='')
+
+    def __str__(self):
+        return f"{self.instituteName} [{self.user.username}]"
+
+    class Meta:
+        verbose_name = "Education"
+        verbose_name_plural = "Education"

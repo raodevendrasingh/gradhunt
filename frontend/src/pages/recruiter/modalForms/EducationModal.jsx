@@ -73,7 +73,7 @@ export const EducationModal = () => {
 		console.log(educationData);
 
 		axios({
-			url: `http://localhost:8000/api/recruiter/${userName}/update-education-data`,
+			url: `http://localhost:8000/api/recruiter/${userName}/add-education-data`,
 			method: "POST",
 			data: educationData,
 			headers: {
@@ -90,6 +90,7 @@ export const EducationModal = () => {
 				if (error.response) {
 					console.log("Error Status: ", error.response.status);
 					console.log("Error Message: ", error.message);
+					console.log("Error Response: ", error.response);
 				} else if (error.request) {
 					console.log("Error Request: ", error.request);
 				} else {
