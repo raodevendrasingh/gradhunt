@@ -23,7 +23,7 @@ import {
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import { useStore } from "@/store/userStore";
 
-export const ExperienceModal = () => {
+export const AddExperienceModal = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
 	const {

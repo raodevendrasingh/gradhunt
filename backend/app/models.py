@@ -142,6 +142,7 @@ class Experience(models.Model):
     jobLocation = models.CharField(max_length=60)
     locationType = models.CharField(max_length=60)
     description = models.TextField(blank=True, default='')
+    isCurrentlyWorking = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.companyName} [{self.user.username}]"

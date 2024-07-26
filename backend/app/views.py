@@ -150,7 +150,7 @@ class GetAllRecruiters(APIView):
                     user=recruiter.user)
                 experience_data_serializer = ExperienceSerializer(
                     experience_data, many=True)
-                
+
                 education_data = Education.objects.filter(
                     user=recruiter.user)
                 education_data_serializer = EducationSerializer(
@@ -187,15 +187,11 @@ class UpdateCompanyProfile(APIView):
     def post(self, request, username):
         data = request.data
 
-        # Get the recruiter based on the username
         recruiter = get_object_or_404(Recruiter, user__username=username)
-
-        # Get existing company profile or create a new one
         company_profile, created = CompanyProfile.objects.get_or_create(
             recruiter=recruiter)
 
         if not created:
-            # Existing profile: compare and update only changed fields
             existing_data = CompanyProfileSerializer(company_profile).data
             updated_data = {}
             for key, value in data.items():
@@ -250,7 +246,6 @@ class AddExperienceData(APIView):
         data = request.data
         experience_data = {}
 
-        # Dynamically map fields
         for field in Experience._meta.fields:
             field_name = field.name
             if field_name == 'user':
@@ -272,6 +267,81 @@ class AddExperienceData(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetExperienceData(APIView):
+    def get(self, request, username, id):
+        try:
+            user = UserDetails.objects.get(username=username)
+            experience = Experience.objects.get(id=id, user=user)
+
+            experience_data = {}
+            for field in Experience._meta.fields:
+                field_name = field.name
+                field_value = getattr(experience, field_name)
+
+                if isinstance(field_value, UserDetails):
+                    experience_data[field_name] = field_value.username
+                else:
+                    experience_data[field_name] = field_value
+
+            return Response(experience_data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Experience.DoesNotExist:
+            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateExperienceData(APIView):
+    @transaction.atomic
+    def put(self, request, username, id):
+        try:
+            user = UserDetails.objects.get(username=username)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            experience = Experience.objects.get(id=id, user=user)
+        except Experience.DoesNotExist:
+            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+        experience_data = {}
+
+        for field in Experience._meta.fields:
+            field_name = field.name
+            if field_name == 'user':
+                experience_data[field_name] = user
+            elif field_name == 'description' and 'description' in data:
+                experience_data[field_name] = data['description']
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    experience_data[field_name] = data[field_name]['value']
+                else:
+                    experience_data[field_name] = data[field_name]
+
+        for key, value in experience_data.items():
+            setattr(experience, key, value)
+
+        try:
+            experience.save()
+            return Response({
+                "message": "Experience updated successfully",
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteExperienceData(APIView):
+    def delete(self, request, username, id):
+        user = get_object_or_404(UserDetails, username=username)
+        experience_data = get_object_or_404(Experience, id=id, user=user)
+
+        experience_data.delete()
+
+        return Response({"message": "Experience data deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
 class AddEducationData(APIView):
     @transaction.atomic
     def post(self, request, username):
@@ -283,7 +353,6 @@ class AddEducationData(APIView):
         data = request.data
         education_data = {}
 
-        # Dynamically map fields
         for field in Education._meta.fields:
             field_name = field.name
             if field_name == 'user':

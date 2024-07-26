@@ -1,12 +1,23 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FiPlus } from "react-icons/fi";
 import { MdOutlineEdit } from "react-icons/md";
-import { HiPencil } from "react-icons/hi2";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
-import { ExperienceModal } from "./modalForms/ExperienceModal";
+import { AddExperienceModal } from "./modalForms/AddExperienceModal";
+import { EditExperienceModal } from "./modalForms/EditExperienceModal";
+import { FetchExperienceData } from "./utils/FetchExperienceData";
+import { useState } from "react";
 
 export const Experience = () => {
+    const [refresh, setRefresh] = useState(false);
+    
+    const handleRefresh = () => {
+        setRefresh(!refresh);
+    };
+    
+    const { experienceData, isExperienceData } = FetchExperienceData({ refresh });
+
 	return (
 		<div className="w-full pt-20 mx-auto">
 			<div className="max-w-7xl mx-auto lg:ml-64">
@@ -17,43 +28,57 @@ export const Experience = () => {
 								Experience
 							</span>
 							<div className="flex gap-2">
-								{/* <FiPlus className="size-9 hover:bg-gray-100 rounded-full p-2" /> */}
-                                <ExperienceModal/>
+								<AddExperienceModal />
 							</div>
 						</div>
 						{/* fetch experience data */}
-						{/* <div className="flex">
-								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
-							<div className="w-full flex items-center gap-3 border border-gray-50 bg-gray-100 p-2 rounded-lg">
-								<div className="size-14 rounded-lg">
-									<img src={CompanyLogo} alt="company_logo" />
-								</div>
-								<div className="w-full">
-									<div className="flex items-baseline justify-between ">
-										<div className="text-xl font-semibold">
-											<span className="text-lg text-blue-600 pl-3">
-												+ Add Company Name
-											</span>
+						{isExperienceData && experienceData.length > 0 && (
+							<div className="flex flex-col gap-3">
+								{experienceData.map((data, index) => (
+									<div
+										key={data.id}
+										className="w-full flex items-start gap-3 border border-gray-50 bg-gray-100 p-3 pt-1 rounded-xl"
+									>
+										<div className="w-full">
+											<div className="flex items-center justify-between">
+												<span className="text-xl font-semibold text-gray-800">
+													{data.companyName}
+												</span>
+
+												<EditExperienceModal experienceId={data.id} onSave={handleRefresh} />
+											</div>
+											<div className="flex items-center gap-2">
+												<span className="text-sm font-medium text-gray-800">
+													{data.jobTitle}
+												</span>
+
+												<div className="flex gap-2 text-xs text-gray-700">
+                                                    <span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">{data.jobType}</span>
+                                                    <span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">{data.locationType}</span>
+													</div>
+											</div>
+											<div className="text-xs text-gray-600">
+												{data.startMonth} {data.startYear} - {!data.isCurrentlyWorking ? `${data.endMonth} ${data.endYear}` : "Present"}
+                                            </div>
+
+											{data.locationType === "Remote" ? (
+												""
+											) : (
+												<div className="text-xs text-gray-600">
+													{data.jobLocation}
+												</div>
+											)}
+
+											{data.description && (
+												<div className="text-sm mt-2 text-gray-800">
+													<p>{data.description}</p>
+												</div>
+											)}
 										</div>
-										<div className="text-xs hidden xs:block">
-											<span className="text-sm text-blue-600 pl-3">
-												+ Add Duration
-											</span>
-										</div>
 									</div>
-									<div className="text-sm">
-										<span className="text-base text-blue-600 pl-3">
-											+ Add Job Title
-										</span>
-									</div>
-									<div className="text-xs xs:hidden">
-										<span className="text-sm text-blue-600 pl-3">
-											+ Add Duration
-										</span>
-									</div>
-								</div>
+								))}
 							</div>
-						</div> */}
+						)}
 					</section>
 				</div>
 			</div>
