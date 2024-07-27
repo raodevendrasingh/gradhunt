@@ -17,12 +17,12 @@ import { sectors, companySize } from "@/utils/selectObjects";
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import axios from "axios";
 import { useStore } from "@/store/userStore";
-import { FetchCompanyData } from "../utils/FetchCompanyProfile";
+import { FetchCompanyProfile } from "../utils/FetchCompanyProfile";
 
 export const CompanyProfileModal = ({ onSave }) => {
 	const [showModal, setShowModal] = useState(false);
 	const currentYear = new Date().getFullYear();
-	const companyData = FetchCompanyData();
+	const companyData = FetchCompanyProfile();
 	const {
 		control,
 		register,
@@ -123,8 +123,8 @@ export const CompanyProfileModal = ({ onSave }) => {
 			.then((response) => {
 				console.log(response.data);
 				toast.success("Company Profile Updated");
-                onSave();
 				setShowModal(false);
+				onSave();
 			})
 			.catch((error) => {
 				toast.error("Error occured while updating profile. Try again!");

@@ -7,7 +7,7 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 // local imports
 import { CompanyProfileModal } from "./modalForms/CompanyProfileModal";
-import { FetchCompanyData } from "./utils/FetchCompanyProfile";
+import { FetchCompanyProfile } from "./utils/FetchCompanyProfile";
 
 export const CompanyProfile = () => {
 	const [refresh, setRefresh] = useState(false);
@@ -15,7 +15,7 @@ export const CompanyProfile = () => {
 	const handleRefresh = () => {
 		setRefresh(!refresh);
 	};
-	const companyData = FetchCompanyData();
+	const companyData = FetchCompanyProfile({ refresh });
 
 	return (
 		<div className="w-full pt-20 mx-auto">
