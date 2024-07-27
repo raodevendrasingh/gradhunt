@@ -6,7 +6,7 @@ import { AdminRoutes } from "@/pages/admin/AdminRoutes";
 const App = () => {
 	const host = window.location.hostname;
 
-	let subdomain;
+	let subdomain: string;
 	const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
 
 	if (arr.length > 0) subdomain = arr[0];
