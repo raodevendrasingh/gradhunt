@@ -372,3 +372,78 @@ class AddEducationData(APIView):
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetEducationData(APIView):
+    def get(self, request, username, id):
+        try:
+            user = UserDetails.objects.get(username=username)
+            education = Education.objects.get(id=id, user=user)
+
+            education_data = {}
+            for field in Education._meta.fields:
+                field_name = field.name
+                field_value = getattr(education, field_name)
+
+                if isinstance(field_value, UserDetails):
+                    education_data[field_name] = field_value.username
+                else:
+                    education_data[field_name] = field_value
+
+            return Response(education_data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Education.DoesNotExist:
+            return Response({"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateEducationData(APIView):
+    @transaction.atomic
+    def put(self, request, username, id):
+        try:
+            user = UserDetails.objects.get(username=username)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            education = Education.objects.get(id=id, user=user)
+        except Education.DoesNotExist:
+            return Response({"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+        education_data = {}
+
+        for field in Education._meta.fields:
+            field_name = field.name
+            if field_name == 'user':
+                education_data[field_name] = user
+            elif field_name == 'description' and 'description' in data:
+                education_data[field_name] = data['description']
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    education_data[field_name] = data[field_name]['value']
+                else:
+                    education_data[field_name] = data[field_name]
+
+        for key, value in education_data.items():
+            setattr(education, key, value)
+
+        try:
+            education.save()
+            return Response({
+                "message": "Education updated successfully",
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteEducationData(APIView):
+    def delete(self, request, username, id):
+        user = get_object_or_404(UserDetails, username=username)
+        education_data = get_object_or_404(Education, id=id, user=user)
+
+        education_data.delete()
+
+        return Response({"message": "Education data deleted successfully"}, status=status.HTTP_204_NO_CONTENT)

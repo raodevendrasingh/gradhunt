@@ -3,9 +3,19 @@ import { MdOutlineEdit } from "react-icons/md";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
-import { EducationModal } from "./modalForms/EducationModal";
+import { AddEducationModal } from "./modalForms/AddEducationModal";
+import { useState } from "react";
+import { FetchEducationData } from "./utils/FetchEducationData";
+import { EditEducationModal } from "./modalForms/EditEducationModal";
 
 export const Education = () => {
+	const [refresh, setRefresh] = useState(false);
+
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
+
+	const { educationData, isEducationData } = FetchEducationData({ refresh });
 	return (
 		<div className="w-full pt-20 mx-auto">
 			<div className="max-w-7xl mx-auto lg:ml-64">
@@ -15,42 +25,53 @@ export const Education = () => {
 							<span className="font-semibold text-lg pl-1 text-gray-800">
 								Education
 							</span>
-							<div className="flex gap-2">
-								<EducationModal/>
+							<div className="flex gap-2 mb-1">
+								<AddEducationModal onSave={handleRefresh} />
 							</div>
 						</div>
-						{/* fetch education data */}
-						{/* <div className="flex">
-							<div className="w-full flex items-center gap-3 border border-gray-50 bg-gray-100 p-2 rounded-lg">
-								<div className="size-14 rounded-lg">
-									<img src={CompanyLogo} alt="company_logo" />
-								</div>
-								<div className="w-full">
-									<div className="flex items-baseline justify-between ">
-										<div className="text-xl font-semibold">
-											<span className="text-lg text-blue-600 pl-3">
-												+ Add Institute Name
-											</span>
+						{/* fetch experience data */}
+						{isEducationData && educationData.length > 0 && (
+							<div className="flex flex-col gap-3">
+								{educationData.map((data, index) => (
+									<div
+										key={data.id}
+										className="w-full flex items-start gap-3 border border-gray-50 bg-gray-100 p-3 pt-1 rounded-xl"
+									>
+										<div className="w-full">
+											<div className="flex items-center justify-between">
+												<span className="text-xl font-semibold text-gray-800">
+													{data.instituteName}
+												</span>
+
+												<EditEducationModal
+													educationId={data.id}
+													onSave={handleRefresh}
+												/>
+											</div>
+											<div className="flex text-sm items-center gap-1 text-gray-800">
+												<span>{data.degreeTitle},</span>
+
+												<span>{data.studyField}</span>
+											</div>
+											<div className="text-xs text-gray-600">
+												{data.startMonth} {data.startYear} - {data.endMonth}{" "}
+												{data.endYear}
+											</div>
+
+											<div className="text-xs text-gray-600">
+												{data.instituteLocation}
+											</div>
+
+											{data.description && (
+												<div className="text-sm mt-2 text-gray-800">
+													<p>{data.description}</p>
+												</div>
+											)}
 										</div>
-										<div className="text-xs hidden xs:block">
-											<span className="text-sm text-blue-600 pl-3">
-												+ Add Duration
-											</span>
-										</div>
 									</div>
-									<div className="text-sm">
-										<span className="text-base text-blue-600 pl-3">
-											+ Add Degree Name
-										</span>
-									</div>
-									<div className="text-xs xs:hidden">
-										<span className="text-sm text-blue-600 pl-3">
-											+ Add Duration
-										</span>
-									</div>
-								</div>
+								))}
 							</div>
-						</div> */}
+						)}
 					</section>
 				</div>
 			</div>

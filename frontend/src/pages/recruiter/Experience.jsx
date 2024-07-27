@@ -27,7 +27,7 @@ export const Experience = () => {
 							<span className="font-semibold text-lg pl-1 text-gray-800">
 								Experience
 							</span>
-							<div className="flex gap-2">
+							<div className="flex gap-2 mb-1">
 								<AddExperienceModal />
 							</div>
 						</div>

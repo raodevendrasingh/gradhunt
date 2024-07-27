@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // Hooks
 import { useEffect, useState } from "react";
 import { useCitySearch } from "@/hooks/useCitySearch";
@@ -18,7 +19,7 @@ import axios from "axios";
 import { useStore } from "@/store/userStore";
 import { FetchCompanyData } from "../utils/FetchCompanyProfile";
 
-export const CompanyProfileModal = () => {
+export const CompanyProfileModal = ({ onSave }) => {
 	const [showModal, setShowModal] = useState(false);
 	const currentYear = new Date().getFullYear();
 	const companyData = FetchCompanyData();
@@ -122,6 +123,7 @@ export const CompanyProfileModal = () => {
 			.then((response) => {
 				console.log(response.data);
 				toast.success("Company Profile Updated");
+                onSave();
 				setShowModal(false);
 			})
 			.catch((error) => {

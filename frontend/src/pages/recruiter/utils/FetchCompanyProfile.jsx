@@ -11,14 +11,18 @@ export const FetchCompanyData = () => {
 	useEffect(() => {
 		const fetchCompanyProfile = async () => {
 			if (!userName) return;
-			const url = `http://localhost:8000/api/recruiter/${userName}/get-company-data`;
 			try {
-				const response = await axios.get(url, {
+                const url = `http://localhost:8000/api/recruiter/${userName}/get-company-data`;
+				await axios.get(url, {
 					headers: {
 						"Content-Type": "application/json",
 					},
-				});
-				setCompanyData(response.data);
+				})
+                .then((response) => {
+                    const fetchedData = response.data;
+                    setCompanyData(fetchedData);
+                })
+				
 			} catch (error) {
 				console.error("Error fetching company profile:", error);
 			}
@@ -28,4 +32,4 @@ export const FetchCompanyData = () => {
 	}, [user, userName]);
 
 	return companyData;
-}
+};

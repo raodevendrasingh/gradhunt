@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 // Hooks
 import { useEffect, useState } from "react";
 import { useCitySearch } from "@/hooks/useCitySearch";
@@ -9,7 +11,8 @@ import { toast } from "sonner";
 import axios from "axios";
 
 // Icons
-import { HiOutlineXMark, HiOutlinePlus } from "react-icons/hi2";
+import { HiOutlineXMark} from "react-icons/hi2";
+import { MdOutlineEdit } from "react-icons/md";
 
 // Local imports
 import {
@@ -22,12 +25,13 @@ import {
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import { useStore } from "@/store/userStore";
 
-export const EducationModal = () => {
+export const EditEducationModal = ({ educationId, onSave }) => {
 	const [showModal, setShowModal] = useState(false);
 	const {
 		control,
 		register,
 		handleSubmit,
+        reset,
 		formState: { errors },
 	} = useForm();
 
@@ -56,8 +60,74 @@ export const EducationModal = () => {
 		}
 	}, [userName, setUserName]);
 
+    const fetchEducationDetails = async () => {
+		try {
+			const response = await axios.get(
+				`http://localhost:8000/api/recruiter/${userName}/get-education-data/${educationId}`
+			);
+			reset({
+				instituteName: response.data.instituteName,
+				degreeTitle: {
+					label: response.data.degreeTitle,
+					value: response.data.degreeTitle,
+				},
+				studyField: { label: response.data.studyField, value: response.data.studyField },
+				startMonth: {
+					label: response.data.startMonth,
+					value: response.data.startMonth,
+				},
+				startYear: {
+					label: response.data.startYear,
+					value: response.data.startYear,
+				},
+				endMonth: {
+					label: response.data.endMonth,
+					value: response.data.endMonth,
+				},
+				endYear: { label: response.data.endYear, value: response.data.endYear },
+				instituteLocation: {
+					city: response.data.instituteLocation.split(", ")[0],
+					state: response.data.instituteLocation.split(", ")[1],
+					country: response.data.instituteLocation.split(", ")[2],
+					value: response.data.instituteLocation,
+					label: response.data.instituteLocation,
+				},
+				grade: response.data.grade,
+				description: response.data.description,
+			});
+		} catch (error) {
+			console.error("Error fetching experience details:", error);
+			toast.error("Failed to load experience details");
+		}
+	};
+
+
+    const deleteEducation = async ({ userName, educationId }) => {
+		try {
+			const url = `http://localhost:8000/api/recruiter/${userName}/delete-education-data/${educationId}`;
+			const response = await axios.delete(url, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			console.log(response.data);
+			setShowModal(false);
+            onSave();
+			toast.success("Education deleted!");
+		} catch (error) {
+			console.error("Error deleting education: ", error);
+			toast.error("Error deleting education! Try Again!");
+		}
+	};
+
+    useEffect(() => {
+		if (showModal && educationId) {
+			fetchEducationDetails();
+		}
+	}, [showModal, educationId]);
+
 	const onSubmit = async (data) => {
-		const educationData = {
+		const updatedEducationData = {
 			instituteName: data.instituteName,
 			degreeTitle: data.degreeTitle,
 			studyField: data.studyField,
@@ -70,39 +140,56 @@ export const EducationModal = () => {
 			description: data.description,
 		};
 
-		console.log(educationData);
+		// console.log(educationData);
 
-		axios({
-			url: `http://localhost:8000/api/recruiter/${userName}/add-education-data`,
-			method: "POST",
-			data: educationData,
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-			.then((response) => {
+        try {
+            const url = `http://localhost:8000/api/recruiter/${userName}/update-education-data/${educationId}`
+            await axios.put(url, updatedEducationData ).then((response) => {
+				console.log(updatedEducationData);
 				console.log(response.data);
-				toast.success("Recruiter Experience Added");
+				console.log(response);
+				toast.success("Recruiter Education Updated!");
 				setShowModal(false);
-			})
-			.catch((error) => {
-				toast.error("Error occured while adding education. Try again!");
-				if (error.response) {
-					console.log("Error Status: ", error.response.status);
-					console.log("Error Message: ", error.message);
-					console.log("Error Response: ", error.response);
-				} else if (error.request) {
-					console.log("Error Request: ", error.request);
-				} else {
-					console.log("Error Message: ", error.message);
-				}
+				onSave();
 			});
+        } catch (error) {
+            toast.error("Error occured while updating education. Try again!");
+			console.log("Error Status: ", error.response.status);
+			console.log("Error Message: ", error.message);
+        }
+
+		// axios({
+			
+		// 	method: "POST",
+		// 	data: educationData,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// })
+		// 	.then((response) => {
+		// 		console.log(response.data);
+		// 		toast.success("Recruiter Experience Added");
+		// 		setShowModal(false);
+        //         onSave();
+		// 	})
+		// 	.catch((error) => {
+		// 		toast.error("Error occured while adding education. Try again!");
+		// 		if (error.response) {
+		// 			console.log("Error Status: ", error.response.status);
+		// 			console.log("Error Message: ", error.message);
+		// 			console.log("Error Response: ", error.response);
+		// 		} else if (error.request) {
+		// 			console.log("Error Request: ", error.request);
+		// 		} else {
+		// 			console.log("Error Message: ", error.message);
+		// 		}
+		// 	});
 	};
 
 	return (
 		<>
 			<button type="button" onClick={() => setShowModal(true)}>
-				<HiOutlinePlus className="size-9 hover:bg-gray-100 rounded-full p-2" />
+				<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
 			</button>
 			{showModal ? (
 				<>
@@ -448,11 +535,18 @@ export const EducationModal = () => {
 									</div>
 								</div>
 								{/*footer*/}
-								<div className="flex items-center justify-end mt-3 rounded-b">
+								<div className="flex items-center justify-between mt-3 rounded-b">
 									<button
-										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+										className="text-rose-600 bg-rose-200 active:text-rose-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:bg-rose-600 hover:text-white outline-none focus:outline-none ease-linear transition-all duration-150"
+										type="delete"
+										onClick={() => deleteEducation({ userName, educationId })}
+									>
+										Delete
+									</button>
+									<button
+										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:bg-green-800 outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="submit"
-										form="educationDataForm"
+										onClick={handleSubmit(onSubmit)}
 									>
 										Save
 									</button>

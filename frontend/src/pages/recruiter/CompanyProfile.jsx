@@ -1,14 +1,20 @@
 // hooks
+import { useState } from "react";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 // local imports
 import { CompanyProfileModal } from "./modalForms/CompanyProfileModal";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { FetchCompanyData } from "./utils/FetchCompanyProfile";
 
 export const CompanyProfile = () => {
+	const [refresh, setRefresh] = useState(false);
+
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
 	const companyData = FetchCompanyData();
 
 	return (
@@ -21,7 +27,7 @@ export const CompanyProfile = () => {
 								Company Profile
 							</span>
 							<span>
-								<CompanyProfileModal />
+								<CompanyProfileModal onSave={handleRefresh} />
 							</span>
 						</div>
 
