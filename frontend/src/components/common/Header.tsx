@@ -1,9 +1,14 @@
 // hooks
 import { useState } from "react";
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
 // external packages
 import { Link } from "react-router-dom";
+import {
+	SignedIn,
+	SignOutButton,
+	SignedOut,
+	ClerkProvider,
+} from "@clerk/clerk-react";
 
 // assets
 import avatar from "@/assets/avatar/noUserBlank.png";
@@ -17,13 +22,11 @@ import {
 import { GoArrowUpRight } from "react-icons/go";
 
 const recruiterUrl =
-	import.meta.env.NODE_ENV === "production"
-		? "https://recruiter.gradhunt.com"
-		: "http://recruiter.localhost:5173";
+	import.meta.env.NODE_ENV === "development"
+		? "http://recruiter.localhost:5173"
+		: "https://recruiter.gradhunt.com";
 
 export const Header = () => {
-	const { logout, isAuthenticated } = useKindeAuth();
-
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -117,58 +120,58 @@ export const Header = () => {
 						</ul>
 
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
-							{isAuthenticated ? (
-								<>
-									<Link
-										to="#"
-										className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
-										onClick={(e) => {
-											e.preventDefault();
-											setIsOpen(!isOpen);
-										}}
-									>
-										<img
-											src={avatar}
-											alt="user name"
-											title="user name"
-											width="40"
-											height="40"
-											className="max-w-full rounded-full"
-										/>
-									</Link>
-									{isOpen && (
-										<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
-											<div className="rounded-md bg-gray-100 shadow-xs">
-												<div className="p-1">
-													<Link
-														to="/profile"
-														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
-													>
-														<UserIcon
-															className="h-5 w-5 text-gray-800"
-															aria-hidden="true"
-														/>
-														Profile
-													</Link>
-													<Link
-														to="#"
-														onClick={() =>
-															logout({ returnTo: window.location.origin })
-														}
-														className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
-													>
-														<ArrowLeftStartOnRectangleIcon
-															className="h-5 w-5 text-red-700"
-															aria-hidden="true"
-														/>
-														Logout
-													</Link>
-												</div>
+							<SignedIn>
+								<Link
+									to="#"
+									className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
+									onClick={(e) => {
+										e.preventDefault();
+										setIsOpen(!isOpen);
+									}}
+								>
+									<img
+										src={avatar}
+										alt="user name"
+										title="user name"
+										width="40"
+										height="40"
+										className="max-w-full rounded-full"
+									/>
+								</Link>
+								{isOpen && (
+									<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
+										<div className="rounded-md bg-gray-100 shadow-xs">
+											<div className="p-1">
+												<Link
+													to="/profile"
+													className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
+												>
+													<UserIcon
+														className="h-5 w-5 text-gray-800"
+														aria-hidden="true"
+													/>
+													Profile
+												</Link>
+												<Link
+													to="#"
+													// onClick={() =>
+													// 	logout({ returnTo: window.location.origin })
+													// }
+													className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
+												>
+													<ArrowLeftStartOnRectangleIcon
+														className="h-5 w-5 text-red-700"
+														aria-hidden="true"
+													/>
+													Logout
+												</Link>
 											</div>
 										</div>
-									)}
-								</>
-							) : (
+									</div>
+								)}
+							</SignedIn>
+
+							<SignedOut>
 								<div className="flex items-center justify-center gap-5">
 									<Link to="/login">
 										<button
@@ -188,7 +191,7 @@ export const Header = () => {
 										</button>
 									</Link>
 								</div>
-							)}
+							</SignedOut>
 						</div>
 					</nav>
 				</div>
