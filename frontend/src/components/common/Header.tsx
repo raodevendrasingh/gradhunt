@@ -7,6 +7,7 @@ import {
 	SignedIn,
 	SignOutButton,
 	SignedOut,
+	UserButton,
 	ClerkProvider,
 } from "@clerk/clerk-react";
 
@@ -20,6 +21,7 @@ import {
 	ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import { GoArrowUpRight } from "react-icons/go";
+import { UserMenuDropdown } from "./UserMenuDropdown";
 
 const recruiterUrl =
 	import.meta.env.NODE_ENV === "development"
@@ -104,7 +106,7 @@ export const Header = () => {
 									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700 focus:outline-none focus-visible:outline-none lg:px-8"
 									to="#"
 								>
-									Jobs
+									Find Jobs
 								</Link>
 							</li>
 							<li role="none" className="flex items-center">
@@ -121,54 +123,20 @@ export const Header = () => {
 
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
 							<SignedIn>
-								<Link
-									to="#"
-									className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
-									onClick={(e) => {
-										e.preventDefault();
-										setIsOpen(!isOpen);
+								
+								{/* <UserButton
+									appearance={{
+										elements: {
+											userButtonPopoverCard: "rounded-xl w-56 shadow-md",
+											userPreview: "p-3",
+											userButtonAvatarBox: "size-10",
+											userButtonPopoverActionButton: "px-1 py-3",
+											userButtonPopoverFooter: "",
+										},
 									}}
-								>
-									<img
-										src={avatar}
-										alt="user name"
-										title="user name"
-										width="40"
-										height="40"
-										className="max-w-full rounded-full"
-									/>
-								</Link>
-								{isOpen && (
-									<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
-										<div className="rounded-md bg-gray-100 shadow-xs">
-											<div className="p-1">
-												<Link
-													to="/profile"
-													className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
-												>
-													<UserIcon
-														className="h-5 w-5 text-gray-800"
-														aria-hidden="true"
-													/>
-													Profile
-												</Link>
-												<Link
-													to="#"
-													// onClick={() =>
-													// 	logout({ returnTo: window.location.origin })
-													// }
-													className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
-												>
-													<ArrowLeftStartOnRectangleIcon
-														className="h-5 w-5 text-red-700"
-														aria-hidden="true"
-													/>
-													Logout
-												</Link>
-											</div>
-										</div>
-									</div>
-								)}
+									userProfileMode="modal"
+								/> */}
+                                <UserMenuDropdown />
 							</SignedIn>
 
 							<SignedOut>

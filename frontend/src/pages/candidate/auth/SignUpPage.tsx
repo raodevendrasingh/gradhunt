@@ -36,6 +36,7 @@ export const SignUpPage = () => {
 									"rounded-lg bg-gray-50 border border-gray-300 py-4",
 								formButtonPrimary: " text-base py-2 rounded-lg",
 								footer: "hidden",
+                                otpCodeFieldInput: "rounded-lg bg-gray-50 border border-gray-300 py-4"
 							},
 						}}
 						initialValues={{
