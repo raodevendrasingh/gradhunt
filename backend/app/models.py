@@ -1,9 +1,10 @@
 from django.db import models
-from django.core.validators import MaxLengthValidator, URLValidator
+from django.core.validators import URLValidator
 from django.contrib.postgres.fields import ArrayField
 
 
 class UserDetails(models.Model):
+    clerk_user_id = models.CharField(max_length=255, unique=True, null=True)
     profilePicture = models.ImageField(
         upload_to='profile_pics/', null=True, blank=True)
     username = models.CharField(max_length=100)
@@ -11,6 +12,7 @@ class UserDetails(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
+    bio = models.CharField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
     timezone = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
