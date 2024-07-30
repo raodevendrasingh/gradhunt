@@ -1,35 +1,28 @@
 // hooks
 import { useState } from "react";
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 
 // assets
-import avatar from "@/assets/avatar/noUserBlank.png";
 import gradhunt from "@/assets/brand/brandLogoFull.png";
+import { GoArrowUpRight } from "react-icons/go";
 
-// icons
-import {
-	FaUser,
-	FaArrowRightFromBracket,
-	FaArrowUpRightFromSquare,
-	FaChevronDown,
-} from "react-icons/fa6";
-
+// external packages
 import { Link } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 
-const homepage =
-	import.meta.env.NODE_ENV === "production"
-		? "https://gradhunt.com"
-		: "http://localhost:5173";
+// const homepage =
+// 	import.meta.env.NODE_ENV == "developement"
+// 		? "http://localhost:5173"
+// 		: "https://gradhunt.com";
+
+const homepage = "http://localhost:5173";
 
 export const RecruiterNavbar = () => {
-	const { user, logout, isAuthenticated } = useKindeAuth();
-
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
 
 	return (
 		<>
-			<header className=" fixed top-0 z-20 w-full border-b-1 border-b border-slate-200 bg-white/90 shadow-md shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
+			<header className="fixed top-0 z-20 w-full border-b-1 border-b border-slate-200 bg-white/90 shadow-md shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
 				<div className="relative mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl">
 					<nav
 						aria-label="main navigation"
@@ -103,7 +96,7 @@ export const RecruiterNavbar = () => {
 									className="flex items-center gap-2 py-4 transition-colors duration-100 hover:text-green-700 focus:outline-none focus-visible:outline-none lg:px-8"
 									to="#"
 								>
-									Find Talent
+									Pricing
 								</Link>
 							</li>
 							<li role="none" className="flex items-center">
@@ -117,71 +110,23 @@ export const RecruiterNavbar = () => {
 								</Link>
 							</li>
 						</ul>
-						{/* </div> */}
-
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
-							{isAuthenticated ? (
-								<>
-									<Link
-										to="#"
-										className="relative inline-flex items-center justify-center gap-2 rounded-full border shadow-sm px-3 py-1.5 bg-gray-100"
-										onClick={(e) => {
-											e.preventDefault();
-											setIsOpen(!isOpen);
-										}}
-									>
-										<img
-											src={avatar}
-											alt="user name"
-											title="user name"
-											width="20"
-											height="20"
-											className="rounded-full"
-										/>
-										<FaChevronDown className="size-3" />
+							<SignedIn>
+								<UserMenuDropdown />
+							</SignedIn>
+
+							<SignedOut>
+								<div className="flex items-center justify-center gap-5">
+									<Link to={homepage}>
+										<button className="px-3 py-2 flex text-base font-medium items-center rounded-[8px] bg-green-100 hover:bg-green-200  hover:text-green-800 transition-all duration-300 text-green-700">
+											Find Jobs
+											<span>
+												<GoArrowUpRight className="size-5" />
+											</span>
+										</button>
 									</Link>
-									{isOpen && (
-										<div className="absolute right-0 top-16 w-28 mr-1 rounded-md shadow-lg transition">
-											<div className="rounded-md bg-gray-100 shadow-xs">
-												<div className="p-1">
-													<span className="text-sm px-4 py-2">dev1618</span>{" "}
-													{/* replace with username field, fetched during login */}
-													<Link
-														to="/dev1618"
-														className="flex gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded"
-													>
-														<FaUser
-															className="h-5 w-5 text-gray-800"
-															aria-hidden="true"
-														/>
-														Profile
-													</Link>
-													<Link
-														to="#"
-														onClick={() => logout()}
-														className="flex gap-2 px-4 py-2 text-sm text-red-700 hover:bg-gray-50 rounded"
-													>
-														<FaArrowRightFromBracket
-															className="h-5 w-5 text-red-700"
-															aria-hidden="true"
-														/>
-														Logout
-													</Link>
-												</div>
-											</div>
-										</div>
-									)}
-								</>
-							) : (
-								<Link to={homepage}>
-									<button className="px-3 py-1.5 flex text-base items-center gap-2 rounded-md bg-sky-100 text-sky-700 border-2 border-b-4 active:border-2 border-sky-700">
-										Find Jobs
-										<span>
-											<FaArrowUpRightFromSquare />
-										</span>
-									</button>
-								</Link>
-							)}
+								</div>
+							</SignedOut>
 						</div>
 					</nav>
 				</div>
