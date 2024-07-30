@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from os import getenv
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
 
@@ -33,8 +34,24 @@ INSTALLED_APPS = [
 
     'app',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'app.authentication.ClerkJWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+CLERK_JWT_ISSUER = getenv('CLERK_JWT_ISSUER')
+CLERK_JWT_AUDIENCE = getenv('CLERK_JWT_AUDIENCE')
+CLERK_PUBLIC_KEY = getenv('CLERK_PUBLIC_KEY')
+
+if not CLERK_PUBLIC_KEY:
+    raise ImproperlyConfigured("CLERK_PUBLIC_KEY must be set")
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +67,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'gradHunt.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  
+    "http://localhost:5173",
     "http://admin.localhost:5173",
     "http://recruiter.localhost:5173",
 ]
@@ -76,13 +93,6 @@ WSGI_APPLICATION = 'gradHunt.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -142,3 +152,41 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        '': { 
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}

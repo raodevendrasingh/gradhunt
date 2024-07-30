@@ -1,6 +1,8 @@
 import json
 from .models import *
 from .serializers import *
+from .permission import IsClerkAuthenticated
+import json
 from django.views import View
 from django.db import transaction
 from rest_framework import status
@@ -50,6 +52,31 @@ class CheckEmailView(View):
 
         exists = UserDetails.objects.filter(email__iexact=email).exists()
         return JsonResponse({'exists': exists})
+
+
+class SaveCandidateData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        data = request.data.copy() 
+
+        if hasattr(request.user, 'clerk_user_id'):
+            data['clerk_user_id'] = request.user.clerk_user_id
+
+        user_serializer = UserSerializer(data=data)
+        if not user_serializer.is_valid():
+            return Response({'status': 'error', 'errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_instance = user_serializer.save()
+
+        response_data = {
+            'status': 'success',
+            'message': 'Candidate Details Saved Successfully',
+            'id': user_instance.id,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 class SaveRecruiterFormData(APIView):
