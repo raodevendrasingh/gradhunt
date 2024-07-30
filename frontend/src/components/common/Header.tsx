@@ -23,14 +23,15 @@ import {
 import { GoArrowUpRight } from "react-icons/go";
 import { UserMenuDropdown } from "./UserMenuDropdown";
 
-const recruiterUrl =
-	import.meta.env.NODE_ENV === "development"
-		? "http://recruiter.localhost:5173"
-		: "https://recruiter.gradhunt.com";
+// const recruiterUrl =
+// 	import.meta.env.NODE_ENV === "development"
+// 		? "http://recruiter.localhost:5173"
+// 		: "https://recruiter.gradhunt.com";
+
+const recruiterUrl = "http://recruiter.localhost:5173"
 
 export const Header = () => {
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
 
 	return (
 		<>

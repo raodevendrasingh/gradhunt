@@ -12,30 +12,34 @@ export default function HomeFeed(): JSX.Element {
 			const username = user.username;
 			const firstname = user.firstName;
 			const lastname = user.lastName;
-			console.log(username, firstname, lastname);
+			console.log("username: ",username);
+			console.log('firstname :', firstname);
+			console.log('lastname :', lastname);
 
-            
 			if (username == null) {
 				setIsUsernameModalOpen(true);
+			} else if (firstname == null || lastname == null) {
+				setIsUserDetailModalOpen(true);
 			}
-            else if ( firstname == null || lastname == null ){
-                setIsUserDetailModalOpen(true);
-            }
-            
 		}
 	}, [isSignedIn, user]);
 
 	return (
 		<div className="p-24">
-			<UserDetailModal isUserDetailModalOpen={isUserDetailModalOpen} setIsUserDetailModalOpen={setIsUserDetailModalOpen} />
-			<UsernameModal isUsernameModalOpen={isUsernameModalOpen} setIsUsernameModalOpen={setIsUsernameModalOpen} />
-            
+			<UserDetailModal
+				isUserDetailModalOpen={isUserDetailModalOpen}
+				setIsUserDetailModalOpen={setIsUserDetailModalOpen}
+			/>
+			<UsernameModal
+				isUsernameModalOpen={isUsernameModalOpen}
+				setIsUsernameModalOpen={setIsUsernameModalOpen}
+			/>
 			Home Feed - You are seeing this because you are signed in
-            <div className="flex flex-col">
-			<span>username: {user?.username}</span>
-			<span>firstname: {user?.firstName}</span>
-			<span>primary-email: {user?.primaryEmailAddress?.toString()}</span>
-            </div>
+			<div className="flex flex-col">
+				<span>username: {user?.username}</span>
+				<span>firstname: {user?.firstName}</span>
+				<span>primary-email: {user?.primaryEmailAddress?.toString()}</span>
+			</div>
 		</div>
 	);
 }
