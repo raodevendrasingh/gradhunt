@@ -1,5 +1,5 @@
 // external libraries
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // components
 import { Footer } from "@/components/common/Footer";
@@ -12,8 +12,19 @@ import { GoDotFill } from "react-icons/go";
 
 // helper functions
 import faqItems from "@/utils/faqItems";
+import { useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
 export const LandingPage = () => {
+	const { isSignedIn, user } = useUser();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (isSignedIn) {
+			navigate("/feed");
+		}
+	}, [user]);
+
 	return (
 		<>
 			<Header />

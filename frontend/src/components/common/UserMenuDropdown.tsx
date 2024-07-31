@@ -1,12 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HiOutlineLogout, HiUserCircle } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useStore } from "@/store/userStore";
 import { useUser, SignOutButton } from "@clerk/clerk-react";
 
 export const UserMenuDropdown = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const dropdownRef = useRef(null);
 	const { isSignedIn, user } = useUser();
+	const navigate = useNavigate();
+
+	const { userName, setUserName } = useStore(
+		(state: { userName: any; setUserName: any }) => ({
+			userName: state.userName,
+			setUserName: state.setUserName,
+		})
+	);
+
+	useEffect(() => {
+		if (!userName) {
+			const storedUserName = localStorage.getItem("userName");
+			if (storedUserName) {
+				setUserName(storedUserName);
+			}
+		}
+	}, [userName, setUserName]);
+
+	const profilePath = isSignedIn ? userName : "user";
 
 	const toggleDropdown = () => setIsVisible(!isVisible);
 
@@ -26,12 +46,17 @@ export const UserMenuDropdown = () => {
 		};
 	}, []);
 
+	const handleProfileClick = () => {
+		navigate(`${profilePath}`); // Navigate to the profile page
+		setIsVisible(false); // Close the dropdown menu
+	};
+
 	if (isSignedIn) {
 		return (
 			<div className="relative" ref={dropdownRef}>
-				<div className="inline-flex items-center overflow-hidden  ">
+				<div className="flex items-center overflow-hidden  ">
 					<button onClick={toggleDropdown}>
-						<span className="pt-5 rounded-full">
+						<span className="rounded-full">
 							<img
 								src={user.imageUrl}
 								alt="User profile"
@@ -43,7 +68,7 @@ export const UserMenuDropdown = () => {
 
 				{isVisible && (
 					<div
-						className="absolute top-12 right-0 z-30 rounded-xl border border-gray-200 bg-white shadow"
+						className="absolute top-12 right-0 z-30 rounded-xl border border-gray-200 bg-white shadow cursor-pointer"
 						role="menu"
 					>
 						<div className="">
@@ -60,21 +85,24 @@ export const UserMenuDropdown = () => {
 									<span>{user?.primaryEmailAddress?.toString()}</span>
 								</div>
 							</span>
-							<Link
-								to="/profile"
+							<div
+								// to={`${profilePath}`}
+								onClick={handleProfileClick}
 								className="flex items-center gap-6 px-4 py-3 border-b leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
 							>
 								<span>
 									<HiUserCircle className="size-5 text-gray-600" />
 								</span>
 								<span className="text-sm">Profile</span>
-							</Link>
-							<div className="flex items-center gap-6 px-4 py-3 leading-5 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-								<span>
-									<HiOutlineLogout className="size-5 text-rose-400" />
-								</span>
-								<SignOutButton>Logout</SignOutButton>
 							</div>
+							<SignOutButton>
+								<div className="flex items-center gap-6 px-4 py-3 leading-5 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+									<span>
+										<HiOutlineLogout className="size-5 text-rose-400" />
+									</span>
+									Logout
+								</div>
+							</SignOutButton>
 						</div>
 					</div>
 				)}

@@ -34,7 +34,7 @@ export const UserSettings = () => {
 									<input
 										type="text"
 										className="rounded-lg h-10 max-w-sm focus:ring-transparent disabled:text-gray-400 disabled:cursor-not-allowed"
-										value={userName}
+										value={userName || ''}
 										disabled
 									/>
 									{/* <span className="p-2 border rounded-lg">

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useStore } from "@/store/userStore.js";
+import { useStore } from "@/store/userStore";
 
 // icons
 import { MdOutlineEdit, MdMail } from "react-icons/md";

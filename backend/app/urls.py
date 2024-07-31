@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('api/', HomeView.as_view(), name='home'),
+    path('api/get-usertype/', GetUserType.as_view(), name='get-usertype'),
     path('api/check-email/', CheckEmailView.as_view(), name='check-email'),
     path('api/check-username/', CheckUsernameView.as_view(), name='check-username'),
     # candidate data

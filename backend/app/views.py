@@ -17,6 +17,20 @@ class HomeView(APIView):
         return Response('This is the API home page', status=status.HTTP_200_OK)
 
 
+class GetUserType(APIView):
+    def get(self, request):
+        email = request.query_params.get('email')
+        if not email:
+            return Response({'error': 'Email parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_details = UserDetails.objects.get(email=email)
+            userType = user_details.usertype
+            return Response({'usertype': userType}, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
 class GetCompanyProfile(APIView):
     def get(self, request, username):
         try:
@@ -59,7 +73,7 @@ class SaveCandidateData(APIView):
 
     @transaction.atomic
     def post(self, request):
-        data = request.data.copy() 
+        data = request.data.copy()
 
         if hasattr(request.user, 'clerk_user_id'):
             data['clerk_user_id'] = request.user.clerk_user_id

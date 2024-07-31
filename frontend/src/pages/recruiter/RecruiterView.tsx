@@ -1,10 +1,22 @@
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+
 import BusinessMeeting from "@/assets/illustration/businessMeeting.jpg";
+
 import { SignInPage } from "@/pages/recruiter/auth/SignInPage";
 import { SignUpPage } from "@/pages/recruiter/auth/SignUpPage";
-import { useState } from "react";
 
 export const RecruiterView = () => {
-	const [isSignIn, setIsSignIn] = useState(true);
+    const { isSignedIn, user } = useUser();
+	const navigate = useNavigate();
+    const [isSignIn, setIsSignIn] = useState(true);
+
+	useEffect(() => {
+		if (isSignedIn) {
+			navigate("/feed");
+		}
+	}, [user]);
 
 	const toggleView = () => {
 		setIsSignIn(!isSignIn);

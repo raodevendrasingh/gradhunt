@@ -1,24 +1,28 @@
 import { UsernameModal, UserDetailModal } from "@/components/common/UserModal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
+import { useStore } from "@/store/userStore";
 
 export default function HomeFeed(): JSX.Element {
 	const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
 	const [isUserDetailModalOpen, setIsUserDetailModalOpen] = useState(false);
 	const { isSignedIn, user } = useUser();
+	const signInUser = useStore((state) => state.signInUser);
+	const memoizedSignInUser = useCallback(signInUser, []);
+
+	useEffect(() => {
+		if (isSignedIn && user) {
+			const username = user.username || "";
+			const usertype = "candidate";
+			signInUser(username, usertype);
+		}
+	}, [isSignedIn, user, memoizedSignInUser]);
 
 	useEffect(() => {
 		if (isSignedIn) {
-			const username = user.username;
-			const firstname = user.firstName;
-			const lastname = user.lastName;
-			console.log("username: ",username);
-			console.log('firstname :', firstname);
-			console.log('lastname :', lastname);
-
-			if (username == null) {
+			if (!user.username) {
 				setIsUsernameModalOpen(true);
-			} else if (firstname == null || lastname == null) {
+			} else if (!user.firstName || !user.lastName) {
 				setIsUserDetailModalOpen(true);
 			}
 		}
@@ -26,6 +30,8 @@ export default function HomeFeed(): JSX.Element {
 
 	return (
 		<div className="p-24">
+
+            this is the home feed
 			<UserDetailModal
 				isUserDetailModalOpen={isUserDetailModalOpen}
 				setIsUserDetailModalOpen={setIsUserDetailModalOpen}
@@ -34,12 +40,6 @@ export default function HomeFeed(): JSX.Element {
 				isUsernameModalOpen={isUsernameModalOpen}
 				setIsUsernameModalOpen={setIsUsernameModalOpen}
 			/>
-			Home Feed - You are seeing this because you are signed in
-			<div className="flex flex-col">
-				<span>username: {user?.username}</span>
-				<span>firstname: {user?.firstName}</span>
-				<span>primary-email: {user?.primaryEmailAddress?.toString()}</span>
-			</div>
 		</div>
 	);
 }

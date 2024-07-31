@@ -114,7 +114,6 @@ export const RecruiterNavbar = () => {
 							<SignedIn>
 								<UserMenuDropdown />
 							</SignedIn>
-
 							<SignedOut>
 								<div className="flex items-center justify-center gap-5">
 									<Link to={homepage}>

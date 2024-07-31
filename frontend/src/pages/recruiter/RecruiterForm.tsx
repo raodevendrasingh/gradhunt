@@ -13,7 +13,7 @@ import Select from "react-select";
 
 // local components
 import { Header } from "@/components/common/Header";
-import { MultiSelectDropdown } from "@/components/layouts/MultiSelectDropdown";
+import { MultiSelectDropdown } from "@/components/common/MultiSelectDropdown";
 import { useStore } from "@/store/userStore";
 
 // dropdown options

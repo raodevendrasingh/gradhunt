@@ -3,23 +3,14 @@ import { useState } from "react";
 
 // external packages
 import { Link } from "react-router-dom";
-import {
-	SignedIn,
-	SignOutButton,
-	SignedOut,
-	UserButton,
-	ClerkProvider,
-} from "@clerk/clerk-react";
+
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 
 // assets
 import avatar from "@/assets/avatar/noUserBlank.png";
 import gradhunt from "@/assets/brand/brandLogoFull.png";
 
 // icons
-import {
-	UserIcon,
-	ArrowLeftStartOnRectangleIcon,
-} from "@heroicons/react/24/solid";
 import { GoArrowUpRight } from "react-icons/go";
 import { UserMenuDropdown } from "./UserMenuDropdown";
 
@@ -28,10 +19,11 @@ import { UserMenuDropdown } from "./UserMenuDropdown";
 // 		? "http://recruiter.localhost:5173"
 // 		: "https://recruiter.gradhunt.com";
 
-const recruiterUrl = "http://recruiter.localhost:5173"
+const recruiterUrl = "http://recruiter.localhost:5173";
 
 export const Header = () => {
 	const [isToggleOpen, setIsToggleOpen] = useState(false);
+	
 
 	return (
 		<>
@@ -124,7 +116,6 @@ export const Header = () => {
 
 						<div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
 							<SignedIn>
-								
 								{/* <UserButton
 									appearance={{
 										elements: {
@@ -137,7 +128,7 @@ export const Header = () => {
 									}}
 									userProfileMode="modal"
 								/> */}
-                                <UserMenuDropdown />
+								<UserMenuDropdown />
 							</SignedIn>
 
 							<SignedOut>
