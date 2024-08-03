@@ -8,6 +8,7 @@ import { HiLockClosed } from "react-icons/hi";
 import { PiConfettiFill } from "react-icons/pi";
 import { FaLinkedinIn, FaGithub, FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode } from "react-icons/si";
+import { SiGmail } from "react-icons/si";
 import {
 	FaDev,
 	FaMedium,
@@ -108,9 +109,9 @@ export default function UserProfile(): JSX.Element {
 												Kahono Fuzushiki
 											</span>
 										</div>
-										<div>
+										{/* <div>
 											<span className="text-xs">@kahono</span>
-										</div>
+										</div> */}
 									</div>
 
 									{/* bio */}
@@ -151,6 +152,9 @@ export default function UserProfile(): JSX.Element {
 								<div className=" w-full md:w-[20%]  flex flex-col md:justify-center items-center ">
 									<div className="flex w-full sm:justify-start sm:pl-5 md:pl-0 justify-center flex-row md:flex-col items-center gap-2">
 										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<SiGmail className="size-4" />
+										</span>
+										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
 											<FaLinkedinIn className="size-4" />
 										</span>
 										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
@@ -171,8 +175,8 @@ export default function UserProfile(): JSX.Element {
 							</div>
 						</section>
 						{/* Tabs section */}
-						<main className="sticky top-[64px] z-20 ">
-							<div className="px-4 py-3 bg-sky-100 flex items-center flex-wrap gap-2">
+						<main className="sticky top-[64px] z-20">
+							<div className="px-4 py-3 bg-sky-100 flex items-center gap-2">
 								{tabsData.map((tab, idx) => (
 									<Chip
 										key={idx}

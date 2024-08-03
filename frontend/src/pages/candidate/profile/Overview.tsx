@@ -8,7 +8,7 @@ export const Overview = () => {
 			<div className=" flex flex-col pb-3 bg-zinc-100 rounded-b-lg">
 				<span className="text-lg font-light pl-3 pt-2">About</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<HiOutlineUser className="size-12 text-gray-300" />
+					<HiOutlineUser className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Write About Yourself
 					</p>
@@ -17,10 +17,10 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="pb-3 bg-zinc-100 rounded-lg">
-				<span className="text-lg font-light pl-3 pt-5">Skills</span>
+			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+				<span className=" flex flex-col text-lg font-light pl-3 pt-2">Skills</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<HiOutlineBolt className="size-12 text-gray-300" />
+					<HiOutlineBolt className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Highlight Your Skills
 					</p>
@@ -29,10 +29,10 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="pb-3 bg-zinc-100 rounded-lg">
-				<span className="text-lg font-light pl-3 pt-5">Projects</span>
+			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+				<span className=" flex flex-col text-lg font-light pl-3 pt-2">Projects</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<HiOutlineFolderPlus className="size-12 text-gray-300" />
+					<HiOutlineFolderPlus className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Highlight Your Projects
 					</p>
@@ -41,10 +41,10 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="pb-3 bg-zinc-100 rounded-lg">
-				<span className="text-lg font-light pl-3 pt-5">Experience</span>
+			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+				<span className=" flex flex-col text-lg font-light pl-3 pt-2">Experience</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<HiOutlineBriefcase className="size-12 text-gray-300" />
+					<HiOutlineBriefcase className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Add Professional History
 					</p>
@@ -53,10 +53,10 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="pb-3 bg-zinc-100 rounded-lg">
-				<span className="text-lg font-light pl-3 pt-5">Education</span>
+			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+				<span className=" flex flex-col text-lg font-light pl-3 pt-2">Education</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<PiGraduationCap className="size-12 text-gray-300" />
+					<PiGraduationCap className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Add Education details
 					</p>
@@ -65,10 +65,10 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="pb-3 bg-zinc-100 rounded-lg">
-				<span className="text-lg font-light pl-3 pt-5">Achievements</span>
+			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+				<span className=" flex flex-col text-lg font-light pl-3 pt-2">Achievements</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
-					<GrCertificate className="size-12 text-gray-300" />
+					<GrCertificate className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
 						Add your Achievements
 					</p>
