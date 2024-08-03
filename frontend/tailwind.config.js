@@ -5,16 +5,20 @@ import form from "@tailwindcss/forms";
 
 export default withMT({
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
-    important: true,
+	important: true,
 	theme: {
 		extend: {
 			fontFamily: {
-                NotoSans: ["Noto Sans", "sans-serif"],
+				NotoSans: ["Noto Sans", "sans-serif"],
 			},
 			colors: colors,
 			screens: {
 				xs: "475px",
-				// => @media (min-width: 992px) { ... }
+				sm: "640px",
+				md: "768px",
+				lg: "1024px",
+				xl: "1280px",
+				"2xl": "1536px",
 			},
 		},
 	},
