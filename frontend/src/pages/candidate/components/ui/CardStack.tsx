@@ -6,23 +6,23 @@ import { HiSparkles } from "react-icons/hi2";
 
 const CARD_DETAILS = [
 	{
-		color: "#a4c0ed",
-		title: "Complete your Profile",
-		content: "Content for the first card",
+		color: "#F4F5FA",
+		title: "Complete Profile Setup",
+		content: "Add all the section of the profile",
 	},
 	{
-		color: "#b8f2c8",
-		title: "Add Portfolio Data",
-		content: "Add Academic and Professional Details",
+		color: "#F8F8FF",
+		title: "Add your Background",
+		content: "Include your academic and professional details.",
 	},
 	{
-		color: "#e0d2fa",
-		title: "Apply",
-		content: "Apply for a job that suits your preferences",
+		color: "#F0FFFF",
+		title: "Apply for Positions",
+		content: "Search for jobs that suit your skills and apply.",
 	},
 ];
-const CARD_OFFSET = 10;
-const SCALE_FACTOR = 0.06;
+const CARD_OFFSET = 15;
+const SCALE_FACTOR = 0.009;
 
 export const CardStack = () => {
 	const [cards, setCards] = useState(CARD_DETAILS);
@@ -33,7 +33,7 @@ export const CardStack = () => {
 
 	return (
 		<div className="relative flex flex-col gap-3">
-			<div className="flex font-lg font-light justify-center items-center gap-2">
+			<div className="flex font-lg font-medium  justify-center items-center gap-2">
 				Recommendations
 				<span>
 					<HiSparkles />
@@ -44,7 +44,7 @@ export const CardStack = () => {
 					{cards.map((card, index) => (
 						<motion.li
 							key={card.color}
-							className="absolute border border-gray-400 w-[100%] h-[130px] rounded-lg list-none"
+							className="absolute border border-gray-300 hover:border-gray-600 w-[100%] h-[130px] rounded-lg list-none"
 							style={{
 								backgroundColor: card.color,
 							}}

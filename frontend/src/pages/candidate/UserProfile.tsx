@@ -8,6 +8,15 @@ import { HiLockClosed } from "react-icons/hi";
 import { PiConfettiFill } from "react-icons/pi";
 import { FaLinkedinIn, FaGithub, FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode } from "react-icons/si";
+import {
+	FaDev,
+	FaMedium,
+	FaDribbble,
+	FaHashnode,
+	FaYoutube,
+} from "react-icons/fa6";
+import { HiOutlinePlusCircle, HiOutlinePlus } from "react-icons/hi2";
+import { BsFillPlusCircleFill } from "react-icons/bs";
 
 import { Chip } from "./components/ui/Chips";
 
@@ -49,8 +58,9 @@ const tabsData = [
 
 export default function UserProfile(): JSX.Element {
 	const [selected, setSelected] = useState(0);
-	const [isDisabled, setIsDisabled] = useState(true);
+	const [isDisabled, setIsDisabled] = useState(false);
 	const { isSignedIn, user } = useUser();
+	const [onHover, setOnHover] = useState(false);
 
 	return (
 		<div className="flex lg:max-w-6xl mx-auto pt-16">
@@ -175,17 +185,17 @@ export default function UserProfile(): JSX.Element {
 						<div>{tabsData[selected].content}</div>
 					</div>
 					{/* sidebar */}
-					<div className="sticky top-28 ml-2 max-h-72 hidden md:block w-[25%]">
+					<div className="sticky top-[118px] ml-2 max-h-72 hidden md:block w-[25%]">
 						<div className=" flex flex-col gap-2">
 							{/* <div className="h-28 bg-purple-200 ">Contacts</div> */}
 							{/*  container */}
-							<div className="flex flex-col gap-2 bg-gray-100 p-2 rounded-b-2xl ">
+							<div className="flex flex-col gap-2 bg-gray-100 p-2 rounded-lg border border-gray-300 ">
 								{/* recomendations */}
 								<CardStack />
 								{/* publish button */}
 								<button
 									disabled={isDisabled}
-									className="w-full mt-32 px-3 py-2 rounded-md bg-zinc-800 text-white disabled:bg-zinc-800/90"
+									className="w-full mt-32 px-3 py-2 rounded-md bg-zinc-800 text-white disabled:bg-black/60"
 								>
 									{isDisabled ? (
 										<span className="flex items-center justify-center gap-2 cursor-not-allowed">
@@ -193,9 +203,109 @@ export default function UserProfile(): JSX.Element {
 										</span>
 									) : (
 										<span className="flex items-center justify-center gap-2 cursor-pointer">
-											Publish <PiConfettiFill />
+											Publish <PiConfettiFill className="text-rose-400"/>
 										</span>
 									)}
+								</button>
+							</div>
+							{/* integrations */}
+							<div className="flex flex-col gap-2 px-3 py-4 rounded-lg border border-gray-300">
+								<span className="text-lg font-medium">Feature Your Content</span>
+
+								{/* github */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaGithub className="size-5" />
+										</span>
+										<span className="">GitHub</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
+								</button>
+
+								{/* Youtube */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaYoutube className="size-5 text-rose-600" />
+										</span>
+										<span className="">Youtube</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
+								</button>
+
+								{/* dev.to */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaDev className="size-5" />
+										</span>
+										<span className="">Dev</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
+								</button>
+
+								{/* medium */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaMedium className="size-5" />
+										</span>
+										<span className="">Medium</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
+								</button>
+
+								{/* hashnode */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaHashnode className="size-5 text-blue-700 " />
+										</span>
+										<span className="">Hashnode</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
+								</button>
+
+								{/* dribbble */}
+								<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+									<div className="flex justify-between items-center gap-3">
+										<span className="">
+											<FaDribbble className="size-5 text-pink-600 " />
+										</span>
+										<span className="">Dribbble</span>
+									</div>
+									<span className="group-hover:hidden">
+										<HiOutlinePlus className="size-5" />
+									</span>
+									<span className="hidden group-hover:block">
+										<BsFillPlusCircleFill className="size-5" />
+									</span>
 								</button>
 							</div>
 						</div>
