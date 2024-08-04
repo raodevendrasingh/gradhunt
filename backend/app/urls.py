@@ -20,7 +20,7 @@ urlpatterns = [
     path('api/recruiter/<str:username>/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),
     # education section
-    path('api/<str:username>/add-education-data', AddEducationData.as_view(), name='add-education'),
+    path('api/add-education-data', AddEducationData.as_view(), name='add-education'),
     path('api/recruiter/<str:username>/get-education-data/<str:id>', GetEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-education-data/<str:id>', UpdateEducationData.as_view(), name='update-education'),

@@ -384,15 +384,8 @@ class AddEducationData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
-    def post(self, request, username):
-        try:
-            user = UserDetails.objects.get(username=username)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Ensure the authenticated user is updating their own data
-        if request.user.clerk_user_id != user.clerk_user_id:
-            return Response({"error": "Unauthorized to update this user's data"}, status=status.HTTP_403_FORBIDDEN)
+    def post(self, request):
+        user = request.user 
 
         data = request.data
         education_data = {}
@@ -406,8 +399,6 @@ class AddEducationData(APIView):
                     education_data[field_name] = data[field_name]['value']
                 else:
                     education_data[field_name] = data[field_name]
-            elif field_name == 'description' and 'about' in data:
-                education_data[field_name] = data['about']
 
         try:
             education = Education.objects.create(**education_data)

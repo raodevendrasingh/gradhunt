@@ -3,7 +3,7 @@ interface SelectOption {
     value: string;
 }
 
-export const companySize: SelectOption[] = [
+export const companySize: readonly SelectOption[] = [
     { label: "1 - 9 Employees", value: "1 - 9" },
     { label: "10 - 49 Employees", value: "10 - 49" },
     { label: "50 - 99 Employees", value: "50 - 99" },
@@ -13,9 +13,15 @@ export const companySize: SelectOption[] = [
 
 export const jobTitleOptions: readonly SelectOption[] = [
     { label: "Software Developer", value: "Software Developer" },
+    { label: "Full Stack Developer", value: "Full Stack Developer" },
     { label: "Data Scientist", value: "Data Scientist" },
-    { label: "Nurse", value: "Nurse" },
-    { label: "Teacher", value: "Teacher" },
+    { label: "Network Engineer", value: "Network Engineer" },
+    { label: "IT Support Specialist", value: "IT Support Specialist" },
+    { label: "Network Administrator", value: "Network Administrator" },
+    { label: "Systems Engineer", value: "Systems Engineer" },
+    { label: "Backend Developer", value: "Backend Developer" },
+    { label: "Frontend Developer", value: "Frontend Developer" },
+    { label: "Software Engineer", value: "Software Engineer" },
     { label: "Sales Representative", value: "Sales Representative" },
     {
         label: "Customer Service Representative",
@@ -28,13 +34,20 @@ export const jobTitleOptions: readonly SelectOption[] = [
     { label: "Web Developer", value: "Web Developer" },
     { label: "Human Resources Manager", value: "Human Resources Manager" },
     { label: "Operations Manager", value: "Operations Manager" },
+    { label: "Database Administrator", value: "Database Administrator" },
+    { label: "Cybersecurity Specialist", value: "Cybersecurity Specialist" },
+    { label: "Product Manager", value: "Product Manager" },
+    { label: "UX Designer", value: "UX Designer" },
+    { label: "DevOps Engineer", value: "DevOps Engineer" },
     {
         label: "Business Development Manager",
         value: "Business Development Manager",
     },
     { label: "Mechanical Engineer", value: "Mechanical Engineer" },
     { label: "Electrical Engineer", value: "Electrical Engineer" },
+    { label: "Aeronutical Engineer", value: "Aeronutical Engineer" },
     { label: "Civil Engineer", value: "Civil Engineer" },
+    { label: "Nurse", value: "Nurse" },
     { label: "Consultant", value: "Consultant" },
     { label: "Manager", value: "Manager" },
     { label: "Administrative Assistant", value: "Administrative Assistant" },
@@ -45,15 +58,7 @@ export const jobTitleOptions: readonly SelectOption[] = [
         value: "Digital Marketing Specialist",
     },
     { label: "Financial Analyst", value: "Financial Analyst" },
-    { label: "Network Engineer", value: "Network Engineer" },
-    { label: "Database Administrator", value: "Database Administrator" },
-    { label: "Cybersecurity Specialist", value: "Cybersecurity Specialist" },
-    { label: "Product Manager", value: "Product Manager" },
-    { label: "UX Designer", value: "UX Designer" },
-    { label: "DevOps Engineer", value: "DevOps Engineer" },
-    { label: "Full Stack Developer", value: "Full Stack Developer" },
-    { label: "Backend Developer", value: "Backend Developer" },
-    { label: "Frontend Developer", value: "Frontend Developer" },
+    { label: "Teacher", value: "Teacher" },
     { label: "Pharmacist", value: "Pharmacist" },
     { label: "Doctor", value: "Doctor" },
     { label: "Lawyer", value: "Lawyer" },
@@ -72,16 +77,12 @@ export const jobTitleOptions: readonly SelectOption[] = [
     { label: "Marketing Analyst", value: "Marketing Analyst" },
     { label: "Sales Manager", value: "Sales Manager" },
     { label: "Customer Support Manager", value: "Customer Support Manager" },
-    { label: "IT Support Specialist", value: "IT Support Specialist" },
-    { label: "Network Administrator", value: "Network Administrator" },
-    { label: "Software Engineer", value: "Software Engineer" },
-    { label: "Systems Engineer", value: "Systems Engineer" },
     { label: "Security Guard", value: "Security Guard" },
     { label: "Firefighter", value: "Firefighter" },
     { label: "Police Officer", value: "Police Officer" },
 ];
 
-export const startYearOptions: SelectOption[] = [
+export const startYearOptions: readonly SelectOption[] = [
     { label: "2024", value: "2024" },
     { label: "2023", value: "2023" },
     { label: "2022", value: "2022" },
@@ -114,7 +115,7 @@ export const startYearOptions: SelectOption[] = [
     { label: "1995", value: "1995" },
 ];
 
-export const monthOptions: SelectOption[] = [
+export const monthOptions: readonly SelectOption[] = [
     { label: "January", value: "Jan" },
     { label: "February", value: "Feb" },
     { label: "March", value: "Mar" },
@@ -129,7 +130,7 @@ export const monthOptions: SelectOption[] = [
     { label: "December", value: "Dec" },
 ];
 
-export const endYearOptions: SelectOption[] = [
+export const endYearOptions: readonly SelectOption[] = [
     { label: "2030", value: "2030" },
     { label: "2029", value: "2029" },
     { label: "2028", value: "2028" },
@@ -173,7 +174,7 @@ export const endYearOptions: SelectOption[] = [
     { label: "1990", value: "1990" },
 ];
 
-export const employmentType: SelectOption[] = [
+export const employmentType: readonly SelectOption[] = [
     { label: "Full Time", value: "Full Time" },
     { label: "Part Time", value: "Part Time" },
     { label: "Contract", value: "Contract" },
@@ -183,7 +184,7 @@ export const employmentType: SelectOption[] = [
     { label: "Trainee", value: "Trainee" },
 ];
 
-export const degreeTypes: SelectOption[] = [
+export const degreeTypes: readonly SelectOption[] = [
     { label: "Associate in Arts (AA)", value: "Associate in Arts" },
     { label: "Associate in Science (AS)", value: "Associate in Science" },
     { label: "Associate in Commerce (AC)", value: "Associate in Commerce" },
@@ -401,7 +402,7 @@ export const degreeTypes: SelectOption[] = [
     },
 ];
 
-export const fieldsOfStudy: SelectOption[] = [
+export const fieldsOfStudy: readonly SelectOption[] = [
     { label: "Accounting", value: "Accounting" },
     { label: "Actuarial Science", value: "Actuarial Science" },
     { label: "Aeronautical Engineering", value: "Aeronautical Engineering" },
@@ -508,20 +509,20 @@ export const fieldsOfStudy: SelectOption[] = [
     { label: "Zoology", value: "Zoology" },
 ];
 
-export const locationType: SelectOption[] = [
+export const locationType: readonly SelectOption[] = [
     { label: "Remote", value: "Remote" },
     { label: "On-Site", value: "On-Site" },
     { label: "Hybrid", value: "Hybrid" },
 ];
 
-export const levels: SelectOption[] = [
+export const levels: readonly SelectOption[] = [
     { label: "Junior Level", value: "Junior Level" },
     { label: "Mid Level", value: "Mid Level" },
     { label: "High Level", value: "High Level" },
     { label: "Top Management", value: "Top Management" },
 ];
 
-export const experience: SelectOption[] = [
+export const experience: readonly SelectOption[] = [
     { value: "0", label: "Less than 1 Year" },
     { value: "1", label: "1+ Year" },
     { value: "2", label: "2+ Years" },
@@ -540,7 +541,7 @@ export const experience: SelectOption[] = [
     { value: "15", label: "More than 15 Years" },
 ];
 
-export const sectors: SelectOption[] = [
+export const sectors: readonly SelectOption[] = [
     {
         label: "Engineering",
         value: "Engineering",
@@ -630,7 +631,7 @@ export const sectors: SelectOption[] = [
     { label: "Creative Arts", value: "Creative Arts" },
 ];
 
-export const functions: SelectOption[] = [
+export const functions: readonly SelectOption[] = [
     {
         label: "Software Development",
         value: "Software Development",
@@ -769,7 +770,7 @@ export const functions: SelectOption[] = [
     },
 ];
 
-export const skills: SelectOption[] = [
+export const skills: readonly SelectOption[] = [
     { label: "Java", value: "Java" },
     { label: "Python", value: "Python" },
     { label: "C++", value: "C++" },

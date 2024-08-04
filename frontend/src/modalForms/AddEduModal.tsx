@@ -1,5 +1,4 @@
 // hooks
-import { useState } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { useCitySearch } from "@/hooks/useCitySearch";
 
@@ -24,47 +23,23 @@ import {
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import { useStore } from "@/store/userStore";
 
-interface FieldWithMessage {
-	message: string;
-}
-
-interface FormField<T> {
-	value: T;
-	validation: FieldWithMessage;
-}
-type EducationData = {
+interface EduFormData {
 	instituteName: string;
 	degreeTitle: string;
 	studyField: string;
 	startMonth: string;
 	startYear: number;
 	endMonth: string;
-	endYear: number;
+	endYear: number | "N/A";
 	instituteLocation: string;
 	grade?: number;
 	description: string;
-};
+}
 
-type FormData = {
-	instituteName: string;
-	degreeTitle: string;
-	studyField: string;
-	startMonth: string;
-	startYear: number;
-	endMonth: string;
-	endYear: number;
-	instituteLocation: string;
-	grade?: number;
-	description: string;
-};
-
-export const AddEduModal = ({
-	setShowEduModal,
-	onSave,
-}: {
+export const AddEduModal: React.FC<{
 	onSave: () => void;
 	setShowEduModal: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+}> = ({ setShowEduModal, onSave }) => {
 	const { isSignedIn, user } = useUser();
 	const { userName } = useStore();
 	const { getToken } = useAuth();
@@ -74,7 +49,7 @@ export const AddEduModal = ({
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<FormData>();
+	} = useForm<EduFormData>();
 
 	const {
 		isLoading,
@@ -85,8 +60,8 @@ export const AddEduModal = ({
 		handleSelection,
 	} = useCitySearch();
 
-	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		const educationData: EducationData = {
+	const onSubmit: SubmitHandler<EduFormData> = async (data) => {
+		const educationData: EduFormData = {
 			instituteName: data.instituteName,
 			degreeTitle: data.degreeTitle,
 			studyField: data.studyField,
@@ -106,11 +81,11 @@ export const AddEduModal = ({
 				throw new Error("No Username provided");
 			}
 			const token = await getToken();
-            console.log(token);
 			if (!token) {
 				throw new Error("Token is not available");
 			}
-			const url = `http://localhost:8000/api/${userName}/add-education-data`;
+			// const url = `http://localhost:8000/api/${userName}/add-education-data`;
+            const url = `/api/add-education-data`;
 			const response = await axios.post(url, educationData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -151,7 +126,7 @@ export const AddEduModal = ({
 						animate={{ scale: 1, rotate: "0deg" }}
 						exit={{ scale: 0, rotate: "0deg" }}
 						onClick={(e) => e.stopPropagation()}
-						className="bg-white p-4 rounded-2xl my-6 mx-10 sm:mx-auto w-full min-w-[350px] sm:min-w-[500px] sm:max-w-lg md:max-w-xl shadow-xl cursor-default relative overflow-hidden"
+						className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg  shadow-xl cursor-default relative overflow-hidden"
 					>
 						<div className="relative z-10 ">
 							<div className="flex items-start justify-between ml-1 rounded-t">
@@ -175,7 +150,7 @@ export const AddEduModal = ({
 											onSubmit={handleSubmit(onSubmit)}
 										>
 											{/* section */}
-											<div className="flex flex-col-reverse sm:flex-row items-center gap-3 border-b pb-5 mb-1">
+											<div className="flex flex-col-reverse items-center gap-3 border-b pb-5 mb-1">
 												<div className="flex flex-col w-full">
 													{/* company name */}
 													<div className="w-full flex flex-col h-20 relative">
@@ -211,8 +186,8 @@ export const AddEduModal = ({
 														)}
 													</div>
 													{/* job title and type */}
-													<div className="flex flex-col sm:flex-row gap-2">
-														<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
+													<div className="flex flex-col xs:flex-row gap-2">
+														<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
 															<label
 																htmlFor="degreeTitle"
 																className="text-sm pb-1 pt-2"
@@ -232,6 +207,7 @@ export const AddEduModal = ({
 																		options={degreeTypes}
 																		placeholder="Degree"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -241,7 +217,7 @@ export const AddEduModal = ({
 																</span>
 															)}
 														</div>
-														<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
+														<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
 															<label
 																htmlFor="studyField"
 																className="text-sm pb-1 pt-2"
@@ -261,6 +237,7 @@ export const AddEduModal = ({
 																		options={fieldsOfStudy}
 																		placeholder="Field of Study"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -279,8 +256,8 @@ export const AddEduModal = ({
 													<label htmlFor="startMonth" className="text-sm pt-2">
 														Start Date
 													</label>
-													<div className="flex flex-col sm:flex-row gap-2">
-														<div className="w-full sm:w-1/2 flex flex-col">
+													<div className="flex flex-col xs:flex-row gap-2">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="startMonth"
 																control={control}
@@ -294,6 +271,7 @@ export const AddEduModal = ({
 																		options={monthOptions}
 																		placeholder="Start Month"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -303,7 +281,7 @@ export const AddEduModal = ({
 																</span>
 															)}
 														</div>
-														<div className="w-full sm:w-1/2 flex flex-col">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="startYear"
 																control={control}
@@ -317,6 +295,7 @@ export const AddEduModal = ({
 																		options={startYearOptions}
 																		placeholder="Start Year"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -332,8 +311,8 @@ export const AddEduModal = ({
 													<label htmlFor="startMonth" className="text-sm pt-2">
 														End Date
 													</label>
-													<div className="flex flex-col sm:flex-row gap-2">
-														<div className="w-full sm:w-1/2 flex flex-col">
+													<div className="flex flex-col xs:flex-row gap-2">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="endMonth"
 																control={control}
@@ -347,6 +326,7 @@ export const AddEduModal = ({
 																		options={monthOptions}
 																		placeholder="End Month"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -356,7 +336,7 @@ export const AddEduModal = ({
 																</span>
 															)}
 														</div>
-														<div className="w-full sm:w-1/2 flex flex-col">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="endYear"
 																control={control}
@@ -370,6 +350,7 @@ export const AddEduModal = ({
 																		options={endYearOptions}
 																		placeholder="End Year"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -384,8 +365,8 @@ export const AddEduModal = ({
 											</div>
 
 											{/* company location and job type */}
-											<div className="flex flex-col sm:flex-row w-full gap-2 border-b pb-6 mb-1 ">
-												<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
+											<div className="flex flex-col xs:flex-row w-full gap-2 border-b pb-6 mb-1 ">
+												<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
 													<label
 														htmlFor="instituteLocation"
 														className="text-sm pb-1 pt-2"
@@ -431,11 +412,8 @@ export const AddEduModal = ({
 														</span>
 													)}
 												</div>
-												<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
-													<label
-														htmlFor="companyName"
-														className="text-sm pb-1 pt-2"
-													>
+												<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
+													<label htmlFor="grade" className="text-sm pb-1 pt-2">
 														Grade
 													</label>
 													<input

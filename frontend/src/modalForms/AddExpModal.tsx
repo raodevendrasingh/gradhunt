@@ -4,10 +4,9 @@ import { useUser, useAuth } from "@clerk/clerk-react";
 import { useCitySearch } from "@/hooks/useCitySearch";
 
 // Third-party libraries
-import { Control, Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import Select from "react-select";
-import { GroupBase } from "react-select";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -26,10 +25,6 @@ import {
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import { useStore } from "@/store/userStore";
 
-interface SelectOption {
-	label: string;
-	value: string;
-}
 
 interface FormData {
 	companyName: string;
@@ -137,7 +132,7 @@ export const AddExpModal: React.FC<{
 						animate={{ scale: 1, rotate: "0deg" }}
 						exit={{ scale: 0, rotate: "0deg" }}
 						onClick={(e) => e.stopPropagation()}
-						className="bg-white p-4 rounded-2xl my-6 mx-10 sm:mx-auto w-full min-w-[350px] sm:min-w-[500px] sm:max-w-lg md:max-w-xl shadow-xl cursor-default relative overflow-hidden"
+						className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg  shadow-xl cursor-default relative overflow-hidden"
 					>
 						<div className="relative z-10 ">
 							<div className="flex items-start justify-between ml-1 rounded-t">
@@ -197,7 +192,7 @@ export const AddExpModal: React.FC<{
 														)}
 													</div>
 													{/* job title and type */}
-													<div className="flex flex-col sm:flex-row gap-2">
+													<div className="flex flex-col xs:flex-row gap-2">
 														<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
 															<label
 																htmlFor="jobTitle"
@@ -218,6 +213,7 @@ export const AddExpModal: React.FC<{
 																		options={jobTitleOptions}
 																		placeholder="Job Title"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -247,6 +243,7 @@ export const AddExpModal: React.FC<{
 																		options={employmentType}
 																		placeholder="Employment Type"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -283,8 +280,8 @@ export const AddExpModal: React.FC<{
 													<label htmlFor="startMonth" className="text-sm pt-2">
 														Start Date
 													</label>
-													<div className="flex flex-col sm:flex-row gap-2">
-														<div className="w-full sm:w-1/2 flex flex-col">
+													<div className="flex flex-col xs:flex-row gap-2">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="startMonth"
 																control={control}
@@ -298,6 +295,7 @@ export const AddExpModal: React.FC<{
 																		options={monthOptions}
 																		placeholder="Start Month"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -307,7 +305,7 @@ export const AddExpModal: React.FC<{
 																</span>
 															)}
 														</div>
-														<div className="w-full sm:w-1/2 flex flex-col">
+														<div className="w-full xs:w-1/2 flex flex-col">
 															<Controller
 																name="startYear"
 																control={control}
@@ -321,6 +319,7 @@ export const AddExpModal: React.FC<{
 																		options={startYearOptions}
 																		placeholder="Start Year"
 																		styles={selectCompanyFieldStyle}
+                                                                        value={field.value as any}
 																	/>
 																)}
 															/>
@@ -340,8 +339,8 @@ export const AddExpModal: React.FC<{
 														>
 															End Date
 														</label>
-														<div className="flex flex-col sm:flex-row gap-2">
-															<div className="w-full sm:w-1/2 flex flex-col">
+														<div className="flex flex-col xs:flex-row gap-2">
+															<div className="w-full xs:w-1/2 flex flex-col">
 																<Controller
 																	name="endMonth"
 																	control={control}
@@ -355,6 +354,7 @@ export const AddExpModal: React.FC<{
 																			options={monthOptions}
 																			placeholder="End Month"
 																			styles={selectCompanyFieldStyle}
+                                                                            value={field.value as any}
 																		/>
 																	)}
 																/>
@@ -364,7 +364,7 @@ export const AddExpModal: React.FC<{
 																	</span>
 																)}
 															</div>
-															<div className="w-full sm:w-1/2 flex flex-col">
+															<div className="w-full xs:w-1/2 flex flex-col">
 																<Controller
 																	name="endYear"
 																	control={control}
@@ -378,6 +378,7 @@ export const AddExpModal: React.FC<{
 																			options={endYearOptions}
 																			placeholder="End Year"
 																			styles={selectCompanyFieldStyle}
+                                                                            value={field.value as any}
 																		/>
 																	)}
 																/>
@@ -393,8 +394,8 @@ export const AddExpModal: React.FC<{
 											</div>
 
 											{/* company location and job type */}
-											<div className="flex flex-col sm:flex-row w-full gap-2 border-b pb-6 mb-1 ">
-												<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
+											<div className="flex flex-col xs:flex-row w-full gap-2 border-b pb-6 mb-1 ">
+												<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
 													<label
 														htmlFor="jobLocation"
 														className="text-sm pb-1 pt-2"
@@ -407,7 +408,7 @@ export const AddExpModal: React.FC<{
 														rules={{
 															required: "Company Location is required",
 														}}
-														render={({ field, fieldState }) => (
+														render={({ field }) => (
 															<Select
 																{...field}
 																isClearable
@@ -440,7 +441,7 @@ export const AddExpModal: React.FC<{
 														</span>
 													)}
 												</div>
-												<div className="w-full sm:w-1/2 flex flex-col h-20 relative">
+												<div className="w-full xs:w-1/2 flex flex-col h-20 relative">
 													<label
 														htmlFor="locationType"
 														className="text-sm pb-1 pt-2"
@@ -460,6 +461,7 @@ export const AddExpModal: React.FC<{
 																options={locationType}
 																placeholder="Location Type"
 																styles={selectCompanyFieldStyle}
+                                                                value={field.value as any}
 															/>
 														)}
 													/>
