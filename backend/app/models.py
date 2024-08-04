@@ -25,6 +25,18 @@ class UserDetails(models.Model):
         verbose_name_plural = "User Details"
 
 
+class AboutData(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.username}'s about"
+
+    class Meta:
+        verbose_name = "AboutData"
+        verbose_name_plural = "AboutData"
+
+
 class Recruiter(models.Model):
     user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
     companyName = models.CharField(max_length=100)

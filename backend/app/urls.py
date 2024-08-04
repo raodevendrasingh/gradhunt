@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/get-usertype/', GetUserType.as_view(), name='get-usertype'),
     path('api/check-email/', CheckEmailView.as_view(), name='check-email'),
     path('api/check-username/', CheckUsernameView.as_view(), name='check-username'),
+    path('api/add-user-about-data', SaveUserAbout.as_view(), name='save-about'),
     # candidate data
     path('api/save-candidate-data/', SaveCandidateData.as_view(), name='create-candidate'),
     # recruiter data

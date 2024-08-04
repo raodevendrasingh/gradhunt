@@ -93,6 +93,30 @@ class SaveCandidateData(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
+class SaveUserAbout(APIView):
+    @transaction.atomic
+    def post(self, request):
+        user = request.user
+        data = request.data
+
+        description = data.get('description', '')
+
+        if not description:
+            return Response({'error': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            about_data = AboutData.objects.get(user=user)
+            about_data.description = description
+        except AboutData.DoesNotExist:
+            about_data = AboutData(user=user, description=description)
+            
+        about_data.save()
+
+        serializer = AboutDataSerializer(about_data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class SaveRecruiterFormData(APIView):
     @transaction.atomic
     def post(self, request):
@@ -281,7 +305,7 @@ class AddExperienceData(APIView):
 
     @transaction.atomic
     def post(self, request):
-        user = request.user 
+        user = request.user
 
         data = request.data
         experience_data = {}
@@ -385,7 +409,7 @@ class AddEducationData(APIView):
 
     @transaction.atomic
     def post(self, request):
-        user = request.user 
+        user = request.user
 
         data = request.data
         education_data = {}
