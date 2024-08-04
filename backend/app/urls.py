@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/recruiter/<str:username>/get-company-data', GetCompanyProfile.as_view(), name='get-company-profile'),
     path('api/recruiter/<str:username>/update-company-data', UpdateCompanyProfile.as_view(), name='update-company-profile'),
     # experience section
-    path('api/recruiter/<str:username>/add-experience-data', AddExperienceData.as_view(), name='add-experience'),
+    path('api/add-experience-data', AddExperienceData.as_view(), name='add-experience'),
     path('api/recruiter/<str:username>/get-experience-data/<str:id>', GetExperienceData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),

@@ -277,12 +277,11 @@ class UpdateCompanyProfile(APIView):
 
 
 class AddExperienceData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     @transaction.atomic
-    def post(self, request, username):
-        try:
-            user = UserDetails.objects.get(username=username)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    def post(self, request):
+        user = request.user 
 
         data = request.data
         experience_data = {}
@@ -296,8 +295,6 @@ class AddExperienceData(APIView):
                     experience_data[field_name] = data[field_name]['value']
                 else:
                     experience_data[field_name] = data[field_name]
-            elif field_name == 'description' and 'about' in data:
-                experience_data[field_name] = data['about']
 
         try:
             experience = Experience.objects.create(**experience_data)

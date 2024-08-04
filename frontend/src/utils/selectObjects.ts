@@ -11,7 +11,7 @@ export const companySize: SelectOption[] = [
     { label: "More than 250 Employees", value: "More than 250" },
 ];
 
-export const jobTitleOptions: SelectOption[] = [
+export const jobTitleOptions: readonly SelectOption[] = [
     { label: "Software Developer", value: "Software Developer" },
     { label: "Data Scientist", value: "Data Scientist" },
     { label: "Nurse", value: "Nurse" },

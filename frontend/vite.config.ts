@@ -8,10 +8,16 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+    server: {
+        proxy: {
+            '/api': 'http://localhost:8000'
+        }
+    },
     plugins: [react()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
         },
     },
+
 });
