@@ -384,12 +384,18 @@ class DeleteExperienceData(APIView):
 
 
 class AddEducationData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     @transaction.atomic
     def post(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Ensure the authenticated user is updating their own data
+        if request.user.clerk_user_id != user.clerk_user_id:
+            return Response({"error": "Unauthorized to update this user's data"}, status=status.HTTP_403_FORBIDDEN)
 
         data = request.data
         education_data = {}

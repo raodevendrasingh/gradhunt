@@ -36,7 +36,7 @@ import { CardStack } from "./components/ui/CardStack";
 
 const tabsData = [
 	{
-		title: "OverView",
+		title: "Overview",
 		content: <Overview />,
 	},
 	{
@@ -176,7 +176,7 @@ export default function UserProfile(): JSX.Element {
 						</section>
 						{/* Tabs section */}
 						<main className="sticky top-[64px] z-20">
-							<div className="px-4 py-3 bg-sky-100 flex items-center gap-2">
+							<div className="px-4 py-3 bg-sky-100 flex items-center flex-wrap gap-2">
 								{tabsData.map((tab, idx) => (
 									<Chip
 										key={idx}

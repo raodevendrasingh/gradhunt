@@ -1,8 +1,17 @@
 import { HiOutlineUser, HiOutlineBolt, HiOutlineBriefcase, HiOutlineFolderPlus  } from "react-icons/hi2";
 import { PiGraduationCap } from "react-icons/pi";
 import { GrCertificate } from "react-icons/gr";
+import { useState } from "react";
+import { AddEduModal } from "@/modalForms/AddEduModal";
 
 export const Overview = () => {
+    const [refresh, setRefresh] = useState(false);
+
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
+
+	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	return (
 		<div className="flex flex-col gap-2 w-full ">
 			<div className=" flex flex-col pb-3 bg-zinc-100 rounded-b-lg">
@@ -60,9 +69,10 @@ export const Overview = () => {
 					<p className="text-base font-medium text-gray-700">
 						Add Education details
 					</p>
-					<span className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer">
+					<button type="button" onClick={() => setShowEduModal(true)} className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer">
 						Add Education
-					</span>
+					</button>
+                    {showEduModal && <AddEduModal setShowEduModal={setShowEduModal} onSave={handleRefresh} />}
 				</div>
 			</div>
 			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
