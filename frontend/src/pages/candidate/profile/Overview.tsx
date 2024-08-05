@@ -24,7 +24,7 @@ export const Overview = () => {
 
 	return (
 		<div className="flex flex-col gap-2 w-full ">
-			<div className=" flex flex-col pb-3 bg-zinc-100 rounded-b-lg">
+			<div className=" flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className="text-lg font-light pl-3 pt-2">About</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
 					<HiOutlineUser className="size-12 text-gray-400" />
@@ -43,7 +43,7 @@ export const Overview = () => {
 					)}
 				</div>
 			</div>
-			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
 					Skills
 				</span>
@@ -57,7 +57,7 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
 					Projects
 				</span>
@@ -71,7 +71,7 @@ export const Overview = () => {
 					</span>
 				</div>
 			</div>
-			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
 					Experience
 				</span>
@@ -95,7 +95,7 @@ export const Overview = () => {
 					)}
 				</div>
 			</div>
-			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
 					Education
 				</span>
@@ -119,7 +119,7 @@ export const Overview = () => {
 					)}
 				</div>
 			</div>
-			<div className="flex flex-col pb-3 bg-zinc-100 rounded-lg">
+			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
 				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
 					Achievements
 				</span>

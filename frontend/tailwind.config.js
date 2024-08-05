@@ -2,7 +2,7 @@
 import colors from "tailwindcss/colors";
 import form from "@tailwindcss/forms";
 
-export default ({
+export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
 	important: true,
 	theme: {
@@ -12,8 +12,8 @@ export default ({
 			},
 			colors: colors,
 			screens: {
-                xs: "475px",
-                sm: "640px",
+				xs: "475px",
+				sm: "640px",
 				md: "768px",
 				lg: "1024px",
 				xl: "1280px",
@@ -21,5 +21,23 @@ export default ({
 			},
 		},
 	},
-	plugins: [form],
-});
+	plugins: [
+		form,
+		function ({ addUtilities }) {
+			addUtilities({
+				".scrollbar-hide": {
+					/* IE and Edge */
+					"-ms-overflow-style": "none",
+
+					/* Firefox */
+					"scrollbar-width": "none",
+
+					/* Safari and Chrome */
+					"&::-webkit-scrollbar": {
+						display: "none",
+					},
+				},
+			});
+		},
+	],
+};

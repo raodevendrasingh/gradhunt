@@ -33,11 +33,16 @@ import noUser from "@/assets/avatar/noUser.png";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { CardStack } from "./components/ui/CardStack";
+import { Featured } from "./profile/Featured";
 
 const tabsData = [
 	{
 		title: "Overview",
 		content: <Overview />,
+	},
+	{
+		title: "Featured",
+		content: <Featured/> 
 	},
 	{
 		title: "Jobs Applied",
@@ -59,9 +64,8 @@ const tabsData = [
 
 export default function UserProfile(): JSX.Element {
 	const [selected, setSelected] = useState(0);
-	const [isDisabled, setIsDisabled] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(true);
 	const { isSignedIn, user } = useUser();
-	const [onHover, setOnHover] = useState(false);
 
 	return (
 		<div className="flex flex-col min-h-screen ">
@@ -69,7 +73,7 @@ export default function UserProfile(): JSX.Element {
 				<div className="flex-grow lg:max-w-6xl mx-auto pt-16">
 					<div className="p-2 w-full">
 						{/* header*/}
-						<section className=" bg-green-100 flex flex-col sm:flex-row justify-center items-center gap-1 mb-2 mx-auto py-8 sm:px-10 rounded-t-2xl">
+						<section className=" bg-gray-50 border flex flex-col sm:flex-row justify-center items-center gap-1 mb-2 mx-auto py-8 sm:px-10 rounded-2xl">
 							{/* profile pic  */}
 							<div className="w-full sm:w-[25%] flex justify-center items-center b">
 								<div className="size-40 flex flex-col mx-2 mb-2 justify-center items-center rounded-full">
@@ -105,27 +109,24 @@ export default function UserProfile(): JSX.Element {
 									{/* name and country */}
 									<div className="leading-3">
 										<div className="flex gap-2 items-center justify-center">
-											<span className="text-4xl font-medium pb-1">
-												Kahono Fuzushiki
+											<span className="text-center sm:text-start text-4xl font-medium pb-1">
+												John Smith
 											</span>
 										</div>
-										{/* <div>
-											<span className="text-xs">@kahono</span>
-										</div> */}
 									</div>
 
 									{/* bio */}
-									<div className="text-base">
-										Recent Grad | Looking for Opportunities
+									<div className="text-center sm:text-start text-base">
+										Software Dev | Recent Grad | Looking for Opportunities
 									</div>
-									<div className="flex gap-2 text-xs">
+									<div className="flex flex-col items-center xs:flex-row xs:items-start   gap-2 text-xs">
 										<span className="flex gap-1 items-center">
 											<FaUserCheck />
 											Joined July 2024
 										</span>
 										<span className="flex gap-1 items-center">
 											<MdLocationPin />
-											Osaka, Osaka, Japan
+											Based in Osaka, Japan
 										</span>
 									</div>
 									{/* social Links */}
@@ -136,13 +137,13 @@ export default function UserProfile(): JSX.Element {
 											Speaks
 										</div>
 										<div className="flex gap-1 text-xs">
-											<span className="px-2 py-1 rounded-md bg-gray-300">
+											<span className="px-2 py-1 rounded-md bg-gray-200">
 												Hindi
 											</span>
-											<span className="px-2 py-1 rounded-md bg-gray-300">
+											<span className="px-2 py-1 rounded-md bg-gray-200">
 												English
 											</span>
-											<span className="px-2 py-1 rounded-md bg-gray-300">
+											<span className="px-2 py-1 rounded-md bg-gray-200">
 												Japanese
 											</span>
 										</div>
@@ -175,8 +176,8 @@ export default function UserProfile(): JSX.Element {
 							</div>
 						</section>
 						{/* Tabs section */}
-						<main className="sticky top-[64px] z-20">
-							<div className="px-4 py-3 bg-sky-100 flex items-center flex-wrap gap-2">
+						<main className="sticky top-[64px] z-20 overflow-hidden">
+							<div className="px-4 py-3 bg-gray-50 border rounded-lg flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
 								{tabsData.map((tab, idx) => (
 									<Chip
 										key={idx}
@@ -198,9 +199,8 @@ export default function UserProfile(): JSX.Element {
 							<aside className="hidden md:block w-[25%]">
 								<div className="sticky top-[118px] ml-2 ">
 									<div className=" flex flex-col gap-2">
-										{/* <div className="h-28 bg-purple-200 ">Contacts</div> */}
 										{/*  container */}
-										<div className="flex flex-col gap-2 bg-gray-100 p-2 rounded-lg border border-gray-300 ">
+										<div className="flex flex-col gap-2 bg-gray-50 p-2 rounded-lg border border-gray-300 ">
 											{/* recomendations */}
 											<CardStack />
 											{/* publish button */}
@@ -220,13 +220,13 @@ export default function UserProfile(): JSX.Element {
 											</button>
 										</div>
 										{/* integrations */}
-										<div className="flex flex-col gap-2 px-3 py-4 rounded-lg border border-gray-300">
+										<div className="flex flex-col gap-2 px-3 py-4 rounded-lg border bg-gray-50">
 											<span className="text-lg font-medium">
 												Feature Your Content
 											</span>
 
 											{/* github */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaGithub className="size-5" />
@@ -242,7 +242,7 @@ export default function UserProfile(): JSX.Element {
 											</button>
 
 											{/* Youtube */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaYoutube className="size-5 text-rose-600" />
@@ -258,7 +258,7 @@ export default function UserProfile(): JSX.Element {
 											</button>
 
 											{/* dev.to */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaDev className="size-5" />
@@ -274,7 +274,7 @@ export default function UserProfile(): JSX.Element {
 											</button>
 
 											{/* medium */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaMedium className="size-5" />
@@ -290,7 +290,7 @@ export default function UserProfile(): JSX.Element {
 											</button>
 
 											{/* hashnode */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaHashnode className="size-5 text-blue-700 " />
@@ -306,7 +306,7 @@ export default function UserProfile(): JSX.Element {
 											</button>
 
 											{/* dribbble */}
-											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-50 border border-zinc-300 hover:ring-offset-4 hover:ring-offset-gray-100 group">
+											<button className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg bg-gray-100 hover:bg-slate-50 border border-zinc-300 hover:ring-4 hover:ring-gray-200 group">
 												<div className="flex justify-between items-center gap-3">
 													<span className="">
 														<FaDribbble className="size-5 text-pink-600 " />
@@ -330,10 +330,13 @@ export default function UserProfile(): JSX.Element {
 			</main>
 			{/* Footer */}
 
-			<footer className="px-2 w-full max-w-6xl mx-auto  text-white mt-auto ">
-				<div className="lg:max-w-6xl bg-rose-200 mx-auto rounded-t-2xl py-5">
-                    <div className="flex justify-center items-center text-zinc-800">
-					<p>&copy; 2024 Made by GradHunt. All rights reserved.</p>
+			<footer className="px-2 w-full max-w-6xl mx-auto mt-auto">
+				<div className="lg:max-w-6xl bg-gray-50 border mx-auto rounded-t-2xl py-5">
+					<div className="flex flex-col gap-2 xs:flex-row justify-center mx-5 items-center  text-zinc-800">
+						<p className="text-sm">
+							&copy; 2024 Made by GradHunt.
+						</p>
+						<p className="text-sm"> All rights reserved.</p>
 					</div>
 				</div>
 			</footer>
