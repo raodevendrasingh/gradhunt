@@ -14,12 +14,7 @@ import gradhunt from "@/assets/brand/brandLogoFull.png";
 import { GoArrowUpRight } from "react-icons/go";
 import { UserMenuDropdown } from "./UserMenuDropdown";
 
-// const recruiterUrl =
-// 	import.meta.env.NODE_ENV === "development"
-// 		? "http://recruiter.localhost:5173"
-// 		: "https://recruiter.gradhunt.com";
-
-const recruiterUrl = "http://recruiter.localhost:5173";
+const recruiterUrl = import.meta.env.VITE_BASE_RECRUITER_URL
 
 export const Header = () => {
 	const [isToggleOpen, setIsToggleOpen] = useState(false);

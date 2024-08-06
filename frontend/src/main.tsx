@@ -19,6 +19,9 @@ declare global {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
             NODE_ENV: string;
+            VITE_BASE_URL: string;
+            VITE_BASE_ADMIN_URL: string;
+            VITE_BASE_RECRUITER_URL: string;
 		};
 	}
 }
@@ -36,7 +39,7 @@ if (subdomain === "localhost") {
     routes = [{ path: "/*", element: <CandidateRoutes /> }];
 } else if (subdomain === "admin") {
     routes = [{ path: "/*", element: <AdminRoutes /> }];
-} else if (subdomain === "recruiter") {
+} else if (subdomain === "hire") {
     routes = [{ path: "/*", element: <RecruiterRoutes /> }];
 } else {
     routes = [{ path: "*", element: <NotFound /> }];
@@ -47,7 +50,7 @@ const router = createBrowserRouter(routes);
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-			<Toaster position="top-right" richColors />
+			<Toaster position="bottom-right" />
 			<RouterProvider router={router} />
 		</ClerkProvider>
 	</React.StrictMode>
