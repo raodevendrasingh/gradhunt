@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useStore } from "@/store/userStore.js";
 
 export const FetchCompanyProfile = ({ refresh } = {}) => {
-	const { user } = useKindeAuth();
 	const { userName } = useStore();
 	const [companyData, setCompanyData] = useState(null);
 

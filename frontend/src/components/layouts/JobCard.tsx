@@ -5,7 +5,7 @@ import { HiOutlineClock } from "react-icons/hi2";
 export const JobCard = ({ job }: { job: any }) => {
 	return (
 		<div className="p-2">
-			<div className="w-full max-w-sm border rounded-xl shadow hover:shadow-lg transition-shadow duration-300 my-5 overflow-hidden">
+			<div className="w-full max-w-sm border bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 my-5 overflow-hidden">
 				<div className="p-5 space-y-4">
 					<div className="flex items-start justify-between">
 						<div className="flex items-center space-x-3">

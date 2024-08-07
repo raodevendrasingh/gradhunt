@@ -4,16 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 // components
 import { Footer } from "@/components/common/Footer";
 import { Header } from "@/components/common/Header";
-import FAQAccordion from "@/components/layouts/FAQAccordion";
 import { UsernameInput } from "@/components/ui/UsernameInput";
 
 // icons
 import { GoDotFill } from "react-icons/go";
 
 // helper functions
-import faqItems from "@/utils/faqItems";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
+import { FAQSection, } from "@/components/layouts/FAQAccordian";
 
 export const LandingPage = () => {
 	const { isSignedIn, user } = useUser();
@@ -76,8 +75,7 @@ export const LandingPage = () => {
 						</div> */}
 
 						<div className=" flex flex-col justify-center">
-							{/* <span className="relative inline-flex sm:inline"> */}
-							{/* <span className="bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-xl filter opacity-30 w-full h-full absolute inset-0"></span> */}
+							
 							<div className="relative">
 								<h1 className="select-none font-extrabold tracking-tight text-zinc-800 sm:text-6xl text-center">
 									Gradhunt is More Than Just An Online Resume
@@ -213,31 +211,7 @@ export const LandingPage = () => {
 											your Skills
 										</h1>
 
-										{/* <div className="mt-8 lg:mt-12 lg:flex lg:items-center">
-											<div className="flex justify-center flex-shrink-0 -space-x-4 overflow-hidden lg:justify-start">
-												<img
-													className="inline-block rounded-full w-14 h-14 ring-2 ring-white"
-													src="https://d33wubrfki0l68.cloudfront.net/3bfa6da479d6b9188c58f2d9a8d33350290ee2ef/301f1/images/hero/3/avatar-male.png"
-													alt=""
-												/>
-												<img
-													className="inline-block rounded-full w-14 h-14 ring-2 ring-white"
-													src="https://d33wubrfki0l68.cloudfront.net/b52fa09a115db3a80ceb2d52c275fadbf84cf8fc/7fd8a/images/hero/3/avatar-female-1.png"
-													alt=""
-												/>
-												<img
-													className="inline-block rounded-full w-14 h-14 ring-2 ring-white"
-													src="https://d33wubrfki0l68.cloudfront.net/8a2efb13f103a5ae2909e244380d73087a9c2fc4/31ed6/images/hero/3/avatar-female-2.png"
-													alt=""
-												/>
-											</div>
-
-											<p className="mt-4 text-lg text-gray-900 lg:mt-0 lg:ml-4 font-pj">
-												Join with
-												<span className="font-bold">4600+ Developers</span> and
-												start getting feedbacks right now
-											</p>
-										</div> */}
+										
 									</div>
 
 									<div className="mt-8 sm:flex sm:items-center sm:justify-center lg:justify-start sm:space-x-5 lg:mt-12">
@@ -267,7 +241,7 @@ export const LandingPage = () => {
 
 			{/* faq section */}
 			<section className="min-h-[80vh] pt-20 md:pt-24 border-t-[1px]">
-				<FAQAccordion faqItems={faqItems} />
+				<FAQSection/>
 			</section>
 
 			<Footer />

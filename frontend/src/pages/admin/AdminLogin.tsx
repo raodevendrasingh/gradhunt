@@ -1,5 +1,4 @@
 // hooks
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -7,25 +6,14 @@ import { useNavigate, Link } from "react-router-dom";
 import logo from "@/assets/brand/brandLogoFull.png";
 
 export const AdminLogin = () => {
-	const { login, isAuthenticated } = useKindeAuth();
 	const [email, setEmail] = useState("");
 
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		if (isAuthenticated) {
-			navigate("/");
-		}
-	}, [isAuthenticated, navigate]);
 
-	const handleEmailPasswordLogin = (event) => {
+
+	const handleEmailPasswordLogin = (event: { preventDefault: () => void; }) => {
 		event.preventDefault();
-		login({
-			authUrlParams: {
-				connection_id: import.meta.env.VITE_KINDE_EMAIL_PASSWORD_CONNECTION_ID,
-				login_hint: email,
-			},
-		});
 	};
 
 	return (

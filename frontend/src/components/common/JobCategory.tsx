@@ -101,7 +101,7 @@ export const JobCategories = () => (
 			{categories.map((category) => (
 				<Link
 					to={category.href} key={category.name}
-					className="flex justify-between items-center gap-3 rounded-2xl px-3 h-20 w-[200px] border hover:shadow-lg transition duration-150 cursor-pointer bg-gray-50"
+					className="flex justify-between items-center bg-white gap-3 rounded-2xl px-3 h-[70px] w-[200px] border hover:shadow-lg transition duration-150 cursor-pointer"
 				>
 					<span className="w-[20%]">
 						<IconWrapper
