@@ -1,5 +1,5 @@
 export const selectFieldStyle = {
-    control: (provided) => ({
+    control: (provided: any) => ({
         ...provided,
         width: "100%",
         minHeight: "38px",
@@ -20,7 +20,7 @@ export const selectFieldStyle = {
             outline: "none",
         },
     }),
-    option: (provided) => ({
+    option: (provided: any) => ({
         ...provided,
         fontSize: "0.8rem",
     }),
@@ -45,9 +45,62 @@ export const selectCompanyFieldStyle = {
             outline: "none",
         },
     }),
-    option: (provided) => ({
+    option: (provided: any) => ({
         ...provided,
         fontSize: "0.8rem",
-        
+
+    }),
+};
+
+
+export const inputSearchFieldStyle = {
+    control: (provided: any) => ({
+        ...provided,
+        width: '100%',
+        minHeight: '38px',
+        border: 'none',
+        boxShadow: 'none',
+        '&:hover': {
+            border: 'none',
+        },
+    }),
+    valueContainer: (provided: any) => ({
+        ...provided,
+        padding: '0 8px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    }),
+    input: (provided: any) => ({
+        ...provided,
+        margin: '0',
+        padding: '0',
+    }),
+    placeholder: (provided: any) => ({
+        ...provided,
+        color: '#9CA3AF',
+    }),
+    singleValue: (provided: any) => ({
+        ...provided,
+        color: '#1F2937',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+    }),
+    option: (provided: any, state: { isSelected: any; isFocused: any; }) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? '#2563EB' : state.isFocused ? '#BFDBFE' : 'white',
+        color: state.isSelected ? 'white' : '#1F2937',
+        '&:active': {
+            backgroundColor: '#2563EB',
+            color: 'white',
+        },
+    }),
+    indicatorSeparator: () => ({
+        display: 'none',
+    }),
+    dropdownIndicator: (provided: any) => ({
+        ...provided,
+        padding: '0 8px',
     }),
 };

@@ -1,7 +1,8 @@
-// src/routes/candidateRoutes.js
 import { Routes, Route } from "react-router-dom";
-import CandidateLayout from "./CandidateLayout";
 import { useUser } from "@clerk/clerk-react";
+
+// pages
+import CandidateLayout from "./CandidateLayout";
 import { Jobs } from "@/pages/candidate/Jobs";
 import { SignUpPage } from "./auth/SignUpPage";
 import { LandingPage } from "../common/Landing";
