@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 // third party imports
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useKindeAuth } from "@kinde-oss/kinde-auth-react";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -32,7 +31,6 @@ import { selectFieldStyle } from "@/utils/styles";
 import blankUser from "@/assets/avatar/noUser.png";
 
 export const RecruiterForm = () => {
-	const { user, isAuthenticated } = useKindeAuth();
 	const [image, setImage] = useState(null);
 	const [dateTypeDOJ, setDateTypeDOJ] = useState("text");
 	const [country, setCountry] = useState(countryList().getData());

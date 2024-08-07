@@ -185,3 +185,24 @@ class Education(models.Model):
     class Meta:
         verbose_name = "Education"
         verbose_name_plural = "Education"
+
+
+class Project(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    projectName = models.CharField(max_length=50)
+    description = models.TextField(blank=True, default='')
+    liveLink = models.CharField(max_length=255)
+    sourceCodeLink = models.CharField(max_length=255)
+    skills = ArrayField(models.CharField(max_length=200), blank=True, default=list)
+    isCurrentlyWorking = models.BooleanField(default=False)
+    startMonth = models.CharField(max_length=20)
+    startYear = models.CharField(max_length=4)
+    endMonth = models.CharField(max_length=20, blank=True, null=True)
+    endYear = models.CharField(max_length=4, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.projectName} [{self.user.username}]"
+
+    class Meta:
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"

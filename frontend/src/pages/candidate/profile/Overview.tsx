@@ -10,6 +10,7 @@ import { useState } from "react";
 import { AddEduModal } from "@/modalForms/AddEduModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
 import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
+import { AddProjectModal } from "@/modalForms/AddProjectModal";
 
 export const Overview = () => {
 	const [refresh, setRefresh] = useState(false);
@@ -21,6 +22,7 @@ export const Overview = () => {
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
+	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
 
 	return (
 		<div className="flex flex-col gap-2 w-full ">
@@ -66,9 +68,19 @@ export const Overview = () => {
 					<p className="text-base font-medium text-gray-700">
 						Highlight Your Projects
 					</p>
-					<span className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer">
+                    <button
+						type="button"
+						onClick={() => setShowProjectModal(true)}
+						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+					>
 						Add Projects
-					</span>
+					</button>
+					{showProjectModal && (
+						<AddProjectModal
+							setShowProjectModal={setShowProjectModal}
+							onSave={handleRefresh}
+						/>
+					)}
 				</div>
 			</div>
 			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">

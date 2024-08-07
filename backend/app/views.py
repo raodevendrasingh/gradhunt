@@ -109,7 +109,7 @@ class SaveUserAbout(APIView):
             about_data.description = description
         except AboutData.DoesNotExist:
             about_data = AboutData(user=user, description=description)
-            
+
         about_data.save()
 
         serializer = AboutDataSerializer(about_data)
@@ -506,3 +506,34 @@ class DeleteEducationData(APIView):
         education_data.delete()
 
         return Response({"message": "Education data deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class AddProjectData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        user = request.user
+
+        data = request.data
+        project_data = {}
+
+        for field in Project._meta.fields:
+            field_name = field.name
+
+            if field_name == 'user':
+                project_data[field_name] = user
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    project_data[field_name] = data[field_name]['value']
+                else:
+                    project_data[field_name] = data[field_name]
+
+        try: 
+            project = Project.objects.create(**project_data)
+            return Response({
+                'message': 'Project added sucessfully',
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+

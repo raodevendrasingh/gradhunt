@@ -25,4 +25,7 @@ urlpatterns = [
     path('api/recruiter/<str:username>/get-education-data/<str:id>', GetEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-education-data/<str:id>', UpdateEducationData.as_view(), name='update-education'),
+
+    # project section
+    path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
 ]
