@@ -13,7 +13,7 @@ importers:
         version: 5.2.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@tailwindcss/forms':
         specifier: ^0.5.7
-        version: 0.5.7(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4)))
+        version: 0.5.7(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4)))
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -72,6 +72,9 @@ importers:
         specifier: ^4.5.2
         version: 4.5.2(@types/react@18.2.72)(react@18.2.0)
     devDependencies:
+      '@types/node':
+        specifier: ^22.1.0
+        version: 22.1.0
       '@types/react':
         specifier: ^18.2.72
         version: 18.2.72
@@ -86,7 +89,7 @@ importers:
         version: 0.23.13
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.2.6(@types/node@20.12.7))
+        version: 4.2.1(vite@5.2.6(@types/node@22.1.0))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -116,19 +119,19 @@ importers:
         version: 0.6.5(prettier@3.3.2)
       tailwind-scrollbar:
         specifier: ^3.1.0
-        version: 3.1.0(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4)))
+        version: 3.1.0(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4)))
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4))
+        version: 3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
       vite:
         specifier: ^5.2.0
-        version: 5.2.6(@types/node@20.12.7)
+        version: 5.2.6(@types/node@22.1.0)
       vite-plugin-svgr:
         specifier: ^4.2.0
-        version: 4.2.0(rollup@4.13.1)(typescript@5.5.4)(vite@5.2.6(@types/node@20.12.7))
+        version: 4.2.0(rollup@4.13.1)(typescript@5.5.4)(vite@5.2.6(@types/node@22.1.0))
 
 packages:
 
@@ -725,8 +728,8 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
-  '@types/node@20.12.7':
-    resolution: {integrity: sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==}
+  '@types/node@22.1.0':
+    resolution: {integrity: sha512-AOmuRF0R2/5j1knA3c6G3HOk523Ga+l+ZXltX8SF1+5oqcXijjfTd8fY3XRZqSihEu9XhtQnKYLmkFaoxgsJHw==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -2221,8 +2224,8 @@ packages:
   unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@6.13.0:
+    resolution: {integrity: sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==}
 
   update-browserslist-db@1.0.13:
     resolution: {integrity: sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==}
@@ -2885,10 +2888,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4)))':
+  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4))
+      tailwindcss: 3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
 
   '@tsconfig/node10@1.0.11':
     optional: true
@@ -2925,10 +2928,9 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
-  '@types/node@20.12.7':
+  '@types/node@22.1.0':
     dependencies:
-      undici-types: 5.26.5
-    optional: true
+      undici-types: 6.13.0
 
   '@types/parse-json@4.0.2': {}
 
@@ -2955,14 +2957,14 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react@4.2.1(vite@5.2.6(@types/node@20.12.7))':
+  '@vitejs/plugin-react@4.2.1(vite@5.2.6(@types/node@22.1.0))':
     dependencies:
       '@babel/core': 7.24.3
       '@babel/plugin-transform-react-jsx-self': 7.24.1(@babel/core@7.24.3)
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.3)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.6(@types/node@20.12.7)
+      vite: 5.2.6(@types/node@22.1.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -4086,13 +4088,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.38
 
-  postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4)):
+  postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4)):
     dependencies:
       lilconfig: 3.1.1
       yaml: 2.4.1
     optionalDependencies:
       postcss: 8.4.38
-      ts-node: 10.9.2(@types/node@20.12.7)(typescript@5.5.4)
+      ts-node: 10.9.2(@types/node@22.1.0)(typescript@5.5.4)
 
   postcss-nested@6.0.1(postcss@8.4.38):
     dependencies:
@@ -4462,11 +4464,11 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.24.1
 
-  tailwind-scrollbar@3.1.0(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4))):
+  tailwind-scrollbar@3.1.0(tailwindcss@3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))):
     dependencies:
-      tailwindcss: 3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4))
+      tailwindcss: 3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
 
-  tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4)):
+  tailwindcss@3.4.1(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -4485,7 +4487,7 @@ snapshots:
       postcss: 8.4.38
       postcss-import: 15.1.0(postcss@8.4.38)
       postcss-js: 4.0.1(postcss@8.4.38)
-      postcss-load-config: 4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4))
+      postcss-load-config: 4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
       postcss-nested: 6.0.1(postcss@8.4.38)
       postcss-selector-parser: 6.0.16
       resolve: 1.22.8
@@ -4513,14 +4515,14 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@types/node@20.12.7)(typescript@5.5.4):
+  ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.12.7
+      '@types/node': 22.1.0
       acorn: 8.11.3
       acorn-walk: 8.3.2
       arg: 4.1.3
@@ -4583,8 +4585,7 @@ snapshots:
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
 
-  undici-types@5.26.5:
-    optional: true
+  undici-types@6.13.0: {}
 
   update-browserslist-db@1.0.13(browserslist@4.23.0):
     dependencies:
@@ -4611,24 +4612,24 @@ snapshots:
   v8-compile-cache-lib@3.0.1:
     optional: true
 
-  vite-plugin-svgr@4.2.0(rollup@4.13.1)(typescript@5.5.4)(vite@5.2.6(@types/node@20.12.7)):
+  vite-plugin-svgr@4.2.0(rollup@4.13.1)(typescript@5.5.4)(vite@5.2.6(@types/node@22.1.0)):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.13.1)
       '@svgr/core': 8.1.0(typescript@5.5.4)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.5.4))
-      vite: 5.2.6(@types/node@20.12.7)
+      vite: 5.2.6(@types/node@22.1.0)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  vite@5.2.6(@types/node@20.12.7):
+  vite@5.2.6(@types/node@22.1.0):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.13.1
     optionalDependencies:
-      '@types/node': 20.12.7
+      '@types/node': 22.1.0
       fsevents: 2.3.3
 
   which-boxed-primitive@1.0.2:

@@ -193,7 +193,8 @@ class Project(models.Model):
     description = models.TextField(blank=True, default='')
     liveLink = models.CharField(max_length=255)
     sourceCodeLink = models.CharField(max_length=255)
-    skills = ArrayField(models.CharField(max_length=200), blank=True, default=list)
+    skills = ArrayField(models.CharField(max_length=200),
+                        blank=True, default=list)
     isCurrentlyWorking = models.BooleanField(default=False)
     startMonth = models.CharField(max_length=20)
     startYear = models.CharField(max_length=4)
@@ -206,7 +207,6 @@ class Project(models.Model):
     class Meta:
         verbose_name = "Project"
         verbose_name_plural = "Projects"
-
 
 
 class Certificate(models.Model):
@@ -227,3 +227,18 @@ class Certificate(models.Model):
     class Meta:
         verbose_name = "Certificate"
         verbose_name_plural = "Certificates"
+
+
+class Skills(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    value = models.CharField(max_length=100)
+    label = models.CharField(max_length=100)
+    image = models.URLField(max_length=200)
+    category = models.CharField(max_length=100)
+
+    def __str__(self):
+        return {self.user.username}
+
+    class Meta:
+        verbose_name = "Skill"
+        verbose_name_plural = "Skills"

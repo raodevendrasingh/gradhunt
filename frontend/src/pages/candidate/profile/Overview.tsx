@@ -11,7 +11,8 @@ import { AddEduModal } from "@/modalForms/AddEduModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
 import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
 import { AddProjectModal } from "@/modalForms/AddProjectModal";
-import { AddAchieveModal } from "@/modalForms/AddAchieveModal";
+import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
+import { AddSkillModal } from "@/modalForms/AddSkillModal";
 
 export const Overview = () => {
 	const [refresh, setRefresh] = useState(false);
@@ -21,6 +22,7 @@ export const Overview = () => {
 	};
 
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
+	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
@@ -56,9 +58,16 @@ export const Overview = () => {
 					<p className="text-base font-medium text-gray-700">
 						Highlight Your Skills
 					</p>
-					<span className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer">
+					<button
+						type="button"
+						onClick={() => setShowSkillModal(true)}
+						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+					>
 						Add Skills
-					</span>
+					</button>
+					{showSkillModal && (
+						<AddSkillModal setShowSkillModal={setShowSkillModal} onSave={handleRefresh} />
+					)}
 				</div>
 			</div>
 			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
@@ -150,7 +159,7 @@ export const Overview = () => {
 						Add Certifications
 					</button>
 					{showCertifyModal && (
-						<AddAchieveModal
+						<AddCertificateModal
 							setShowCertifyModal={setShowCertifyModal}
 							onSave={handleRefresh}
 						/>

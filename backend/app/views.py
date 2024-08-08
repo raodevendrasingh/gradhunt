@@ -566,3 +566,41 @@ class AddCertificateData(APIView):
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddSkillData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        user = request.user
+
+        data = request.data.get('skills', [])
+
+        if not isinstance(data, list):
+            return Response({"error": "Invalid data format. Expected a list of skills."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete to overwrite existing skills for the user
+        Skills.objects.filter(user=user).delete()
+
+        skills = []
+        for skill in data:
+            skill_data = {}
+            for field in Skills._meta.fields:
+                field_name = field.name
+
+                if field_name == 'user':
+                    skill_data[field_name] = user
+                elif field_name in skill:
+                    if isinstance(skill[field_name], dict) and 'value' in skill[field_name]:
+                        skill_data[field_name] = skill[field_name]['value']
+                    else:
+                        skill_data[field_name] = skill[field_name]
+
+            try:
+                skill_instance = Skills.objects.create(**skill_data)
+                skills.append(skill_instance)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"message": "Skills added successfully."}, status=status.HTTP_201_CREATED)

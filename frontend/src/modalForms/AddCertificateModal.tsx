@@ -32,7 +32,7 @@ interface FormData {
 	endYear: number | null;
 }
 
-export const AddAchieveModal: React.FC<{
+export const AddCertificateModal: React.FC<{
 	onSave: () => void;
 	setShowCertifyModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setShowCertifyModal, onSave }) => {

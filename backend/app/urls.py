@@ -31,4 +31,7 @@ urlpatterns = [
 
     # certificate section
     path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
+
+    # skills section
+    path('api/add-skills', AddSkillData.as_view(), name='add-certificate'),
 ]
