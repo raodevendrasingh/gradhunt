@@ -529,7 +529,7 @@ class AddProjectData(APIView):
                 else:
                     project_data[field_name] = data[field_name]
 
-        try: 
+        try:
             project = Project.objects.create(**project_data)
             return Response({
                 'message': 'Project added sucessfully',
@@ -537,3 +537,32 @@ class AddProjectData(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class AddCertificateData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        user = request.user
+
+        data = request.data
+        certificate_data = {}
+
+        for field in Certificate._meta.fields:
+            field_name = field.name
+
+            if field_name == 'user':
+                certificate_data[field_name] = user
+            elif field_name in data:
+                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
+                    certificate_data[field_name] = data[field_name]['value']
+                else:
+                    certificate_data[field_name] = data[field_name]
+
+        try:
+            certificate = Certificate.objects.create(**certificate_data)
+            return Response({
+                'message': 'Certificate Added Sucessfullly',
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

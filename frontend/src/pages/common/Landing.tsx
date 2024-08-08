@@ -20,7 +20,7 @@ export const LandingPage = () => {
 
 	useEffect(() => {
 		if (isSignedIn) {
-			navigate("/feed");
+			navigate("/search");
 		}
 	}, [user]);
 

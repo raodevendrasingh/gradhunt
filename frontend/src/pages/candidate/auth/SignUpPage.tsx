@@ -43,7 +43,7 @@ export const SignUpPage = () => {
 							username: undefined, //pass as props from the landing page
 						}}
 						signInUrl="/login"
-						forceRedirectUrl="/feed"
+						forceRedirectUrl="/search"
 					/>
 
 					<div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">

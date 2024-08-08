@@ -44,6 +44,12 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CertificateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificate
+        fields = '__all__'
+
+
 class CompanyProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyProfile
@@ -87,9 +93,10 @@ class RecruiterDataSerializer(serializers.Serializer):
     experience_data = ExperienceSerializer(many=True)
     education_data = EducationSerializer(many=True)
     project_data = ProjectSerializer(many=True)
+    certificate_data = CertificateSerializer(many=True)
     job_postings = PostingSerializer(allow_null=True)
     awards = AwardSerializer(allow_null=True)
 
     class Meta:
         fields = ['user_details', 'about_user', 'recruiter_details',
-                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'project_data', 'job_postings', 'awards']
+                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'project_data', 'job_postings', 'certificate_data', 'awards']

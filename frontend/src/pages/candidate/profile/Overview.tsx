@@ -11,6 +11,7 @@ import { AddEduModal } from "@/modalForms/AddEduModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
 import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
 import { AddProjectModal } from "@/modalForms/AddProjectModal";
+import { AddAchieveModal } from "@/modalForms/AddAchieveModal";
 
 export const Overview = () => {
 	const [refresh, setRefresh] = useState(false);
@@ -23,6 +24,7 @@ export const Overview = () => {
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 
 	return (
 		<div className="flex flex-col gap-2 w-full ">
@@ -132,17 +134,27 @@ export const Overview = () => {
 				</div>
 			</div>
 			<div className="flex flex-col pb-3 bg-gray-50 border rounded-lg">
-				<span className=" flex flex-col text-lg font-light pl-3 pt-2">
-					Achievements
+				<span className=" flex flex-col text-lg fonshowAchieveModalt-light pl-3 pt-2">
+					Certifications
 				</span>
 				<div className="flex flex-col justify-center items-center gap-3 py-5">
 					<GrCertificate className="size-12 text-gray-400" />
 					<p className="text-base font-medium text-gray-700">
-						Add your Achievements
+						Add your Certifications
 					</p>
-					<span className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer">
-						Add Achievements
-					</span>
+					<button
+						type="button"
+						onClick={() => setShowCertifyModal(true)}
+						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+					>
+						Add Certifications
+					</button>
+					{showCertifyModal && (
+						<AddAchieveModal
+							setShowCertifyModal={setShowCertifyModal}
+							onSave={handleRefresh}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

@@ -206,3 +206,24 @@ class Project(models.Model):
     class Meta:
         verbose_name = "Project"
         verbose_name_plural = "Projects"
+
+
+
+class Certificate(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    certificateName = models.CharField(max_length=50)
+    issuerOrg = models.CharField(max_length=50)
+    credentialUrl = models.CharField(max_length=255)
+    credentialId = models.CharField(max_length=255)
+    isValid = models.BooleanField(default=False)
+    startMonth = models.CharField(max_length=20)
+    startYear = models.CharField(max_length=4)
+    endMonth = models.CharField(max_length=20, blank=True, null=True)
+    endYear = models.CharField(max_length=4, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.certificateName} [{self.user.username}]"
+
+    class Meta:
+        verbose_name = "Certificate"
+        verbose_name_plural = "Certificates"

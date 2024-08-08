@@ -28,4 +28,7 @@ urlpatterns = [
 
     # project section
     path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
+
+    # certificate section
+    path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
 ]
