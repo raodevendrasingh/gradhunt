@@ -17,7 +17,7 @@ export const Chip = ({ index, text, selected, setSelected }: ChipProps) => {
 					: "text-slate-800 hover:text-slate-200 hover:bg-slate-700"
 			} text-sm transition-colors px-2.5 py-0.5 rounded-md relative`}
 		>
-			<span className="relative z-10">{text}</span>
+			<span className="relative z-20">{text}</span>
 			{selected && (
 				<motion.span
 					layoutId="pill-tab"

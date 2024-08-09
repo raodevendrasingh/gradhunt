@@ -150,7 +150,7 @@ export default function UserProfile(): JSX.Element {
 									</div>
 								</div>
 								{/* social icons */}
-								<div className=" w-full md:w-[20%]  flex flex-col md:justify-center items-center ">
+								<div className=" w-full md:w-[20%] flex flex-col md:justify-center items-center ">
 									<div className="flex w-full sm:justify-start sm:pl-5 md:pl-0 justify-center flex-row md:flex-col items-center gap-2">
 										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
 											<SiGmail className="size-4" />
@@ -176,7 +176,7 @@ export default function UserProfile(): JSX.Element {
 							</div>
 						</section>
 						{/* Tabs section */}
-						<main className="sticky top-[64px] z-20 overflow-hidden">
+						<main className="sticky top-[64px] overflow-hidden z-10">
 							<div className="px-4 py-3 bg-gray-50 border rounded-lg flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
 								{tabsData.map((tab, idx) => (
 									<Chip

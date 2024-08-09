@@ -92,7 +92,6 @@ class SkillSerializer(serializers.ModelSerializer):
 
 class RecruiterDataSerializer(serializers.Serializer):
     user_details = UserSerializer()
-    about_user = AboutDataSerializer()
     recruiter_details = RecruiterSerializer()
     hiring_preference = HiringPreferenceSerializer()
     company_profile = CompanyProfileSerializer()
@@ -105,5 +104,5 @@ class RecruiterDataSerializer(serializers.Serializer):
     awards = AwardSerializer(allow_null=True)
 
     class Meta:
-        fields = ['user_details', 'about_user', 'recruiter_details',
+        fields = ['user_details', 'recruiter_details',
                   'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings',  'skill_data', 'awards']

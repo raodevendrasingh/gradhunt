@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { HiOutlineLogout, HiUserCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { useStore } from "@/store/userStore";
 import { useUser, SignOutButton } from "@clerk/clerk-react";
 
 export const UserMenuDropdown = () => {
@@ -10,23 +9,7 @@ export const UserMenuDropdown = () => {
 	const { isSignedIn, user } = useUser();
 	const navigate = useNavigate();
 
-	const { userName, setUserName } = useStore(
-		(state: { userName: any; setUserName: any }) => ({
-			userName: state.userName,
-			setUserName: state.setUserName,
-		})
-	);
-
-	useEffect(() => {
-		if (!userName) {
-			const storedUserName = localStorage.getItem("userName");
-			if (storedUserName) {
-				setUserName(storedUserName);
-			}
-		}
-	}, [userName, setUserName]);
-
-	const profilePath = isSignedIn ? userName : "user";
+	const profilePath = isSignedIn ? user?.username : "user";
 
 	const toggleDropdown = () => setIsVisible(!isVisible);
 
@@ -53,7 +36,7 @@ export const UserMenuDropdown = () => {
 
 	if (isSignedIn) {
 		return (
-			<div className="relative" ref={dropdownRef}>
+			<div className="relative z-50" ref={dropdownRef}>
 				<div className="flex items-center overflow-hidden  ">
 					<button onClick={toggleDropdown}>
 						<span className="rounded-full">
@@ -68,22 +51,27 @@ export const UserMenuDropdown = () => {
 
 				{isVisible && (
 					<div
-						className="absolute top-12 right-0 z-30 rounded-xl border border-gray-200 bg-white shadow cursor-pointer"
-						role="menu"
+                    className="absolute top-12 right-0 w-48 rounded-lg border border-gray-200 bg-white bg-opacity-[.97] shadow cursor-pointer z-50 backdrop-blur-md"
+                    role="menu"
 					>
 						<div className="">
 							<span className="flex items-center gap-5 px-4 py-3 border-b rounded-t-xl text-sm  text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-								<div className="rounded-full w-10 overflow-hidden">
-									<img
-										src={user.imageUrl}
-										alt="User profile"
-										className="h-full w-full object-cover rounded-full bg-gray-400"
-									/>
-								</div>
-								<div className="flex flex-col overflow-x-hidden text-sm">
-									<span>{user?.firstName}</span>
-									<span>{user?.primaryEmailAddress?.toString()}</span>
-								</div>
+								{user?.username ? (
+									<>
+										<div className="flex flex-col overflow-x-hidden text-sm">
+											<span className="text-sm font-semibold ">
+												{user?.firstName}
+											</span>
+											<span className="font-light">@{user?.username}</span>
+										</div>
+									</>
+								) : (
+									<>
+										<div className="flex flex-col overflow-x-hidden text-sm">
+											<span>{user?.primaryEmailAddress?.toString()}</span>
+										</div>
+									</>
+								)}
 							</span>
 							<div
 								// to={`${profilePath}`}
@@ -96,9 +84,9 @@ export const UserMenuDropdown = () => {
 								<span className="text-sm">Profile</span>
 							</div>
 							<SignOutButton>
-								<div className="flex items-center gap-6 px-4 py-3 leading-5 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+								<div className="flex items-center gap-6 px-4 py-3 leading-5 rounded-b-lg text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
 									<span>
-										<HiOutlineLogout className="size-5 text-rose-400" />
+										<HiOutlineLogout className="size-5 text-red-500" />
 									</span>
 									Logout
 								</div>
