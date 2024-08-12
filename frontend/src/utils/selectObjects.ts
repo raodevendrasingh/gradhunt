@@ -3,6 +3,13 @@ interface SelectOption {
     value: string;
 }
 
+export const languageProficiency: readonly SelectOption[] = [
+    { label: "beginner", value: "Beginner" },
+    { label: "intermediate", value: "Intermediate" },
+    { label: "expert", value: "Expert" },
+    { label: "native", value: "Native" },
+]
+
 export const companySize: readonly SelectOption[] = [
     { label: "1 - 9 Employees", value: "1 - 9" },
     { label: "10 - 49 Employees", value: "10 - 49" },

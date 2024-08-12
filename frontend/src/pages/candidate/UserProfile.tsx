@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa6";
 import { HiOutlinePlusCircle, HiOutlinePlus } from "react-icons/hi2";
 import { BsFillPlusCircleFill } from "react-icons/bs";
+import { MdOutlineEdit } from "react-icons/md";
 
 import { Chip } from "./components/ui/Chips";
 
@@ -34,6 +35,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { CardStack } from "./components/ui/CardStack";
 import { Featured } from "./profile/Featured";
+import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
 
 const tabsData = [
 	{
@@ -42,7 +44,7 @@ const tabsData = [
 	},
 	{
 		title: "Featured",
-		content: <Featured/> 
+		content: <Featured />,
 	},
 	{
 		title: "Jobs Applied",
@@ -65,112 +67,134 @@ const tabsData = [
 export default function UserProfile(): JSX.Element {
 	const [selected, setSelected] = useState(0);
 	const [isDisabled, setIsDisabled] = useState(true);
+	const [showBasicDetailModal, setShowBasicDetailModal] =
+		useState<boolean>(false);
 	const { isSignedIn, user } = useUser();
+	const [refresh, setRefresh] = useState(false);
 
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
 	return (
 		<div className="flex flex-col min-h-screen ">
 			<main className="flex-grow">
 				<div className="flex-grow lg:max-w-6xl mx-auto pt-16">
 					<div className="p-2 w-full">
 						{/* header*/}
-						<section className=" bg-gray-50 border flex flex-col sm:flex-row justify-center items-center gap-1 mb-2 mx-auto py-8 sm:px-10 rounded-2xl">
-							{/* profile pic  */}
-							<div className="w-full sm:w-[25%] flex justify-center items-center b">
-								<div className="size-40 flex flex-col mx-2 mb-2 justify-center items-center rounded-full">
-									<div className="relative flex justify-center items-center size-36 sm:size-[175px]">
-										{/* progress bar */}
-										<CircularProgressbar
-											value={30}
-											strokeWidth={4}
-											styles={buildStyles({
-												pathColor: "#2bb550",
-												trailColor: "#d6d6d6",
-												strokeLinecap: "round",
-											})}
-										/>
-										{/* profile picture */}
-										<img
-											src={noUser}
-											className="absolute size-32 sm:size-40 rounded-full object-cover"
-											alt="User"
-										/>
-										{/* completion percentage */}
-										<div className="absolute bottom-4 mb-[-20px] flex justify-center items-center w-10 h-5 bg-gray-400 text-slate-800 rounded-full">
-											<span className="text-xs text-white font-semibold">
-												30%
-											</span>
-										</div>
-									</div>
-								</div>
+						<section className=" bg-gray-50 border flex flex-col gap-1 mb-2 mx-auto rounded-2xl">
+							<div className="flex justify-end pr-2 pt-2">
+								<button
+									type="button"
+									onClick={() => setShowBasicDetailModal(true)}
+								>
+									<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+								</button>
+								{showBasicDetailModal && (
+									<AddBasicDetailModal
+										setShowBasicDetailModal={setShowBasicDetailModal}
+										onSave={handleRefresh}
+									/>
+								)}
 							</div>
-							{/* user details */}
-							<div className=" flex flex-col md:flex-row w-full sm:w-[75%] px-5">
-								<div className=" flex flex-col px-5 py-5 gap-3 w-full flex-grow justify-center items-center sm:justify-center sm:items-start">
-									{/* name and country */}
-									<div className="leading-3">
-										<div className="flex gap-2 items-center justify-center">
-											<span className="text-center sm:text-start text-4xl font-medium pb-1">
-												John Smith
-											</span>
-										</div>
-									</div>
-
-									{/* bio */}
-									<div className="text-center sm:text-start text-base">
-										Software Dev | Recent Grad | Looking for Opportunities
-									</div>
-									<div className="flex flex-col items-center xs:flex-row xs:items-start   gap-2 text-xs">
-										<span className="flex gap-1 items-center">
-											<FaUserCheck />
-											Joined July 2024
-										</span>
-										<span className="flex gap-1 items-center">
-											<MdLocationPin />
-											Based in Osaka, Japan
-										</span>
-									</div>
-									{/* social Links */}
-
-									<div className="flex items-center gap-2">
-										<div className="flex gap-1 items-center text-sm text-gray-800">
-											<HiMiniLanguage />
-											Speaks
-										</div>
-										<div className="flex gap-1 text-xs">
-											<span className="px-2 py-1 rounded-md bg-gray-200">
-												Hindi
-											</span>
-											<span className="px-2 py-1 rounded-md bg-gray-200">
-												English
-											</span>
-											<span className="px-2 py-1 rounded-md bg-gray-200">
-												Japanese
-											</span>
+							<div className=" bg-gray-50 w-full flex flex-col sm:flex-row justify-center items-center gap-1 mb-2 mx-auto pb-8 sm:px-10">
+								{/* profile pic  */}
+								<div className="w-full sm:w-[25%] flex justify-center items-center">
+									<div className="size-40 flex flex-col mx-2 mb-2 justify-center items-center rounded-full">
+										<div className="relative flex justify-center items-center size-36 sm:size-[175px]">
+											{/* progress bar */}
+											<CircularProgressbar
+												value={30}
+												strokeWidth={4}
+												styles={buildStyles({
+													pathColor: "#2bb550",
+													trailColor: "#d6d6d6",
+													strokeLinecap: "round",
+												})}
+											/>
+											{/* profile picture */}
+											<img
+												src={noUser}
+												className="absolute size-32 sm:size-40 rounded-full object-cover"
+												alt="User"
+											/>
+											{/* completion percentage */}
+											<div className="absolute bottom-4 mb-[-20px] flex justify-center items-center w-10 h-5 bg-gray-400 text-slate-800 rounded-full">
+												<span className="text-xs text-white font-semibold">
+													30%
+												</span>
+											</div>
 										</div>
 									</div>
 								</div>
-								{/* social icons */}
-								<div className=" w-full md:w-[20%] flex flex-col md:justify-center items-center ">
-									<div className="flex w-full sm:justify-start sm:pl-5 md:pl-0 justify-center flex-row md:flex-col items-center gap-2">
-										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
-											<SiGmail className="size-4" />
-										</span>
-										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
-											<FaLinkedinIn className="size-4" />
-										</span>
-										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
-											<FaGithub className="size-4" />
-										</span>
-										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
-											<SiLeetcode className="size-4" />
-										</span>
-										<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
-											<FaXTwitter className="size-4" />
-										</span>
-										{/* <span className="flex justify-center items-center gap-2 px-2 py-1.5 border rounded-full hover:bg-gray-700 bg-zinc-800 text-gray-100 transition-colors cursor-pointer">
+								{/* user details */}
+								<div className=" flex flex-col md:flex-row w-full sm:w-[75%] px-5">
+									<div className=" flex flex-col px-5 py-5 gap-3 w-full flex-grow justify-center items-center sm:justify-center sm:items-start">
+										{/* name and country */}
+										<div className="leading-3">
+											<div className="flex gap-2 items-center justify-center">
+												<span className="text-center sm:text-start text-5xl font-semibold pb-1">
+													John Smith
+												</span>
+											</div>
+										</div>
+
+										{/* bio */}
+										<div className="text-center sm:text-start text-lg">
+											Software Dev | Recent Grad | Looking for Opportunities
+										</div>
+										<div className="flex flex-col items-center xs:flex-row xs:items-start gap-2 text-sm">
+											<span className="flex gap-1 items-center">
+												<FaUserCheck />
+												Joined July 2024
+											</span>
+											<span className="flex gap-1 items-center">
+												<MdLocationPin />
+												Based in Osaka, Japan
+											</span>
+										</div>
+										{/* social Links */}
+
+										<div className="flex items-center gap-2">
+											<div className="flex gap-1 items-center text-sm text-gray-800">
+												<HiMiniLanguage />
+												Speaks
+											</div>
+											<div className="flex gap-1 text-xs">
+												<span className="px-2 py-1 rounded-md bg-gray-200">
+													Hindi
+												</span>
+												<span className="px-2 py-1 rounded-md bg-gray-200">
+													English
+												</span>
+												<span className="px-2 py-1 rounded-md bg-gray-200">
+													Japanese
+												</span>
+											</div>
+										</div>
+									</div>
+									{/* social icons */}
+									<div className=" w-full md:w-[20%] flex flex-col md:justify-center items-center ">
+										<div className="flex w-full sm:justify-start sm:pl-5 md:pl-0 justify-center flex-row md:flex-col items-center gap-2">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+												<SiGmail className="size-4" />
+											</span>
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+												<FaLinkedinIn className="size-4" />
+											</span>
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+												<FaGithub className="size-4" />
+											</span>
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+												<SiLeetcode className="size-4" />
+											</span>
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+												<FaXTwitter className="size-4" />
+											</span>
+											{/* <span className="flex justify-center items-center gap-2 px-2 py-1.5 border rounded-full hover:bg-gray-700 bg-zinc-800 text-gray-100 transition-colors cursor-pointer">
 									<HiShare className="size-[14px]" />
 									<span className="text-sm">Share</span>
 								</span> */}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -189,7 +213,6 @@ export default function UserProfile(): JSX.Element {
 								))}
 							</div>
 						</main>
-
 						{/* content */}
 						<section className="flex h-full mt-2">
 							<main className="flex-grow w-full md:w-[75%]">
@@ -333,9 +356,7 @@ export default function UserProfile(): JSX.Element {
 			<footer className="px-2 w-full max-w-6xl mx-auto mt-auto">
 				<div className="lg:max-w-6xl bg-gray-50 border mx-auto rounded-t-2xl py-5">
 					<div className="flex flex-col gap-2 xs:flex-row justify-center mx-5 items-center  text-zinc-800">
-						<p className="text-sm">
-							&copy; 2024 Made by GradHunt.
-						</p>
+						<p className="text-sm">&copy; 2024 Made by GradHunt.</p>
 						<p className="text-sm"> All rights reserved.</p>
 					</div>
 				</div>

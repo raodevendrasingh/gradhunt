@@ -48,6 +48,7 @@ export const selectCompanyFieldStyle = {
     option: (provided: any) => ({
         ...provided,
         fontSize: "0.8rem",
+        boxShadow: "none",
 
     }),
 };
