@@ -1,18 +1,18 @@
 // hooks
-import { useState } from 'react';
-import { useCitySearch } from '@/hooks/useCitySearch';
-import { useAuth, useUser } from '@clerk/clerk-react';
+import { useState } from "react";
+import { useCitySearch } from "@/hooks/useCitySearch";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 // external
-import axios from 'axios';
-import { toast } from 'sonner';
-import Select from 'react-select';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import axios from "axios";
+import { toast } from "sonner";
+import Select from "react-select";
+import { AnimatePresence, motion } from "framer-motion";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 // local
-import { languageProficiency } from '@/utils/selectObjects';
-import { selectCompanyFieldStyle } from '@/utils/styles';
+import { languageProficiency } from "@/utils/selectObjects";
+import { selectCompanyFieldStyle } from "@/utils/styles";
 
 // icons
 import {
@@ -23,8 +23,8 @@ import {
 } from "react-icons/hi2";
 
 interface FormData {
-	firstName: string;
-	lastName: string;
+	firstname: string;
+	lastname: string;
 	bio: string;
 	location: string;
 	socialLinks: {
@@ -71,7 +71,7 @@ export const AddBasicDetailModal: React.FC<{
 	} = useCitySearch();
 
 	const handleNext = async (e: React.MouseEvent) => {
-		e.preventDefault(); 
+		e.preventDefault();
 		const isValid = await trigger();
 		if (isValid) {
 			setSlideDirection(1);
@@ -80,7 +80,7 @@ export const AddBasicDetailModal: React.FC<{
 	};
 
 	const handlePrevious = (e: React.MouseEvent) => {
-		e.preventDefault(); 
+		e.preventDefault();
 		setSlideDirection(-1);
 		setCurrentScreen((prev) => prev - 1);
 	};
@@ -119,7 +119,7 @@ export const AddBasicDetailModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = "/api/add-basic-data";
+			const url = "/api/add-user-data";
 			const response = await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -127,7 +127,7 @@ export const AddBasicDetailModal: React.FC<{
 				},
 			});
 			console.log(response.data);
-			toast.success("Information Added");
+			toast.success("Details Updated");
 			onSave();
 			setShowBasicDetailModal(false);
 		} catch (error: any) {
@@ -246,13 +246,13 @@ const BasicInfoScreen: React.FC<{
 			<div className="w-full flex flex-col sm:flex-row gap-3">
 				<div className="w-full flex flex-col sm:w-1/2">
 					<label
-						htmlFor="firstName"
+						htmlFor="firstname"
 						className="text-sm font-semibold text-gray-700 pb-1"
 					>
 						First Name
 					</label>
 					<input
-						{...register("firstName", {
+						{...register("firstname", {
 							required: "First Name is required",
 							minLength: {
 								value: 2,
@@ -260,28 +260,28 @@ const BasicInfoScreen: React.FC<{
 							},
 							maxLength: 50,
 						})}
-						aria-invalid={errors.firstName ? "true" : "false"}
+						aria-invalid={errors.firstname ? "true" : "false"}
 						type="text"
-						name="firstName"
-						id="firstName"
+						name="firstname"
+						id="firstname"
 						placeholder="First Name"
 						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
 					/>
-					{errors.firstName && (
+					{errors.firstname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
-							{errors.firstName.message as string}
+							{errors.firstname.message as string}
 						</span>
 					)}
 				</div>
 				<div className="w-full flex flex-col sm:w-1/2 ">
 					<label
-						htmlFor="lastName"
+						htmlFor="lastname"
 						className="text-sm font-semibold text-gray-700 pb-1"
 					>
 						Last Name
 					</label>
 					<input
-						{...register("lastName", {
+						{...register("lastname", {
 							required: "Last Name is required",
 							minLength: {
 								value: 2,
@@ -289,16 +289,16 @@ const BasicInfoScreen: React.FC<{
 							},
 							maxLength: 50,
 						})}
-						aria-invalid={errors.lastName ? "true" : "false"}
+						aria-invalid={errors.lastname ? "true" : "false"}
 						type="text"
-						name="lastName"
-						id="lastName"
+						name="lastname"
+						id="lastname"
 						placeholder="Last Name"
 						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
 					/>
-					{errors.lastName && (
+					{errors.lastname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
-							{errors.lastName.message as string}
+							{errors.lastname.message as string}
 						</span>
 					)}
 				</div>
@@ -423,7 +423,6 @@ const SocialLinksScreen: React.FC<{
 	</div>
 );
 
-
 const LanguagesScreen: React.FC<{
 	control: any;
 	errors: any;
@@ -433,13 +432,18 @@ const LanguagesScreen: React.FC<{
 			<Controller
 				name="languages"
 				control={control}
-				defaultValue={[]} 
+				defaultValue={[]}
 				rules={{
 					validate: (value) => {
 						if (!value || value.length === 0) {
 							return "Add at least one language";
 						}
-						if (!value.some((lang: { language: any; proficiency: any; }) => lang.language && lang.proficiency)) {
+						if (
+							!value.some(
+								(lang: { language: any; proficiency: any }) =>
+									lang.language && lang.proficiency
+							)
+						) {
 							// return "Ensure all language fields are filled";
 						}
 						return true;

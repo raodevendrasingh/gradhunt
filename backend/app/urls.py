@@ -34,4 +34,7 @@ urlpatterns = [
 
     # skills section
     path('api/add-skills', AddSkillData.as_view(), name='add-certificate'),
+
+    # skills section
+    path('api/add-user-data', AddUserData.as_view(), name='add-basic-data'),
 ]

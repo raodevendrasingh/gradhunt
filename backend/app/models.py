@@ -39,7 +39,7 @@ class Location(models.Model):
 
 
 class Linguistics(models.Model):
-    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     language = models.CharField(max_length=20, null=True, blank=True)
     proficiency = models.CharField(max_length=20, null=True, blank=True)
 

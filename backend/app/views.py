@@ -604,3 +604,50 @@ class AddSkillData(APIView):
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message": "Skills added successfully."}, status=status.HTTP_201_CREATED)
+
+
+class AddUserData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        clerk_user_id = request.user.clerk_user_id
+        data = request.data
+
+        user_data = {
+            'firstname': data.get('firstname'),
+            'lastname': data.get('lastname'),
+            'bio': data.get('bio'),
+        }
+
+        location_data = data.get('location', {})
+        social_links_data = data.get('socialLinks', {})
+        languages_data = data.get('languages', [])
+
+        location_data.pop('value', None)
+        location_data.pop('label', None)
+
+        try:
+            user_details, created = UserDetails.objects.update_or_create(
+                clerk_user_id=clerk_user_id, defaults=user_data
+            )
+
+            location, created = Location.objects.update_or_create(
+                user=user_details, defaults=location_data
+            )
+
+            social_links, created = SocialLinks.objects.update_or_create(
+                user=user_details, defaults=social_links_data
+            )
+
+            Linguistics.objects.filter(user=user_details).delete()
+            for language in languages_data:
+                Linguistics.objects.create(user=user_details, **language)
+
+
+            return Response({
+                'message': 'User Details Updated Successfully',
+            }, status=status.HTTP_201_CREATED)
+    
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
