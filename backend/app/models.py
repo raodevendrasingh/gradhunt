@@ -14,8 +14,6 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     bio = models.CharField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
-    timezone = models.CharField(
-        max_length=100, null=True, blank=True)  # remove it
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -24,6 +22,20 @@ class UserDetails(models.Model):
     class Meta:
         verbose_name = "User Details"
         verbose_name_plural = "User Details"
+
+
+class Location(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user.username} from {self.state}, {self.country}"
+
+    class Meta:
+        verbose_name = "Location"
+        verbose_name_plural = "Locations"
 
 
 class Linguistics(models.Model):
