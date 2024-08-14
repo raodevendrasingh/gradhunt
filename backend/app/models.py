@@ -14,7 +14,8 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     bio = models.CharField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
-    timezone = models.CharField(max_length=100, null=True, blank=True) # remove it
+    timezone = models.CharField(
+        max_length=100, null=True, blank=True)  # remove it
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -27,15 +28,30 @@ class UserDetails(models.Model):
 
 class Linguistics(models.Model):
     user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
-    language = models.CharField(max_length=20, null=False)
-    proficiency = models.CharField(max_length=20, null=False)
+    language = models.CharField(max_length=20, null=True, blank=True)
+    proficiency = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
 
     class Meta:
-        verbose_name = "User Linguistics"
-        verbose_name_plural = "User Linguistics"
+        verbose_name = "Linguistic"
+        verbose_name_plural = "Linguistics"
+
+
+class SocialLinks(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    linkedin = models.URLField(max_length=200, null=True, blank=True)
+    github = models.URLField(max_length=200, null=True, blank=True)
+    leetcode = models.URLField(max_length=200, null=True, blank=True)
+    twitter = models.URLField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = "Social Link"
+        verbose_name_plural = "Social Links"
 
 
 class AboutData(models.Model):
@@ -67,7 +83,7 @@ class Recruiter(models.Model):
         return f"{self.user.username} from {self.companyName}"
 
     class Meta:
-        verbose_name = "Recruiter Details"
+        verbose_name = "Recruiter Detail"
         verbose_name_plural = "Recruiter Details"
 
 
@@ -92,7 +108,7 @@ class HiringPreference(models.Model):
 
     class Meta:
         verbose_name = "Hiring Preference"
-        verbose_name_plural = "Hiring Preference"
+        verbose_name_plural = "Hiring Preferences"
 
 
 class Posting(models.Model):
@@ -115,7 +131,7 @@ class Posting(models.Model):
         return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
 
     class Meta:
-        verbose_name = "Job Postings"
+        verbose_name = "Job Posting"
         verbose_name_plural = "Job Postings"
 
 
@@ -128,7 +144,7 @@ class Award(models.Model):
         return f"{self.awardName} [{self.user.username}]"
 
     class Meta:
-        verbose_name = "Awards"
+        verbose_name = "Award"
         verbose_name_plural = "Awards"
 
 
@@ -154,7 +170,7 @@ class CompanyProfile(models.Model):
 
     class Meta:
         verbose_name = "Company Profile"
-        verbose_name_plural = "Company Profile"
+        verbose_name_plural = "Company Profiles"
 
 
 class Experience(models.Model):
@@ -176,7 +192,7 @@ class Experience(models.Model):
 
     class Meta:
         verbose_name = "Experience"
-        verbose_name_plural = "Experience"
+        verbose_name_plural = "Experiences"
 
 
 class Education(models.Model):
