@@ -7,6 +7,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserDetails
         fields = '__all__'
 
+class LinguisticsSerializer(serializers.ModelSerializer):
+    class Mets:
+        model = Linguistics
+        fields = '__all__'
+
 
 class AboutDataSerializer(serializers.ModelSerializer):
     class Meta:

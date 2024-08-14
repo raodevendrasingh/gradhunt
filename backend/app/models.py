@@ -14,7 +14,7 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     bio = models.CharField(max_length=255)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
-    timezone = models.CharField(max_length=100, null=True, blank=True)
+    timezone = models.CharField(max_length=100, null=True, blank=True) # remove it
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -23,6 +23,19 @@ class UserDetails(models.Model):
     class Meta:
         verbose_name = "User Details"
         verbose_name_plural = "User Details"
+
+
+class Linguistics(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    language = models.CharField(max_length=20, null=False)
+    proficiency = models.CharField(max_length=20, null=False)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = "User Linguistics"
+        verbose_name_plural = "User Linguistics"
 
 
 class AboutData(models.Model):
