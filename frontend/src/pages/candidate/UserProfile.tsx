@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
-
+import clsx from "clsx";
 import { MdLocationPin } from "react-icons/md";
 import { FaUserCheck } from "react-icons/fa6";
 import { HiMiniLanguage, HiShare } from "react-icons/hi2";
@@ -81,21 +81,28 @@ export default function UserProfile(): JSX.Element {
 				<div className="flex-grow lg:max-w-6xl mx-auto pt-16">
 					<div className="p-2 w-full">
 						{/* header*/}
-						<section className=" bg-gray-50 border flex flex-col gap-1 mb-2 mx-auto rounded-2xl">
-							<div className="flex justify-end pr-2 pt-2">
-								<button
-									type="button"
-									onClick={() => setShowBasicDetailModal(true)}
-								>
-									<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
-								</button>
-								{showBasicDetailModal && (
-									<AddBasicDetailModal
-										setShowBasicDetailModal={setShowBasicDetailModal}
-										onSave={handleRefresh}
-									/>
-								)}
-							</div>
+						<section
+							className={clsx(
+								"bg-gray-50 border flex flex-col gap-1 mb-2 mx-auto rounded-2xl",
+								{ "pt-0": isSignedIn, "pt-10": !isSignedIn }
+							)}
+						>
+							{isSignedIn && (
+								<div className="flex justify-end pr-2 pt-2">
+									<button
+										type="button"
+										onClick={() => setShowBasicDetailModal(true)}
+									>
+										<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+									</button>
+									{showBasicDetailModal && (
+										<AddBasicDetailModal
+											setShowBasicDetailModal={setShowBasicDetailModal}
+											onSave={handleRefresh}
+										/>
+									)}
+								</div>
+							)}
 							<div className=" bg-gray-50 w-full flex flex-col sm:flex-row justify-center items-center gap-1 mb-2 mx-auto pb-8 sm:px-10">
 								{/* profile pic  */}
 								<div className="w-full sm:w-[25%] flex justify-center items-center">
