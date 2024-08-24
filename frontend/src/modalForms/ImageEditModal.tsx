@@ -60,6 +60,30 @@ export const EditImageModal: React.FC<{
 		}
 	};
 
+	const updateClerkProfileImage = async (imageData: string): Promise<void> => {
+		if (!user) {
+			throw new Error("User is not available");
+		}
+
+		try {
+			// Convert base64 string to Blob
+			const byteString = atob(imageData.split(",")[1]);
+			const mimeString = imageData.split(",")[0].split(":")[1].split(";")[0];
+			const ab = new ArrayBuffer(byteString.length);
+			const ia = new Uint8Array(ab);
+			for (let i = 0; i < byteString.length; i++) {
+				ia[i] = byteString.charCodeAt(i);
+			}
+			const blob = new Blob([ab], { type: mimeString });
+
+			const result = await user.setProfileImage({ file: blob });
+			console.log("Clerk profile image update result:", result);
+		} catch (error) {
+			console.error("Error updating Clerk profile image:", error);
+			throw error;
+		}
+	};
+
 	const handleSave = async () => {
 		if (!croppedImage) {
 			toast.error("Please crop the image before saving.");
@@ -76,6 +100,9 @@ export const EditImageModal: React.FC<{
 			// Step 1: Upload to Cloudinary
 			const cloudinaryPublicId = await uploadToCloudinary(croppedImage);
 			setPublicId(cloudinaryPublicId);
+
+			// Step 2: Update Clerk profile image
+			await updateClerkProfileImage(croppedImage);
 
 			const formData = { profilePicture: cloudinaryPublicId };
 			console.log(formData);
