@@ -1,24 +1,30 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import clsx from "clsx";
-import { MdLocationPin } from "react-icons/md";
-import { FaUserCheck } from "react-icons/fa6";
-import { HiMiniLanguage, HiShare } from "react-icons/hi2";
-import { HiLockClosed } from "react-icons/hi";
-import { PiConfettiFill } from "react-icons/pi";
-import { FaLinkedinIn, FaGithub, FaXTwitter } from "react-icons/fa6";
-import { SiLeetcode } from "react-icons/si";
-import { SiGmail } from "react-icons/si";
+
 import {
 	FaDev,
 	FaMedium,
 	FaDribbble,
 	FaHashnode,
 	FaYoutube,
+	FaUserCheck,
+	FaLinkedinIn,
+	FaGithub,
+	FaXTwitter,
 } from "react-icons/fa6";
-import { HiOutlinePlusCircle, HiOutlinePlus } from "react-icons/hi2";
+import {
+	HiOutlinePlusCircle,
+	HiOutlinePlus,
+	HiOutlineCamera,
+	HiMiniLanguage,
+	HiShare,
+} from "react-icons/hi2";
+import { HiLockClosed } from "react-icons/hi";
+import { PiConfettiFill } from "react-icons/pi";
+import { SiLeetcode, SiGmail } from "react-icons/si";
 import { BsFillPlusCircleFill } from "react-icons/bs";
-import { MdOutlineEdit } from "react-icons/md";
+import { MdOutlineEdit, MdLocationPin } from "react-icons/md";
 
 import { Chip } from "./components/ui/Chips";
 
@@ -36,6 +42,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { CardStack } from "./components/ui/CardStack";
 import { Featured } from "./profile/Featured";
 import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
+import { EditImageModal } from "@/modalForms/ImageEditModal";
 
 const tabsData = [
 	{
@@ -69,6 +76,7 @@ export default function UserProfile(): JSX.Element {
 	const [isDisabled, setIsDisabled] = useState(true);
 	const [showBasicDetailModal, setShowBasicDetailModal] =
 		useState<boolean>(false);
+	const [showImageEditModal, setShowImageEditModal] = useState<boolean>(false);
 	const { isSignedIn, user } = useUser();
 	const [refresh, setRefresh] = useState(false);
 
@@ -131,6 +139,24 @@ export default function UserProfile(): JSX.Element {
 												</span>
 											</div>
 										</div>
+										{isSignedIn && (
+											<div className="relative -top-10 left-[55px]">
+												<button
+													type="button"
+													onClick={() => setShowImageEditModal(true)}
+												>
+													<HiOutlineCamera className="size-6 sm:size-7 text-white bg-gray-600 border border-gray-700 rounded-full p-1" />
+												</button>
+												{showImageEditModal && (
+													<EditImageModal
+														setShowImageEditModal={setShowImageEditModal}
+														onSave={handleRefresh}
+														apiUrl={"/api/upload-profile-image"}
+														updateAvatar={undefined}
+													/>
+												)}
+											</div>
+										)}
 									</div>
 								</div>
 								{/* user details */}
