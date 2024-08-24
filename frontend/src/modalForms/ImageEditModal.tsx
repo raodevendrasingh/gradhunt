@@ -24,6 +24,10 @@ export const EditImageModal: React.FC<{
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
+	const [publicId, setPublicId] = useState("");
+	const [cloudName] = useState("dniezlcfy");
+	const [uploadPreset] = useState("rfkhtvsd");
+
 	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
@@ -40,6 +44,22 @@ export const EditImageModal: React.FC<{
 		setCroppedImage(croppedImageData);
 	};
 
+	const uploadToCloudinary = async (imageData: string): Promise<string> => {
+		const formData = new FormData();
+		formData.append("file", imageData);
+		formData.append("upload_preset", uploadPreset);
+
+		try {
+			const response = await axios.post(
+				`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+				formData
+			);
+			return response.data.public_id;
+		} catch (error) {
+			throw error;
+		}
+	};
+
 	const handleSave = async () => {
 		if (!croppedImage) {
 			toast.error("Please crop the image before saving.");
@@ -53,7 +73,13 @@ export const EditImageModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const response = await axios.post(apiUrl, {
+			// Step 1: Upload to Cloudinary
+			const cloudinaryPublicId = await uploadToCloudinary(croppedImage);
+			setPublicId(cloudinaryPublicId);
+
+			const formData = { profilePicture: cloudinaryPublicId };
+			console.log(formData);
+			const response = await axios.post(apiUrl, formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
