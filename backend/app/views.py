@@ -47,15 +47,18 @@ class GetCompanyProfile(APIView):
             )
 
 
-class CheckUsernameView(View):
+class CheckUsernameView(APIView):
     def get(self, request, *args, **kwargs):
-        username = request.GET.get('username', None)
-        if username is None:
-            return JsonResponse({'error': 'Missing username parameter.'}, status=400)
+        username = request.GET.get('username')
+        if not username:
+            return Response({'error': 'Missing username parameter.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        exists = UserDetails.objects.filter(
-            username__iexact=username).exists()
-        return JsonResponse({'exists': exists})
+        exists = UserDetails.objects.filter(username__iexact=username).exists()
+        if not exists:
+            message = "This username is available! 🎉"
+        else:
+            message = "This username is already taken, choose something else.😞"
+        return Response({'exists': exists, 'message': message})
 
 
 class CheckEmailView(View):

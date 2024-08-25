@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // assets
 import logo from "@/assets/brand/brandLogoFull.png";
 
-export const SignInPage = () => {
+const SignInPage = () => {
 	return (
 		<>
 			<div className="cursor-pointer">
@@ -53,3 +53,5 @@ export const SignInPage = () => {
 		</>
 	);
 };
+
+export default SignInPage;
