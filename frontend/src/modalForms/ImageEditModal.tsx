@@ -16,8 +16,7 @@ export const EditImageModal: React.FC<{
 	onSave: () => void;
 	setShowImageEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 	apiUrl: string;
-	updateAvatar: any;
-}> = ({ setShowImageEditModal, onSave, apiUrl, updateAvatar }) => {
+}> = ({ setShowImageEditModal, onSave, apiUrl }) => {
 	const { isSignedIn, user } = useUser();
 	const { getToken } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
@@ -54,8 +53,10 @@ export const EditImageModal: React.FC<{
 				`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
 				formData
 			);
+			// console.log("Cloudinary upload response:", response.data);
 			return response.data.public_id;
 		} catch (error) {
+			console.error("Error uploading to Cloudinary:", error);
 			throw error;
 		}
 	};
@@ -77,7 +78,7 @@ export const EditImageModal: React.FC<{
 			const blob = new Blob([ab], { type: mimeString });
 
 			const result = await user.setProfileImage({ file: blob });
-			console.log("Clerk profile image update result:", result);
+			// console.log("Clerk profile image update result:", result);
 		} catch (error) {
 			console.error("Error updating Clerk profile image:", error);
 			throw error;
@@ -105,16 +106,16 @@ export const EditImageModal: React.FC<{
 			await updateClerkProfileImage(croppedImage);
 
 			const formData = { profilePicture: cloudinaryPublicId };
-			console.log(formData);
+
+            // Step 3: Send to backend
 			const response = await axios.post(apiUrl, formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
 
-			console.log(response.data);
+			// console.log(response.data);
 			toast.success("Profile Picture Updated");
-			updateAvatar(croppedImage);
 			onSave();
 			setShowImageEditModal(false);
 		} catch (error: any) {
@@ -164,7 +165,7 @@ export const EditImageModal: React.FC<{
 									className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
 								/>
 							</div>
-							<div className="h-[400px] w-full border-2 border-dashed rounded-lg border-gray-400 flex justify-center items-center p-2">
+							<div className="h-[400px] w-full border-2 border-dashed rounded-lg border-gray-400 hover:border-blue-500 flex justify-center items-center p-2">
 								{croppedImage ? (
 									<img
 										src={croppedImage}
@@ -182,7 +183,7 @@ export const EditImageModal: React.FC<{
 											<FaImage className="size-20 text-gray-200" />
 										</div>
 										<span className="text-lg text-gray-500">
-											Upload an image to crop
+											Upload an Image
 										</span>
 									</div>
 								)}

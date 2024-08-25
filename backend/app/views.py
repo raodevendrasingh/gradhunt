@@ -644,10 +644,34 @@ class AddUserData(APIView):
             for language in languages_data:
                 Linguistics.objects.create(user=user_details, **language)
 
-
             return Response({
                 'message': 'User Details Updated Successfully',
             }, status=status.HTTP_201_CREATED)
-    
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SetImageUrl(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        clerk_user_id = request.user.clerk_user_id
+        data = request.data
+
+        if 'profilePicture' not in data:
+            return Response({'error': 'profilePicture field is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_details = UserDetails.objects.get(clerk_user_id=clerk_user_id)
+            user_details.profilePicture = data['profilePicture']
+            user_details.save()
+
+            return Response({
+                'message': 'Image Uploaded Successfully',
+            }, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User details not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

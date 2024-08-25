@@ -145,14 +145,13 @@ export default function UserProfile(): JSX.Element {
 													type="button"
 													onClick={() => setShowImageEditModal(true)}
 												>
-													<HiOutlineCamera className="size-6 sm:size-7 text-white bg-gray-600 border border-gray-700 rounded-full p-1" />
+													<HiOutlineCamera className="size-6 sm:size-7 text-gray-100 bg-gray-700 border border-gray-700 rounded-full p-1" />
 												</button>
 												{showImageEditModal && (
 													<EditImageModal
 														setShowImageEditModal={setShowImageEditModal}
 														onSave={handleRefresh}
 														apiUrl={"/api/upload-profile-image"}
-														updateAvatar={undefined}
 													/>
 												)}
 											</div>

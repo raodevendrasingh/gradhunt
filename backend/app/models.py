@@ -5,8 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class UserDetails(models.Model):
     clerk_user_id = models.CharField(max_length=255, unique=True, null=True)
-    profilePicture = models.ImageField(
-        upload_to='profile_pics/', null=True, blank=True)
+    profilePicture = models.CharField(max_length=100, null=True, blank=True)
     username = models.CharField(max_length=100)
     usertype = models.CharField(max_length=100)
     firstname = models.CharField(max_length=255)
@@ -163,10 +162,8 @@ class Award(models.Model):
 class CompanyProfile(models.Model):
     recruiter = models.OneToOneField(
         Recruiter, on_delete=models.CASCADE, primary_key=True)
-    companyLogo = models.ImageField(
-        upload_to='company_logo/', null=True, blank=True)
-    companyCover = models.ImageField(
-        upload_to='company_cover/', null=True, blank=True)
+    companyLogo = models.CharField(max_length=100, null=True, blank=True)
+    companyCover = models.CharField(max_length=100, null=True, blank=True)
     companyName = models.CharField(max_length=100)
     website = models.CharField(max_length=100, validators=[URLValidator()])
     employeeSize = models.CharField(max_length=50)

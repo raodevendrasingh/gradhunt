@@ -37,4 +37,7 @@ urlpatterns = [
 
     # skills section
     path('api/add-user-data', AddUserData.as_view(), name='add-basic-data'),
+
+    # image uploads 
+    path('api/upload-profile-image', SetImageUrl.as_view(), name='set-profile-image'),
 ]
