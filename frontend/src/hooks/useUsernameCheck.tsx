@@ -2,6 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
+const isValidUsername = (username: string): boolean => {
+    return username.length < 12 && /^[a-z0-9]+$/.test(username);
+};
+
 export const useUsernameCheck = () => {
     const [isCheckingUsername, setIsCheckingUsername] = useState<boolean>(false);
     const [usernameMsg, setUsernameMsg] = useState<string>("");
@@ -9,7 +13,8 @@ export const useUsernameCheck = () => {
 
     const checkUsername = useDebounceCallback(
         async (username: string) => {
-            if (username.length > 3) {
+            if (username.length > 3 && isValidUsername(username)) {
+                console.log("Username is valid");
                 setIsCheckingUsername(true);
                 setUsernameMsg("");
                 try {
@@ -23,7 +28,7 @@ export const useUsernameCheck = () => {
                         setIsFieldValid(true);
                     }
                 } catch (error) {
-                    setUsernameMsg("Error checking username");
+                    setUsernameMsg("Error checking username ⚠️");
                     setIsFieldValid(false);
                 } finally {
                     setIsCheckingUsername(false);
@@ -36,5 +41,5 @@ export const useUsernameCheck = () => {
         500
     );
 
-    return { isCheckingUsername, usernameMsg, isFieldValid, checkUsername };
+    return { isValidUsername, isCheckingUsername, usernameMsg, isFieldValid, checkUsername };
 };
