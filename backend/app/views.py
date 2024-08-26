@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 
+# add clerk permission classes
+
 class HomeView(APIView):
     def get(self, request):
         return Response('This is the API home page', status=status.HTTP_200_OK)
