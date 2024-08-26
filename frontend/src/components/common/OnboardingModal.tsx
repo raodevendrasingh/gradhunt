@@ -13,6 +13,7 @@ import { TbLoader } from "react-icons/tb";
 import { HiMiniChevronRight } from "react-icons/hi2";
 import { UsernameScreen } from "../layouts/UsernameScreen";
 import { MetaDataScreen } from "../layouts/MetaDataScreen";
+import { useLocalStorage } from "usehooks-ts";
 
 interface FormField {
 	username: string;
@@ -39,6 +40,8 @@ export const UserOnboardingModal = ({
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [currentScreen, setCurrentScreen] = useState<number>(0);
 	const [slideDirection, setSlideDirection] = useState<number>(0);
+
+	const [, ,removePotentialUser] = useLocalStorage("potentialUser", "");
 
 	const { getToken } = useAuth();
 	const { isValidUsername, isCheckingUsername, usernameMsg, checkUsername } =
@@ -129,7 +132,6 @@ export const UserOnboardingModal = ({
 	};
 
 	const onSubmit: SubmitHandler<FormField> = async (data) => {
-		console.log("Form data:", data);
 		setIsSubmitting(true);
 
 		try {
@@ -169,8 +171,6 @@ export const UserOnboardingModal = ({
 					bio: data.bio,
 				};
 
-				console.log(userProfileData);
-
 				const response = await axios.post(
 					"/api/save-candidate-data/",
 					userProfileData,
@@ -181,9 +181,10 @@ export const UserOnboardingModal = ({
 						},
 					}
 				);
-				console.log(response.data);
+				// console.log(response.data);
 			}
-			toast.success("Details Updated");
+			toast.success("Profile Created");
+			removePotentialUser();
 			setIsOnboardingModalOpen(false);
 		} catch (error: any) {
 			console.error("Failed to update user details:", error);
@@ -198,6 +199,7 @@ export const UserOnboardingModal = ({
 			console.error("Error message:", error.message);
 		} finally {
 			setIsSubmitting(false);
+           
 		}
 	};
 

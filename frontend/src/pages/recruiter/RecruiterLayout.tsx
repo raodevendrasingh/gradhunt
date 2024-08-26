@@ -32,9 +32,9 @@ export default function RecruiterLayout() {
 		}
 	};
 
-	useEffect(() => {
-		fetchAndRedirectUser();
-	}, [isSignedIn, user]);
+	// useEffect(() => {
+	// 	fetchAndRedirectUser();
+	// }, [isSignedIn, user]);
 
 	return (
 		<div>
