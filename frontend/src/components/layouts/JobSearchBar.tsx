@@ -1,32 +1,28 @@
 import { HiOutlineSearch } from "react-icons/hi";
 import { TfiLocationPin } from "react-icons/tfi";
 import { GoBriefcase } from "react-icons/go";
+import { SingleValue } from "react-select";
+import { CityOption } from "@/hooks/useCitySearch";
 
 import Select from "react-select";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 
 import { experience } from "@/utils/selectObjects";
 import { inputSearchFieldStyle } from "@/utils/styles";
+import { useEffect, useState } from "react";
 
-interface FormData {
+export interface FormData {
 	position: string;
-	experience: string;
-	location: string;
+	experience: string | { value: string; label: string } | null;
+	location: string | { value: string; label: string } | null;
 }
 
 interface JobSearchFormProps {
 	onSubmit: SubmitHandler<FormData>;
 	isLoading: boolean;
-	cityOptions: Array<{ label: string; value: string }>;
+	cityOptions: CityOption[];
 	handleInputChange: (inputValue: string) => void;
-	handleSelection: (
-		option: { label: string; value: string },
-		onChange: (value: any) => void
-	) => void;
-	formatOptionLabel: (option: {
-		label: string;
-		value: string;
-	}) => React.ReactNode;
+	formatOptionLabel: (option: CityOption) => React.ReactNode;
 	error?: string;
 }
 
@@ -35,7 +31,6 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 	isLoading,
 	cityOptions,
 	handleInputChange,
-	handleSelection,
 	formatOptionLabel,
 	error,
 }) => {
@@ -100,33 +95,50 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 							<Controller
 								name="location"
 								control={control}
-								render={({ field }) => (
-									<Select
-										{...field}
-										isClearable
-										isSearchable
-										isLoading={isLoading}
-										onInputChange={handleInputChange}
-										value={field.value as any}
-										onChange={(option) =>
-											handleSelection(option, field.onChange)
+								render={({ field }) => {
+									const [selectedOption, setSelectedOption] =
+										useState<CityOption | null>(null);
+
+									useEffect(() => {
+										if (field.value && !selectedOption) {
+											const option = cityOptions.find(
+												(opt) => opt.value === field.value
+											);
+											if (option) {
+												setSelectedOption(option);
+											}
 										}
-										options={cityOptions}
-										formatOptionLabel={formatOptionLabel}
-										id="jobLocation"
-										placeholder="Location"
-										className="w-full"
-										classNamePrefix="react-select"
-										styles={inputSearchFieldStyle}
-										noOptionsMessage={({ inputValue }) =>
-											inputValue.length < 2
-												? "Type at least 2 characters to search"
-												: error
-													? error
-													: "No cities found"
-										}
-									/>
-								)}
+									}, [field.value, cityOptions]);
+
+									return (
+										<Select<CityOption, false>
+											{...field}
+											value={selectedOption}
+											onChange={(newValue: SingleValue<CityOption>) => {
+												setSelectedOption(newValue);
+												field.onChange(newValue ? newValue.value : null);
+											}}
+											isClearable
+											isSearchable
+											isLoading={isLoading}
+											onInputChange={handleInputChange}
+											options={cityOptions}
+											formatOptionLabel={formatOptionLabel}
+											id="jobLocation"
+											placeholder="Location"
+											className="w-full"
+											classNamePrefix="react-select"
+											styles={inputSearchFieldStyle}
+											noOptionsMessage={({ inputValue }) =>
+												inputValue.length < 2
+													? "Type at least 2 characters to search"
+													: error
+														? error
+														: "No cities found"
+											}
+										/>
+									);
+								}}
 							/>
 						</div>
 					</div>

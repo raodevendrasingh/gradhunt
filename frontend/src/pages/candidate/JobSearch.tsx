@@ -1,5 +1,3 @@
-import { useUser } from "@clerk/clerk-react";
-
 import { FaChevronRight } from "react-icons/fa6";
 
 import Slider from "react-slick";
@@ -20,30 +18,33 @@ import { SearchHeader } from "./components/layout/SearchHeader";
 import { JobCategories } from "@/components/common/JobCategory";
 import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
+import { FormData } from "@/components/layouts/JobSearchBar";
 
-interface FormData {
-	position: string;
-	experience: string | null;
-	location: string | null;
-}
 export default function HomeFeed(): JSX.Element {
-	const { isSignedIn, user } = useUser();
-
 	const {
 		isLoading,
 		error,
 		cityOptions,
 		handleInputChange,
 		formatOptionLabel,
-		handleSelection,
 	} = useCitySearch();
 
 	const handleSearch: SubmitHandler<FormData> = async (data) => {
+		const encodeValue = (value: string) => value.replace(/ /g, "+");
 		const searchParams = new URLSearchParams({
-			position: data.position !== null ? data.position : "",
-			experience: data.experience !== null ? data.experience : "",
-			location: data.location !== null ? data.location : "",
-		}).toString();
+			position: encodeValue(data.position),
+			experience: encodeValue(
+				typeof data.experience === "object"
+					? data.experience?.value || ""
+					: data.experience || ""
+			),
+			location: encodeValue(
+				typeof data.location === "object"
+					? data.location?.value || ""
+					: data.location || ""
+			),
+		});
+
 		try {
 			const url = `/api/job-search?${searchParams}`;
 			const response = await axios.get(url);
@@ -63,9 +64,8 @@ export default function HomeFeed(): JSX.Element {
 						isLoading={isLoading}
 						cityOptions={cityOptions}
 						handleInputChange={handleInputChange}
-						handleSelection={handleSelection}
 						formatOptionLabel={formatOptionLabel}
-						error={error}
+						error={error || undefined}
 					/>
 				</div>
 			</section>
@@ -95,7 +95,7 @@ export default function HomeFeed(): JSX.Element {
 							<JobCard key={job.jobId} job={job} />
 						))}
 					</Slider>
-					
+
 					<div className="flex justify-center items-center max-w-6xl mx-auto pt-10">
 						<Link to="#">
 							<button className="px-4 py-3 flex justify-center items-center gap-3 text-zinc-800 rounded-full border border-zinc-800">

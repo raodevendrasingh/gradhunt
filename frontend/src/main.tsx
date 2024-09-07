@@ -6,7 +6,11 @@ import "@/index.css";
 // external packages
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+	RouteObject,
+	RouterProvider,
+	createBrowserRouter,
+} from "react-router-dom";
 
 // local imports
 import { AdminRoutes } from "./pages/admin/AdminRoutes";
@@ -18,10 +22,12 @@ declare global {
 	interface ImportMeta {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
-            NODE_ENV: string;
-            VITE_BASE_URL: string;
-            VITE_BASE_ADMIN_URL: string;
-            VITE_BASE_RECRUITER_URL: string;
+			NODE_ENV: string;
+			VITE_BASE_URL: string;
+			VITE_BASE_ADMIN_URL: string;
+			VITE_BASE_RECRUITER_URL: string;
+			VITE_RAPID_API_KEY: string;
+			VITE_RAPID_API_HOST: string;
 		};
 	}
 }
@@ -33,16 +39,16 @@ if (!PUBLISHABLE_KEY) {
 }
 
 const subdomain = window.location.hostname.split(".")[0];
-let routes : RouteObject[];
+let routes: RouteObject[];
 
 if (subdomain === "localhost") {
-    routes = [{ path: "/*", element: <CandidateRoutes /> }];
+	routes = [{ path: "/*", element: <CandidateRoutes /> }];
 } else if (subdomain === "admin") {
-    routes = [{ path: "/*", element: <AdminRoutes /> }];
+	routes = [{ path: "/*", element: <AdminRoutes /> }];
 } else if (subdomain === "hire") {
-    routes = [{ path: "/*", element: <RecruiterRoutes /> }];
+	routes = [{ path: "/*", element: <RecruiterRoutes /> }];
 } else {
-    routes = [{ path: "*", element: <NotFound /> }];
+	routes = [{ path: "*", element: <NotFound /> }];
 }
 
 const router = createBrowserRouter(routes);
