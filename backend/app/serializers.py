@@ -8,12 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        feilds = '__all__'
-
-
 class LinguisticsSerializer(serializers.ModelSerializer):
     class Mets:
         model = Linguistics
@@ -115,12 +109,9 @@ class RecruiterDataSerializer(serializers.Serializer):
     company_profile = CompanyProfileSerializer()
     experience_data = ExperienceSerializer(many=True)
     education_data = EducationSerializer(many=True)
-    project_data = ProjectSerializer(many=True)
-    skill_data = SkillSerializer(many=True)
-    certificate_data = CertificateSerializer(many=True)
     job_postings = PostingSerializer(allow_null=True)
     awards = AwardSerializer(allow_null=True)
 
     class Meta:
         fields = ['user_details', 'recruiter_details',
-                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings',  'skill_data', 'awards']
+                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings', 'awards']

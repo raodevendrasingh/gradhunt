@@ -6,17 +6,15 @@ import { MdOutlineEdit } from "react-icons/md";
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
 import { AddExperienceModal } from "./modalForms/AddExperienceModal";
 import { EditExperienceModal } from "./modalForms/EditExperienceModal";
-import { FetchExperienceData } from "./utils/FetchExperienceData";
-import { useState } from "react";
+import { useFetchExperienceData } from "../../hooks/useFetchExperienceData";
+import { useCallback } from "react";
 
 export const Experience = () => {
-    const [refresh, setRefresh] = useState(false);
-    
-    const handleRefresh = () => {
-        setRefresh(!refresh);
-    };
-    
-    const { experienceData, isExperienceData } = FetchExperienceData({ refresh });
+    const { experienceData, refetch } = useFetchExperienceData();
+
+	const handleRefresh = useCallback(() => {
+		refetch();
+	}, [refetch]);
 
 	return (
 		<div className="w-full pt-20 mx-auto">
@@ -32,11 +30,11 @@ export const Experience = () => {
 							</div>
 						</div>
 						{/* fetch experience data */}
-						{isExperienceData && experienceData.length > 0 && (
+						{experienceData && experienceData.length > 0 && (
 							<div className="flex flex-col gap-3">
 								{experienceData.map((data, index) => (
 									<div
-										key={data.id}
+										key={data.experienceId}
 										className="w-full flex items-start gap-3 border border-gray-50 bg-gray-100 p-3 pt-1 rounded-xl"
 									>
 										<div className="w-full">
@@ -45,7 +43,7 @@ export const Experience = () => {
 													{data.companyName}
 												</span>
 
-												<EditExperienceModal experienceId={data.id} onSave={handleRefresh} />
+												<EditExperienceModal experienceId={data.experienceId} onSave={handleRefresh} />
 											</div>
 											<div className="flex items-center gap-2">
 												<span className="text-sm font-medium text-gray-800">

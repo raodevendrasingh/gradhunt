@@ -17,12 +17,12 @@ import { sectors, companySize } from "@/utils/selectObjects";
 import { selectCompanyFieldStyle } from "@/utils/styles";
 import axios from "axios";
 import { useStore } from "@/store/userStore";
-import { FetchCompanyProfile } from "../utils/FetchCompanyProfile";
+import { useFetchCompanyProfile } from "../../../hooks/useFetchCompanyProfile";
 
 export const CompanyProfileModal = ({ onSave }) => {
 	const [showModal, setShowModal] = useState(false);
 	const currentYear = new Date().getFullYear();
-	const companyData = FetchCompanyProfile();
+	const { companyData } = useFetchCompanyProfile();
 	const {
 		control,
 		register,

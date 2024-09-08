@@ -4,18 +4,17 @@ import { MdOutlineEdit } from "react-icons/md";
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
 import { AddEducationModal } from "./modalForms/AddEducationModal";
-import { useState } from "react";
-import { FetchEducationData } from "./utils/FetchEducationData";
+import { useCallback, useState } from "react";
+import { useFetchEducationData } from "../../hooks/useFetchEducationData";
 import { EditEducationModal } from "./modalForms/EditEducationModal";
 
 export const Education = () => {
-	const [refresh, setRefresh] = useState(false);
+	const { educationData, refetch } = useFetchEducationData();
 
-	const handleRefresh = () => {
-		setRefresh(!refresh);
-	};
+	const handleRefresh = useCallback(() => {
+		refetch();
+	}, [refetch]);
 
-	const { educationData, isEducationData } = FetchEducationData({ refresh });
 	return (
 		<div className="w-full pt-20 mx-auto">
 			<div className="max-w-7xl mx-auto lg:ml-64">
@@ -30,11 +29,11 @@ export const Education = () => {
 							</div>
 						</div>
 						{/* fetch experience data */}
-						{isEducationData && educationData.length > 0 && (
+						{educationData && educationData.length > 0 && (
 							<div className="flex flex-col gap-3">
 								{educationData.map((data, index) => (
 									<div
-										key={data.id}
+										key={data.educationId}
 										className="w-full flex items-start gap-3 border border-gray-50 bg-gray-100 p-3 pt-1 rounded-xl"
 									>
 										<div className="w-full">
@@ -44,7 +43,7 @@ export const Education = () => {
 												</span>
 
 												<EditEducationModal
-													educationId={data.id}
+													educationId={data.educationId}
 													onSave={handleRefresh}
 												/>
 											</div>

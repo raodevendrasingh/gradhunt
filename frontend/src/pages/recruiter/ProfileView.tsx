@@ -1,6 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useStore } from "@/store/userStore";
+import { useCallback } from "react";
 
 // icons
 import { MdOutlineEdit, MdMail } from "react-icons/md";
@@ -15,27 +13,23 @@ import noUser from "@/assets/avatar/noUser.png";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-export const RecruiterProfileView = () => {
-	const { userName } = useStore();
-	const [user, setUser] = useState("");
+// hooks
+import { useFetchRecruiterData } from "@/hooks/useFetchRecruiterData";
 
-	useEffect(() => {
-		axios
-			.get(`http://localhost:8000/api/recruiter/dev1618`)
-			.then((response) => {
-				setUser(response.data);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, [userName]);
-	return user ? (
+export const RecruiterProfileView = () => {
+	const { recruiterData, refetch } = useFetchRecruiterData();
+
+	const handleRefresh = useCallback(() => {
+		refetch();
+	}, [refetch]);
+
+	return (
 		<div className="w-full pt-20 pb-2 mx-auto">
 			<div className="max-w-7xl mx-auto lg:ml-64">
 				<div className="max-w-5xl mx-auto px-3">
-					{/* user details */}
+					{/* recruiter details */}
 					<section className="flex w-full mb-2">
-						<div className="w-full bg-white shadow-lg p-5 flex flex-col md:flex-row rounded-xl gap-1">
+						<div className="w-full bg-white  p-5 flex flex-col md:flex-row rounded-xl gap-1">
 							<div className="flex flex-col md:flex-row items-center w-full gap-2">
 								<div className="size-32 flex flex-col mx-2 mb-2 justify-center items-center rounded-full">
 									<div className="relative flex justify-center items-center size-[145px]">
@@ -52,32 +46,32 @@ export const RecruiterProfileView = () => {
 										{/* profile picture */}
 										<img
 											src={noUser}
-											className="absolute size-28 rounded-full object-cover"
+											className="absolute size-32 rounded-full object-cover"
 											alt="User"
 										/>
-										{/* completion percentage */}
+										{/* completion percentage
 										<div className="absolute bottom-4 mb-[-20px] flex justify-center items-center w-10 h-5 bg-gray-400 text-slate-800 rounded-full">
 											<span className="text-xs text-white font-semibold">
 												30%
 											</span>
-										</div>
+										</div> */}
 									</div>
 								</div>
-								<div className="flex md:flex-row flex-grow w-full justify-between border border-gray-200 bg-white p-3 rounded-lg">
+								<div className="flex md:flex-row flex-grow w-full justify-between bg-white p-3 rounded-lg">
 									<div className="flex flex-col">
 										<div className="flex flex-col gap-2">
 											<div>
 												<div className="text-2xl">
-													{user.user_details.firstname}{" "}
-													{user.user_details.lastname}
+													{recruiterData?.user_details.firstname}
+													{recruiterData?.user_details.lastname}
 												</div>
 												<div className="flex text-sm items-center gap-1">
-													{user.recruiter_details.jobTitle}
+													{recruiterData?.recruiter_details.jobTitle}
 												</div>
 											</div>
 											{/* badge */}
-											<span className="flex w-24 justify-center items-center gap-1 text-xs text-white px-1 py-0.5 rounded-full border border-green-500 bg-green-500">
-												<FaBriefcase className="text-gray-50" />
+											<span className=" w-24 inline-flex items-center justify-center gap-x-1.5 py-1 px-3 rounded-lg text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30">
+												<FaBriefcase className="" />
 												<p>Recruiter</p>
 											</span>
 										</div>
@@ -87,7 +81,7 @@ export const RecruiterProfileView = () => {
 													<BsBuildingsFill className="size-3 text-slate-700" />
 												</div>
 												<p className="text-base text-slate-900 ">
-													{user.recruiter_details.companyName}
+													{recruiterData?.recruiter_details.companyName}
 												</p>
 											</div>
 											<div className="text-sm flex items-center gap-2">
@@ -96,11 +90,7 @@ export const RecruiterProfileView = () => {
 												</div>
 												<div className="flex flex-col">
 													<span className="text-sm">
-														{user.recruiter_details.city},{" "}
-														{user.recruiter_details.state}
-													</span>
-													<span className="text-sm">
-														{user.recruiter_details.country}
+														{recruiterData?.recruiter_details.companyLocation}
 													</span>
 												</div>
 											</div>
@@ -116,7 +106,7 @@ export const RecruiterProfileView = () => {
 														<MdMail className="size-3 text-gray-600" />
 													</span>
 													<span className="text-sm">
-														{user.user_details.email}
+														{recruiterData?.user_details.email}
 													</span>
 												</div>
 											</div>
@@ -127,7 +117,7 @@ export const RecruiterProfileView = () => {
 											<BsBuildingsFill className="size-6 text-slate-700" />
 										</div>
 										<p className="text-base">
-											{user.recruiter_details.companyName}
+											{recruiterData?.recruiter_details.companyName}
 										</p>
 									</div>
 									<div className="flex gap-2">
@@ -139,7 +129,7 @@ export const RecruiterProfileView = () => {
 					</section>
 
 					{/* hiring preferences */}
-					<section className="flex pt-2 p-5 flex-col w-full shadow-lg rounded-xl bg-white  my-2">
+					<section className="flex pt-2 p-5 flex-col w-full  rounded-xl bg-white  my-2">
 						<div className="flex justify-between items-center">
 							<h3 className="text-xl font-bold tracking-tight py-2">
 								Hiring Preferences
@@ -153,20 +143,23 @@ export const RecruiterProfileView = () => {
 								<div className="flex flex-col w-full md:w-1/3 p-2 px-3">
 									<span className="text-gray-500">Total Experience</span>
 									<span className="text-sm">
-										{user.hiring_preference.experience} Years
+										{recruiterData?.hiring_preference.experience} Years
 									</span>
 								</div>
 								<div className="flex flex-col w-full md:w-2/3 p-2 px-3">
 									<span className="text-gray-500">Industry I hire for</span>
 									<span className="text-sm">
-										{user.hiring_preference.industry.map((item, index) => (
-											<span key={index}>
-												{item.trim()}
-												{index < user.hiring_preference.industry.length - 1
-													? ", "
-													: ""}
-											</span>
-										))}
+										{recruiterData?.hiring_preference.industry.map(
+											(item, index) => (
+												<span key={index}>
+													{item.trim()}
+													{index <
+													recruiterData?.hiring_preference.industry.length - 1
+														? ", "
+														: ""}
+												</span>
+											)
+										)}
 									</span>
 								</div>
 							</div>
@@ -174,51 +167,60 @@ export const RecruiterProfileView = () => {
 								<div className="flex flex-col w-full md:w-1/3 p-2 px-3">
 									<span className="text-gray-500">Levels I hire for</span>
 									<span className="text-sm">
-										{user.hiring_preference.levels.map((item, index) => (
-											<span key={index}>
-												{item.trim()}
-												{index < user.hiring_preference.levels.length - 1
-													? ", "
-													: ""}
-											</span>
-										))}
+										{recruiterData?.hiring_preference.levels.map(
+											(item, index) => (
+												<span key={index}>
+													{item.trim()}
+													{index <
+													recruiterData?.hiring_preference.levels.length - 1
+														? ", "
+														: ""}
+												</span>
+											)
+										)}
 									</span>
 								</div>
 								<div className="flex flex-col w-full md:w-2/3 p-2 px-3">
 									<span className="text-gray-500">Funtions I hire for</span>
 									<span className="text-sm">
-										{user.hiring_preference.function.map((item, index) => (
-											<span key={index}>
-												{item.trim()}
-												{index < user.hiring_preference.function.length - 1
-													? ", "
-													: ""}
-											</span>
-										))}
+										{recruiterData?.hiring_preference.function.map(
+											(item, index) => (
+												<span key={index}>
+													{item.trim()}
+													{index <
+													recruiterData?.hiring_preference.function.length - 1
+														? ", "
+														: ""}
+												</span>
+											)
+										)}
 									</span>
 								</div>
 							</div>
 							<div className="w-full flex flex-col p-2 px-3">
 								<span className="text-gray-500">Skills I hire for</span>
 								<span className="flex flex-wrap text-sm gap-2">
-									{user.hiring_preference.skills.map((item, index) => (
-										<span
-											key={index}
-											className="border border-gray-400 rounded-full py-0.5 px-2.5"
-										>
-											{item.trim()}
-											{index < user.hiring_preference.skills.length - 1
-												? ""
-												: ""}
-										</span>
-									))}
+									{recruiterData?.hiring_preference.skills.map(
+										(item, index) => (
+											<span
+												key={index}
+												className="border border-gray-400 rounded-full py-0.5 px-2.5"
+											>
+												{item.trim()}
+												{index <
+												recruiterData?.hiring_preference.skills.length - 1
+													? ""
+													: ""}
+											</span>
+										)
+									)}
 								</span>
 							</div>
 						</div>
 					</section>
 
 					{/* experience section*/}
-					<section className="flex pt-2 flex-col w-full shadow-lg rounded-xl bg-white h-auto p-5 my-2">
+					<section className="flex pt-2 flex-col w-full  rounded-xl bg-white h-auto p-5 my-2">
 						<div className="flex justify-between items-center">
 							<h3 className="text-xl font-bold tracking-tight py-2">
 								Experience
@@ -236,11 +238,13 @@ export const RecruiterProfileView = () => {
 								<div className="w-full">
 									<div className="flex items-baseline justify-between ">
 										<h1 className="text-xl font-semibold">
-											{user.recruiter_details.companyName}
+											{recruiterData?.recruiter_details.companyName}
 										</h1>
 										<h1 className="text-xs">July 2021 - Present</h1>
 									</div>
-									<h2 className="text-sm">{user.recruiter_details.jobTitle}</h2>
+									<h2 className="text-sm">
+										{recruiterData?.recruiter_details.jobTitle}
+									</h2>
 								</div>
 							</div>
 						</div>
@@ -248,7 +252,5 @@ export const RecruiterProfileView = () => {
 				</div>
 			</div>
 		</div>
-	) : (
-		<p>Loading...</p>
 	);
 };

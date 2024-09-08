@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 
 // pages
-import CandidateLayout from "./CandidateLayout";
+import CandidateLayout from "@/pages/candidate/CandidateLayout";
 import JobsFeed from "@/pages/candidate/JobsFeed";
-import UserProfile from "./UserProfile";
+import UserProfile from "@/pages/candidate/UserProfile";
 import JobSearch from "@/pages/candidate/JobSearch";
-import SignUpPage from "./auth/SignUpPage";
-import SignInPage from "./auth/SignInPage";
-import { LandingPage } from "../common/Landing";
-import { NotFound } from "../common/NotFound";
+import SignUpPage from "@/pages/candidate/auth/SignUpPage";
+import SignInPage from "@/pages/candidate/auth/SignInPage";
+import { LandingPage } from "@/pages/common/Landing";
+import { NotFound } from "@/pages/common/NotFound";
 
 export const CandidateRoutes: React.FC = () => {
 

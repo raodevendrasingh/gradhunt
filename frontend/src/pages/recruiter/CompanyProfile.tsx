@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 // assets
 import CompanyLogo from "@/assets/avatar/emptyLogo.png";
@@ -7,15 +7,14 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 // local imports
 import { CompanyProfileModal } from "./modalForms/CompanyProfileModal";
-import { FetchCompanyProfile } from "./utils/FetchCompanyProfile";
+import { useFetchCompanyProfile } from "../../hooks/useFetchCompanyProfile";
 
 export const CompanyProfile = () => {
-	const [refresh, setRefresh] = useState(false);
+	const { companyData, refetch } = useFetchCompanyProfile();
 
-	const handleRefresh = () => {
-		setRefresh(!refresh);
-	};
-	const companyData = FetchCompanyProfile({ refresh });
+	const handleRefresh = useCallback(() => {
+		refetch();
+	}, [refetch]);
 
 	return (
 		<div className="w-full pt-20 mx-auto">
@@ -140,41 +139,36 @@ export const CompanyProfile = () => {
 
 									<div className="flex items-center flex-wrap gap-3 text-sm pt-1 pl-3">
 										{companyData?.branches ? (
-											typeof companyData.branches === "string" ? (
-												(() => {
-													try {
-														return JSON.parse(companyData.branches).map(
-															(branch, index) => (
-																<div key={index} className="branch-info">
-																	<span className="text-sm px-2 py-1 rounded-full bg-slate-300 text-black">
-																		{branch.city}, {branch.state},{" "}
-																		{branch.country}
-																	</span>
-																</div>
-															)
-														);
-													} catch (error) {
-														console.error("Error parsing branches:", error);
-														return (
-															<span className="text-xs text-red-600">
-																Error loading branches
-															</span>
-														);
-													}
-												})()
-											) : Array.isArray(companyData.branches) ? (
-												companyData.branches.map((branch, index) => (
-													<div key={index} className="branch-info">
-														<span className="text-base">
-															{branch.city}, {branch.state}, {branch.country}
+											(() => {
+												try {
+													const branchesArray =
+														typeof companyData.branches === "string"
+															? JSON.parse(companyData.branches)
+															: companyData.branches;
+
+													return Array.isArray(branchesArray) ? (
+														branchesArray.map((branch, index) => (
+															<div key={index} className="branch-info">
+																<span className="text-sm px-2 py-1 rounded-full bg-slate-300 text-black">
+																	{branch.city}, {branch.state},{" "}
+																	{branch.country}
+																</span>
+															</div>
+														))
+													) : (
+														<span className="text-xs text-blue-600">
+															+ Add Location
 														</span>
-													</div>
-												))
-											) : (
-												<span className="text-xs text-blue-600">
-													+ Add Location
-												</span>
-											)
+													);
+												} catch (error) {
+													console.error("Error parsing branches:", error);
+													return (
+														<span className="text-xs text-red-600">
+															Error loading branches
+														</span>
+													);
+												}
+											})()
 										) : (
 											<span className="text-xs text-blue-600">
 												+ Add Location

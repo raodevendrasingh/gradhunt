@@ -11,7 +11,8 @@ class UserDetails(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    bio = models.CharField(max_length=255)
+    bio = models.CharField(max_length=255, null=True, blank=True)
+    location = models.CharField(max_length=60, null=True, blank=True)
     mobileNumber = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -21,20 +22,6 @@ class UserDetails(models.Model):
     class Meta:
         verbose_name = "User Details"
         verbose_name_plural = "User Details"
-
-
-class Location(models.Model):
-    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.user.username} from {self.state}, {self.country}"
-
-    class Meta:
-        verbose_name = "Location"
-        verbose_name_plural = "Locations"
 
 
 class Linguistics(models.Model):
@@ -83,12 +70,7 @@ class Recruiter(models.Model):
     jobTitle = models.CharField(max_length=100)
     startDate = models.DateField()
     endDate = models.DateField(blank=True, null=True)
-    Address1 = models.CharField(max_length=100)
-    Address2 = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    zipcode = models.CharField(max_length=10)
+    companyLocation = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} from {self.companyName}"
@@ -170,7 +152,7 @@ class CompanyProfile(models.Model):
     establishedYear = models.CharField(max_length=6)
     industry = models.CharField(max_length=100)
     headquarters = models.CharField(max_length=200)
-    branches = models.CharField(max_length=500, blank=True, null=True)
+    branches = models.JSONField(blank=True, null=True)
     about = models.TextField()
     values = models.TextField()
 
@@ -191,7 +173,7 @@ class Experience(models.Model):
     startYear = models.CharField(max_length=4)
     endMonth = models.CharField(max_length=20, blank=True)
     endYear = models.CharField(max_length=4, blank=True)
-    jobLocation = models.CharField(max_length=60)
+    jobLocation = models.CharField(max_length=100)
     locationType = models.CharField(max_length=60)
     description = models.TextField(blank=True, default='')
     isCurrentlyWorking = models.BooleanField(default=False)
@@ -213,7 +195,7 @@ class Education(models.Model):
     startYear = models.CharField(max_length=4)
     endMonth = models.CharField(max_length=20)
     endYear = models.CharField(max_length=4)
-    instituteLocation = models.CharField(max_length=60)
+    instituteLocation = models.CharField(max_length=100)
     grade = models.CharField(max_length=10, blank=True)
     description = models.TextField(blank=True, default='')
 

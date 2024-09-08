@@ -335,22 +335,25 @@ class AddExperienceData(APIView):
 
 
 class GetExperienceData(APIView):
-    def get(self, request, username, id):
+    def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            experience = Experience.objects.get(id=id, user=user)
+            experiences = Experience.objects.filter(user=user)
 
-            experience_data = {}
-            for field in Experience._meta.fields:
-                field_name = field.name
-                field_value = getattr(experience, field_name)
+            experience_data_list = []
+            for experience in experiences:
+                experience_data = {}
+                for field in Experience._meta.fields:
+                    field_name = field.name
+                    field_value = getattr(experience, field_name)
 
-                if isinstance(field_value, UserDetails):
-                    experience_data[field_name] = field_value.username
-                else:
-                    experience_data[field_name] = field_value
+                    if isinstance(field_value, UserDetails):
+                        experience_data[field_name] = field_value.username
+                    else:
+                        experience_data[field_name] = field_value
+                experience_data_list.append(experience_data)
 
-            return Response(experience_data, status=status.HTTP_200_OK)
+            return Response(experience_data_list, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Experience.DoesNotExist:
@@ -439,22 +442,25 @@ class AddEducationData(APIView):
 
 
 class GetEducationData(APIView):
-    def get(self, request, username, id):
+    def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            education = Education.objects.get(id=id, user=user)
+            educations = Education.objects.filter(user=user)
 
-            education_data = {}
-            for field in Education._meta.fields:
-                field_name = field.name
-                field_value = getattr(education, field_name)
+            education_data_list = []
+            for education in educations:
+                education_data = {}
+                for field in Education._meta.fields:
+                    field_name = field.name
+                    field_value = getattr(education, field_name)
 
-                if isinstance(field_value, UserDetails):
-                    education_data[field_name] = field_value.username
-                else:
-                    education_data[field_name] = field_value
+                    if isinstance(field_value, UserDetails):
+                        education_data[field_name] = field_value.username
+                    else:
+                        education_data[field_name] = field_value
+                education_data_list.append(education_data)
 
-            return Response(education_data, status=status.HTTP_200_OK)
+            return Response(education_data_list, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Education.DoesNotExist:
@@ -623,22 +629,15 @@ class AddUserData(APIView):
             'firstname': data.get('firstname'),
             'lastname': data.get('lastname'),
             'bio': data.get('bio'),
+            'location': data.get('location'),
         }
 
-        location_data = data.get('location', {})
         social_links_data = data.get('socialLinks', {})
         languages_data = data.get('languages', [])
-
-        location_data.pop('value', None)
-        location_data.pop('label', None)
 
         try:
             user_details, created = UserDetails.objects.update_or_create(
                 clerk_user_id=clerk_user_id, defaults=user_data
-            )
-
-            location, created = Location.objects.update_or_create(
-                user=user_details, defaults=location_data
             )
 
             social_links, created = SocialLinks.objects.update_or_create(
