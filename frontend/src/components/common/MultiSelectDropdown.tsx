@@ -2,6 +2,18 @@
 import { useEffect, useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa6";
 
+interface MultiSelectDropdownProps {
+	id: string;
+	options: { value: string; label: string }[];
+	label: string;
+	buttonTitle: string;
+	helpText: string;
+	maxSelect: number;
+	dropdownName: string;
+	selectedValues: string[];
+	onChange: (selectedValues: string[]) => void;
+}
+
 export const MultiSelectDropdown = ({
 	id,
 	options,
@@ -12,28 +24,33 @@ export const MultiSelectDropdown = ({
 	dropdownName,
 	selectedValues,
 	onChange,
-}) => {
-	const [selectedOptions, setSelectedOptions] = useState(selectedValues || []);
-	const [isOpen, setIsOpen] = useState(false);
-	const dropdownRef = useRef(null);
+}: MultiSelectDropdownProps) => {
+	const [selectedOptions, setSelectedOptions] = useState<string[]>(
+		selectedValues || []
+	);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
-	const toggleOption = (option) => {
+	const toggleOption = (option: string) => {
 		setSelectedOptions((prev) =>
 			prev.includes(option)
 				? prev.filter((o) => o !== option)
 				: prev.length < maxSelect
-				? [...prev, option]
-				: prev
+					? [...prev, option]
+					: prev
 		);
 	};
 
 	useEffect(() => {
-		onChange(selectedOptions); // notify the parent component when the selected options change
+		onChange(selectedOptions);
 	}, [selectedOptions, onChange]);
 
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
 				setIsOpen(false);
 			}
 		};
@@ -52,14 +69,16 @@ export const MultiSelectDropdown = ({
 	return (
 		<div className="relative inline-block text-left w-full" ref={dropdownRef}>
 			<div className="relative">
-				<label htmlFor={id} className="text-sm">
-					{label}
-					<span className="text-xs text-gray-500 pl-2">{helpText}</span>
-				</label>
+				{label && (
+					<label htmlFor={id} className="text-gray-800 font-medium text-base">
+						{label}
+						<span className="text-xs text-gray-500 pl-2">{helpText}</span>
+					</label>
+				)}
 				<button
 					type="button"
 					onClick={() => setIsOpen(!isOpen)}
-					className="focus:outline-none focus:ring-0 flex items-baseline justify-between w-full rounded-md border border-gray-200 shadow-sm px-4 py-2 bg-white text-sm  text-gray-500 hover:bg-gray-50 "
+					className="focus:outline-none focus:ring-0 flex items-baseline justify-between w-full rounded-md border border-gray-200 shadow-sm px-4 py-2 my-1 bg-white text-sm  text-gray-500 hover:bg-gray-50 "
 					id={id}
 					aria-haspopup="true"
 					aria-expanded="true"
@@ -79,11 +98,11 @@ export const MultiSelectDropdown = ({
 										type="checkbox"
 										name={dropdownName}
 										value={option.value}
-										className="form-checkbox outline-none ring-0 rounded h-5 w-5 text-indigo-500 ring-offset-0 "
+										className="form-checkbox outline-none ring-0 rounded size-4 text-indigo-500 ring-offset-0 "
 										checked={selectedOptions.includes(option.value)}
 										onChange={() => toggleOption(option.value)}
 									/>
-									<span className="ml-3 block text-sm">{option.label}</span>
+									<span className="ml-3 block text-xs">{option.label}</span>
 								</label>
 							))}
 						</div>

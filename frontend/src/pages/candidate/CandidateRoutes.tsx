@@ -18,9 +18,9 @@ export const CandidateRoutes: React.FC = () => {
 				<Route path="/" element={<LandingPage />} />
 				<Route path="/login/*" element={<SignInPage />} />
 				<Route path="/signup/*" element={<SignUpPage />} />
-				<Route path="/search" element={<JobSearch />} />
+				<Route path="/job-search" element={<JobSearch />} />
+				<Route path="/job-search/:id" element={<JobsFeed />} />
 				<Route path="/:username" element={<UserProfile />} />
-				<Route path="/jobs" element={<JobsFeed />} />
 				<Route path="*" element={<NotFound />} />
 			</Route>
 		</Routes>

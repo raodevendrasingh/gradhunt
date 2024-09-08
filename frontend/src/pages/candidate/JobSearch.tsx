@@ -20,7 +20,32 @@ import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 import { FormData } from "@/components/layouts/JobSearchBar";
 
-export default function HomeFeed(): JSX.Element {
+export const handleSearch: SubmitHandler<FormData> = async (data) => {
+	const encodeValue = (value: string) => value.replace(/ /g, "+");
+	const searchParams = new URLSearchParams({
+		position: encodeValue(data.position),
+		experience: encodeValue(
+			typeof data.experience === "object"
+				? data.experience?.value || ""
+				: data.experience || ""
+		),
+		location: encodeValue(
+			typeof data.location === "object"
+				? data.location?.value || ""
+				: data.location || ""
+		),
+	});
+
+	try {
+		const url = `/api/job-search?${searchParams}`;
+		const response = await axios.get(url);
+		console.log(response.data);
+	} catch (error) {
+		throw new Error("Error Completing Search, Try Again!");
+	}
+};
+
+export default function JobSearch(): JSX.Element {
 	const {
 		isLoading,
 		error,
@@ -28,31 +53,6 @@ export default function HomeFeed(): JSX.Element {
 		handleInputChange,
 		formatOptionLabel,
 	} = useCitySearch();
-
-	const handleSearch: SubmitHandler<FormData> = async (data) => {
-		const encodeValue = (value: string) => value.replace(/ /g, "+");
-		const searchParams = new URLSearchParams({
-			position: encodeValue(data.position),
-			experience: encodeValue(
-				typeof data.experience === "object"
-					? data.experience?.value || ""
-					: data.experience || ""
-			),
-			location: encodeValue(
-				typeof data.location === "object"
-					? data.location?.value || ""
-					: data.location || ""
-			),
-		});
-
-		try {
-			const url = `/api/job-search?${searchParams}`;
-			const response = await axios.get(url);
-			console.log(response.data);
-		} catch (error) {
-			throw new Error("Error Completing Search, Try Again!");
-		}
-	};
 
 	return (
 		<main className="scroll-smooth">
