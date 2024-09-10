@@ -1,4 +1,4 @@
-interface SelectOption {
+export interface SelectOption {
     label: string;
     value: string;
 }
@@ -777,7 +777,7 @@ export const functions: readonly SelectOption[] = [
     },
 ];
 
-export const skills: readonly SelectOption[] = [
+export const skills: SelectOption[] = [
     { label: "Java", value: "Java" },
     { label: "Python", value: "Python" },
     { label: "C++", value: "C++" },

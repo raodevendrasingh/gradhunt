@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { TbLoader } from "react-icons/tb";
 import { FaImage } from "react-icons/fa6";
 import { ImageCropper } from "@/components/common/ImageCropper";
+import Spinner from "@/components/ui/Spinner";
 
 interface ImageUpload {
 	profilePicture: string;
@@ -107,7 +108,7 @@ export const EditImageModal: React.FC<{
 
 			const formData = { profilePicture: cloudinaryPublicId };
 
-            // Step 3: Send to backend
+			// Step 3: Send to backend
 			const response = await axios.post(apiUrl, formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -128,86 +129,83 @@ export const EditImageModal: React.FC<{
 	};
 
 	return (
-		isSignedIn && (
-			<AnimatePresence>
+		<AnimatePresence>
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+			>
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+					initial={{ scale: 0.9, rotate: "0deg" }}
+					animate={{ scale: 1, rotate: "0deg" }}
+					exit={{ scale: 0, rotate: "0deg" }}
+					onClick={(e) => e.stopPropagation()}
+					className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg shadow-xl cursor-default relative overflow-hidden"
 				>
-					<motion.div
-						initial={{ scale: 0.9, rotate: "0deg" }}
-						animate={{ scale: 1, rotate: "0deg" }}
-						exit={{ scale: 0, rotate: "0deg" }}
-						onClick={(e) => e.stopPropagation()}
-						className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg shadow-xl cursor-default relative overflow-hidden"
-					>
-						<div className="relative z-10">
-							<div className="flex items-start justify-between ml-1 rounded-t">
-								<h3 className="text-xl font-semibold text-gray-800 mt-1">
-									Change Profile Picture
-								</h3>
-								<button
-									className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-									onClick={() => setShowImageEditModal(false)}
-								>
-									<span className="bg-transparent text-gray-800">
-										<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
-									</span>
-								</button>
-							</div>
-							<div className="mb-4">
-								<input
-									type="file"
-									accept="image/*"
-									onChange={handleFileUpload}
-									className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-								/>
-							</div>
-							<div className="h-[400px] w-full border-2 border-dashed rounded-lg border-gray-400 hover:border-blue-500 flex justify-center items-center p-2">
-								{croppedImage ? (
-									<img
-										src={croppedImage}
-										alt="Cropped"
-										className="max-h-full max-w-full object-contain rounded"
-									/>
-								) : uploadedImage ? (
-									<ImageCropper
-										imageSrc={uploadedImage}
-										onCropComplete={handleCrop}
-									/>
-								) : (
-									<div className="flex flex-col items-center justify-center gap-4">
-										<div className="flex items-center justify-center bg-gray-100 rounded-full size-32">
-											<FaImage className="size-20 text-gray-200" />
-										</div>
-										<span className="text-lg text-gray-500">
-											Upload an Image
-										</span>
-									</div>
-								)}
-							</div>
-							<div className="flex items-center justify-end mt-3 rounded-b">
-								<button
-									className="flex items-center justify-center gap-3 bg-zinc-800 w-28 text-white font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
-									onClick={handleSave}
-									disabled={isLoading || !croppedImage}
-								>
-									{isLoading ? (
-										<>
-											<span>Saving</span>
-											<TbLoader className="size-4 animate-spin" />
-										</>
-									) : (
-										"Save"
-									)}
-								</button>
-							</div>
+					<div className="relative z-10">
+						<div className="flex items-start justify-between ml-1 rounded-t">
+							<h3 className="text-xl font-semibold text-gray-800 mt-1">
+								Change Profile Picture
+							</h3>
+							<button
+								className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+								onClick={() => setShowImageEditModal(false)}
+							>
+								<span className="bg-transparent text-gray-800">
+									<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
+								</span>
+							</button>
 						</div>
-					</motion.div>
+						<div className="mb-4">
+							<input
+								type="file"
+								accept="image/*"
+								onChange={handleFileUpload}
+								className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+							/>
+						</div>
+						<div className="h-[400px] w-full border-2 border-dashed rounded-lg border-gray-400 hover:border-blue-500 flex justify-center items-center p-2">
+							{croppedImage ? (
+								<img
+									src={croppedImage}
+									alt="Cropped"
+									className="max-h-full max-w-full object-contain rounded"
+								/>
+							) : uploadedImage ? (
+								<ImageCropper
+									imageSrc={uploadedImage}
+									onCropComplete={handleCrop}
+								/>
+							) : (
+								<div className="flex flex-col items-center justify-center gap-4">
+									<div className="flex items-center justify-center bg-gray-100 rounded-full size-32">
+										<FaImage className="size-20 text-gray-200" />
+									</div>
+									<span className="text-lg text-gray-500">Upload an Image</span>
+								</div>
+							)}
+						</div>
+						<div className="flex items-center justify-end mt-3 rounded-b">
+							<button
+								type="submit"
+								className="flex items-center justify-center gap-3 bg-zinc-800 w-28 text-white font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+								onClick={handleSave}
+								disabled={isLoading || !croppedImage}
+							>
+								{isLoading ? (
+									<>
+										<span>Saving</span>
+										<Spinner />
+									</>
+								) : (
+									<span>Save</span>
+								)}
+							</button>
+						</div>
+					</div>
 				</motion.div>
-			</AnimatePresence>
-		)
+			</motion.div>
+		</AnimatePresence>
 	);
 };

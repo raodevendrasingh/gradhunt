@@ -1,7 +1,6 @@
 // hooks
 import { useState } from "react";
-import { useCitySearch } from "@/hooks/useCitySearch";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 
 // external
 import axios from "axios";
@@ -21,20 +20,9 @@ import {
 	HiOutlineArrowRight,
 	HiOutlineTrash,
 } from "react-icons/hi2";
-
-interface FormData {
-	firstname: string;
-	lastname: string;
-	bio: string;
-	location: string;
-	socialLinks: {
-		linkedin?: string;
-		github?: string;
-		leetcode?: string;
-		twitter?: string;
-	};
-	languages: { language: string; proficiency: string }[];
-}
+import { LocationSelect } from "@/helpers/LocationSelect";
+import { UserBasicDetails } from "@/types/userTypes";
+import Spinner from "@/components/ui/Spinner";
 
 const screens = ["Add Basic Info", "Add Social Links", "Add Languages"];
 
@@ -42,7 +30,7 @@ export const AddBasicDetailModal: React.FC<{
 	onSave: () => void;
 	setShowBasicDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setShowBasicDetailModal, onSave }) => {
-	const { isSignedIn } = useUser();
+	const [isLoading, setIsLoading] = useState(false);
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 
@@ -54,21 +42,13 @@ export const AddBasicDetailModal: React.FC<{
 		handleSubmit,
 		formState: { errors, isValid },
 		trigger,
-	} = useForm<FormData>({
+		watch,
+	} = useForm<UserBasicDetails>({
 		mode: "onChange",
 		defaultValues: {
 			socialLinks: {},
 		},
 	});
-
-	const {
-		isLoading,
-		error,
-		cityOptions,
-		handleInputChange,
-		formatOptionLabel,
-		handleSelection,
-	} = useCitySearch();
 
 	const handleNext = async (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -91,14 +71,8 @@ export const AddBasicDetailModal: React.FC<{
 				return (
 					<BasicInfoScreen
 						register={register}
-						error={error}
 						errors={errors}
 						control={control}
-						cityOptions={cityOptions}
-						isLoading={isLoading}
-						handleInputChange={handleInputChange}
-						handleSelection={handleSelection}
-						formatOptionLabel={formatOptionLabel}
 					/>
 				);
 			case 1:
@@ -110,9 +84,8 @@ export const AddBasicDetailModal: React.FC<{
 		}
 	};
 
-	const onSubmit: SubmitHandler<FormData> = async (data) => {
-		console.log("Form data:", data);
-
+	const onSubmit: SubmitHandler<UserBasicDetails> = async (data) => {
+		setIsLoading(true);
 		try {
 			const token = await getToken();
 			if (!token) {
@@ -126,118 +99,115 @@ export const AddBasicDetailModal: React.FC<{
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			console.log(response.data);
+			// console.log(response.data);
 			toast.success("Details Updated");
 			onSave();
 			setShowBasicDetailModal(false);
 		} catch (error: any) {
 			toast.error("Error occurred while updating information. Try again!");
 			console.error("Error:", error);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
 	return (
-		isSignedIn && (
-			<AnimatePresence>
+		<AnimatePresence>
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+			>
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer"
+					initial={{ scale: 0.9, rotate: "0deg" }}
+					animate={{ scale: 1, rotate: "0deg" }}
+					exit={{ scale: 0, rotate: "0deg" }}
+					onClick={(e) => e.stopPropagation()}
+					className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg shadow-xl cursor-default relative overflow-hidden"
 				>
-					<motion.div
-						initial={{ scale: 0.9, rotate: "0deg" }}
-						animate={{ scale: 1, rotate: "0deg" }}
-						exit={{ scale: 0, rotate: "0deg" }}
-						onClick={(e) => e.stopPropagation()}
-						className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg shadow-xl cursor-default relative overflow-hidden"
-					>
-						<div className="relative z-10">
-							<div className="flex items-start justify-between ml-1 rounded-t">
-								<h3 className="text-xl font-semibold text-gray-800 mt-1">
-									{screens[currentScreen]}
-								</h3>
-								<button
-									className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-									onClick={() => setShowBasicDetailModal(false)}
-								>
-									<span className="bg-transparent text-gray-800">
-										<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
-									</span>
-								</button>
-							</div>
-							<form id="basicDetailForm" onSubmit={handleSubmit(onSubmit)}>
-								<motion.div
-									key={currentScreen}
-									initial={{ x: slideDirection * 50, opacity: 0 }}
-									animate={{ x: 0, opacity: 1 }}
-									exit={{ x: -slideDirection * 50, opacity: 0 }}
-									transition={{ duration: 0.3 }}
-									className="h-[45vh] overflow-y-auto scroll-smooth"
-								>
-									<div className="p-3">
-										<div className="flex flex-col gap-3">{renderScreen()}</div>
-									</div>
-								</motion.div>
-								<div className="flex justify-between mt-4">
-									{currentScreen > 0 && (
-										<button
-											type="button"
-											onClick={handlePrevious}
-											className="flex items-center px-3 py-2 text-sm bg-gray-200 text-gray-800 rounded-[10px] hover:bg-gray-300 transition-colors"
-										>
-											<HiOutlineArrowLeft className="mr-2" /> Previous
-										</button>
-									)}
-									{currentScreen < screens.length - 1 ? (
-										<button
-											type="button"
-											onClick={handleNext}
-											disabled={!isValid}
-											className="flex items-center text-sm px-4 py-2 bg-zinc-800 text-white rounded-[10px] hover:bg-zinc-900 disabled:bg-zinc-900/60 disabled:cursor-not-allowed transition-colors ml-auto"
-										>
-											Next <HiOutlineArrowRight className="ml-2" />
-										</button>
-									) : (
-										<button
-											type="submit"
-											disabled={!isValid}
-											className="px-4 py-2 bg-zinc-800 text-sm text-white rounded-[10px] hover:bg-zinc-900 transition-colors ml-auto"
-										>
-											Save
-										</button>
-									)}
-								</div>
-							</form>
+					<div className="relative z-10">
+						<div className="flex items-start justify-between ml-1 rounded-t">
+							<h3 className="text-xl font-semibold text-gray-800 mt-1">
+								{screens[currentScreen]}
+							</h3>
+							<button
+								className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+								onClick={() => setShowBasicDetailModal(false)}
+							>
+								<span className="bg-transparent text-gray-800">
+									<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
+								</span>
+							</button>
 						</div>
-					</motion.div>
+						<form id="basicDetailForm" onSubmit={handleSubmit(onSubmit)}>
+							<motion.div
+								key={currentScreen}
+								initial={{ x: slideDirection * 50, opacity: 0 }}
+								animate={{ x: 0, opacity: 1 }}
+								exit={{ x: -slideDirection * 50, opacity: 0 }}
+								transition={{ duration: 0.3 }}
+								className="h-[45vh] overflow-y-auto scroll-smooth"
+							>
+								<div className="p-3">
+									<div className="flex flex-col gap-3">{renderScreen()}</div>
+								</div>
+							</motion.div>
+							<div
+								className={`flex items-center mt-4 ${
+									currentScreen === 0
+										? "justify-end"
+										: currentScreen > 0 && "justify-between"
+								}`}
+							>
+								{currentScreen > 0 && (
+									<button
+										type="button"
+										onClick={handlePrevious}
+										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+									>
+										<HiOutlineArrowLeft className="mr-2" /> Previous
+									</button>
+								)}
+								{currentScreen < screens.length - 1 ? (
+									<button
+										type="button"
+										onClick={handleNext}
+										disabled={!isValid}
+										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+									>
+										Next <HiOutlineArrowRight className="ml-2" />
+									</button>
+								) : (
+									<button
+										type="submit"
+										disabled={!isValid || isLoading}
+										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+									>
+										{isLoading ? (
+											<span className="flex items-center">
+												<span className="mr-2">Saving</span>
+												<Spinner />
+											</span>
+										) : (
+											"Save"
+										)}
+									</button>
+								)}
+							</div>
+						</form>
+					</div>
 				</motion.div>
-			</AnimatePresence>
-		)
+			</motion.div>
+		</AnimatePresence>
 	);
 };
 
 const BasicInfoScreen: React.FC<{
-	error: any;
 	errors: any;
 	control: any;
 	register: any;
-	handleSelection: any;
-	isLoading: boolean;
-	formatOptionLabel: any;
-	handleInputChange: any;
-	cityOptions: any[];
-}> = ({
-	error,
-	errors,
-	control,
-	register,
-	handleSelection,
-	isLoading,
-	formatOptionLabel,
-	handleInputChange,
-	cityOptions,
-}) => {
+}> = ({ errors, control, register }) => {
 	const [bio, setBio] = useState("");
 	const maxChars = 250;
 
@@ -348,42 +318,15 @@ const BasicInfoScreen: React.FC<{
 				>
 					Location
 				</label>
-				<Controller
-					name="location"
+				<LocationSelect
 					control={control}
+					name="location"
+					placeholder="Location"
+					error={errors.location?.message}
 					rules={{
 						required: "Location is required",
 					}}
-					render={({ field }) => (
-						<Select
-							{...field}
-							isClearable
-							isSearchable
-							isLoading={isLoading}
-							onInputChange={handleInputChange}
-							onChange={(option) => handleSelection(option, field.onChange)}
-							options={cityOptions}
-							formatOptionLabel={formatOptionLabel}
-							value={field.value as any}
-							id="location"
-							placeholder="Location"
-							styles={selectCompanyFieldStyle}
-							classNamePrefix="select"
-							noOptionsMessage={({ inputValue }) =>
-								inputValue.length < 2
-									? "Type at least 2 characters to search"
-									: error
-										? error
-										: "No cities found"
-							}
-						/>
-					)}
 				/>
-				{errors.location && (
-					<span className="form-error text-red-500 text-xs mt-1" role="alert">
-						{errors.location.message as string}
-					</span>
-				)}
 			</div>
 		</div>
 	);
@@ -521,7 +464,7 @@ const LanguagesScreen: React.FC<{
 									]);
 								}
 							}}
-							className="w-full mt-2 px-4 py-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors"
+							className="w-full mt-2 px-4 py-2 bg-slate-200 text-black rounded-lg hover:bg-slate-300 transition-colors"
 							disabled={field.value && field.value.length >= 5}
 						>
 							Add Language

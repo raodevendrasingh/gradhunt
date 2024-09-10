@@ -1,8 +1,18 @@
+import { SelectOption } from "@/utils/selectObjects";
+
 export type Recruiter = {
 	user_details: UserDetails;
 	recruiter_details: RecruiterDetails;
 	hiring_preference: HiringPreference;
 };
+
+export type Candidate = {
+	user_details: UserDetails;
+    experience: Experience[];
+    education: Education[];
+    certificate: Certificate[];
+    project: Project[];
+}
 
 export type UserDetails = {
 	profilePicture: string;
@@ -35,8 +45,8 @@ export type HiringPreference = {
 };
 
 export type Experience = {
-	experienceId: string;
-	user: UserDetails;
+	experienceId?: string;
+	user?: UserDetails;
 	companyName: string;
 	jobTitle: string;
 	jobType: string;
@@ -47,7 +57,7 @@ export type Experience = {
 	jobLocation: string;
 	locationType: string;
 	description: string;
-	isCurrentlyWorking: boolean;
+	isCurrentlyWorking?: boolean;
 };
 
 export type CompanyProfile = {
@@ -66,8 +76,8 @@ export type CompanyProfile = {
 };
 
 export type Education = {
-	educationId: string;
-	user: UserDetails;
+	educationId?: string;
+	user?: UserDetails;
 	instituteName: string;
 	degreeTitle: string;
 	studyField: string;
@@ -75,6 +85,50 @@ export type Education = {
 	startYear: string;
 	endMonth: string;
 	endYear: string;
+	grade: string;
 	instituteLocation: string;
 	description: string;
 };
+
+export type Certificate = {
+	certificateId?: string;
+	user?: UserDetails;
+	certificateName: string;
+	issuerOrg: string;
+	credentialUrl: string;
+	credentialId: string;
+	isValid: boolean;
+	startMonth: string;
+	startYear: number;
+	endMonth?: string;
+	endYear?: number;
+}
+
+export type UserBasicDetails = {
+	firstname: string;
+	lastname: string;
+	bio: string;
+	location: string;
+	socialLinks: {
+		linkedin?: string;
+		github?: string;
+		leetcode?: string;
+		twitter?: string;
+	};
+	languages: { language: string; proficiency: string }[];
+}
+
+export type Project = {
+	projectId?: string;
+	user?: UserDetails;
+	projectName: string;
+	description: string;
+	liveLink: string;
+	skills: SelectOption[];
+	sourceCodeLink: string | null;
+	isCurrentlyWorking: boolean;
+	startMonth: string;
+	startYear: number;
+	endMonth?: string;
+	endYear?: number;
+}
