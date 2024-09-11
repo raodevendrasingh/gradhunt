@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Outlet } from "react-router-dom";
 
-import { Header } from "@/components/common/Header";
 import { UserOnboardingModal } from "@/components/common/OnboardingModal";
+import Navbar from "@/components/common/Navbar";
 
 export default function CandidateLayout() {
 	const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function CandidateLayout() {
 
 	return (
 		<main>
-			<Header />
+			<Navbar />
 			<Outlet />
 			<div>
 				<UserOnboardingModal

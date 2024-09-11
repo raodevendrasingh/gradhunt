@@ -19,6 +19,7 @@ import { JobCategories } from "@/components/common/JobCategory";
 import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 import { FormData } from "@/components/layouts/JobSearchBar";
+import Navbar from "@/components/common/Navbar";
 
 export const handleSearch: SubmitHandler<FormData> = async (data) => {
 	const encodeValue = (value: string) => value.replace(/ /g, "+");
@@ -55,9 +56,9 @@ export default function JobSearch(): JSX.Element {
 	} = useCitySearch();
 
 	return (
-		<main className="scroll-smooth">
-			<section className="mt-16 p-10 w-full pb-80 md:pb-32">
-				<div className="h-64 max-w-6xl mx-auto">
+		<main className="max-w-screen-2xl mx-auto overflow-hidden scroll-smooth">
+			<section className="mt-16 p-10 w-full pb-20">
+				<div className="max-w-6xl mx-auto">
 					<SearchHeader />
 					<JobSearchForm
 						onSubmit={handleSearch}

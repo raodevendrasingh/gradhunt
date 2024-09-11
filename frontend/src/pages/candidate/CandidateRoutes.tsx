@@ -11,7 +11,6 @@ import { LandingPage } from "@/pages/common/Landing";
 import { NotFound } from "@/pages/common/NotFound";
 
 export const CandidateRoutes: React.FC = () => {
-
 	return (
 		<Routes>
 			<Route element={<CandidateLayout />}>
@@ -19,6 +18,8 @@ export const CandidateRoutes: React.FC = () => {
 				<Route path="/login/*" element={<SignInPage />} />
 				<Route path="/signup/*" element={<SignUpPage />} />
 				<Route path="/job-search" element={<JobSearch />} />
+				<Route path="/companies" element={<NotFound />} />
+				<Route path="/pricing" element={<NotFound />} />
 				<Route path="/job-search/:id" element={<JobsFeed />} />
 				<Route path="/:username" element={<UserProfile />} />
 				<Route path="*" element={<NotFound />} />

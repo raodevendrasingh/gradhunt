@@ -14,6 +14,8 @@ import { MdWork } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
 import { featuredCompanies, jobsData, topIndustries } from "@/utils/dummyData";
+import { Footer } from "@/components/common/Footer";
+import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 
 export default function JobsFeed() {
 	const [jobs] = useState(jobsData);
@@ -104,11 +106,11 @@ export default function JobsFeed() {
 												</span>
 											</div>
 											<div className="space-x-2 flex items-center">
-												<button className="flex items-center justify-center gap-2 bg-zinc-800 text-white py-2 px-4 rounded-md hover:bg-zinc-700 transition-colors duration-300">
+												<button className="flex items-center justify-center gap-2 bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-700 transition-colors duration-300">
 													Apply
 													<HiMiniArrowUpRight className="size-5" />
 												</button>
-												<button className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors duration-300">
+												<button className="bg-sky-500 text-white py-2 px-4 rounded-md hover:bg-sky-600 transition-colors duration-300">
 													Easy Apply
 												</button>
 											</div>
@@ -166,7 +168,9 @@ export default function JobsFeed() {
 						</div>
 					</div>
 				</div>
+                <ProfileBanner />
 			</div>
+            <Footer/>
 		</>
 	);
 }

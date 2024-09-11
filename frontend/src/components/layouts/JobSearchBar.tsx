@@ -145,7 +145,7 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 				</div>
 				<button
 					type="submit"
-					className="w-full md:w-auto px-6 py-2 bg-zinc-800 text-white rounded-full hover:bg-zinc-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-opacity-50"
+					className="w-full md:w-auto px-6 py-2 bg-slate-800 text-white rounded-full hover:bg-slate-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-opacity-50"
 				>
 					Search
 				</button>

@@ -189,7 +189,7 @@ export const EditImageModal: React.FC<{
 						<div className="flex items-center justify-end mt-3 rounded-b">
 							<button
 								type="submit"
-								className="flex items-center justify-center gap-3 bg-zinc-800 w-28 text-white font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+								className="flex items-center justify-center gap-3 bg-slate-800 w-28 text-white font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 								onClick={handleSave}
 								disabled={isLoading || !croppedImage}
 							>

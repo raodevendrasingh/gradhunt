@@ -70,7 +70,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 				/>
 			</ReactCrop>
 			<button
-				className="flex items-center justify-center gap-2 mt-4 bg-zinc-800 w-28 text-white font-semibold border rounded-full text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+				className="flex items-center justify-center gap-2 mt-4 bg-slate-800 w-28 text-white font-semibold border rounded-full text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 				onClick={handleCropComplete}
 			>
 				Crop 

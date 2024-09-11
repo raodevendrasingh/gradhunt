@@ -10,9 +10,9 @@ import gradhunt from "@/assets/brand/brandLogoFull.png";
 
 // icons
 import { GoArrowUpRight } from "react-icons/go";
-import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
+import { UserMenuDropdown } from "./UserMenuDropdown";
 
-const homeUrl = "http://localhost:5173/"
+const recruiterUrl = import.meta.env.VITE_BASE_RECRUITER_URL;
 
 interface NavLink {
 	name: string;
@@ -20,12 +20,12 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-	{ name: "Explore Talents", href: "/talents" },
+	{ name: "Explore Jobs", href: "/job-search" },
 	{ name: "Companies", href: "/companies" },
 	{ name: "Pricing", href: "/pricing" },
 ];
 
-export default function RecruiterNavbar() {
+export default function Navbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
@@ -85,9 +85,11 @@ export default function RecruiterNavbar() {
 								</SignedIn>
 
 								<SignedOut>
-									
+									<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
+										<Link to="/login">Login</Link>
+									</button>
 									<button className="flex justify-center items-center gap-1 whitespace-nowrap px-3 py-2 hover:bg-sky-200 text-slate-800 rounded-lg transition-colors">
-										<Link to={homeUrl}>Explore Jobs</Link>
+										<Link to={recruiterUrl}>Post Jobs</Link>
 										<span>
 											<GoArrowUpRight className="size-4" />
 										</span>
@@ -159,10 +161,15 @@ export default function RecruiterNavbar() {
 						</ul>
 						<div className="flex flex-col xs:flex-row items-center justify-center gap-4 mt-4 w-full">
 							<SignedOut>
-								
+								<button className="flex justify-center w-1/2 px-3 py-[9px] bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
+									<Link to="/login" onClick={() => setIsMenuOpen(false)}>
+										Login
+									</Link>
+									{/* Close menu on click */}
+								</button>
 								<button className="flex justify-center w-1/2 items-center gap-1 whitespace-nowrap px-3 py-2 hover:bg-sky-200 text-slate-800 border border-slate-800 rounded-lg transition-colors">
-									<Link to={homeUrl} onClick={() => setIsMenuOpen(false)}>
-										Explore Jobs
+									<Link to={recruiterUrl} onClick={() => setIsMenuOpen(false)}>
+										Post Jobs
 									</Link>
 									{/* Close menu on click */}
 									<span>

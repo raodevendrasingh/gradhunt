@@ -164,7 +164,7 @@ export const AddBasicDetailModal: React.FC<{
 									<button
 										type="button"
 										onClick={handlePrevious}
-										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+										className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 									>
 										<HiOutlineArrowLeft className="mr-2" /> Previous
 									</button>
@@ -174,7 +174,7 @@ export const AddBasicDetailModal: React.FC<{
 										type="button"
 										onClick={handleNext}
 										disabled={!isValid}
-										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+										className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 									>
 										Next <HiOutlineArrowRight className="ml-2" />
 									</button>
@@ -182,7 +182,7 @@ export const AddBasicDetailModal: React.FC<{
 									<button
 										type="submit"
 										disabled={!isValid || isLoading}
-										className="flex items-center justify-center bg-zinc-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+										className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-[10px] text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 									>
 										{isLoading ? (
 											<span className="flex items-center">

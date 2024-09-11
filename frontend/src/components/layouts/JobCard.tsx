@@ -43,7 +43,7 @@ export const JobCard = ({ job }: { job: any }) => {
 					</div>
 
 					<div className="pt-4 border-t border-gray-200">
-						<button className="w-full py-2 px-4 bg-zinc-800 hover:bg-zinc-900 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+						<button className="w-full py-2 px-4 bg-slate-800 hover:bg-zinc-900 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
 							View Details
 						</button>
 					</div>

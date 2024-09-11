@@ -133,11 +133,11 @@ export default function UserProfile(): JSX.Element {
 												alt="User"
 											/>
 											{/* completion percentage */}
-											<div className="absolute bottom-4 mb-[-20px] flex justify-center items-center w-10 h-5 bg-gray-400 text-slate-800 rounded-full">
+											{/* <div className="absolute bottom-4 mb-[-20px] flex justify-center items-center w-10 h-5 bg-gray-400 text-slate-800 rounded-full">
 												<span className="text-xs text-white font-semibold">
 													30%
 												</span>
-											</div>
+											</div> */}
 										</div>
 										{isSignedIn && (
 											<div className="relative -top-10 left-[55px]">
@@ -207,22 +207,22 @@ export default function UserProfile(): JSX.Element {
 									{/* social icons */}
 									<div className=" w-full md:w-[20%] flex flex-col md:justify-center items-center ">
 										<div className="flex w-full sm:justify-start sm:pl-5 md:pl-0 justify-center flex-row md:flex-col items-center gap-2">
-											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-slate-800 transition-colors cursor-pointer ">
 												<SiGmail className="size-4" />
 											</span>
-											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-slate-800 transition-colors cursor-pointer ">
 												<FaLinkedinIn className="size-4" />
 											</span>
-											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-slate-800 transition-colors cursor-pointer ">
 												<FaGithub className="size-4" />
 											</span>
-											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-slate-800 transition-colors cursor-pointer ">
 												<SiLeetcode className="size-4" />
 											</span>
-											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer ">
+											<span className="p-2 rounded-full border border-zinc-800 hover:text-zinc-100 hover:bg-slate-800 transition-colors cursor-pointer ">
 												<FaXTwitter className="size-4" />
 											</span>
-											{/* <span className="flex justify-center items-center gap-2 px-2 py-1.5 border rounded-full hover:bg-gray-700 bg-zinc-800 text-gray-100 transition-colors cursor-pointer">
+											{/* <span className="flex justify-center items-center gap-2 px-2 py-1.5 border rounded-full hover:bg-gray-700 bg-slate-800 text-gray-100 transition-colors cursor-pointer">
 									<HiShare className="size-[14px]" />
 									<span className="text-sm">Share</span>
 								</span> */}
@@ -261,7 +261,7 @@ export default function UserProfile(): JSX.Element {
 											{/* publish button */}
 											<button
 												disabled={isDisabled}
-												className="w-full mt-32 px-3 py-2 rounded-md bg-zinc-800 text-white disabled:bg-black/60"
+												className="w-full mt-32 px-3 py-2 rounded-md bg-slate-800 text-white disabled:bg-black/60"
 											>
 												{isDisabled ? (
 													<span className="flex items-center justify-center gap-2 cursor-not-allowed">

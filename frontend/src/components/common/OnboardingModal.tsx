@@ -259,7 +259,7 @@ export const UserOnboardingModal = ({
 													isCheckingUsername ||
 													!isValidUsername(username)
 												}
-												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-zinc-800 text-white rounded-[10px] hover:bg-zinc-900 disabled:bg-zinc-900/60 disabled:cursor-not-allowed transition-colors ml-auto"
+												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-slate-800 text-white rounded-[10px] hover:bg-zinc-900 disabled:bg-zinc-900/60 disabled:cursor-not-allowed transition-colors ml-auto"
 											>
 												Continue <HiMiniChevronRight className="size-5" />
 											</button>
@@ -267,7 +267,7 @@ export const UserOnboardingModal = ({
 											<button
 												type="submit"
 												disabled={!isValid || isSubmitting}
-												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-zinc-800 text-white rounded-[10px] hover:bg-zinc-900 disabled:bg-zinc-900/60 disabled:cursor-not-allowed transition-colors ml-auto"
+												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-slate-800 text-white rounded-[10px] hover:bg-zinc-900 disabled:bg-zinc-900/60 disabled:cursor-not-allowed transition-colors ml-auto"
 											>
 												Create Profile
 												{isSubmitting ? (

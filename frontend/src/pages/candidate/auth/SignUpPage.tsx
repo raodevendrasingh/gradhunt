@@ -10,11 +10,11 @@ const SignUpPage = () => {
 
     return (
         <>
-            <div className="cursor-pointer">
+            {/* <div className="cursor-pointer">
                 <Link to="/">
                     <img src={logo} alt="logo" className="aspect-auto w-52 p-4" />
                 </Link>
-            </div>
+            </div> */}
             <div className="flex justify-center items-center pt-10">
                 <div className="flex flex-col items-center border rounded-xl py-3 px-5 shadow-xl">
                     <div className="flex flex-col justify-center items-center gap-2 text-sm max-w-md py-5 w-[401px]">
@@ -56,7 +56,7 @@ const SignUpPage = () => {
                             username: username || '',
                         }}
                         signInUrl="/login"
-                        forceRedirectUrl="/onboarding"
+                        forceRedirectUrl="/job-search"
                     />
 
                     <div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">

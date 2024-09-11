@@ -10,7 +10,7 @@ export const SearchHeader = () => {
 					</span>{" "}
 					opportunities
 				</span>
-				<p className="text-lg">Unlock your dream career today and find the perfect job that matches your skills and aspirations</p>
+				<p className="text-lg text-center text-gray-500">Unlock your dream career today and find the perfect job that matches your skills and aspirations</p>
 			</div>
 		</div>
 	);

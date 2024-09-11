@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 
 const isValidUsername = (username: string): boolean => {
-    return username.length < 12 && /^[a-z0-9]+$/.test(username);
+    return username.length < 16 && /^[a-z0-9]+$/.test(username);
 };
 
 export const useUsernameCheck = () => {

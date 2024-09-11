@@ -40,7 +40,7 @@ export const Overview = () => {
 					<button
 						type="button"
 						onClick={() => setAboutModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add About
 					</button>
@@ -61,7 +61,7 @@ export const Overview = () => {
 					<button
 						type="button"
 						onClick={() => setShowSkillModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add Skills
 					</button>
@@ -82,7 +82,7 @@ export const Overview = () => {
                     <button
 						type="button"
 						onClick={() => setShowProjectModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add Projects
 					</button>
@@ -106,7 +106,7 @@ export const Overview = () => {
 					<button
 						type="button"
 						onClick={() => setShowExpModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add Experience
 					</button>
@@ -130,7 +130,7 @@ export const Overview = () => {
 					<button
 						type="button"
 						onClick={() => setShowEduModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add Education
 					</button>
@@ -154,7 +154,7 @@ export const Overview = () => {
 					<button
 						type="button"
 						onClick={() => setShowCertifyModal(true)}
-						className="px-3 py-2 rounded-lg text-white bg-zinc-800 text-xs cursor-pointer"
+						className="px-3 py-2 rounded-lg text-white bg-slate-800 text-xs cursor-pointer"
 					>
 						Add Certifications
 					</button>
