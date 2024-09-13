@@ -139,6 +139,7 @@ export type JobListing = {
 	jobTitle: string;
 	jobType: SelectOption;
 	jobDescription: string;
+    workType: SelectOption;
 	companySize: SelectOption;
 	skillsRequired: string;
 	experience: SelectOption;

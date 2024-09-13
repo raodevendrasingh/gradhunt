@@ -98,10 +98,6 @@ export const selectFieldStyle = {
 	}),
 	menu: (provided: any) => ({
 		...provided,
-		zIndex: 2,
-		maxHeight: "200px", 
-		overflowY: "hidden",
-		overflowX: "hidden",
 		"&::-webkit-scrollbar": {
 			display: "none",
 		},

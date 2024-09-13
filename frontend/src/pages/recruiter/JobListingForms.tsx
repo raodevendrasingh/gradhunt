@@ -3,6 +3,8 @@ import {
 	companySize,
 	employmentType,
 	experience,
+	locationType,
+	requiredExperience,
 	SelectOption,
 	skills,
 } from "@/utils/selectObjects";
@@ -181,7 +183,7 @@ export const JobPostingForm = () => {
 								<Select
 									{...field}
 									id="experience"
-									options={experience}
+									options={requiredExperience}
 									placeholder="Select Experience"
 									styles={selectFieldStyle}
 									menuPlacement="auto"
@@ -192,6 +194,35 @@ export const JobPostingForm = () => {
 						{errors.experience && (
 							<span className="form-error text-red-500 text-sm" role="alert">
 								{errors.experience.message}
+							</span>
+						)}
+					</div>
+					<div className="w-full flex flex-col">
+						<label
+							htmlFor="workType"
+							className="text-sm font-semibold text-gray-700 pb-1"
+						>
+							Work Type
+						</label>
+						<Controller
+							name="workType"
+							control={control}
+							rules={{ required: "Experience is required" }}
+							render={({ field }) => (
+								<Select
+									{...field}
+									id="workType"
+									options={locationType}
+									placeholder="Select Work Type"
+									styles={selectFieldStyle}
+									menuPlacement="auto"
+									value={field.value as any}
+								/>
+							)}
+						/>
+						{errors.workType && (
+							<span className="form-error text-red-500 text-sm" role="alert">
+								{errors.workType.message}
 							</span>
 						)}
 					</div>
