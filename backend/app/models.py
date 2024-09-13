@@ -13,8 +13,9 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     bio = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=60, null=True, blank=True)
-    mobileNumber = models.CharField(max_length=20, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    isProfileActivated = models.BooleanField(default=False)
+    isProfilePublic = models.BooleanField(default=False)
+    createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -110,15 +111,19 @@ class Posting(models.Model):
         on_delete=models.CASCADE,
     )
     isActive = models.BooleanField()
-    jobtitle = models.CharField(max_length=100)
-    jobType = ArrayField(models.CharField(
-        max_length=50, blank=True, default=list))
+    jobTitle = models.CharField(max_length=100)
+    jobType = models.CharField(max_length=50)
     jobDescription = models.TextField()
+    salaryRange = models.CharField(max_length=50)
     companySize = models.CharField(max_length=100)
-    skillRequired = ArrayField(models.CharField(
-        max_length=100, blank=True, default=list))
-    experience = models.CharField(max_length=50)
+    skillsRequired = ArrayField(models.CharField(
+        max_length=200), blank=True, default=list)
+    jobLocation = ArrayField(models.CharField(
+        max_length=200), blank=True, default=list)
+    experience = models.CharField(max_length=100)
     postedDate = models.DateField()
+    applyLink = models.URLField(max_length=200)
+    applicationDeadline = models.DateField()
 
     def __str__(self):
         return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
@@ -145,14 +150,14 @@ class CompanyProfile(models.Model):
     recruiter = models.OneToOneField(
         Recruiter, on_delete=models.CASCADE, primary_key=True)
     companyLogo = models.CharField(max_length=100, null=True, blank=True)
-    companyCover = models.CharField(max_length=100, null=True, blank=True)
+    companyBanner = models.CharField(max_length=100, null=True, blank=True)
     companyName = models.CharField(max_length=100)
     website = models.CharField(max_length=100, validators=[URLValidator()])
     employeeSize = models.CharField(max_length=50)
     establishedYear = models.CharField(max_length=6)
     industry = models.CharField(max_length=100)
     headquarters = models.CharField(max_length=200)
-    branches = models.JSONField(blank=True, null=True)
+    branches = ArrayField(models.CharField(max_length=200), blank=True, default=list)
     about = models.TextField()
     values = models.TextField()
 
@@ -211,15 +216,15 @@ class Project(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     projectName = models.CharField(max_length=50)
     description = models.TextField(blank=True, default='')
-    liveLink = models.CharField(max_length=255)
-    sourceCodeLink = models.CharField(max_length=255)
+    liveLink = models.URLField(max_length=200)
+    sourceCodeLink = models.URLField(max_length=200)
     skills = ArrayField(models.CharField(max_length=200),
                         blank=True, default=list)
-    isCurrentlyWorking = models.BooleanField(default=False)
     startMonth = models.CharField(max_length=20)
     startYear = models.CharField(max_length=4)
     endMonth = models.CharField(max_length=20, blank=True, null=True)
     endYear = models.CharField(max_length=4, blank=True, null=True)
+    isCurrentlyWorking = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.projectName} [{self.user.username}]"
@@ -233,7 +238,7 @@ class Certificate(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     certificateName = models.CharField(max_length=50)
     issuerOrg = models.CharField(max_length=50)
-    credentialUrl = models.CharField(max_length=255)
+    credentialUrl = models.URLField(max_length=200)
     credentialId = models.CharField(max_length=255)
     isValid = models.BooleanField(default=False)
     startMonth = models.CharField(max_length=20)
