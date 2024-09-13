@@ -6,14 +6,16 @@ import { JobPostings } from "./JobPostings";
 import { NotFound } from "@/pages/common/NotFound";
 import { RecruiterView } from "./RecruiterView";
 import { ProfileRoutes } from "./ProfileRoutes";
+import { JobPostingForm } from "./PostJobListing";
 
 export const RecruiterRoutes: React.FC = () => {
-    return (
+	return (
 		<Routes>
 			<Route element={<RecruiterLayout />}>
 				<Route path="/" element={<RecruiterView />} />
 				<Route path="/:username/*" element={<ProfileRoutes />} />
 				<Route path="/dashboard" element={<RecruiterDashboard />} />
+				<Route path="/post-job-listing" element={<JobPostingForm />} />
 				<Route path="/jobs-posted" element={<JobPostings />} />
 				<Route path="*" element={<NotFound />} />
 			</Route>

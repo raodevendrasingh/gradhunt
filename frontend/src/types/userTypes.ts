@@ -8,11 +8,11 @@ export type Recruiter = {
 
 export type Candidate = {
 	user_details: UserDetails;
-    experience: Experience[];
-    education: Education[];
-    certificate: Certificate[];
-    project: Project[];
-}
+	experience: Experience[];
+	education: Education[];
+	certificate: Certificate[];
+	project: Project[];
+};
 
 export type UserDetails = {
 	profilePicture: string;
@@ -24,7 +24,7 @@ export type UserDetails = {
 	bio: string;
 	mobileNumber: string;
 	location: string;
-    created_at: string;
+	created_at: string;
 };
 
 export type RecruiterDetails = {
@@ -71,7 +71,7 @@ export type CompanyProfile = {
 	establishedYear: string;
 	industry: string;
 	headquarters: string;
-	branches: string[];
+    branches: { city: string; state: string; country: string }[];
 	about: string;
 	values: string;
 };
@@ -103,7 +103,7 @@ export type Certificate = {
 	startYear: number;
 	endMonth?: string;
 	endYear?: number;
-}
+};
 
 export type UserBasicDetails = {
 	firstname: string;
@@ -117,7 +117,7 @@ export type UserBasicDetails = {
 		twitter?: string;
 	};
 	languages: { language: string; proficiency: string }[];
-}
+};
 
 export type Project = {
 	projectId?: string;
@@ -132,4 +132,19 @@ export type Project = {
 	startYear: number;
 	endMonth?: string;
 	endYear?: number;
-}
+};
+
+export type JobListing = {
+	recruiter: RecruiterDetails;
+	jobTitle: string;
+	jobType: SelectOption;
+	jobDescription: string;
+	companySize: SelectOption;
+	skillsRequired: string;
+	experience: SelectOption;
+	datePosted: Date;
+	isActive: Boolean;
+    salaryRange: string;
+    jobLocation: string;
+    applicationDeadline: Date;
+};

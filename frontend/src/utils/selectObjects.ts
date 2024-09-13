@@ -185,7 +185,6 @@ export const employmentType: readonly SelectOption[] = [
     { label: "Full Time", value: "Full Time" },
     { label: "Part Time", value: "Part Time" },
     { label: "Contract", value: "Contract" },
-    { label: "Self-employed", value: "Self-employed" },
     { label: "Freelance", value: "Freelance" },
     { label: "Internship", value: "Internship" },
     { label: "Trainee", value: "Trainee" },
