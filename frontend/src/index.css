@@ -26,6 +26,10 @@
 	*:focus {
 		@apply outline-none ring-0 !important;
 	}
+
+    .skeleton {
+        @apply bg-slate-300 animate-pulse rounded-lg
+    }
 }
 
 /* width */

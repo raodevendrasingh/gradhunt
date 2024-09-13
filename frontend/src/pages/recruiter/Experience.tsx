@@ -7,10 +7,12 @@ import CompanyLogo from "@/assets/avatar/emptyLogo.png";
 import { AddExperienceModal } from "./modalForms/AddExperienceModal";
 import { EditExperienceModal } from "./modalForms/EditExperienceModal";
 import { useFetchExperienceData } from "../../hooks/useFetchExperienceData";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { AddExpModal } from "@/modalForms/AddExpModal";
 
 export const Experience = () => {
-    const { experienceData, refetch } = useFetchExperienceData();
+	const [showExpModal, setShowExpModal] = useState<boolean>(false);
+	const { experienceData, refetch } = useFetchExperienceData();
 
 	const handleRefresh = useCallback(() => {
 		refetch();
@@ -21,13 +23,19 @@ export const Experience = () => {
 			<div className="max-w-7xl mx-auto lg:ml-64">
 				<div className="max-w-5xl mx-auto flex flex-col mb-3 gap-3 px-3">
 					<section className="bg-white px-2 p-2 border rounded-xl shadow">
-						<div className="flex justify-between items-center">
+						<div className="flex justify-between items-center pb-1">
 							<span className="font-semibold text-lg pl-1 text-gray-800">
 								Experience
 							</span>
-							<div className="flex gap-2 mb-1">
-								<AddExperienceModal />
-							</div>
+							<button type="button" onClick={() => setShowExpModal(true)}>
+								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+							</button>
+							{showExpModal && (
+								<AddExpModal
+									setShowExpModal={setShowExpModal}
+									onSave={handleRefresh}
+								/>
+							)}
 						</div>
 						{/* fetch experience data */}
 						{experienceData && experienceData.length > 0 && (
@@ -43,7 +51,10 @@ export const Experience = () => {
 													{data.companyName}
 												</span>
 
-												<EditExperienceModal experienceId={data.experienceId} onSave={handleRefresh} />
+												<EditExperienceModal
+													experienceId={data.experienceId}
+													onSave={handleRefresh}
+												/>
 											</div>
 											<div className="flex items-center gap-2">
 												<span className="text-sm font-medium text-gray-800">
@@ -51,13 +62,20 @@ export const Experience = () => {
 												</span>
 
 												<div className="flex gap-2 text-xs text-gray-700">
-                                                    <span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">{data.jobType}</span>
-                                                    <span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">{data.locationType}</span>
-													</div>
+													<span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">
+														{data.jobType}
+													</span>
+													<span className="px-1.5 py-0.5 bg-gray-300/70 rounded-full">
+														{data.locationType}
+													</span>
+												</div>
 											</div>
 											<div className="text-xs text-gray-600">
-												{data.startMonth} {data.startYear} - {!data.isCurrentlyWorking ? `${data.endMonth} ${data.endYear}` : "Present"}
-                                            </div>
+												{data.startMonth} {data.startYear} -{" "}
+												{!data.isCurrentlyWorking
+													? `${data.endMonth} ${data.endYear}`
+													: "Present"}
+											</div>
 
 											{data.locationType === "Remote" ? (
 												""

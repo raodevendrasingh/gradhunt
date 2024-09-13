@@ -121,10 +121,11 @@ export default function UserProfile(): JSX.Element {
 												value={30}
 												strokeWidth={4}
 												styles={buildStyles({
-													pathColor: "#2bb550",
-													trailColor: "#d6d6d6",
-													strokeLinecap: "round",
-												})}
+                                                    pathColor: "#082e4f",
+                                                    trailColor: "#95d0ee",
+                                                    strokeLinecap: "round",
+                                                    pathTransitionDuration: 0.5,
+                                                })}
 											/>
 											{/* profile picture */}
 											<img

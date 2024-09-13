@@ -6,7 +6,7 @@ import { Sidebar } from "./components/ui/SideNav";
 
 export const ProfileLayout = () => {
 	return (
-		<div className="bg-gray-100 w-full h-[100vh]">
+		<div className="bg-gray-100 w-full min-h-screen">
 			<RecruiterNavbar />
 			<Sidebar />
 			<Outlet />

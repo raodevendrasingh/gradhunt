@@ -7,8 +7,10 @@ import { AddEducationModal } from "./modalForms/AddEducationModal";
 import { useCallback, useState } from "react";
 import { useFetchEducationData } from "../../hooks/useFetchEducationData";
 import { EditEducationModal } from "./modalForms/EditEducationModal";
+import { AddEduModal } from "@/modalForms/AddEduModal";
 
 export const Education = () => {
+	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const { educationData, refetch } = useFetchEducationData();
 
 	const handleRefresh = useCallback(() => {
@@ -24,9 +26,18 @@ export const Education = () => {
 							<span className="font-semibold text-lg pl-1 text-gray-800">
 								Education
 							</span>
-							<div className="flex gap-2 mb-1">
-								<AddEducationModal onSave={handleRefresh} />
-							</div>
+							<button
+								type="button"
+								onClick={() => setShowEduModal(true)}
+							>
+								<MdOutlineEdit className="size-9 hover:bg-gray-100 rounded-full p-2" />
+							</button>
+							{showEduModal && (
+								<AddEduModal
+									setShowEduModal={setShowEduModal}
+									onSave={handleRefresh}
+								/>
+							)}
 						</div>
 						{/* fetch experience data */}
 						{educationData && educationData.length > 0 && (

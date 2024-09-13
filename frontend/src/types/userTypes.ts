@@ -24,6 +24,7 @@ export type UserDetails = {
 	bio: string;
 	mobileNumber: string;
 	location: string;
+    created_at: string;
 };
 
 export type RecruiterDetails = {
