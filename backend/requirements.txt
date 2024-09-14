@@ -18,7 +18,7 @@ requests==2.32.3
 rsa==4.9
 shortuuid==1.0.13
 six==1.16.0
-sqlparse==0.4.4
+sqlparse==0.5.0
 tzdata==2024.1
 urllib3==2.2.2
 uuid==1.30
