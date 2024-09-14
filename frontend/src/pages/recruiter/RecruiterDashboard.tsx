@@ -7,7 +7,7 @@ export const RecruiterDashboard = () => {
 
 	return (
 		<>
-			<div className="pt-24 h-80 bg-gray-800 ">
+			<div className="pt-24 h-80 bg-slate-800 ">
 				<div className="sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-7xl mx-auto flex justify-between items-center">
 					<div className="text-gray-200 text-2xl py-3">
 						Welcome back, {user?.firstName}

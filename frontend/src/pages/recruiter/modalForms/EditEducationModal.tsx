@@ -537,14 +537,14 @@ export const EditEducationModal = ({ educationId, onSave }) => {
 								{/*footer*/}
 								<div className="flex items-center justify-between mt-3 rounded-b">
 									<button
-										className="text-rose-600 bg-rose-200 active:text-rose-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:bg-rose-600 hover:text-white outline-none focus:outline-none ease-linear transition-all duration-150"
+										className="text-rose-600 bg-rose-200 active:text-rose-700 font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:bg-rose-600 hover:text-white outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="delete"
 										onClick={() => deleteEducation({ userName, educationId })}
 									>
 										Delete
 									</button>
 									<button
-										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:bg-green-800 outline-none focus:outline-none ease-linear transition-all duration-150"
+										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:bg-green-800 outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="submit"
 										onClick={handleSubmit(onSubmit)}
 									>

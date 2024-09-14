@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 
 class UserDetails(models.Model):
     clerk_user_id = models.CharField(max_length=255, unique=True, null=True)
-    profilePicture = models.CharField(max_length=100, null=True, blank=True)
+    profilePicture = models.URLField(max_length=512, blank=True, null=True)
     username = models.CharField(max_length=100)
     usertype = models.CharField(max_length=100)
     firstname = models.CharField(max_length=255)
@@ -149,15 +149,15 @@ class Award(models.Model):
 class CompanyProfile(models.Model):
     recruiter = models.OneToOneField(
         Recruiter, on_delete=models.CASCADE, primary_key=True)
-    companyLogo = models.CharField(max_length=100, null=True, blank=True)
-    companyBanner = models.CharField(max_length=100, null=True, blank=True)
+    companyLogo = models.URLField(max_length=512, blank=True, null=True)
+    companyBanner = models.URLField(max_length=512, blank=True, null=True)
     companyName = models.CharField(max_length=100)
     website = models.CharField(max_length=100, validators=[URLValidator()])
     employeeSize = models.CharField(max_length=50)
     establishedYear = models.CharField(max_length=6)
     industry = models.CharField(max_length=100)
     headquarters = models.CharField(max_length=200)
-    branches = ArrayField(models.CharField(max_length=200), blank=True, default=list)
+    branches = ArrayField(models.CharField(max_length=512), blank=True, default=list)
     about = models.TextField()
     values = models.TextField()
 

@@ -503,7 +503,7 @@ export const CompanyProfileModal = ({ onSave }) => {
 								{/*footer*/}
 								<div className="flex items-center justify-end mt-3 rounded-b">
 									<button
-										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+										className="bg-green-600 text-white active:bg-green-700 font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 										type="submit"
 										form="companyProfileForm"
 									>

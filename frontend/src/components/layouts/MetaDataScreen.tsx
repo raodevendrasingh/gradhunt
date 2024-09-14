@@ -1,16 +1,102 @@
-import { useState } from "react";
+import { EditImageModal } from "@/modalForms/ImageEditModal";
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import { useRef, useState } from "react";
+import { ImageCropper } from "../common/ImageCropper";
+import { useForm } from "react-hook-form";
+import { useLocalStorage } from "usehooks-ts";
 
 export const MetaDataScreen: React.FC<{
 	register: any;
 	errors: any;
 }> = ({ register, errors }) => {
-	const [bio, setBio] = useState("");
+	const { user } = useUser();
+	const [value, setValue, removeValue] = useLocalStorage<
+		string | ArrayBuffer | null
+	>("croppedImage", "");
+
 	const maxChars = 100;
+	const [bio, setBio] = useState("");
+	const [croppedImage, setCroppedImage] = useState<string | null>(null);
+	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+	const [isCropperOpen, setIsCropperOpen] = useState(false);
+	const inputRef = useRef<HTMLInputElement | null>(null);
+
+	const handleCrop = (croppedImageData: string) => {
+		setCroppedImage(croppedImageData);
+		setValue(croppedImageData);
+		setIsCropperOpen(false);
+	};
+
+	const openFileDialog = () => {
+		inputRef.current?.click();
+		setUploadedImage(null);
+	};
+
+	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setCroppedImage(null);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setUploadedImage(reader.result as string);
+
+				setValue(reader.result);
+			};
+			reader.readAsDataURL(file);
+		}
+		setIsCropperOpen(true);
+	};
 
 	return (
-		<div className="flex flex-col gap-5 w-full">
-			<div className="w-full flex flex-col justify-between sm:flex-row">
-				<div className="w-full flex flex-col sm:w-[49%]">
+		<div
+			className="flex flex-col gap-3 w-full "
+		>
+			<div className="flex flex-col items-center justify-center gap-2 w-full">
+				<input
+					{...register("profilePicture")}
+					aria-invalid={errors.profilePicture ? "true" : "false"}
+					type="file"
+					name="profilePicture"
+					className="hidden"
+					ref={(e) => (inputRef.current = e)}
+					onChange={handleFileUpload}
+				/>
+				{croppedImage ? (
+					<img
+						src={croppedImage}
+						alt="Cropped"
+						className="size-16 object-cover rounded-full bg-gray-400"
+					/>
+				) : uploadedImage ? (
+					<>
+						<ImageCropper
+							imageSrc={uploadedImage}
+							onCropComplete={handleCrop}
+						/>
+						<img
+							src={user?.imageUrl}
+							alt="User profile"
+							className="size-[70px] object-cover rounded-full bg-gray-400"
+						/>
+					</>
+				) : (
+					<img
+						src={user?.imageUrl}
+						alt="User profile"
+						className="size-[70px] object-cover rounded-full bg-gray-400"
+					/>
+				)}
+				<button
+					type="button"
+					onClick={openFileDialog}
+					className="text-slate-700 bg-white text-xs p-1 rounded-md"
+				>
+					Upload Picture
+				</button>
+			</div>
+			<div className="w-full flex flex-col gap-3 justify-between sm:flex-row">
+				<div className="w-full flex flex-col sm:w-1/2">
 					<label
 						htmlFor="firstname"
 						className="text-sm font-semibold text-gray-700 pb-1"
@@ -31,7 +117,7 @@ export const MetaDataScreen: React.FC<{
 						name="firstname"
 						id="firstname"
 						placeholder="First Name"
-						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-green-700"
+						className="border py-1.5 rounded-md border-gray-200 w-full"
 					/>
 					{errors.firstname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
@@ -39,7 +125,7 @@ export const MetaDataScreen: React.FC<{
 						</span>
 					)}
 				</div>
-				<div className="w-full flex flex-col sm:w-[49%]">
+				<div className="w-full flex flex-col sm:w-1/2">
 					<label
 						htmlFor="lastname"
 						className="text-sm font-semibold text-gray-700 pb-1"
@@ -60,7 +146,7 @@ export const MetaDataScreen: React.FC<{
 						name="lastname"
 						id="lastname"
 						placeholder="Last Name"
-						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-green-700"
+						className="border py-1.5 rounded-md border-gray-200 w-full"
 					/>
 					{errors.lastname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
@@ -93,9 +179,9 @@ export const MetaDataScreen: React.FC<{
 					value={bio}
 					onChange={(e) => setBio(e.target.value)}
 					maxLength={maxChars}
-					placeholder=""
+					placeholder="Give yourself a cool bio"
 					rows={3}
-					className="w-full px-2 py-2 text-sm border rounded-lg border-gray-400 focus:border-green-700"
+					className="border py-1.5 rounded-md border-gray-200 w-full"
 				></textarea>
 				<div className="flex relative">
 					{errors.bio && (

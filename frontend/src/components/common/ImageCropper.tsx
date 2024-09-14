@@ -10,7 +10,7 @@ import setCanvasPreview from "@/helpers/setCanvasPreview";
 import { FaCropSimple } from "react-icons/fa6";
 
 interface ImageCropperProps {
-	imageSrc: string;
+	imageSrc: string | null;
 	onCropComplete: (croppedImageData: string) => void;
 }
 
@@ -52,7 +52,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 	};
 
 	return (
-		<div className="flex flex-col items-center">
+		<div className="absolute flex flex-col items-center p-10 z-[60] bg-white mt-36 rounded-lg">
 			<ReactCrop
 				crop={crop}
 				onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -62,7 +62,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 			>
 				<img
 					ref={imgRef}
-					src={imageSrc}
+					src={imageSrc || ""}
 					alt="Crop me"
 					style={{ maxHeight: "300px" }}
 					onLoad={onImageLoad}
@@ -70,7 +70,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
 				/>
 			</ReactCrop>
 			<button
-				className="flex items-center justify-center gap-2 mt-4 bg-slate-800 w-28 text-white font-semibold border rounded-full text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+				className="flex items-center justify-center gap-2 w-full mt-4 bg-slate-800 text-white font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 				onClick={handleCropComplete}
 			>
 				Crop 

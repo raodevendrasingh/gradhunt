@@ -105,7 +105,7 @@ export const UsernameInput = () => {
 					</div>
 					<div>
 						<button
-							className="font-medium text-center transition-all ease-in duration-75 disabled:opacity-50 disabled:cursor-not-allowed flex items-center leading-120 select-none rounded-full justify-center text-base h-8 w-8 bg-gray-700 border border-t border-b-4 text-white border-gray-900 hover:bg-gray-800 border-none"
+							className="font-medium text-center transition-all ease-in duration-75 disabled:opacity-50 disabled:cursor-not-allowed flex items-center leading-120 select-none rounded-full justify-center text-base h-8 w-8 bg-gray-700 border border-t border-b-4 text-white border-gray-900 hover:bg-slate-800 border-none"
 							type="submit"
 							disabled={
 								isCheckingUsername ||

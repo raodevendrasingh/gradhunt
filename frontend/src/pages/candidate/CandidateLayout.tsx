@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Outlet } from "react-router-dom";
 
-import { UserOnboardingModal } from "@/components/common/OnboardingModal";
+import { UserOnboardingModal } from "@/modalForms/OnboardingModal";
 import Navbar from "@/components/common/Navbar";
 
 export default function CandidateLayout() {

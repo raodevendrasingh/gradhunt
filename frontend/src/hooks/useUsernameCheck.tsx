@@ -14,7 +14,7 @@ export const useUsernameCheck = () => {
     const checkUsername = useDebounceCallback(
         async (username: string) => {
             if (username.length > 3 && isValidUsername(username)) {
-                console.log("Username is valid");
+                // console.log("Username is valid");
                 setIsCheckingUsername(true);
                 setUsernameMsg("");
                 try {

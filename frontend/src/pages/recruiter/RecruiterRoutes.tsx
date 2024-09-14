@@ -6,7 +6,7 @@ import { JobPostings } from "./JobPostings";
 import { NotFound } from "@/pages/common/NotFound";
 import { RecruiterView } from "./RecruiterView";
 import { ProfileRoutes } from "./ProfileRoutes";
-import { JobPostingForm } from "./JobListingForms";
+import { JobPostingForm } from "./JobPostingForm";
 
 export const RecruiterRoutes: React.FC = () => {
 	return (

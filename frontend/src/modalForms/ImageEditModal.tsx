@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { TbLoader } from "react-icons/tb";
 import { FaImage } from "react-icons/fa6";
 import { ImageCropper } from "@/components/common/ImageCropper";
 import Spinner from "@/components/ui/Spinner";
@@ -165,7 +164,7 @@ export const EditImageModal: React.FC<{
 								className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
 							/>
 						</div>
-						<div className="h-[400px] w-full border-2 border-dashed rounded-lg border-gray-400 hover:border-blue-500 flex justify-center items-center p-2">
+						<div className="h-[350px] w-full border-2 border-dashed rounded-lg border-gray-400 hover:border-blue-500 flex justify-center items-center p-2">
 							{croppedImage ? (
 								<img
 									src={croppedImage}
@@ -189,7 +188,7 @@ export const EditImageModal: React.FC<{
 						<div className="flex items-center justify-end mt-3 rounded-b">
 							<button
 								type="submit"
-								className="flex items-center justify-center gap-3 bg-slate-800 w-28 text-white font-semibold border rounded-[10px] text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
+								className="flex items-center justify-center gap-3 bg-slate-800 w-28 text-white font-semibold border rounded-lg text-sm px-4 py-2 shadow hover:shadow-xl outline-none focus:outline-none ease-linear transition-all duration-150"
 								onClick={handleSave}
 								disabled={isLoading || !croppedImage}
 							>
