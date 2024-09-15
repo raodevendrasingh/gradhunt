@@ -23,13 +23,13 @@ export const ProfileCompletion = () => {
 		},
 		{
 			id: "5",
-			label: "Add and verify at least one Education",
+			label: "Add at least one Education",
 			value: 10,
 			completed: false,
 		},
 		{
 			id: "6",
-			label: "Add and verify at least one Experience",
+			label: "Add at least one Experience",
 			value: 10,
 			completed: false,
 		},
@@ -74,7 +74,7 @@ export const ProfileCompletion = () => {
 		<div
 			className={clsx(
 				"w-full mx-auto space-y-6 border border-gray-200 shadow-sm rounded-lg p-3 transition-all duration-300 ease-in-out",
-				isToggleOpen ? "max-h-[530px]" : "max-h-32"
+				isToggleOpen ? "max-h-[460px]" : "max-h-32"
 			)}
 		>
 			<div className="space-y-4">
@@ -119,7 +119,7 @@ export const ProfileCompletion = () => {
 				transition={{ duration: 0.3, ease: "easeInOut" }}
 				className="overflow-hidden"
 			>
-				<div className="space-y-3">
+				<div className="space-y-3 pb-1">
 					{tasks.map((task) => (
 						<div key={task.id} className="flex items-center space-x-3 px-1">
 							<input
@@ -139,7 +139,7 @@ export const ProfileCompletion = () => {
 										: "text-gray-700 hover:text-gray-900"
 								)}
 							>
-								{task.label} ({task.value} points)
+								{task.label}
 							</label>
 						</div>
 					))}

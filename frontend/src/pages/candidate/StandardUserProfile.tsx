@@ -8,17 +8,20 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BiEditAlt } from "react-icons/bi";
 import { standardTabsData } from "@/utils/TabsData";
 import { ProfileCompletion } from "@/components/ui/ProgressBarComponent";
+import { ProfileSidebar } from "./components/layout/ProfileSidebar";
 
 export const StandardUserProfile = () => {
 	const [selected, setSelected] = useState(0);
 	const { user, isSignedIn } = useUser();
 	return (
 		<>
-			<div className="flex items-center justify-center w-full max-w-7xl mx-auto border-x pt-16 min-h-screen">
-				<div className="hidden md2:flex md2:w-1/5 lg:flex w-1/5 mx-auto pt-20 min-h-screen">
-					sidebar left
+			<div className="flex items-start justify-center w-full max-w-7xl mx-auto border-x pt-16 h-[100vh]">
+				{/* left div */}
+				<div className="hidden md2:flex md2:w-1/5 lg:flex w-1/5 h-full overflow-y-auto">
+					<ProfileSidebar />
 				</div>
-				<div className="w-full md2:w-4/5 lg:w-3/5 mx-auto border-x h-full min-h-screen relative">
+				{/* center div */}
+				<div className="w-full md2:w-4/5 lg:w-3/5 h-full overflow-y-auto border-x">
 					<div className="bg-slate-50 h-32 w-full border-b"></div>
 					<div className="flex flex-col items-center w-full px-5 pt-4 pb-6">
 						<div className="relative -top-16 mb-2 select-none">
@@ -89,7 +92,7 @@ export const StandardUserProfile = () => {
 							</div>
 						</div>
 					</div>
-					<nav className="sticky top-[64px] overflow-hidden z-10 bg-white border-b mt-4 select-none">
+					<nav className="sticky top-0 overflow-hidden z-10 bg-white border-b mt-4 select-none">
 						<div className="px-4 py-3 flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
 							{standardTabsData.map((tab, idx) => (
 								<button
@@ -110,7 +113,8 @@ export const StandardUserProfile = () => {
 						<div>{standardTabsData[selected].content}</div>
 					</main>
 				</div>
-				<div className="hidden lg:flex w-1/5 min-h-screen p-2">
+				{/* right div */}
+				<div className="hidden lg:flex w-1/5 h-full overflow-y-auto p-2">
 					<ProfileCompletion />
 				</div>
 			</div>
