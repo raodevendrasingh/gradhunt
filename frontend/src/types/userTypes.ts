@@ -1,17 +1,10 @@
 import { SelectOption } from "@/utils/selectObjects";
 
 export type Recruiter = {
-	user_details: UserDetails;
-	recruiter_details: RecruiterDetails;
-	hiring_preference: HiringPreference;
-};
-
-export type Candidate = {
-	user_details: UserDetails;
-	experience: Experience[];
-	education: Education[];
-	certificate: Certificate[];
-	project: Project[];
+	userDetails: UserDetails;
+	recruiterDetails: RecruiterDetails;
+	hiringPreference: HiringPreference;
+    jobPostings: JobPosting[]; 
 };
 
 export type UserDetails = {
@@ -22,9 +15,10 @@ export type UserDetails = {
 	lastname: string;
 	email: string;
 	bio: string;
-	mobileNumber: string;
 	location: string;
-	created_at: string;
+    followers: number;
+    following: number;
+	createdAt: string;
 };
 
 export type RecruiterDetails = {
@@ -134,7 +128,7 @@ export type Project = {
 	endYear?: number;
 };
 
-export type JobListing = {
+export type JobPosting = {
 	recruiter: RecruiterDetails;
 	jobTitle: string;
 	jobType: SelectOption;
@@ -148,4 +142,12 @@ export type JobListing = {
     salaryRange: string;
     jobLocation: string;
     applicationDeadline: Date;
+};
+
+export type ProfileData = {
+    user: UserDetails;
+    experience: Experience[];
+    education: Education[];
+    certificate: Certificate[];
+    project: Project[];
 };

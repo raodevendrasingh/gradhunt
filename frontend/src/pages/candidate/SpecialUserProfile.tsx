@@ -28,11 +28,11 @@ import { MdOutlineEdit, MdLocationPin } from "react-icons/md";
 
 import { Chip } from "./components/ui/Chips";
 
-import { Overview } from "./profile/Overview";
-import { AppliedJobs } from "./profile/AppliedJobs";
-import { SavedJobs } from "./profile/SavedJobs";
-import { Analytics } from "./profile/Analytics";
-import { Posts } from "./profile/Posts";
+import { Overview } from "./specialProfile/Overview";
+import { AppliedJobs } from "./specialProfile/AppliedJobs";
+import { SavedJobs } from "./specialProfile/SavedJobs";
+import { Analytics } from "./specialProfile/Analytics";
+import { Posts } from "./specialProfile/Posts";
 
 // assets
 import noUser from "@/assets/avatar/noUser.png";
@@ -40,7 +40,7 @@ import noUser from "@/assets/avatar/noUser.png";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { CardStack } from "./components/ui/CardStack";
-import { Featured } from "./profile/Featured";
+import { Featured } from "./specialProfile/Featured";
 import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
 import { EditImageModal } from "@/modalForms/ImageEditModal";
 
@@ -71,7 +71,7 @@ const tabsData = [
 	},
 ];
 
-export default function UserProfile(): JSX.Element {
+export default function SpecialUserProfile(): JSX.Element {
 	const [selected, setSelected] = useState(0);
 	const [isDisabled, setIsDisabled] = useState(true);
 	const [showBasicDetailModal, setShowBasicDetailModal] =
