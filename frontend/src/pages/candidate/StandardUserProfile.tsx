@@ -7,6 +7,7 @@ import { HiMiniLanguage } from "react-icons/hi2";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BiEditAlt } from "react-icons/bi";
 import { standardTabsData } from "@/utils/TabsData";
+import { ProfileCompletion } from "@/components/ui/ProgressBarComponent";
 
 export const StandardUserProfile = () => {
 	const [selected, setSelected] = useState(0);
@@ -42,7 +43,7 @@ export const StandardUserProfile = () => {
 											<span className="text-sm font-medium text-gray-700">
 												Edit
 											</span>
-											<BiEditAlt className="text-gray-700"/>
+											<BiEditAlt className="text-gray-700" />
 										</button>
 									) : (
 										<button className="flex items-center justify-center bg-slate-800 hover:bg-slate-700 hover:shadow rounded-lg border gap-2 px-3 py-2 transition-colors">
@@ -109,7 +110,9 @@ export const StandardUserProfile = () => {
 						<div>{standardTabsData[selected].content}</div>
 					</main>
 				</div>
-				<div className="hidden lg:flex w-1/5 min-h-screen">sidebar right</div>
+				<div className="hidden lg:flex w-1/5 min-h-screen p-2">
+					<ProfileCompletion />
+				</div>
 			</div>
 		</>
 	);
