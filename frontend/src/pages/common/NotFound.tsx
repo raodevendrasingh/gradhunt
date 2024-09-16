@@ -1,7 +1,8 @@
-import { Footer } from "@/components/common/Footer";
+import React from "react";
 import { Link } from "react-router-dom";
+import { Footer } from "@/components/common/Footer";
 
-export const NotFound = () => {
+export default function NotFound(): React.JSX.Element {
 	return (
 		<>
 			<div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">

@@ -42,10 +42,10 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 	} = useForm<FormData>();
 
 	return (
-		<div className="w-full max-w-6xl mx-auto px-4 py-6">
+		<div className="w-full py-6">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="flex flex-col md:flex-row items-stretch md:items-center gap-4 p-4 rounded-2xl md:rounded-full border border-gray-300 shadow-lg bg-white"
+				className="flex flex-col md:flex-row items-stretch md:items-center gap-4 p-4 rounded-2xl border border-gray-300 shadow-lg bg-white"
 			>
 				<div className="flex-grow flex flex-col md:flex-row items-stretch md:items-center gap-4">
 					<div className="w-full md:w-[40%] md:border-r border-gray-300 md:pr-4">
@@ -131,7 +131,7 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 											styles={inputSearchFieldStyle}
 											noOptionsMessage={({ inputValue }) =>
 												inputValue.length < 2
-													? "Type at least 2 characters to search"
+													? "Type to search"
 													: error
 														? error
 														: "No cities found"

@@ -1,11 +1,12 @@
-import { SignUp } from "@clerk/clerk-react";
+import { SignUp, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 
 // assets
 import logo from "@/assets/brand/brandLogoFull.png";
 import { useReadLocalStorage } from "usehooks-ts";
 
-const SignUpPage = () => {
+export default function SignUpPage() {
+    const { user } = useUser();
     const username = useReadLocalStorage<string>('potentialUser')
 
     return (
@@ -56,7 +57,7 @@ const SignUpPage = () => {
                             username: username || '',
                         }}
                         signInUrl="/login"
-                        forceRedirectUrl="/job-search"
+                        forceRedirectUrl={`/p/${user?.username}`}
                     />
 
                     <div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">
@@ -68,5 +69,3 @@ const SignUpPage = () => {
         </>
     );
 };
-
-export default SignUpPage;

@@ -1,10 +1,11 @@
-import { SignIn } from "@clerk/clerk-react";
+import { SignIn, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 
 // assets
 import logo from "@/assets/brand/brandLogoFull.png";
 
-const SignInPage = () => {
+export default function SignInPage() {
+    const { user } = useUser();
 	return (
 		<>
 			{/* <div className="cursor-pointer">
@@ -42,7 +43,7 @@ const SignInPage = () => {
 							},
 						}}
 						signUpUrl="/signup"
-						forceRedirectUrl="/job-search"
+						forceRedirectUrl={`/p/${user?.username}`}
 					/>
 					<div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">
 						<span className="text-gray-500">Don&apos;t have an account?</span>
@@ -53,5 +54,3 @@ const SignInPage = () => {
 		</>
 	);
 };
-
-export default SignInPage;

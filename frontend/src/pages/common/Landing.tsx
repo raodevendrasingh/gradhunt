@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { FAQSection } from "@/components/layouts/FAQAccordian";
 import Navbar from "@/components/common/Navbar";
 
-export const LandingPage = () => {
+export default function LandingPage() {
 	const { isSignedIn, user } = useUser();
 	const navigate = useNavigate();
 
@@ -26,9 +26,8 @@ export const LandingPage = () => {
 	}, [user]);
 
 	return (
-        
 		<div className="max-w-screen-2xl mx-auto overflow-hidden">
-            {/* <Navbar /> */}
+			<Navbar />
 			{/* Added overflow-hidden */}
 			<section className="relative isolate z-0 px-6 pt-8 lg:px-8 min-h-screen max-w-full">
 				<div className="relative w-full h-screen overflow-hidden">
@@ -183,7 +182,7 @@ export const LandingPage = () => {
 										</h1>
 									</div>
 
-                                    <div className="mt-8 sm:flex sm:items-center sm:justify-center lg:justify-start sm:space-x-5 lg:mt-12">
+									<div className="mt-8 sm:flex sm:items-center sm:justify-center lg:justify-start sm:space-x-5 lg:mt-12">
 										<Link
 											to="/job-search"
 											onClick={() => {
@@ -219,4 +218,4 @@ export const LandingPage = () => {
 			<Footer />
 		</div>
 	);
-};
+}

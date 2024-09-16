@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import axios from "axios";
-import { Footer } from "@/components/common/Footer";
 import { Link } from "react-router-dom";
 import { SubmitHandler } from "react-hook-form";
 import { useCitySearch } from "@/hooks/useCitySearch";
@@ -19,7 +18,7 @@ import { JobCategories } from "@/components/common/JobCategory";
 import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 import { FormData } from "@/components/layouts/JobSearchBar";
-import Navbar from "@/components/common/Navbar";
+import React from "react";
 
 export const handleSearch: SubmitHandler<FormData> = async (data) => {
 	const encodeValue = (value: string) => value.replace(/ /g, "+");
@@ -46,7 +45,7 @@ export const handleSearch: SubmitHandler<FormData> = async (data) => {
 	}
 };
 
-export default function JobSearch(): JSX.Element {
+export default function JobSearchPage(): React.JSX.Element {
 	const {
 		isLoading,
 		error,
@@ -57,7 +56,7 @@ export default function JobSearch(): JSX.Element {
 
 	return (
 		<main className="max-w-screen-2xl mx-auto overflow-hidden scroll-smooth">
-			<section className="mt-16 p-10 w-full pb-20">
+			<section className="p-10 w-full pb-20">
 				<div className="max-w-6xl mx-auto">
 					<SearchHeader />
 					<JobSearchForm
@@ -111,7 +110,6 @@ export default function JobSearch(): JSX.Element {
 
 				<ProfileBanner />
 			</section>
-			<Footer />
 		</main>
 	);
 }

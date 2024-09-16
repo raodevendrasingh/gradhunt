@@ -1,23 +1,20 @@
 import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { useCitySearch } from "@/hooks/useCitySearch";
-import { handleSearch } from "./JobSearch";
+import { handleSearch } from "./JobSearchPage";
 import { FilterSideBar } from "./components/layout/FilterSideBar";
 import {
-    FaBuilding,
 	FaClock,
 	FaIndianRupeeSign,
 	FaRegBookmark,
-	FaStar,
 } from "react-icons/fa6";
 import { HiMiniArrowUpRight } from "react-icons/hi2";
 import { MdWork } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
-import { featuredCompanies, jobsData, topIndustries } from "@/utils/dummyData";
-import { Footer } from "@/components/common/Footer";
+import { jobsData } from "@/utils/dummyData";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 
-export default function JobsFeed() {
+export default function JobsFeedPage() {
 	const [jobs] = useState(jobsData);
 
 	const {
@@ -29,9 +26,9 @@ export default function JobsFeed() {
 	} = useCitySearch();
 
 	return (
-		<>
-			<div className="flex flex-col w-full h-full pb-20">
-				<div className="flex items-center justify-center bg-zinc-900 pt-20">
+		<div className="flex h-full">
+			<div className="flex flex-col w-[70%] pb-20 overflow-y-auto scrollbar-hide">
+				<div className="flex items-center justify-center px-3">
 					<JobSearchForm
 						onSubmit={handleSearch}
 						isLoading={isLoading}
@@ -41,11 +38,8 @@ export default function JobsFeed() {
 						error={error || undefined}
 					/>
 				</div>
-				<div className="flex w-full items-start gap-3 pt-10 max-w-7xl mx-auto ">
-					<div className="w-[20%] flex flex-col gap-2 border bg-white rounded-xl">
-						<FilterSideBar />
-					</div>
-					<div className="w-[60%] space-y-4">
+				<div className="flex w-full items-start gap-3 pt-10 px-3 ">
+					<div className="space-y-4 w-full">
 						{jobs.map((job) => (
 							<div
 								key={job.id}
@@ -120,7 +114,7 @@ export default function JobsFeed() {
 							</div>
 						))}
 					</div>
-					<div className="w-[20%] space-y-4">
+					{/* <div className="w-[20%] space-y-4">
 						<div className="border bg-white rounded-xl p-4">
 							<h3 className="text-lg font-semibold mb-3 flex items-center">
 								<FaStar className="text-yellow-400 mr-2" />
@@ -166,11 +160,14 @@ export default function JobsFeed() {
 								Explore Industries
 							</button>
 						</div>
-					</div>
+					</div> */}
 				</div>
-                <ProfileBanner />
+				{/* <ProfileBanner /> */}
 			</div>
-            <Footer/>
-		</>
+			{/* sidebar */}
+			<div className="flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
+				<FilterSideBar />
+			</div>
+		</div>
 	);
 }

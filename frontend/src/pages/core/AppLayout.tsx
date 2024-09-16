@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { UserOnboardingModal } from "@/modalForms/OnboardingModal";
 import Navbar from "@/components/common/Navbar";
 
-export default function CandidateLayout() {
+export default function AppLayout() {
 	const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
 	const { isSignedIn, user } = useUser();
 
@@ -19,7 +19,7 @@ export default function CandidateLayout() {
 
 	return (
 		<main>
-			<Navbar />
+			{/* <Navbar /> */}
 			<Outlet />
 			<div>
 				<UserOnboardingModal

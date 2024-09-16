@@ -15,8 +15,8 @@ import {
 // local imports
 import { AdminRoutes } from "./pages/admin/AdminRoutes";
 import { RecruiterRoutes } from "./pages/recruiter/RecruiterRoutes";
-import { CandidateRoutes } from "./pages/candidate/CandidateRoutes";
-import { NotFound } from "./pages/common/NotFound";
+import AppRoutes from "./pages/core/AppRoutes";
+import NotFound from "./pages/common/NotFound";
 
 declare global {
 	interface ImportMeta {
@@ -42,14 +42,16 @@ const subdomain = window.location.hostname.split(".")[0];
 let routes: RouteObject[];
 
 if (subdomain === "localhost") {
-	routes = [{ path: "/*", element: <CandidateRoutes /> }];
+	routes = [{ path: "/*", element: <AppRoutes /> }];
 } else if (subdomain === "admin") {
 	routes = [{ path: "/*", element: <AdminRoutes /> }];
-} else if (subdomain === "hire") {
-	routes = [{ path: "/*", element: <RecruiterRoutes /> }];
 } else {
 	routes = [{ path: "*", element: <NotFound /> }];
 }
+
+// else if (subdomain === "hire") {
+// 	routes = [{ path: "/*", element: <RecruiterRoutes /> }];
+// }
 
 const router = createBrowserRouter(routes);
 

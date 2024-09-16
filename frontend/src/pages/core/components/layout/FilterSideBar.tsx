@@ -4,7 +4,7 @@ import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaXmark } from "react-icons/fa6";
-import { FilterCheckbox } from "@/pages/candidate/components/ui/FilterCheckBox";
+import { FilterCheckbox } from "@/pages/core/components/ui/FilterCheckBox";
 import { useFilterOptions } from "@/hooks/useFilterOptions";
 interface FilterFormData {
 	category: string[];
@@ -32,7 +32,7 @@ export const FilterSideBar = () => {
     const handleFilter: SubmitHandler<FilterFormData> = async (data) => {};
 
 	return (
-		<div>
+		<div className="border rounded-lg">
 			<form
 				onSubmit={handleSubmit(handleFilter)}
 				className="flex flex-col gap-2"
