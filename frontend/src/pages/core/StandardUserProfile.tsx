@@ -5,15 +5,52 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BiEditAlt } from "react-icons/bi";
 import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProfileCompletion } from "@/components/ui/ProgressBarComponent";
 import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
+import { useParams } from "react-router-dom";
+import { IsUserExists } from "@/lib/IsUserExists";
+import { LoadingBlock } from "@/components/ui/LoadingBlock";
+import NotFound from "../common/NotFound";
 
 export default function StandardUserProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
 	const [showBasicDetailModal, setShowBasicDetailModal] =
 		useState<boolean>(false);
 	const { user, isSignedIn } = useUser();
+	const [userExists, setUserExists] = useState<boolean | null>(null);
+
+	const { username } = useParams<{ username: string }>();
+
+	useEffect(() => {
+		const checkUserExists = async () => {
+			try {
+				if (username) {
+					const exists = await IsUserExists(username);
+					setUserExists(exists);
+				} else {
+					setUserExists(false);
+				}
+			} catch (error) {
+				console.error("Error checking user existence:", error);
+				setUserExists(false);
+			}
+		};
+		checkUserExists();
+	}, [username]);
+
+	if (userExists === null) {
+		return (
+			<div className="w-full lg2:w-[70%] h-screen flex items-center justify-center border-r">
+				<LoadingBlock size={36} color="#475569"/>
+			</div>
+		);
+	}
+
+	if (!userExists) {
+		return <NotFound />;
+	}
+
 	return (
 		<div className="flex h-full">
 			{/* main */}

@@ -55,7 +55,7 @@ export const AddProjectModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/add-project-data-`;
+			const url = `/api/add-project-data`;
 			const response = await axios.post(url, projectData, {
 				headers: {
 					"Content-Type": "application/json",

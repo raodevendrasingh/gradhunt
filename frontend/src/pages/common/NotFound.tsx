@@ -1,66 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Footer } from "@/components/common/Footer";
 
 export default function NotFound(): React.JSX.Element {
 	return (
-		<>
-			<div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-				<div className="max-w-md w-full space-y-8 text-center">
-					<div className="relative">
-						<div className="absolute inset-0 flex items-center justify-center">
-							<div className="h-48 w-48 bg-sky-100 rounded-full"></div>
-						</div>
-						<svg
-							className="relative z-10 w-48 h-48 mx-auto"
-							viewBox="0 0 100 100"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M20 50C20 33.4315 33.4315 20 50 20C66.5685 20 80 33.4315 80 50C80 66.5685 66.5685 80 50 80C33.4315 80 20 66.5685 20 50Z"
-								stroke="#0284c7"
-								strokeWidth="4"
-							/>
-							<path
-								d="M35 35L65 65M65 35L35 65"
-								stroke="#0284c7"
-								strokeWidth="4"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</div>
-					<h2 className="mt-6 text-6xl font-extrabold text-slate-800">404</h2>
-					<p className="mt-2 text-3xl font-bold text-slate-800">
-						Page not found
-					</p>
-					<p className="mt-2 text-xl text-gray-500">
-						Sorry, we couldn't find the page you're looking for.
-					</p>
-					<div className="mt-8">
-						<Link
-							to="/"
-							className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-slate-800 hover:bg-slate-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all duration-200 ease-in-out transform hover:scale-105"
-						>
-							Go back home
-						</Link>
+		<div className="w-full lg2:w-[70%] border-r h-[calc(100vh-64px)] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+			<div className="space-y-8 text-center">
+				<div className="relative">
+					<h1 className="text-9xl font-extrabold text-slate-800 tracking-widest">
+						404
+					</h1>
+					<div className="absolute top-0 left-2 w-full h-full flex items-center justify-center">
+						<div className="bg-slate-300 bg-opacity-20 h-full w-full transform rotate-12 rounded-3xl" />
 					</div>
 				</div>
-				<div className="mt-16 text-center">
-					<p className="text-sm text-gray-500">
-						If you think this is a mistake, please{" "}
-						<a
-							href="#"
-							className="font-medium text-slate-800 hover:text-sky-500 transition-colors duration-200"
-						>
-							contact support
-						</a>
-						.
-					</p>
+				<h2 className="mt-8 text-3xl font-bold text-gray-500">
+					Whoops! Page not found.
+				</h2>
+				<p className="mt-2 text-lg text-gray-500">
+					The page you're looking for doesn't exist or has been moved.
+				</p>
+				<div className="mt-6" />
+				<div className="mt-8">
+					<Link
+						to="/"
+						className="inline-flex items-center px-6 py-3 border text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-0 transition-colors duration-300"
+					>
+						Go back home
+					</Link>
 				</div>
 			</div>
-			<Footer />
-		</>
+		</div>
 	);
 }
