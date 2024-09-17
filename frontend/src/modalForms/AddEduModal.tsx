@@ -12,11 +12,8 @@ import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
-import {
-	degreeTypes,
-	fieldsOfStudy,
-} from "@/utils/selectObjects";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { degreeTypes, fieldsOfStudy } from "@/utils/selectObjects";
+import { selectFieldStyle } from "@/utils/styles";
 import { LocationSelect } from "@/helpers/LocationSelect";
 import { Education } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
@@ -25,7 +22,7 @@ import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddEduModal: React.FC<{
 	setShowEduModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowEduModal}) => {
+}> = ({ setShowEduModal }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
@@ -134,8 +131,8 @@ export const AddEduModal: React.FC<{
 														name="instituteName"
 														id="instituteName"
 														placeholder="Institute Name"
-														className="border px-2 py-1.5 rounded-lg border-gray-400 focus:border-blue-500"
-													/>
+                                                        className="border py-2 rounded-md border-gray-200 w-full"
+                                                        />
 													{errors.instituteName && (
 														<span className="form-error" role="alert">
 															{errors.instituteName.message as string}
@@ -163,8 +160,9 @@ export const AddEduModal: React.FC<{
 																	id="degreeTitle"
 																	options={degreeTypes}
 																	placeholder="Degree"
-																	styles={selectCompanyFieldStyle}
+																	styles={selectFieldStyle}
 																	value={field.value as any}
+																	menuPlacement="auto"
 																/>
 															)}
 														/>
@@ -193,8 +191,9 @@ export const AddEduModal: React.FC<{
 																	id="studyField"
 																	options={fieldsOfStudy}
 																	placeholder="Field of Study"
-																	styles={selectCompanyFieldStyle}
+																	styles={selectFieldStyle}
 																	value={field.value as any}
+																	menuPlacement="auto"
 																/>
 															)}
 														/>
@@ -237,6 +236,7 @@ export const AddEduModal: React.FC<{
 													rules={{
 														required: "Location is required",
 													}}
+													menuPlacement="auto"
 												/>
 											</div>
 											<div className="w-full xs:w-1/2 flex flex-col">
@@ -253,8 +253,8 @@ export const AddEduModal: React.FC<{
 													name="grade"
 													id="grade"
 													placeholder="Grade"
-													className="border px-2 py-1.5 rounded-lg border-gray-400 focus:border-blue-500"
-												/>
+                                                    className="border py-2 rounded-md border-gray-200 w-full"
+                                                    />
 												{errors.grade && (
 													<span className="form-error" role="alert">
 														{errors.grade.message as string}
@@ -291,7 +291,7 @@ export const AddEduModal: React.FC<{
 													id="description"
 													placeholder="Activities & Participation"
 													rows={3}
-													className="w-full px-2 py-1.5 border rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												{errors.description && (
 													<span className="form-error" role="alert">

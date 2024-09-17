@@ -9,7 +9,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { toast } from "sonner";
 import { useUsernameCheck } from "@/hooks/useUsernameCheck";
-import { TbLoader } from "react-icons/tb";
 import { HiMiniChevronRight } from "react-icons/hi2";
 import { UsernameScreen } from "../components/layouts/UsernameScreen";
 import { MetaDataScreen } from "../components/layouts/MetaDataScreen";

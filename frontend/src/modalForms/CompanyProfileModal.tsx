@@ -17,9 +17,8 @@ import { Certificate } from "@/types/userTypes";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddCompanyProfileModal: React.FC<{
-	onSave: () => void;
 	setShowCompanyProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowCompanyProfileModal, onSave }) => {
+}> = ({ setShowCompanyProfileModal }) => {
 	const [isExpired, setIsExpired] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
@@ -48,7 +47,6 @@ export const AddCompanyProfileModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Company Details Updated");
-			onSave();
 			setShowCompanyProfileModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while updating details. Try again!");
@@ -129,7 +127,8 @@ export const AddCompanyProfileModal: React.FC<{
 													name="certificateName"
 													id="certificateName"
 													placeholder="Certificate Title"
-													className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
+
 												/>
 												{errors.certificateName && (
 													<span className="form-error" role="alert">
@@ -159,7 +158,8 @@ export const AddCompanyProfileModal: React.FC<{
 													name="issuerOrg"
 													id="issuerOrg"
 													placeholder="Organization Name"
-													className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
+
 												/>
 												{errors.issuerOrg && (
 													<span className="form-error" role="alert">

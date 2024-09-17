@@ -18,14 +18,13 @@ import {
 	employmentType,
 	locationType,
 } from "@/utils/selectObjects";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { selectFieldStyle } from "@/utils/styles";
 import { LocationSelect } from "@/helpers/LocationSelect";
 import { Experience } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddExpModal: React.FC<{
-
 	setShowExpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ setShowExpModal }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
@@ -136,7 +135,7 @@ export const AddExpModal: React.FC<{
 														name="companyName"
 														id="companyName"
 														placeholder="Company Name"
-														className="border px-2 py-1.5 rounded-lg border-gray-400 focus:border-blue-500"
+														className="border py-2 rounded-md border-gray-200 w-full"
 													/>
 													{errors.companyName && (
 														<span className="form-error" role="alert">
@@ -165,8 +164,9 @@ export const AddExpModal: React.FC<{
 																	id="jobTitle"
 																	options={jobTitleOptions}
 																	placeholder="Job Title"
-																	styles={selectCompanyFieldStyle}
+																	styles={selectFieldStyle}
 																	value={field.value as any}
+																	menuPlacement="auto"
 																/>
 															)}
 														/>
@@ -195,8 +195,9 @@ export const AddExpModal: React.FC<{
 																	id="jobType"
 																	options={employmentType}
 																	placeholder="Employment Type"
-																	styles={selectCompanyFieldStyle}
+																	styles={selectFieldStyle}
 																	value={field.value as any}
+																	menuPlacement="auto"
 																/>
 															)}
 														/>
@@ -242,6 +243,7 @@ export const AddExpModal: React.FC<{
 													rules={{
 														required: "Location is required",
 													}}
+													menuPlacement="auto"
 												/>
 											</div>
 											<div className="w-full xs:w-1/2 flex flex-col ">
@@ -263,8 +265,9 @@ export const AddExpModal: React.FC<{
 															id="locationType"
 															options={locationType}
 															placeholder="Location Type"
-															styles={selectCompanyFieldStyle}
+															styles={selectFieldStyle}
 															value={field.value as any}
+															menuPlacement="auto"
 														/>
 													)}
 												/>
@@ -304,7 +307,7 @@ export const AddExpModal: React.FC<{
 													id="description"
 													placeholder="Activities & Participation"
 													rows={3}
-													className="w-full px-2 py-1.5 border rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												{errors.description && (
 													<span className="form-error" role="alert">

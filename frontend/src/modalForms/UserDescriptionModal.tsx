@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // Third-party libraries
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import axios from "axios";
@@ -149,7 +149,7 @@ export const UserAboutModal: React.FC<{
 													placeholder=""
 													rows={8}
 													style={{ whiteSpace: "pre-wrap" }}
-													className="w-full px-2 py-1.5 text-sm border rounded-lg border-gray-400"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												<div className="flex relative">
 													{errors.description && (

@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import Select, { SingleValue } from "react-select";
-import { Controller } from "react-hook-form"; // Ensure this import is present
+import { Controller } from "react-hook-form";
 import { useCitySearch, CityOption } from "@/hooks/useCitySearch";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { selectFieldStyle } from "@/utils/styles";
 
 interface LocationSelectProps {
-	control: any; // Adjust type as needed
+	control: any;
 	name: string;
 	placeholder?: string;
-	rules?: any; // Adjust type as needed
+	rules?: any;
 	error?: string;
+	menuPlacement: "auto" | "bottom" | "top" | undefined;
 }
 
 export const LocationSelect: React.FC<LocationSelectProps> = ({
@@ -18,6 +19,7 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 	placeholder,
 	rules,
 	error,
+    menuPlacement,
 }) => {
 	const { isLoading, cityOptions, handleInputChange, formatOptionLabel } =
 		useCitySearch();
@@ -60,7 +62,8 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 								placeholder={placeholder}
 								className="w-full"
 								classNamePrefix="react-select"
-								styles={selectCompanyFieldStyle}
+								styles={selectFieldStyle}
+								menuPlacement={menuPlacement as "auto" | "bottom" | "top" | undefined}
 								noOptionsMessage={({ inputValue }) =>
 									inputValue.length < 2
 										? "Type to search"

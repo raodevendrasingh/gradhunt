@@ -11,7 +11,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 // local
 import { languageProficiency } from "@/utils/selectObjects";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { selectFieldStyle } from "@/utils/styles";
 
 // icons
 import {
@@ -233,7 +233,7 @@ const BasicInfoScreen: React.FC<{
 						name="firstname"
 						id="firstname"
 						placeholder="First Name"
-						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+						className="border py-2 rounded-md border-gray-200 w-full"
 					/>
 					{errors.firstname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
@@ -262,7 +262,7 @@ const BasicInfoScreen: React.FC<{
 						name="lastname"
 						id="lastname"
 						placeholder="Last Name"
-						className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+						className="border py-2 rounded-md border-gray-200 w-full"
 					/>
 					{errors.lastname && (
 						<span className="form-error text-red-500 text-xs mt-1" role="alert">
@@ -296,7 +296,7 @@ const BasicInfoScreen: React.FC<{
 					maxLength={maxChars}
 					placeholder=""
 					rows={2}
-					className="w-full px-2 py-2 text-sm border rounded-lg border-gray-400 focus:border-blue-500"
+					className="border py-2 rounded-md border-gray-200 w-full"
 				></textarea>
 				<div className="flex relative">
 					{errors.bio && (
@@ -324,6 +324,7 @@ const BasicInfoScreen: React.FC<{
 					rules={{
 						required: "Location is required",
 					}}
+					menuPlacement="top"
 				/>
 			</div>
 		</div>
@@ -351,7 +352,7 @@ const SocialLinksScreen: React.FC<{
 							message: "Please enter a valid URL",
 						},
 					})}
-					className="w-full px-2 py-2 text-sm border border-gray-400 rounded-lg focus:border-blue-500"
+					className="border py-2 rounded-md border-gray-200 w-full"
 					placeholder={`https://${sitename}.com/yourusername`}
 				/>
 				{errors.socialLinks?.[sitename] && (
@@ -411,7 +412,7 @@ const LanguagesScreen: React.FC<{
 													field.onChange(newLangs);
 												}}
 												placeholder="Language"
-												className="w-1/2 px-2 py-2 text-sm border border-gray-400 rounded-lg focus:border-blue-500"
+												className="w-1/2 border py-2 rounded-md border-gray-200"
 											/>
 											<Select
 												value={languageProficiency.find(
@@ -424,8 +425,9 @@ const LanguagesScreen: React.FC<{
 														selectedOption?.value || "";
 													field.onChange(newLangs);
 												}}
-												styles={selectCompanyFieldStyle}
+												styles={selectFieldStyle}
 												className="w-2/5"
+												menuPlacement="auto"
 											/>
 											<button
 												type="button"

@@ -18,7 +18,7 @@ import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddCertificateModal: React.FC<{
 	setShowCertifyModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowCertifyModal}) => {
+}> = ({ setShowCertifyModal }) => {
 	const [isExpired, setIsExpired] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
@@ -47,7 +47,7 @@ export const AddCertificateModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Certificate Added");
-			
+
 			setShowCertifyModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while adding certificate. Try again!");
@@ -128,7 +128,7 @@ export const AddCertificateModal: React.FC<{
 													name="certificateName"
 													id="certificateName"
 													placeholder="Certificate Title"
-													className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.certificateName && (
 													<span className="form-error" role="alert">
@@ -158,7 +158,7 @@ export const AddCertificateModal: React.FC<{
 													name="issuerOrg"
 													id="issuerOrg"
 													placeholder="Organization Name"
-													className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.issuerOrg && (
 													<span className="form-error" role="alert">
@@ -205,7 +205,7 @@ export const AddCertificateModal: React.FC<{
 													type="text"
 													id="credentialId"
 													placeholder="Credential ID"
-													className="border px-2 py-2 text-sm rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialId && (
 													<span className="form-error" role="alert">
@@ -233,7 +233,7 @@ export const AddCertificateModal: React.FC<{
 													type="text"
 													id="credentialUrl"
 													placeholder="e.g. https://example.com/"
-													className="border px-2 py-2 text-sm rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialUrl && (
 													<span className="form-error" role="alert">

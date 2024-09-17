@@ -1,7 +1,7 @@
 import { SetStateAction, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import AsyncSelect from "react-select/async";
 import { toast } from "sonner";
 import axios from "axios";
@@ -107,24 +107,19 @@ export const AddSkillModal: React.FC<{
 		}
 	};
 
-	const modalVariants: Variants = {
-		initial: { opacity: 0, scale: 0.9, rotate: "0deg" },
-		animate: { opacity: 1, scale: 1, rotate: "0deg" },
-		exit: { opacity: 0, scale: 0, rotate: "0deg" },
-	};
-
 	return (
 		<AnimatePresence>
 			<motion.div
-				variants={modalVariants}
-				initial="initial"
-				animate="animate"
-				exit={{ opacity: 0 }}
+				initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
 				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
 			>
 				<motion.div
-					variants={modalVariants}
-					onClick={(e) => e.stopPropagation()}
+					initial={{ scale: 0.9, rotate: "0deg" }}
+                    animate={{ scale: 1, rotate: "0deg" }}
+                    exit={{ scale: 0, rotate: "0deg" }}
+                    onClick={(e) => e.stopPropagation()}
 					className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg  shadow-xl cursor-default relative overflow-hidden"
 				>
 					<div className="relative z-10 ">
@@ -141,20 +136,19 @@ export const AddSkillModal: React.FC<{
 								</span>
 							</button>
 						</div>
-						<div className=" h-[50vh]">
+						<div className=" h-[400px]">
 							<div className="p-3">
 								<div className="flex flex-col gap-3">
-									<form
-										id="skillDataForm"
-										onSubmit={handleSubmit(onSubmit)}
-									>
+									<form id="skillDataForm" onSubmit={handleSubmit(onSubmit)}>
 										<div className="flex flex-col w-full gap-3">
 											<div className="w-full flex flex-col">
-												<div className="flex w-full items-center border border-gray-400 rounded-xl px-2">
-													<span className="w-[5%]">
+												<div
+													className="flex border py-1 rounded-md border-gray-200 w-full px-2"
+												>
+													<span className="w-[8%] flex items-center justify-center">
 														<HiOutlineSearch className="text-gray-600" />
 													</span>
-													<span className="w-[95%]">
+													<span className="w-[92%]">
 														<AsyncSelect
 															cacheOptions
 															loadOptions={loadOptions}
@@ -173,7 +167,7 @@ export const AddSkillModal: React.FC<{
 													</span>
 												</div>
 											</div>
-											<div className="h-80  border border-gray-400 rounded-lg p-3">
+											<div className="h-80  border rounded-md border-gray-200 p-3">
 												{selectedSkills.length > 0 && (
 													<div className="flex flex-wrap gap-2">
 														{selectedSkills.map((skill) => (

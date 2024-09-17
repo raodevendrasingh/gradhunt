@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { selectFieldStyle } from "@/utils/styles";
 import {
 	endYearOptions,
 	monthOptions,
@@ -71,8 +71,9 @@ export const DurationFields = ({
 										id="startMonth"
 										options={monthOptions}
 										placeholder="Start Month"
-										styles={selectCompanyFieldStyle}
+										styles={selectFieldStyle}
 										value={field.value as any}
+                                        menuPlacement="auto"
 									/>
 								)}
 							/>
@@ -95,8 +96,9 @@ export const DurationFields = ({
 										id="startYear"
 										options={startYearOptions}
 										placeholder="Start Year"
-										styles={selectCompanyFieldStyle}
+										styles={selectFieldStyle}
 										value={field.value as any}
+                                        menuPlacement="auto"
 									/>
 								)}
 							/>
@@ -130,8 +132,9 @@ export const DurationFields = ({
 											id="endMonth"
 											options={monthOptions}
 											placeholder="End Month"
-											styles={selectCompanyFieldStyle}
+											styles={selectFieldStyle}
 											value={field.value as any}
+                                            menuPlacement="top"
 										/>
 									)}
 								/>
@@ -154,8 +157,9 @@ export const DurationFields = ({
 											id="endYear"
 											options={endYearOptions}
 											placeholder="End Year"
-											styles={selectCompanyFieldStyle}
+											styles={selectFieldStyle}
 											value={field.value as any}
+                                            menuPlacement="top"
 										/>
 									)}
 								/>

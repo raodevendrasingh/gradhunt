@@ -1,8 +1,7 @@
-import { JobListing } from "@/types/userTypes";
+import { JobPosting } from "@/types/userTypes";
 import {
 	companySize,
 	employmentType,
-	experience,
 	locationType,
 	requiredExperience,
 	SelectOption,
@@ -33,7 +32,7 @@ export const JobPostingForm = () => {
 		formState: { errors },
 		setError,
 		clearErrors,
-	} = useForm<JobListing>();
+	} = useForm<JobPosting>();
 
 	const createJobLocationOptions = (companyData: {
 		headquarters: string;
@@ -58,11 +57,11 @@ export const JobPostingForm = () => {
 		return companyData ? createJobLocationOptions(companyData) : [];
 	}, [companyData]);
 
-	const onSubmit: SubmitHandler<JobListing> = async (data) => {
+	const onSubmit: SubmitHandler<JobPosting> = async (data) => {
 		setIsLoading(true);
 		console.log(data);
 		const token = await getToken();
-		const formData: JobListing = {
+		const formData: JobPosting = {
 			...data,
 			jobDescription: data.jobDescription
 				.replace(/\n/g, "\\n")
@@ -128,7 +127,7 @@ export const JobPostingForm = () => {
 								id="jobTitle"
 								aria-invalid={errors.jobTitle ? "true" : "false"}
 								placeholder="e.g. Senior React Developer"
-								className="border pl-10 pr-2 py-2 rounded-md border-gray-200  w-full"
+								className="border pl-10 pr-2 py-2 rounded-md border-gray-200 w-full"
 							/>
 						</div>
 						{errors.jobTitle && (

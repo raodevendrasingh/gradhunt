@@ -14,7 +14,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
 import { skills, SelectOption } from "@/utils/selectObjects";
-import { selectCompanyFieldStyle } from "@/utils/styles";
+import { selectFieldStyle } from "@/utils/styles";
 import { Project } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
@@ -143,7 +143,7 @@ export const AddProjectModal: React.FC<{
 													name="projectName"
 													id="projectName"
 													placeholder="Project Title"
-													className="border px-2 py-2 rounded-lg text-sm border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.projectName && (
 													<span className="form-error" role="alert">
@@ -180,7 +180,7 @@ export const AddProjectModal: React.FC<{
 													maxLength={maxChars}
 													placeholder="Explain problem statement, inspiration, usecase, etc."
 													rows={3}
-													className="w-full px-2 py-2 text-sm border rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												<div className="flex relative">
 													{errors.description && (
@@ -224,7 +224,8 @@ export const AddProjectModal: React.FC<{
 														}}
 														value={field.value as any}
 														placeholder="Skills"
-														styles={selectCompanyFieldStyle}
+														styles={selectFieldStyle}
+														menuPlacement="auto"
 													/>
 												)}
 											/>
@@ -267,7 +268,7 @@ export const AddProjectModal: React.FC<{
 													type="text"
 													id="liveLink"
 													placeholder="e.g. https://example.com/"
-													className="border px-2 py-2 text-sm rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.liveLink && (
 													<span className="form-error" role="alert">
@@ -297,7 +298,7 @@ export const AddProjectModal: React.FC<{
 													type="text"
 													id="sourceCodeLink"
 													placeholder="Github Link"
-													className="border px-2 py-2 text-sm rounded-lg border-gray-400 focus:border-blue-500"
+													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.sourceCodeLink && (
 													<span className="form-error" role="alert">
