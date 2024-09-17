@@ -20,9 +20,8 @@ import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddProjectModal: React.FC<{
-	onSave: () => void;
 	setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowProjectModal, onSave }) => {
+}> = ({ setShowProjectModal }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
 	const [description, setDescription] = useState("");
 	const maxChars = 2000;
@@ -65,7 +64,6 @@ export const AddProjectModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Project Added");
-			onSave();
 			setShowProjectModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while adding project. Try again!");

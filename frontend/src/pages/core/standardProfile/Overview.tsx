@@ -1,8 +1,8 @@
-import CustomCombobox from "@/components/layouts/CustomCombobox";
 import ReorderButton from "@/components/layouts/ReorderButton";
 import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
 import { MdModeEdit } from "react-icons/md";
 import { useState } from "react";
+import ComboboxAll from "@/components/layouts/ComboboxAll";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -10,7 +10,7 @@ export const Overview = () => {
 	return (
 		<div className="flex flex-col">
 			<div className="flex justify-between items-center">
-				<CustomCombobox />
+				<ComboboxAll />
 				<ReorderButton />
 			</div>
 			<div className="flex flex-col items-center h-32 border rounded-lg mt-2 w-full px-3 py-1">

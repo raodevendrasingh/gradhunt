@@ -19,9 +19,8 @@ interface SkillOption {
 }
 
 export const AddSkillModal: React.FC<{
-	onSave: () => void;
 	setShowSkillModal: React.Dispatch<SetStateAction<boolean>>;
-}> = ({ setShowSkillModal, onSave }) => {
+}> = ({ setShowSkillModal }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
@@ -91,7 +90,6 @@ export const AddSkillModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Skills Updated");
-			onSave();
 			setShowSkillModal(false);
 		} catch (error: any) {
 			toast.error("Error occurred while updating skills. Try again!");

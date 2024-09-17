@@ -1,10 +1,12 @@
 import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
 import { AddEduModal } from "@/modalForms/AddEduModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
-import React, { useState } from "react";
+import { AddProjectModal } from "@/modalForms/AddProjectModal";
+import { AddSkillModal } from "@/modalForms/AddSkillModal";
+import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 
-interface Option {
+export interface Option {
 	id: string;
 	label: string;
 }
@@ -12,18 +14,20 @@ interface Option {
 const options: Option[] = [
 	{ id: "experience", label: "Experience" },
 	{ id: "education", label: "Education" },
+	{ id: "skills", label: "Skills" },
+	{ id: "projects", label: "Projects" },
 	{ id: "certifications", label: "Certifications" },
 	{ id: "achievements", label: "Achievements" },
 ];
 
-export default function CustomCombobox() {
+export default function ComboboxAll() {
 	const [isOpen, setIsOpen] = useState(false);
-
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
+	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
-
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
@@ -34,8 +38,7 @@ export default function CustomCombobox() {
 				? prev.filter((id) => id !== optionId)
 				: [...prev, optionId]
 		);
-		// You can add your modal opening logic here
-		console.log(`Selected option: ${optionId}`);
+
 		if (optionId === "experience") {
 			setShowExpModal(true);
 		} else if (optionId === "education") {
@@ -43,8 +46,10 @@ export default function CustomCombobox() {
 			<AddEduModal setShowEduModal={setShowEduModal} />;
 		} else if (optionId === "certifications") {
 			setShowCertifyModal(true);
-		} else if (optionId === "achievements") {
-			setShowAchieveModal(true);
+		} else if (optionId === "projects") {
+			setShowProjectModal(true);
+		} else if (optionId === "skills") {
+			setShowSkillModal(true);
 		}
 	};
 
@@ -52,6 +57,12 @@ export default function CustomCombobox() {
 		<div className="relative inline-block text-left">
 			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} />}
 			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} />}
+			{showSkillModal && (
+				<AddSkillModal setShowSkillModal={setShowSkillModal} />
+			)}
+			{showProjectModal && (
+				<AddProjectModal setShowProjectModal={setShowProjectModal} />
+			)}
 			{showCertifyModal && (
 				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} />
 			)}
