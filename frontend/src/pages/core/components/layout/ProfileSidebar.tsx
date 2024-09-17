@@ -43,10 +43,10 @@ export const ProfileSidebar = () => {
 	const [activeTab, setActiveTab] = useState("Feed");
 
 	const tabs = [
-        { icon: <GoHome size={20} />, label: "Feed", route: "/posts" },
+        // { icon: <GoHome size={20} />, label: "Feed", route: "/posts" },
         { icon: <GoBriefcase size={20} />, label: "Jobs", route: "/job-search" },
-        { icon: <GoBook size={20} />, label: "News", route: "/news-feed" },
-        { icon: <GoLightBulb size={20} />, label: "Showcase", route: "/showcase" },
+        // { icon: <GoBook size={20} />, label: "News", route: "/news-feed" },
+        // { icon: <GoLightBulb size={20} />, label: "Showcase", route: "/showcase" },
     ];
 
     if (isSignedIn) {
