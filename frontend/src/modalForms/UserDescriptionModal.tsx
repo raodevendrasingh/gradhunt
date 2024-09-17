@@ -19,9 +19,8 @@ interface FormData {
 }
 
 export const UserAboutModal: React.FC<{
-	onSave: () => void;
 	setAboutModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setAboutModal, onSave }) => {
+}> = ({ setAboutModal }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [description, setDescription] = useState("");
 	const maxChars = 2000;
@@ -55,7 +54,6 @@ export const UserAboutModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Description Updated");
-			onSave();
 			setAboutModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while aupdating about. Try again!");

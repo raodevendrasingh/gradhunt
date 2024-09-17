@@ -24,9 +24,8 @@ import { useState } from "react";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddEduModal: React.FC<{
-	onSave: () => void;
 	setShowEduModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowEduModal, onSave }) => {
+}> = ({ setShowEduModal}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
@@ -54,7 +53,6 @@ export const AddEduModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Education Added");
-			onSave();
 			setShowEduModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while adding education. Try again!");

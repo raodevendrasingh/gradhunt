@@ -25,9 +25,9 @@ import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddExpModal: React.FC<{
-	onSave: () => void;
+
 	setShowExpModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowExpModal, onSave }) => {
+}> = ({ setShowExpModal }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
@@ -56,7 +56,6 @@ export const AddExpModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Experience Added");
-			onSave();
 			setShowExpModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while adding experience. Try again!");
