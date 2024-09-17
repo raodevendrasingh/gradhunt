@@ -27,9 +27,8 @@ import Spinner from "@/components/ui/Spinner";
 const screens = ["Add Basic Info", "Add Social Links", "Add Languages"];
 
 export const AddBasicDetailModal: React.FC<{
-	onSave: () => void;
 	setShowBasicDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowBasicDetailModal, onSave }) => {
+}> = ({ setShowBasicDetailModal }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
@@ -101,7 +100,6 @@ export const AddBasicDetailModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Details Updated");
-			onSave();
 			setShowBasicDetailModal(false);
 		} catch (error: any) {
 			toast.error("Error occurred while updating information. Try again!");

@@ -7,9 +7,12 @@ import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
 import React, { useState } from "react";
 import { ProfileCompletion } from "@/components/ui/ProgressBarComponent";
+import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
 
 export default function StandardUserProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
+	const [showBasicDetailModal, setShowBasicDetailModal] =
+		useState<boolean>(false);
 	const { user, isSignedIn } = useUser();
 	return (
 		<div className="flex h-full">
@@ -35,12 +38,22 @@ export default function StandardUserProfile(): React.JSX.Element {
 							</div>
 							<div className="mt-4 sm:mt-0 select-none">
 								{isSignedIn ? (
-									<button className="flex items-center justify-center hover:bg-slate-100 rounded-lg border border-gray-200 gap-2 px-3 py-1 transition-colors">
-										<span className="text-sm font-medium text-gray-700">
-											Edit
-										</span>
-										<BiEditAlt className="text-gray-700" />
-									</button>
+									<>
+										<button
+											onClick={() => setShowBasicDetailModal(true)}
+											className="flex items-center justify-center hover:bg-slate-100 rounded-lg border border-gray-200 gap-2 px-3 py-1 transition-colors"
+										>
+											<span className="text-sm font-medium text-gray-700">
+												Edit
+											</span>
+											<BiEditAlt className="text-gray-700" />
+										</button>
+										{showBasicDetailModal && (
+											<AddBasicDetailModal
+												setShowBasicDetailModal={setShowBasicDetailModal}
+											/>
+										)}
+									</>
 								) : (
 									<button className="flex items-center justify-center bg-slate-800 hover:bg-slate-700 hover:shadow rounded-lg border gap-2 px-3 py-2 transition-colors">
 										<span className="text-base font-medium text-white">
@@ -51,7 +64,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 								)}
 							</div>
 						</div>
-						<div className="flex items-center justify-center sm:justify-start w-full gap-4 mt-2 select-none">
+						{/* <div className="flex items-center justify-center sm:justify-start w-full gap-4 mt-2 select-none">
 							<div className="flex items-center gap-1 text-sm font-normal">
 								<span className="font-semibold">20</span>
 								<span>Following</span>
@@ -60,7 +73,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 								<span className="font-semibold">20</span>
 								<span>Followers</span>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<div className="flex flex-col justify-start gap-3 px-5">
