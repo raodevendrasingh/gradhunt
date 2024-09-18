@@ -9,13 +9,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LinguisticsSerializer(serializers.ModelSerializer):
-    class Mets:
+    class Meta:
         model = Linguistics
         fields = '__all__'
 
 
 class SocialLinksSerializer(serializers.ModelSerializer):
-    class Mets:
+    class Meta:
         model = SocialLinks
         fields = '__all__'
 
@@ -59,6 +59,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificate
+        fields = '__all__'
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skills
         fields = '__all__'
 
 

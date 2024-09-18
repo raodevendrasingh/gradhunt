@@ -2,6 +2,8 @@ import json
 from .models import *
 from .serializers import *
 from .permission import IsClerkAuthenticated
+from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import NotFound
 import json
 from django.views import View
 from django.db import transaction
@@ -98,7 +100,7 @@ class SaveCandidateData(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
-class SaveUserAbout(APIView):
+class SaveUserDesc(APIView):
     @transaction.atomic
     def post(self, request):
         user = request.user
@@ -335,29 +337,16 @@ class AddExperienceData(APIView):
 
 
 class GetExperienceData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
             experiences = Experience.objects.filter(user=user)
-
-            experience_data_list = []
-            for experience in experiences:
-                experience_data = {}
-                for field in Experience._meta.fields:
-                    field_name = field.name
-                    field_value = getattr(experience, field_name)
-
-                    if isinstance(field_value, UserDetails):
-                        experience_data[field_name] = field_value.username
-                    else:
-                        experience_data[field_name] = field_value
-                experience_data_list.append(experience_data)
-
-            return Response(experience_data_list, status=status.HTTP_200_OK)
+            serializer = ExperienceSerializer(experiences, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Experience.DoesNotExist:
-            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -442,29 +431,16 @@ class AddEducationData(APIView):
 
 
 class GetEducationData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
             educations = Education.objects.filter(user=user)
-
-            education_data_list = []
-            for education in educations:
-                education_data = {}
-                for field in Education._meta.fields:
-                    field_name = field.name
-                    field_value = getattr(education, field_name)
-
-                    if isinstance(field_value, UserDetails):
-                        education_data[field_name] = field_value.username
-                    else:
-                        education_data[field_name] = field_value
-                education_data_list.append(education_data)
-
-            return Response(education_data_list, status=status.HTTP_200_OK)
+            serializer = EducationSerializer(educations, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Education.DoesNotExist:
-            return Response({"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -679,3 +655,113 @@ class SetImageUrl(APIView):
             return Response({'error': 'User details not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserDetails(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def get(self, request, username):
+        try:
+            # Query the UserDetails model
+            user = UserDetails.objects.get(username=username)
+
+            # Serialize the user data
+            serializer = UserSerializer(user)
+
+            # Return the serialized data
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except UserDetails.DoesNotExist:
+            raise NotFound('User not found')
+
+
+class GetProjects(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            projects = Project.objects.filter(user=user)
+            serializer = ProjectSerializer(projects, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetCertificates(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            certificates = Certificate.objects.filter(user=user)
+            serializer = CertificateSerializer(certificates, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetSkill(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            skills = Skills.objects.filter(user=user)
+            serializer = SkillsSerializer(skills, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetLinguistsics(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            linguistics = Linguistics.objects.filter(user=user)
+            serializer = LinguisticsSerializer(linguistics, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetSocials(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            socials = SocialLinks.objects.filter(user=user)
+            serializer = SocialLinksSerializer(socials, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserDescription(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            desc = AboutData.objects.filter(user=user)
+            serializer = AboutDataSerializer(desc, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        

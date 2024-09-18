@@ -45,14 +45,13 @@ export const UserAboutModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `api/add-user-about-data`;
+			const url = `/api/add-user-desc`;
 			const response = await axios.post(url, description, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			// console.log(response.data);
 			toast.success("Description Updated");
 			setAboutModal(false);
 		} catch (error: any) {

@@ -6,7 +6,14 @@ urlpatterns = [
     path('api/get-usertype/', GetUserType.as_view(), name='get-usertype'),
     path('api/check-email/', CheckEmailView.as_view(), name='check-email'),
     path('api/check-username/', CheckUsernameView.as_view(), name='check-username'),
-    path('api/add-user-about-data', SaveUserAbout.as_view(), name='save-about'),
+
+    path('api/add-user-data', AddUserData.as_view(), name='add-basic-data'),
+    path('api/get-user-details/<str:username>', GetUserDetails.as_view(), name='get-user'),
+    path('api/get-linguistics-data/<str:username>', GetLinguistsics.as_view(), name='get-linguistics'),
+    path('api/get-social-data/<str:username>', GetSocials.as_view(), name='get-socials'),
+    
+    path('api/add-user-desc', SaveUserDesc.as_view(), name='save-user-desc'),
+    path('api/get-user-desc/<str:username>', GetUserDescription.as_view(), name='get-user-desc'),
 
     # candidate data
     path('api/save-candidate-data/', SaveCandidateData.as_view(), name='create-candidate'),
@@ -20,27 +27,29 @@ urlpatterns = [
 
     # experience section
     path('api/add-experience-data', AddExperienceData.as_view(), name='add-experience'),
-    path('api/recruiter/<str:username>/get-experience-data/', GetExperienceData.as_view(), name='get-experience'),
+    path('api/get-experience-data/<str:username>', GetExperienceData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),
     
     # education section
     path('api/add-education-data', AddEducationData.as_view(), name='add-education'),
-    path('api/recruiter/<str:username>/get-education-data', GetEducationData.as_view(), name='get-experience'),
+    path('api/get-education-data/<str:username>', GetEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='get-experience'),
     path('api/recruiter/<str:username>/update-education-data/<str:id>', UpdateEducationData.as_view(), name='update-education'),
 
     # project section
     path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
+    path('api/get-projects/<str:username>', GetProjects.as_view(), name='get-project'),
 
     # certificate section
     path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
+    path('api/get-certificates/<str:username>', GetCertificates.as_view(), name='get-certificate'),
 
     # skills section
-    path('api/add-skills', AddSkillData.as_view(), name='add-certificate'),
+    path('api/add-skills', AddSkillData.as_view(), name='add-skills'),
+    path('api/get-skills/<str:username>', GetSkill.as_view(), name='get-skills'),
 
     # skills section
-    path('api/add-user-data', AddUserData.as_view(), name='add-basic-data'),
 
     # image uploads 
     path('api/upload-profile-image', SetImageUrl.as_view(), name='set-profile-image'),
