@@ -2,19 +2,19 @@ import { ReactNode } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // pages
-import SignUpPage from "@/pages/core/auth/SignUpPage";
-import SignInPage from "@/pages/core/auth/SignInPage";
+import AppLayout from "@/pages/core/AppLayout";
 import LandingPage from "@/pages/common/Landing";
-import StandardProfileLayout from "./StandardProfileLayout";
+import SignInPage from "@/pages/core/auth/SignInPage";
+import SignUpPage from "@/pages/core/auth/SignUpPage";
 import StandardUserProfile from "./StandardUserProfile";
 import JobSearchPage from "./JobSearchPage";
 import JobsFeedPage from "./JobsFeedPage";
-import NotFound from "@/pages/common/NotFound";
+import JobApplicationsPage from "./JobApplicationPage";
+import SavedJobsPage from "./SavedJobsPage";
+import StandardProfileLayout from "./StandardProfileLayout";
+import SettingsPage from "./SettingsPage";
 import SpecialUserProfile from "@/pages/core/SpecialUserProfile";
-import FeedPostsPage from "./FeedPostsPage";
-import ProjectShowcasePage from "./ProjectShowcasePage";
-import NewsFeedPage from "./NewsFeedPage";
-import AppLayout from "@/pages/core/AppLayout";
+import NotFound from "@/pages/common/NotFound";
 
 export default function AppRoutes(): ReactNode {
 	return (
@@ -24,12 +24,12 @@ export default function AppRoutes(): ReactNode {
 				<Route path="/login/*" element={<SignInPage />} />
 				<Route path="/signup/*" element={<SignUpPage />} />
 				<Route path="/*" element={<StandardProfileLayout />}>
-					<Route path="posts" element={<FeedPostsPage />} />
 					<Route path="job-search" element={<JobSearchPage />} />
 					<Route path="job-search/:params" element={<JobsFeedPage />} />
-					<Route path="news-feed" element={<NewsFeedPage />} />
-					<Route path="showcase" element={<ProjectShowcasePage />} />
+					<Route path="job-applications" element={<JobApplicationsPage />} />
+					<Route path="saved-jobs" element={<SavedJobsPage />} />
 					<Route path="p/:username" element={<StandardUserProfile />} />
+					<Route path="settings" element={<SettingsPage />} />
 				</Route>
 				<Route path="/s/:username" element={<SpecialUserProfile />} />
 				<Route path="*" element={<NotFound />} />
