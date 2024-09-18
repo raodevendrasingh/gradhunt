@@ -8,6 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class LinguisticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Linguistics

@@ -2,7 +2,6 @@ import json
 from .models import *
 from .serializers import *
 from .permission import IsClerkAuthenticated
-from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import NotFound
 import json
 from django.views import View
@@ -663,17 +662,27 @@ class GetUserDetails(APIView):
     @transaction.atomic
     def get(self, request, username):
         try:
-            # Query the UserDetails model
-            user = UserDetails.objects.get(username=username)
+            user = get_object_or_404(UserDetails, username=username)
+            user_serializer = UserSerializer(user)
 
-            # Serialize the user data
-            serializer = UserSerializer(user)
+            social_links = SocialLinks.objects.filter(user=user)
+            social_serializer = SocialLinksSerializer(social_links, many=True)
 
-            # Return the serialized data
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            linguistics = Linguistics.objects.filter(user=user)
+            linguistics_serializer = LinguisticsSerializer(
+                linguistics, many=True)
 
+            user_data = {
+                'user_details': user_serializer.data,
+                'social_links': social_serializer.data,
+                'linguistics': linguistics_serializer.data
+            }
+
+            return Response(user_data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             raise NotFound('User not found')
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetProjects(APIView):
@@ -734,7 +743,8 @@ class GetLinguistsics(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
 class GetSocials(APIView):
     permission_classes = [IsClerkAuthenticated]
 
@@ -763,5 +773,3 @@ class GetUserDescription(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
-        

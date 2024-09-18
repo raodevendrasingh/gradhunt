@@ -4,7 +4,7 @@ export type Recruiter = {
 	userDetails: UserDetails;
 	recruiterDetails: RecruiterDetails;
 	hiringPreference: HiringPreference;
-    jobPostings: JobPosting[]; 
+	jobPostings: JobPosting[];
 };
 
 export type UserDetails = {
@@ -16,8 +16,8 @@ export type UserDetails = {
 	email: string;
 	bio: string;
 	location: string;
-    followers: number;
-    following: number;
+	followers: number;
+	following: number;
 	createdAt: string;
 };
 
@@ -65,7 +65,7 @@ export type CompanyProfile = {
 	establishedYear: string;
 	industry: string;
 	headquarters: string;
-    branches: { city: string; state: string; country: string }[];
+	branches: { city: string; state: string; country: string }[];
 	about: string;
 	values: string;
 };
@@ -99,18 +99,18 @@ export type Certificate = {
 	endYear?: number;
 };
 
+export type socialLinks = {
+	github: string;
+	linkedin: string;
+	twitter: string;
+};
+
+export type linguistics = { language: string[]; proficiency: string[] };
+
 export type UserBasicDetails = {
-	firstname: string;
-	lastname: string;
-	bio: string;
-	location: string;
-	socialLinks: {
-		linkedin?: string;
-		github?: string;
-		leetcode?: string;
-		twitter?: string;
-	};
-	languages: { language: string; proficiency: string }[];
+	user_details: UserDetails;
+	socials: socialLinks[];
+    linguistics: linguistics[];
 };
 
 export type Project = {
@@ -133,21 +133,21 @@ export type JobPosting = {
 	jobTitle: string;
 	jobType: SelectOption;
 	jobDescription: string;
-    workType: SelectOption;
+	workType: SelectOption;
 	companySize: SelectOption;
 	skillsRequired: string;
 	experience: SelectOption;
 	datePosted: Date;
 	isActive: Boolean;
-    salaryRange: string;
-    jobLocation: string;
-    applicationDeadline: Date;
+	salaryRange: string;
+	jobLocation: string;
+	applicationDeadline: Date;
 };
 
 export type ProfileData = {
-    user: UserDetails;
-    experience: Experience[];
-    education: Education[];
-    certificate: Certificate[];
-    project: Project[];
+	user: UserDetails;
+	experience: Experience[];
+	education: Education[];
+	certificate: Certificate[];
+	project: Project[];
 };
