@@ -3,6 +3,9 @@ import { LuUpload, LuDownload } from "react-icons/lu";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/firebase";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
 
 const uploadToFirebase = async (
@@ -31,6 +34,21 @@ const uploadToFirebase = async (
 		);
 	});
 };
+
+const sendFileToServer = async (fileUrl: string, token: string) => {
+	if (!token) {
+		throw new Error("Token is not available");
+	}
+	const url = `/api/add-resume-link`;
+	const response = await axios.post(url, fileUrl, {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	console.log(response.data);
+};
+
 export default function FileUploadSection() {
 	const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
 	const [progress, setProgress] = useState(0);
@@ -38,6 +56,7 @@ export default function FileUploadSection() {
 	const [fileSize, setFileSize] = useState("");
 	const [fileUrl, setFileUrl] = useState("");
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const { getToken } = useAuth();
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;
@@ -63,6 +82,7 @@ export default function FileUploadSection() {
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		const file = event.target.files?.[0];
+
 		if (file) {
 			setFileName(file.name);
 			setFileSize(formatFileSize(file.size));
@@ -70,9 +90,18 @@ export default function FileUploadSection() {
 			setProgress(0);
 
 			try {
+				const token = await getToken();
+				if (!token) {
+					throw new Error("Token is not available");
+				}
 				const url = await uploadToFirebase(file, setProgress);
-				setFileUrl(url);
-				setUploadStatus("success");
+				try {
+					await sendFileToServer(url, token);
+					setUploadStatus("success");
+				} catch (sendError) {
+					console.error("Error sending file to server:", sendError);
+					setUploadStatus("error");
+				}
 			} catch (error) {
 				console.error("Error uploading file:", error);
 				setUploadStatus("error");
@@ -186,7 +215,7 @@ export default function FileUploadSection() {
 								className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-slate-800 text-white rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
 							>
 								Download
-								<LuDownload  className="size-5"/>
+								<LuDownload className="size-5" />
 							</button>
 						)}
 					</div>
