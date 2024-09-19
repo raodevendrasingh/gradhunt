@@ -28,7 +28,7 @@ export const Education = () => {
 						<div className="flex flex-col gap-3 w-full">
 							{educationData.map((data, index) => (
 								<div
-									key={data.educationId}
+									key={index}
 									className="w-full flex items-start gap-3 bg-white pt-3 rounded-lg"
 								>
 									<div className="flex flex-col gap-1 w-full">

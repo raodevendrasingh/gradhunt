@@ -766,9 +766,12 @@ class GetUserDescription(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            desc = AboutData.objects.filter(user=user)
-            serializer = AboutDataSerializer(desc, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            desc = AboutData.objects.filter(user=user).first()
+            if desc:
+                serializer = AboutDataSerializer(desc)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Description not found"}, status=status.HTTP_404_NOT_FOUND)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

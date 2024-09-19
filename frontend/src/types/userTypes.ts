@@ -71,7 +71,7 @@ export type CompanyProfile = {
 };
 
 export type Education = {
-	educationId?: string;
+	educationId: string;
 	user?: UserDetails;
 	instituteName: string;
 	degreeTitle: string;
@@ -110,7 +110,7 @@ export type linguistics = { language: string[]; proficiency: string[] };
 export type UserBasicDetails = {
 	user_details: UserDetails;
 	socials: socialLinks[];
-    linguistics: linguistics[];
+	linguistics: linguistics[];
 };
 
 export type Project = {
@@ -150,4 +150,8 @@ export type ProfileData = {
 	education: Education[];
 	certificate: Certificate[];
 	project: Project[];
+};
+
+export type AboutSection = {
+	description: string;
 };
