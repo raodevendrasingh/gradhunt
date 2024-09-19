@@ -155,3 +155,14 @@ export type ProfileData = {
 export type AboutSection = {
 	description: string;
 };
+
+export type ProgressField = {
+    label: string;
+    value: number;
+    completed: boolean;
+}
+
+export type Progress = {
+    tasks: ProgressField[]
+    completion_percentage: number;
+}

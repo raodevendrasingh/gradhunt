@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import clsx from "clsx";
-
+import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
 interface Task {
 	id: string;
 	label: string;
@@ -11,6 +11,7 @@ interface Task {
 }
 
 export const ProfileCompletion = () => {
+	const { progress, isLoading, refetch, error } = useFetchProfileCompletion();
 	const [tasks, setTasks] = useState<Task[]>([
 		{ id: "1", label: "Add a Profile Picture", value: 10, completed: false },
 		{ id: "2", label: "Add a Bio", value: 10, completed: false },
@@ -24,43 +25,44 @@ export const ProfileCompletion = () => {
 		{
 			id: "5",
 			label: "Add at least one Education",
-			value: 10,
+			value: 15,
 			completed: false,
 		},
 		{
 			id: "6",
 			label: "Add at least one Experience",
+			value: 15,
+			completed: false,
+		},
+		{
+			id: "7",
+			label: "Add at least one Projects",
 			value: 10,
 			completed: false,
 		},
-		{ id: "7", label: "Add at least one Projects", value: 5, completed: false },
 		{
 			id: "8",
 			label: "Connect at least one featured social",
-			value: 5,
+			value: 10,
 			completed: false,
 		},
 		{
 			id: "9",
-			label: "Add at least five people in your network",
+			label: "Add About Section",
 			value: 20,
 			completed: false,
 		},
-		{ id: "10", label: "Write your first post", value: 20, completed: false },
 	]);
 	const [isToggleOpen, setIsToggleOpen] = useState<boolean>(false);
 
-	const totalValue = tasks.reduce((sum, task) => sum + task.value, 0);
-	const completedValue = tasks
-		.filter((task) => task.completed)
-		.reduce((sum, task) => sum + task.value, 0);
-	const progress = (completedValue / totalValue) * 100;
-
-	const getStrength = (progress: number): string => {
-		if (progress < 33) return "Weak";
-		if (progress < 66) return "Medium";
-		return "Strong";
+	const getStrength = (
+		progressPerc: number
+	): { label: string; color: string } => {
+		if (progressPerc < 33) return { label: "Weak", color: "text-red-500" };
+		if (progressPerc < 66) return { label: "Medium", color: "text-orange-500" };
+		return { label: "Strong", color: "text-green-500" };
 	};
+	const strength = getStrength(progress?.completion_percentage as number);
 
 	const handleTaskToggle = (id: string) => {
 		setTasks(
@@ -79,13 +81,21 @@ export const ProfileCompletion = () => {
 		>
 			<div className="space-y-4">
 				<div className="flex justify-between items-center">
-					<span className="text-3xl font-bold text-gray-800">
-						{progress.toFixed(0)}%
-					</span>
-					<div className="flex items-center gap-3">
-						<span className="text-sm font-medium text-gray-600">
-							{getStrength(progress)}
+					{progress ? (
+						<span className="text-3xl font-bold text-gray-800">
+							{progress?.completion_percentage.toFixed(0)}%
 						</span>
+					) : (
+						<div className="size-10 skeleton" />
+					)}
+					<div className="flex items-center gap-3">
+						{progress ? (
+							<span className={clsx("text-sm font-medium", strength.color)}>
+								{strength.label}
+							</span>
+						) : (
+							<div className="h-6 w-20 skeleton" />
+						)}
 						<button
 							onClick={() => setIsToggleOpen(!isToggleOpen)}
 							className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -120,21 +130,21 @@ export const ProfileCompletion = () => {
 				className="overflow-hidden"
 			>
 				<div className="space-y-3 pb-1">
-					{tasks.map((task) => (
+					{tasks.map((task, index) => (
 						<div key={task.id} className="flex items-center space-x-3 px-1">
 							<input
 								type="checkbox"
 								id={task.id}
-								checked={task.completed}
+								checked={progress?.tasks[index].completed === true}
 								onChange={() => handleTaskToggle(task.id)}
-								disabled={task.completed}
-								className="form-checkbox size-4 text-slate-800 rounded border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
+								disabled
+								className="form-checkbox size-4 text-slate-800 rounded-full border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
 							/>
 							<label
 								htmlFor={task.id}
 								className={clsx(
 									"text-xs transition-all duration-150 ease-in-out",
-									task.completed
+									progress?.tasks[index].completed === true
 										? "line-through text-gray-400"
 										: "text-gray-700 hover:text-gray-900"
 								)}
