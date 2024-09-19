@@ -5,6 +5,8 @@ import { useState } from "react";
 import ComboboxAll from "@/components/layouts/ComboboxAll";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
+import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
+import { SkillSection } from "./ResumeComponents/SkillSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -59,6 +61,7 @@ export const Overview = () => {
 
 				{showAboutModal && <UserAboutModal setAboutModal={setAboutModal} />}
 			</div>
+            <SkillSection/>
 		</div>
 	);
 };

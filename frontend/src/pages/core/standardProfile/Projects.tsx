@@ -15,8 +15,6 @@ export const Projects = () => {
 	const { isSignedIn } = useUser();
 	const { projectData, isLoading, refetch, error } = useFetchProjectData();
 
-	console.log(projectData);
-
 	return (
 		<div className="flex flex-col">
 			<div className="flex justify-between items-center">

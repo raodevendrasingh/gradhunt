@@ -109,14 +109,20 @@ export const ProfileCompletion = () => {
 					</div>
 				</div>
 				<div className="relative pt-1">
-					<div className="overflow-hidden h-2 text-xs flex rounded-full bg-gray-200">
-						<motion.div
-							initial={{ width: 0 }}
-							animate={{ width: `${progress}%` }}
-							transition={{ duration: 0.5, ease: "easeInOut" }}
-							className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-800"
-						></motion.div>
-					</div>
+					{progress ? (
+						<div className="overflow-hidden h-2 text-xs flex rounded-full bg-gray-200">
+							<motion.div
+								initial={{ width: 0 }}
+								animate={{
+									width: `${progress?.completion_percentage as number}%`,
+								}}
+								transition={{ duration: 0.5, ease: "easeInOut" }}
+								className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-800"
+							></motion.div>
+						</div>
+					) : (
+						<div className="h-2 w-full rounded-full skeleton" />
+					)}
 				</div>
 				<p className="text-sm font-medium text-gray-600">Profile Strength</p>
 			</div>

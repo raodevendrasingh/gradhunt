@@ -166,3 +166,11 @@ export type Progress = {
     tasks: ProgressField[]
     completion_percentage: number;
 }
+
+export type Skill = {
+    id: number;
+    label: string;
+    value: number;
+    image: string;
+    category: string;
+}
