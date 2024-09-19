@@ -74,6 +74,56 @@ class CheckEmailView(View):
         return JsonResponse({'exists': exists})
 
 
+class GetCompletionPercentage(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            social = SocialLinks.objects.get(user=user)
+            about = AboutData.objects.get(user=user)
+
+            tasks = [
+                {"label": "Add a Profile Picture", "value": 10,
+                    "completed": bool(user.profilePicture)},
+                {"label": "Add a Bio", "value": 10,
+                    "completed": bool(user.bio)},
+                {"label": "Add your Location", "value": 5, "completed": bool(user.location)}, {
+                    "label": "Add at least one Language", "value": 5, "completed": Linguistics.objects.filter(user=user).exists()},
+                {"label": "Add at least one Education", "value": 15,
+                    "completed": Education.objects.filter(user=user).exists()},
+                {"label": "Add at least one Experience", "value": 15,
+                    "completed": Experience.objects.filter(user=user).exists()},
+                {"label": "Add at least one Project", "value": 10,
+                    "completed": Project.objects.filter(user=user).exists()},
+                {
+                    "label": "Connect at least one featured social", "value": 10,
+                    "completed": any([
+                        bool(social.github),
+                        bool(social.linkedin),
+                        bool(social.leetcode),
+                        bool(social.twitter)
+                    ])
+                },
+                {"label": "Add About Section", "value": 20,
+                    "completed": bool(about.description)},
+            ]
+
+            total_value = sum(task['value'] for task in tasks)
+            completed_value = sum(task['value']
+                                  for task in tasks if task['completed'])
+            completion_percentage = (completed_value / total_value) * 100
+
+            return Response({
+                "tasks": tasks,
+                "completion_percentage": completion_percentage
+            }, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class SaveCandidateData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
