@@ -826,3 +826,26 @@ class GetUserDescription(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddResumeLink(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def post(self, request):
+        try:
+            clerk_user_id = request.user.clerk_user_id
+            resume_link = request.data
+
+            if not resume_link:
+                return Response({'error': 'Resume link is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            user = UserDetails.objects.get(clerk_user_id=clerk_user_id)
+            
+            user.resumeLink = resume_link
+            user.save()
+
+            return Response({'message': 'Resume link added successfully'}, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

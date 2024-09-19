@@ -16,6 +16,7 @@ class UserDetails(models.Model):
     isProfileActivated = models.BooleanField(default=False)
     isProfilePublic = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
+    resumeLink = models.URLField(max_length=512, null=True, blank=True)
 
     def __str__(self):
         return self.username

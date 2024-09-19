@@ -3,7 +3,6 @@ import { LuUpload, LuDownload } from "react-icons/lu";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/firebase";
 import { motion } from "framer-motion";
-import { toast } from "sonner";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
@@ -40,13 +39,12 @@ const sendFileToServer = async (fileUrl: string, token: string) => {
 		throw new Error("Token is not available");
 	}
 	const url = `/api/add-resume-link`;
-	const response = await axios.post(url, fileUrl, {
+	await axios.post(url, fileUrl, {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	console.log(response.data);
 };
 
 export default function FileUploadSection() {
