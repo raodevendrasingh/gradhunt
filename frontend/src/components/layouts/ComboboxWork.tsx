@@ -37,6 +37,7 @@ export default function ComboboxWork() {
 		} else if (optionId === "certifications") {
 			setShowCertifyModal(true);
 		}
+        setIsOpen(false);
 	};
 
 	return (
@@ -59,7 +60,7 @@ export default function ComboboxWork() {
 			</div>
 
 			{isOpen && (
-				<div className="origin-top-right absolute left-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+				<div className="origin-top-right absolute left-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 z-10 ring-black ring-opacity-5">
 					<div
 						className="p-1"
 						role="menu"

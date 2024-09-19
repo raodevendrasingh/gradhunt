@@ -1,4 +1,4 @@
-import { Experience } from "@/pages/core/standardProfile/Experience";
+import { ResumePage } from "@/pages/core/standardProfile/ResumePage";
 import { Featured } from "@/pages/core/standardProfile/Featured";
 import { Overview } from "@/pages/core/standardProfile/Overview";
 import { Projects } from "@/pages/core/standardProfile/Projects";
@@ -13,15 +13,11 @@ export const standardTabsData = [
 		content: <Projects/>,
 	},
 	{
-		title: "Experience",
-		content: <Experience/>,
+		title: "Resume",
+		content: <ResumePage/>,
 	},
 	{
 		title: "Featured",
 		content: <Featured/>,
 	},
 ];
-// {
-//     title: "Posts",
-//     content: "Posts",
-// },

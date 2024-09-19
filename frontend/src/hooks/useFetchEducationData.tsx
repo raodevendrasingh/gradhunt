@@ -5,24 +5,28 @@ import axios from "axios";
 
 import { toast } from "sonner";
 import { Education } from "@/types/userTypes";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
+import { useParams } from "react-router-dom";
 
 export const useFetchEducationData = () => {
 	const [educationData, SetEducationData] = useState<Education[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
-
-	const { isSignedIn, user } = useUser();
-
-	const username = isSignedIn && user?.username
+    const { getToken } = useAuth();
+	const { username } = useParams<{ username: string }>();
 
     const fetchData = useCallback(async () => {
 		setIsLoading(true);
 		try {
-			const url = `/api/recruiter/${username}/get-education-data`;
+            const token = await getToken();
+			if (!token) {
+				throw new Error("User Unauthorized!");
+			}
+			const url = `/api/get-education-data/${username}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
 				},
 			});
             const data = response.data;
