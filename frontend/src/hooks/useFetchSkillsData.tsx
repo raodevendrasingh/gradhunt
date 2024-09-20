@@ -9,13 +9,13 @@ import { useParams } from "react-router-dom";
 
 export const useFetchSkillData = () => {
 	const [skillData, setSkillData] = useState<Skill[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isSkillLoading, setIsSkillLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
 	const fetchData = useCallback(async () => {
-		setIsLoading(true);
+		setIsSkillLoading(true);
 		try {
 			const token = await getToken();
 			if (!token) {
@@ -34,7 +34,7 @@ export const useFetchSkillData = () => {
 			setError(err);
 			toast.error("Error fetching skill details");
 		} finally {
-			setIsLoading(false);
+			setIsSkillLoading(false);
 		}
 	}, []);
 
@@ -46,5 +46,5 @@ export const useFetchSkillData = () => {
 		fetchData();
 	}, [fetchData]);
 
-	return { skillData, isLoading, error, refetch };
+	return { skillData, isSkillLoading, error, refetch };
 };

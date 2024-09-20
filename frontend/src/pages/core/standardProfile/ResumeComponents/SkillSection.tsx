@@ -12,7 +12,7 @@ type GroupedSkills = {
 export const SkillSection: React.FC = () => {
 	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
 	const { isSignedIn } = useUser();
-	const { skillData, isLoading, refetch, error } = useFetchSkillData();
+	const { skillData, isSkillLoading, refetch, error } = useFetchSkillData();
 
 	const groupedSkills: GroupedSkills = skillData
 		? skillData.reduce((acc: GroupedSkills, skill: Skill) => {
@@ -25,6 +25,10 @@ export const SkillSection: React.FC = () => {
 		: {};
 
 	const sortedCategories = Object.keys(groupedSkills).sort();
+
+    const refetchData = () => {
+        refetch();
+    }
 
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
@@ -40,12 +44,11 @@ export const SkillSection: React.FC = () => {
 					</button>
 				)}
 				{showSkillModal && (
-					<AddSkillModal setShowSkillModal={setShowSkillModal} />
+					<AddSkillModal setShowSkillModal={setShowSkillModal} onUpdate={refetchData}  />
 				)}
 			</div>
 			<div className="flex items-center justify-start w-full">
-				{isLoading ? (
-					// skeleton
+				{isSkillLoading ? (
 					<div className="flex flex-wrap w-full gap-2 p-3">
 						{[...Array(12)].map((_, index) => (
 							<div

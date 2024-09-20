@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,30 +10,41 @@ import { HiOutlineSearch } from "react-icons/hi";
 import { skillSearchFieldStyle } from "@/utils/styles";
 import { skillObject } from "@/utils/skillOptions";
 import { FormFooter } from "@/components/ui/FormFooter";
-
-interface SkillOption {
-	value: string;
-	label: string;
-	image?: string;
-	category: string;
-}
+import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
+import { Skill } from "@/types/userTypes";
 
 export const AddSkillModal: React.FC<{
 	setShowSkillModal: React.Dispatch<SetStateAction<boolean>>;
-}> = ({ setShowSkillModal }) => {
+    onUpdate: () => void;
+}> = ({ setShowSkillModal, onUpdate }) => {
+	const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
+
+	const { skillData, isSkillLoading } = useFetchSkillData();
+
+	useEffect(() => {
+		if (skillData && skillData.length > 0) {
+			setSelectedSkills(
+				skillData.map((skill) => ({
+					id: skill.id, //
+					value: skill.value,
+					label: skill.label,
+					image: skill.image,
+					category: skill.category,
+				}))
+			);
+		}
+	}, [skillData]);
 
 	const {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormData>();
 
-	const [selectedSkills, setSelectedSkills] = useState<SkillOption[]>([]);
-
 	const loadOptions = (
 		inputValue: string,
-		callback: (options: SkillOption[]) => void
+		callback: (options: Skill[]) => void
 	) => {
 		const filteredOptions = skillObject.filter(
 			(option) =>
@@ -45,7 +56,7 @@ export const AddSkillModal: React.FC<{
 
 	const [searchInputValue, setSearchInputValue] = useState<string>("");
 
-	const handleSkillSelect = (newSkill: SkillOption | null) => {
+	const handleSkillSelect = (newSkill: Skill | null) => {
 		if (selectedSkills.length >= 20) {
 			toast.error("You cannot select more than 20 skills.");
 			return;
@@ -60,7 +71,7 @@ export const AddSkillModal: React.FC<{
 		}
 	};
 
-	const handleSkillRemove = (removedSkill: SkillOption) => {
+	const handleSkillRemove = (removedSkill: Skill) => {
 		setSelectedSkills(
 			selectedSkills.filter((skill) => skill.value !== removedSkill.value)
 		);
@@ -82,13 +93,13 @@ export const AddSkillModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 			const url = "/api/add-skills";
-			const response = await axios.post(url, skillData, {
+			await axios.post(url, skillData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			// console.log(response.data);
+            onUpdate();
 			toast.success("Skills Updated");
 			setShowSkillModal(false);
 		} catch (error: any) {
@@ -111,15 +122,15 @@ export const AddSkillModal: React.FC<{
 		<AnimatePresence>
 			<motion.div
 				initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
 				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
 			>
 				<motion.div
 					initial={{ scale: 0.9, rotate: "0deg" }}
-                    animate={{ scale: 1, rotate: "0deg" }}
-                    exit={{ scale: 0, rotate: "0deg" }}
-                    onClick={(e) => e.stopPropagation()}
+					animate={{ scale: 1, rotate: "0deg" }}
+					exit={{ scale: 0, rotate: "0deg" }}
+					onClick={(e) => e.stopPropagation()}
 					className="bg-white p-4 rounded-2xl sm:mx-auto w-full max-w-[350px] xs:max-w-md sm:max-w-lg  shadow-xl cursor-default relative overflow-hidden"
 				>
 					<div className="relative z-10 ">
@@ -142,9 +153,7 @@ export const AddSkillModal: React.FC<{
 									<form id="skillDataForm" onSubmit={handleSubmit(onSubmit)}>
 										<div className="flex flex-col w-full gap-3">
 											<div className="w-full flex flex-col">
-												<div
-													className="flex border py-1 rounded-md border-gray-200 w-full px-2"
-												>
+												<div className="flex border py-1 rounded-md border-gray-200 w-full px-2">
 													<span className="w-[8%] flex items-center justify-center">
 														<HiOutlineSearch className="text-gray-600" />
 													</span>
@@ -167,39 +176,83 @@ export const AddSkillModal: React.FC<{
 													</span>
 												</div>
 											</div>
-											<div className="h-80  border rounded-md border-gray-200 p-3">
-												{selectedSkills.length > 0 && (
-													<div className="flex flex-wrap gap-2">
-														{selectedSkills.map((skill) => (
+											<div className="h-80 border rounded-md border-gray-200 p-3">
+												{isSkillLoading ? (
+													<div className="flex flex-wrap w-full gap-2 p-2">
+														{[...Array(12)].map((_, index) => (
 															<div
-																key={skill.value}
-																className="flex items-center  gap-2 bg-white h-7 rounded-full border border-gray-400 p-2 py-1"
-															>
-																{skill.image && (
-																	<span className="inline-block">
-																		<img
-																			src={skill.image}
-																			alt={skill.label}
-																			className="w-4 h-4 object-contain" // Adjust the width and height as needed
-																		/>
-																	</span>
-																)}
-																<span className="text-xs">{skill.label}</span>
-
-																{/* {skill.image} */}
-																<button
-																	className="text-gray-600 hover:text-gray-800"
-																	onClick={(e) => {
-																		e.preventDefault();
-																		handleSkillRemove(skill);
-																	}}
-																>
-																	<HiOutlineXMark />
-																</button>
-															</div>
+																key={index}
+																className={`h-6 w-${16 + (index % 5) * 4} rounded-full skeleton`}
+															/>
 														))}
 													</div>
-												)}
+												) : selectedSkills.length === 0 ? (
+													<div className="flex items-center justify-center h-full text-gray-700">
+														No skills added yet.
+													</div>
+												) : selectedSkills.length > 0 && (
+														<div className="flex flex-wrap gap-2">
+															{selectedSkills.map((skill) => (
+																<div
+																	key={skill.value}
+																	className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
+																>
+																	{skill.image && (
+																		<span className="inline-block">
+																			<img
+																				src={skill.image}
+																				alt={skill.label}
+																				className="size-3 mr-2"
+																			/>
+																		</span>
+																	)}
+																	<span className="text-xs">{skill.label}</span>
+																	<button
+																		className="text-gray-600 pl-2 hover:text-red-500"
+																		onClick={(e) => {
+																			e.preventDefault();
+																			handleSkillRemove(skill);
+																		}}
+																	>
+																		<HiOutlineXMark />
+																	</button>
+																</div>
+															))}
+														</div>
+												  ) ? (
+													selectedSkills.length > 0 && (
+														<div className="flex flex-wrap gap-2">
+															{selectedSkills.map((skill) => (
+																<div
+																	key={skill.value}
+																	className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
+																>
+																	{skill.image && (
+																		<span className="inline-block">
+																			<img
+																				src={skill.image}
+																				alt={skill.label}
+																				className="size-3 mr-2"
+																			/>
+																		</span>
+																	)}
+																	<span className="text-xs">{skill.label}</span>
+
+																	{/* {skill.image} */}
+																	<button
+																		className="text-gray-600 pl-2 hover:text-red-500"
+																		onClick={(e) => {
+																			e.preventDefault();
+																			handleSkillRemove(skill);
+																		}}
+																	>
+																		<HiOutlineXMark />
+																	</button>
+																</div>
+															))}
+														</div>
+													)
+												) : undefined}
 											</div>
 										</div>
 									</form>

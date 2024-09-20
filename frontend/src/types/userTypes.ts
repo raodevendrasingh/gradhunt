@@ -169,9 +169,9 @@ export type Progress = {
 }
 
 export type Skill = {
-    id: number;
+    id?: number;
     label: string;
-    value: number;
+    value: string;
     image: string;
     category: string;
 }

@@ -1,11 +1,6 @@
-interface SkillOption {
-    value: string;
-    label: string;
-    image?: string;
-    category: string;
-}
+import { Skill } from "@/types/userTypes";
 
-export const skillObject: SkillOption[] = [
+export const skillObject: Skill[] = [
     {
         value: "Git",
         label: "Git",
