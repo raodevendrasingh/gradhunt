@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
-
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { extractFileName } from "@/utils/ExtractFileNames";
 const uploadToFirebase = async (
 	file: File,
 	onProgress: (progress: number) => void
@@ -55,6 +56,15 @@ export default function FileUploadSection() {
 	const [fileUrl, setFileUrl] = useState("");
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { getToken } = useAuth();
+
+	const { userDetails, isLoading } = useFetchUserDetails();
+
+	useEffect(() => {
+		if (userDetails) {
+			setFileUrl(userDetails?.user_details.resumeLink);
+			setUploadStatus("completed");
+		}
+	}, [userDetails]);
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;
@@ -112,7 +122,7 @@ export default function FileUploadSection() {
 				return "text-blue-600";
 			case "success":
 			case "completed":
-				return "text-green-700";
+				return "text-green-600";
 			case "error":
 				return "text-red-500";
 			default:
@@ -167,7 +177,13 @@ export default function FileUploadSection() {
 				className="hidden"
 				accept=".pdf"
 			/>
-			{uploadStatus === "idle" ? (
+			{isLoading ? (
+				<div className="flex flex-col items-center justify-center gap-3 py-8 w-full">
+					<div className="size-12 rounded-full skeleton" />
+					<div className="h-5 w-1/3 skeleton" />
+					<div className="h-3 w-1/2 skeleton" />
+				</div>
+			) : uploadStatus === "idle" ? (
 				<div className="flex flex-col items-center justify-center py-8">
 					<span className="flex items-center justify-center h-16 w-16 bg-slate-100 rounded-full p-5 mb-3">
 						<LuUpload className="size-12 text-gray-700" />
@@ -184,20 +200,23 @@ export default function FileUploadSection() {
 				</div>
 			) : (
 				<div className="w-3/4 max-w-sm">
-					<div className={`text-center text-base mb-2 ${getStatusColor()}`}>
-						{getStatusLabel()}
-					</div>
 					{uploadStatus !== "completed" && (
-						<div className="overflow-hidden h-2 text-xs flex rounded-full bg-gray-200">
-							<motion.div
-								initial={{ width: 0 }}
-								animate={{
-									width: `${progress as number}%`,
-								}}
-								transition={{ duration: 0.5, ease: "easeInOut" }}
-								className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${getProgressBarColor()}`}
-							></motion.div>
-						</div>
+						<>
+							<div className={`text-center text-base mb-2 ${getStatusColor()}`}>
+								{getStatusLabel()}
+							</div>
+
+							<div className="overflow-hidden h-2 text-xs flex rounded-full bg-gray-200">
+								<motion.div
+									initial={{ width: 0 }}
+									animate={{
+										width: `${progress as number}%`,
+									}}
+									transition={{ duration: 0.5, ease: "easeInOut" }}
+									className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${getProgressBarColor()}`}
+								></motion.div>
+							</div>
+						</>
 					)}
 					{fileName && fileSize && (
 						<div
@@ -208,13 +227,22 @@ export default function FileUploadSection() {
 					)}
 					<div className="flex items-center justify-center mt-2 ">
 						{uploadStatus === "completed" && (
-							<button
-								onClick={handleDownload}
-								className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-slate-800 text-white rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-							>
-								Download
-								<LuDownload className="size-5" />
-							</button>
+							<div className="flex items-center justify-center gap-2 border w-full">
+								<div className="flex flex-col items-center justify-start w-full">
+									<span className={`text-center text-base ${getStatusColor()}`}>
+										{getStatusLabel()}
+									</span>
+									<span>{extractFileName(fileUrl)}</span>
+								</div>
+								<button
+									onClick={handleDownload}
+									aria-label="Download Resume"
+									title="Download Resume"
+									className="px-4 py-4 border-l text-sm bg-slate-50 text-gray-700"
+								>
+									<LuDownload className="size-4" />
+								</button>
+							</div>
 						)}
 					</div>
 				</div>

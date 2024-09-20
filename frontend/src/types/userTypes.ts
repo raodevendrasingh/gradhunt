@@ -16,6 +16,7 @@ export type UserDetails = {
 	email: string;
 	bio: string;
 	location: string;
+    resumeLink: string;
 	followers: number;
 	following: number;
 	createdAt: string;
