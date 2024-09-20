@@ -69,7 +69,6 @@ export default function FileUploadSection() {
 	useEffect(() => {
 		if (userDetails && userDetails.user_details.resumeLink.length > 0) {
 			setFileUrl(userDetails.user_details.resumeLink);
-			console.log(userDetails.user_details.resumeLink);
 			setUploadStatus("completed");
 		}
 	}, [userDetails]);
@@ -206,7 +205,7 @@ export default function FileUploadSection() {
 					<ResumeDeleteModal
 						fileUrl={fileUrl}
 						setShowDeleteModal={setShowDeleteModal}
-						onDelete={handleDeleteResume} // Pass the callback function
+						onDelete={handleDeleteResume}
 					/>
 				)}
 			</div>

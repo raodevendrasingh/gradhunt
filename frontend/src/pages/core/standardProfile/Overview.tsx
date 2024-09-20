@@ -10,8 +10,12 @@ import FileUploadSection from "./FileUploadSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
-	const { userDesc, isLoading, refetch, error } = useFetchAboutSection();
+	const { userDesc, isAboutLoading, refetchAbout, error } = useFetchAboutSection();
 	const { isSignedIn } = useUser();
+
+    const onSave = () =>{
+        refetchAbout();
+    }
 
 	return (
 		<div className="flex flex-col">
@@ -22,7 +26,7 @@ export const Overview = () => {
 				</div>
 			)}
 			<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
-				<div className="flex items-center justify-between w-full">
+				<div className="flex items-center justify-between w-full pb-2">
 					<span className="text-gray-700 font-medium text-base">About</span>
 					{isSignedIn && (
 						<button
@@ -35,7 +39,7 @@ export const Overview = () => {
 					)}
 				</div>
 				<div className="flex items-center justify-start w-full">
-					{isLoading ? (
+					{isAboutLoading ? (
 						<div className="flex flex-col w-full gap-2">
 							<div className="h-4 w-full skeleton" />
 							<div className="h-4 w-full skeleton" />
@@ -47,7 +51,7 @@ export const Overview = () => {
 						</div>
 					)}
 				</div>
-				{!isLoading && !userDesc && (
+				{!isAboutLoading && !userDesc && (
 					<div className="flex items-center justify-center w-full min-h-32">
 						<button
 							type="button"
@@ -59,7 +63,7 @@ export const Overview = () => {
 					</div>
 				)}
 
-				{showAboutModal && <UserAboutModal setAboutModal={setAboutModal} />}
+				{showAboutModal && <UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />}
 			</div>
 			<SkillSection />
 

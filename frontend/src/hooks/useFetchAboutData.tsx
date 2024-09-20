@@ -10,13 +10,13 @@ import { useParams } from "react-router-dom";
 
 export const useFetchAboutSection = () => {
 	const [userDesc, SetUserDesc] = useState<AboutSection>();
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isAboutLoading, setIsAboutLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
     const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
     const fetchData = useCallback(async () => {
-		setIsLoading(true);
+		setIsAboutLoading(true);
 		try {
             const token = await getToken();
 			if (!token) {
@@ -35,7 +35,7 @@ export const useFetchAboutSection = () => {
 			setError(err);
             toast.error("Error fetching About Section details");
 		} finally {
-			setIsLoading(false);
+			setIsAboutLoading(false);
 		}
 	}, []);
 
@@ -43,9 +43,9 @@ export const useFetchAboutSection = () => {
 		fetchData();
 	}, [fetchData]);
 
-	const refetch = useCallback(() => {
+	const refetchAbout = useCallback(() => {
 		fetchData();
 	}, [fetchData]);
 
-	return { userDesc, isLoading, error, refetch };
+	return { userDesc, isAboutLoading, error, refetchAbout };
 };

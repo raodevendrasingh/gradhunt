@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // Third-party libraries
@@ -13,6 +13,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 import { FormFooter } from "@/components/ui/FormFooter";
+import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 
 interface FormData {
 	description: string;
@@ -20,18 +21,27 @@ interface FormData {
 
 export const UserAboutModal: React.FC<{
 	setAboutModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setAboutModal }) => {
+	onSave: () => void;
+}> = ({ setAboutModal, onSave }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [description, setDescription] = useState("");
 	const maxChars = 2000;
 	const { getToken } = useAuth();
 
+	const { userDesc, isAboutLoading } = useFetchAboutSection();
 	const {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<FormData>();
+
+	useEffect(() => {
+		if (userDesc && userDesc.description.length > 0) {
+			reset({ description: userDesc.description });
+		}
+	}, [userDesc, reset]);
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		setIsLoading(true);
@@ -53,6 +63,7 @@ export const UserAboutModal: React.FC<{
 				},
 			});
 			toast.success("Description Updated");
+			onSave();
 			setAboutModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while aupdating about. Try again!");
@@ -126,41 +137,49 @@ export const UserAboutModal: React.FC<{
 													</p>
 												</div>
 											</div>
-											<div className="flex flex-col w-full">
-												<textarea
-													{...register("description", {
-														required: "About is required",
-														minLength: {
-															value: 25,
-															message: "Minimum 25 characters are required",
-														},
-														maxLength: {
-															value: 2000,
-															message:
-																"Description should not exceed 2000 characters",
-														},
-													})}
-													name="description"
-													id="description"
-													value={description}
-													onChange={handleInputChange}
-													maxLength={maxChars}
-													placeholder=""
-													rows={8}
-													style={{ whiteSpace: "pre-wrap" }}
-													className="border py-2 rounded-md border-gray-200 w-full"
-												></textarea>
-												<div className="flex relative">
-													{errors.description && (
-														<span className="form-error" role="alert">
-															{errors.description.message as string}
-														</span>
-													)}
-													<span className="absolute right-0 text-xs text-gray-600">
-														({maxChars - description.length}/{maxChars})
-													</span>
+											{isAboutLoading ? (
+												<div className="flex flex-col justify-start gap-2 w-full h-52 rounded-xl border p-3">
+													<div className="h-5 w-full skeleton" />
+													<div className="h-5 w-full skeleton" />
+													<div className="h-5 w-1/2 skeleton" />
 												</div>
-											</div>
+											) : (
+												<div className="flex flex-col w-full">
+													<textarea
+														{...register("description", {
+															required: "About is required",
+															minLength: {
+																value: 25,
+																message: "Minimum 25 characters are required",
+															},
+															maxLength: {
+																value: 2000,
+																message:
+																	"Description should not exceed 2000 characters",
+															},
+														})}
+														name="description"
+														id="description"
+														value={description}
+														onChange={handleInputChange}
+														maxLength={maxChars}
+														placeholder=""
+														rows={8}
+														style={{ whiteSpace: "pre-wrap" }}
+														className="border py-2 rounded-md border-gray-200 w-full"
+													></textarea>
+													<div className="flex relative">
+														{errors.description && (
+															<span className="form-error" role="alert">
+																{errors.description.message as string}
+															</span>
+														)}
+														<span className="absolute right-0 text-xs text-gray-600">
+															({maxChars - description.length}/{maxChars})
+														</span>
+													</div>
+												</div>
+											)}
 										</div>
 									</form>
 								</div>
