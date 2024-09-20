@@ -9,9 +9,12 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { SkillSection } from "./ResumeComponents/SkillSection";
 import FileUploadSection from "./FileUploadSection";
 import { BsTrash } from "react-icons/bs";
+import { ResumeDeleteModal } from "@/modalForms/ResumeDeleteModal";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
+	const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
 	const { userDesc, isLoading, refetch, error } = useFetchAboutSection();
 	const { isSignedIn } = useUser();
 
@@ -70,7 +73,7 @@ export const Overview = () => {
 					{isSignedIn && (
 						<button
 							type="button"
-							onClick={() => setAboutModal(true)}
+							onClick={() => setShowDeleteModal(true)}
 							className="p-2 rounded-full text-gray-600 bg-white hover:bg-slate-50 hover:text-red-500 text-sm font-medium  cursor-pointer transition-colors"
 						>
 							<BsTrash className="size-5" />
@@ -79,6 +82,7 @@ export const Overview = () => {
 				</div>
                 
 				<FileUploadSection />
+                {showDeleteModal && <ResumeDeleteModal setShowDeleteModal={setShowDeleteModal} />}
 			</div>
 		</div>
 	);
