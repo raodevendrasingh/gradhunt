@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/check-username/', CheckUsernameView.as_view(), name='check-username'),
     
     path('api/add-resume-link', AddResumeLink.as_view(), name='add-resume'),
+    path('api/delete-resume/', DeleteResumeLink.as_view(), name='delete-resume'),
 
     path('api/get-completion-percentage/<str:username>', GetCompletionPercentage.as_view(), name='get-usertype'),
 

@@ -3,24 +3,40 @@ import { useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // Third-party libraries
-import { SubmitHandler } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import axios from "axios";
-
 import Spinner from "@/components/ui/Spinner";
+import { ref, deleteObject } from "firebase/storage";
+import { storage } from "@/firebase";
+import { extractFileName } from "@/utils/ExtractFileNames";
 
-interface FormData {
-	description: string;
+const deleteFromFirebase = async (filePath: string): Promise<void> => {
+	const fileRef = ref(storage, filePath);
+
+	try {
+		await deleteObject(fileRef);
+		console.log("File deleted successfully");
+	} catch (error) {
+		console.error("Error deleting file:", error);
+		throw error;
+	}
+};
+interface ResumeDeleteModalProps {
+	fileUrl: string;
+	setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+	onDelete: () => void;
 }
 
-export const ResumeDeleteModal: React.FC<{
-	setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowDeleteModal }) => {
+export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
+	fileUrl,
+	setShowDeleteModal,
+	onDelete,
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
-	const onSubmit = async () => {
+	const handleDelete = async () => {
 		setIsLoading(true);
 
 		try {
@@ -29,23 +45,34 @@ export const ResumeDeleteModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
+			const filePath = extractFileName(fileUrl);
+			console.log("FilePath: ", filePath);
+
+			try {
+				await deleteFromFirebase(filePath);
+			} catch (error) {
+				console.error("File deletion failed:", error);
+				toast.error("Failed to delete resume. Try again!");
+				return;
+			}
+
 			const url = `/api/delete-resume`;
 			const response = await axios.delete(url, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-
 			});
 
 			if (response.status === 200) {
 				toast.success("Resume Deleted");
+				onDelete();
 				setShowDeleteModal(false);
 			} else {
 				toast.error("Failed to delete resume. Try again!");
 			}
 		} catch (error: any) {
-			toast.error("Error occured while deleting resume. Try again!");
+			toast.error("Error occurred while deleting resume. Try again!");
 			if (error.response) {
 				console.log("Error Status: ", error.response.status);
 				console.log("Error Message: ", error.message);
@@ -112,7 +139,7 @@ export const ResumeDeleteModal: React.FC<{
 							<button
 								className="flex items-center justify-center bg-rose-500 w-1/2 text-white hover:bg-rose-600 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 								type="submit"
-								onClick={onSubmit}
+								onClick={handleDelete}
 								disabled={isLoading}
 							>
 								{isLoading ? (

@@ -840,11 +840,29 @@ class AddResumeLink(APIView):
                 return Response({'error': 'Resume link is required'}, status=status.HTTP_400_BAD_REQUEST)
 
             user = UserDetails.objects.get(clerk_user_id=clerk_user_id)
-            
+
             user.resumeLink = resume_link
             user.save()
 
             return Response({'message': 'Resume link added successfully'}, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteResumeLink(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def delete(self, request):
+        try:
+            clerk_user_id = request.user.clerk_user_id
+            user = UserDetails.objects.get(clerk_user_id=clerk_user_id)
+
+            user.resumeLink = ""
+            user.save()
+
+            return Response({'message': 'Resume deleted successfully'}, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
