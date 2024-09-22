@@ -134,9 +134,27 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
 
 class EducationSerializer(serializers.ModelSerializer):
+    degreeTitle = NestedDictField()
+    studyField = NestedDictField()
+    startMonth = NestedDictField()
+    startYear = NestedDictField()
+    endMonth = NestedDictField(required=False)
+    endYear = NestedDictField(required=False)
+
     class Meta:
         model = Education
-        fields = '__all__'
+        fields = ['id', 'instituteName', 'degreeTitle', 'studyField', 'startMonth', 'startYear',
+                  'endMonth', 'endYear', 'instituteLocation', 'grade', 'description', 'user']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return Education.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class SkillSerializer(serializers.ModelSerializer):

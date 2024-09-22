@@ -457,30 +457,23 @@ class DeleteExperienceData(APIView):
 class AddEducationData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    @transaction.atomic
     def post(self, request):
-        user = request.user
-
-        data = request.data
-        education_data = {}
-
-        for field in Education._meta.fields:
-            field_name = field.name
-            if field_name == 'user':
-                education_data[field_name] = user
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    education_data[field_name] = data[field_name]['value']
-                else:
-                    education_data[field_name] = data[field_name]
-
         try:
-            education = Education.objects.create(**education_data)
-            return Response({
-                "message": "Education added successfully",
-            }, status=status.HTTP_201_CREATED)
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+
+            data = request.data.copy()
+            data['user'] = user.id
+
+            serializer = EducationSerializer(data=data)
+            if serializer.is_valid():
+                education = serializer.save()
+                return Response(EducationSerializer(education).data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GetEducationData(APIView):
@@ -489,63 +482,73 @@ class GetEducationData(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            educations = Education.objects.filter(user=user)
-            serializer = EducationSerializer(educations, many=True)
+            education = Education.objects.filter(
+                user=user).order_by('-startYear', '-startMonth')
+            serializer = EducationSerializer(education, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetEducationDataById(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username, id):
+        try:
+            user = get_object_or_404(UserDetails, username=username)
+            education = get_object_or_404(Education, user=user, id=id)
+            serializer = EducationSerializer(education)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UpdateEducationData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     @transaction.atomic
-    def put(self, request, username, id):
+    def patch(self, request, id):
         try:
-            user = UserDetails.objects.get(username=username)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            education = Education.objects.get(id=id, user=user)
+            education = Education.objects.get(
+                id=id,
+                user__clerk_user_id=request.user.clerk_user_id
+            )
         except Education.DoesNotExist:
-            return Response({"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Education not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-        data = request.data
-        education_data = {}
-
-        for field in Education._meta.fields:
-            field_name = field.name
-            if field_name == 'user':
-                education_data[field_name] = user
-            elif field_name == 'description' and 'description' in data:
-                education_data[field_name] = data['description']
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    education_data[field_name] = data[field_name]['value']
-                else:
-                    education_data[field_name] = data[field_name]
-
-        for key, value in education_data.items():
-            setattr(education, key, value)
-
-        try:
-            education.save()
-            return Response({
-                "message": "Education updated successfully",
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = EducationSerializer(
+            education, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Education updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteEducationData(APIView):
-    def delete(self, request, username, id):
-        user = get_object_or_404(UserDetails, username=username)
-        education_data = get_object_or_404(Education, id=id, user=user)
+    permission_classes = [IsClerkAuthenticated]
 
-        education_data.delete()
+    @transaction.atomic
+    def delete(self, request, id):
+        try:
+            user = get_object_or_404(
+                UserDetails, clerk_user_id=request.user.clerk_user_id)
+            education_data = get_object_or_404(Education, id=id, user=user)
 
-        return Response({"message": "Education data deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            if education_data.user != user:
+                raise PermissionDenied(
+                    "You don't have permission to perform this action.")
+
+            education_data.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Education.DoesNotExist:
+            return Response({"error": "Education not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddProjectData(APIView):
