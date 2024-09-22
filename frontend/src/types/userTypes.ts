@@ -86,8 +86,8 @@ export type CompanyProfile = {
 	values: string;
 };
 
-export type Education = {
-	educationId: string;
+export type EducationData = {
+	id: number;
 	user?: UserDetails;
 	instituteName: string;
 	degreeTitle: string;
@@ -99,6 +99,21 @@ export type Education = {
 	grade: string;
 	instituteLocation: string;
 	description: string;
+};
+
+export type EducationForm = {
+	id: number;
+	instituteName: string;
+	degreeTitle: { value: string; label: string };
+	studyField: { value: string; label: string };
+	startMonth: { value: string; label: string };
+	startYear: { value: string; label: string };
+	endMonth: { value: string; label: string } | null;
+	endYear: { value: string; label: string } | null;
+    instituteLocation: string;
+	grade: string;
+	description: string;
+    [key: string]: any;
 };
 
 export type Certificate = {
@@ -159,7 +174,6 @@ export type JobPosting = {
 	jobLocation: string;
 	applicationDeadline: Date;
 };
-
 
 export type AboutSection = {
 	description: string;

@@ -1,5 +1,4 @@
 // hooks
-import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // Third-party libraries
@@ -13,32 +12,26 @@ import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
-import {
-	jobTitleOptions,
-	employmentType,
-	locationType,
-} from "@/utils/selectObjects";
+import { degreeTypes, fieldsOfStudy } from "@/utils/selectObjects";
 import { selectFieldStyle } from "@/utils/styles";
 import { LocationSelect } from "@/helpers/LocationSelect";
-import { ExperienceForm } from "@/types/userTypes";
+import { EducationForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
-import { useFetchExperienceById } from "@/hooks/useFetchExperienceById";
+import { useEffect, useState } from "react";
+import { useFetchEducationDataById } from "@/hooks/useFetchEducationById";
 import Spinner from "@/components/ui/Spinner";
 
-export const EditExpModal: React.FC<{
-	setShowEditExpModal: React.Dispatch<React.SetStateAction<boolean>>;
-	experienceID: number;
+export const EditEduModal: React.FC<{
+	setShowEditEduModal: React.Dispatch<React.SetStateAction<boolean>>;
 	onSave: () => void;
-}> = ({ setShowEditExpModal, experienceID, onSave }) => {
-	const [isCurrWorking, setIsCurrWorking] = useState<boolean>(false);
+	educationId: number;
+}> = ({ setShowEditEduModal, onSave, educationId }) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const [initialLocation, setInitialLocation] = useState<string>("");
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [isDeleted, setIsDeleted] = useState<boolean>(false);
+
 	const { getToken } = useAuth();
-	const { experienceIdData } = useFetchExperienceById({
-		experienceId: experienceID,
-	});
 
 	const {
 		control,
@@ -46,15 +39,19 @@ export const EditExpModal: React.FC<{
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<ExperienceForm>();
+	} = useForm<EducationForm>();
+
+	const { educationIdData } = useFetchEducationDataById({
+		eductionId: educationId,
+	});
 
 	useEffect(() => {
-		if (experienceIdData && !isDeleting && !isDeleted) {
-			const data = experienceIdData;
+		if (educationIdData && !isDeleting && !isDeleted) {
+			const data = educationIdData;
 			reset({
-				companyName: data.companyName,
-				jobTitle: { value: data.jobTitle, label: data.jobTitle },
-				jobType: { value: data.jobType, label: data.jobType },
+				instituteName: data.instituteName,
+				degreeTitle: { value: data.degreeTitle, label: data.degreeTitle },
+				studyField: { value: data.studyField, label: data.studyField },
 				startMonth: { value: data.startMonth, label: data.startMonth },
 				startYear: { value: data.startYear, label: data.startYear },
 				endMonth: data.endMonth
@@ -63,15 +60,13 @@ export const EditExpModal: React.FC<{
 				endYear: data.endYear
 					? { value: data.endYear, label: data.endYear }
 					: null,
-				jobLocation: data.jobLocation,
-				locationType: { value: data.locationType, label: data.locationType },
+				instituteLocation: data.instituteLocation,
+				grade: data.grade,
 				description: data.description,
-				isCurrentlyWorking: data.isCurrentlyWorking,
 			});
-			setIsCurrWorking(data.isCurrentlyWorking as boolean);
-			setInitialLocation(data.jobLocation);
+			setInitialLocation(data.instituteLocation);
 		}
-	}, [experienceIdData, reset]);
+	}, [educationIdData, reset]);
 
 	const handleDelete = async () => {
 		setIsDeleting(true);
@@ -81,7 +76,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/delete-experience-data/${experienceID}`;
+			const url = `/api/delete-education-data/${educationId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -90,8 +85,8 @@ export const EditExpModal: React.FC<{
 
 			toast.success("Experience Deleted");
 			setIsDeleted(true);
-			onSave(); 
-			setShowEditExpModal(false);
+			onSave();
+			setShowEditEduModal(false);
 		} catch (error: any) {
 			console.error("Delete error:", error);
 			toast.error("Failed to delete experience. Please try again.");
@@ -100,7 +95,7 @@ export const EditExpModal: React.FC<{
 		}
 	};
 
-	const onSubmit: SubmitHandler<ExperienceForm> = async (data) => {
+	const onSubmit: SubmitHandler<EducationForm> = async (data) => {
 		setIsLoading(true);
 		try {
 			const token = await getToken();
@@ -108,18 +103,19 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/update-experience-data/${experienceID}`;
+			const url = `/api/update-education-data/${educationId}`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			toast.success("Experience Updated");
+			// console.log(response.data);
+			toast.success("Education Updated Successfully");
 			onSave();
-			setShowEditExpModal(false);
+			setShowEditEduModal(false);
 		} catch (error: any) {
-			toast.error("Error occured while updating experience. Try again!");
+			toast.error("Error occured while updating education. Try again!");
 			if (error.response) {
 				console.log("Error Status: ", error.response.status);
 				console.log("Error Message: ", error.message);
@@ -140,7 +136,6 @@ export const EditExpModal: React.FC<{
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				onClick={() => setShowEditExpModal(false)}
 				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
 			>
 				<motion.div
@@ -153,11 +148,11 @@ export const EditExpModal: React.FC<{
 					<div className="relative z-10 ">
 						<div className="flex items-start justify-between ml-1 rounded-t">
 							<h3 className="text-xl font-semibold text-gray-800 mt-1">
-								Edit Work Experience
+								Add Education
 							</h3>
 							<button
 								className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-								onClick={() => setShowEditExpModal(false)}
+								onClick={() => setShowEditEduModal(false)}
 							>
 								<span className="bg-transparent text-gray-800">
 									<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
@@ -169,10 +164,10 @@ export const EditExpModal: React.FC<{
 								<div className="flex flex-col gap-3">
 									<form
 										onSubmit={handleSubmit(onSubmit)}
-										id="editExperienceDataForm"
+										id="editEducationDataForm"
 									>
 										{/* section */}
-										<div className="flex flex-col-reverse sm:flex-row items-center gap-3">
+										<div className="flex flex-col-reverse items-center gap-3">
 											<div className="flex flex-col w-full gap-3">
 												{/* company name */}
 												<div className="w-full flex flex-col">
@@ -180,123 +175,94 @@ export const EditExpModal: React.FC<{
 														htmlFor="companyName"
 														className="text-sm font-semibold text-gray-700 pb-1"
 													>
-														Company Name
+														Institute Name
 													</label>
 													<input
-														{...register("companyName", {
-															required: "Company name is required",
+														{...register("instituteName", {
+															required: "Institute name is required",
 															minLength: {
 																value: 2,
 																message:
-																	"Company name shoud be alteast 2 characters",
+																	"Institute name shoud be alteast 2 characters",
 															},
 															maxLength: 50,
 														})}
-														aria-invalid={errors.companyName ? "true" : "false"}
+														aria-invalid={
+															errors.instituteName ? "true" : "false"
+														}
 														type="text"
-														name="companyName"
-														id="companyName"
-														placeholder="Company Name"
+														name="instituteName"
+														id="instituteName"
+														placeholder="Institute Name"
 														className="border py-2 rounded-md border-gray-200 w-full"
 													/>
-													{errors.companyName && (
+													{errors.instituteName && (
 														<span className="form-error" role="alert">
-															{errors.companyName.message as string}
+															{errors.instituteName.message as string}
 														</span>
 													)}
 												</div>
 												{/* job title and type */}
-												<div className="w-full flex flex-col">
-													<label
-														htmlFor="jobTitle"
-														className="text-sm font-semibold text-gray-700 pb-1"
-													>
-														Job Title
-													</label>
-													<Controller
-														name="jobTitle"
-														control={control}
-														rules={{
-															required: "Job Title is required",
-														}}
-														render={({ field }) => (
-															<Select
-																{...field}
-																id="jobTitle"
-																options={jobTitleOptions}
-																placeholder="Job Title"
-																styles={selectFieldStyle}
-																value={field.value as any}
-																menuPlacement="auto"
-															/>
-														)}
-													/>
-													{errors.jobTitle && (
-														<span className="form-error" role="alert">
-															{errors.jobTitle.message as string}
-														</span>
-													)}
-												</div>
 												<div className="flex flex-col xs:flex-row gap-3">
-													<div className="w-full sm:w-1/2 flex flex-col">
+													<div className="w-full xs:w-1/2 flex flex-col">
 														<label
-															htmlFor="jobType"
+															htmlFor="degreeTitle"
 															className="text-sm font-semibold text-gray-700 pb-1"
 														>
-															Employment Type
+															Degree
 														</label>
 														<Controller
-															name="jobType"
+															name="degreeTitle"
 															control={control}
 															rules={{
-																required: "Employment Type is required",
+																required: "Degree is required",
 															}}
 															render={({ field }) => (
 																<Select
 																	{...field}
-																	id="jobType"
-																	options={employmentType}
-																	placeholder="Employment Type"
+																	id="degreeTitle"
+																	options={degreeTypes}
+																	placeholder="Degree"
 																	styles={selectFieldStyle}
 																	value={field.value as any}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
-														{errors.jobType && (
+														{errors.degreeTitle && (
 															<span className="form-error" role="alert">
-																{errors.jobType.message as string}
+																{errors.degreeTitle.message as string}
 															</span>
 														)}
 													</div>
 													<div className="w-full xs:w-1/2 flex flex-col">
 														<label
-															htmlFor="locationType"
+															htmlFor="studyField"
 															className="text-sm font-semibold text-gray-700 pb-1"
 														>
-															Work Type
+															Field of Study
 														</label>
 														<Controller
-															name="locationType"
+															name="studyField"
 															control={control}
 															rules={{
-																required: "Work Type is required",
+																required: "Field of study is required",
 															}}
 															render={({ field }) => (
 																<Select
 																	{...field}
-																	id="locationType"
-																	options={locationType}
-																	placeholder="Location Type"
+																	id="studyField"
+																	options={fieldsOfStudy}
+																	placeholder="Field of Study"
 																	styles={selectFieldStyle}
 																	value={field.value as any}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
-														{errors.locationType && (
+														{errors.studyField && (
 															<span className="form-error" role="alert">
-																{errors.locationType.message as string}
+																{errors.studyField.message as string}
 															</span>
 														)}
 													</div>
@@ -304,52 +270,72 @@ export const EditExpModal: React.FC<{
 											</div>
 										</div>
 
-										{/* employment duration */}
 										<hr className="my-5" />
 										<DurationFields
-											control={control}
-											register={register}
-											name="isCurrentlyWorking"
-											checkedTitle="I'm currently working on this role"
-											setEndDate={setIsCurrWorking}
-											endDate={isCurrWorking}
 											startTitle="Start Date"
 											endTitle="End Date"
+											control={control}
+											register={register}
+											setEndDate={() => {}}
+											endDate={false}
 											errors={errors}
 										/>
 
-										{/* company location and job type */}
 										<hr className="my-5" />
-										<div className="w-full flex flex-col">
-											<label
-												htmlFor="jobLocation"
-												className="text-sm font-semibold text-gray-700 pb-1"
-											>
-												Job Location
-											</label>
-											<LocationSelect
-												control={control}
-												name="jobLocation"
-												placeholder="Location"
-												error={errors.jobLocation?.message}
-												rules={{
-													required: "Job Location is required",
-												}}
-												menuPlacement="auto"
-												initialValue={initialLocation}
-											/>
+										{/* company location and job type */}
+										<div className="flex flex-col xs:flex-row w-full gap-3">
+											<div className="w-full xs:w-2/3 flex flex-col">
+												<label
+													htmlFor="instituteLocation"
+													className="text-sm font-semibold text-gray-700 pb-1"
+												>
+													Institute Location
+												</label>
+												<LocationSelect
+													control={control}
+													name="instituteLocation"
+													placeholder="Location"
+													error={errors.instituteLocation?.message}
+													rules={{
+														required: "Location is required",
+													}}
+													menuPlacement="auto"
+													initialValue={initialLocation}
+												/>
+											</div>
+											<div className="w-full xs:w-1/3 flex flex-col">
+												<label
+													htmlFor="grade"
+													className="text-sm font-semibold text-gray-700 pb-1"
+												>
+													Grade
+												</label>
+												<input
+													{...register("grade")}
+													aria-invalid={errors.grade ? "true" : "false"}
+													type="text"
+													name="grade"
+													id="grade"
+													placeholder="Grade"
+													className="border py-2 rounded-md border-gray-200 w-full"
+												/>
+												{errors.grade && (
+													<span className="form-error" role="alert">
+														{errors.grade.message as string}
+													</span>
+												)}
+											</div>
 										</div>
-
 										{/* description section */}
 										<hr className="my-5" />
 										<div>
-											<div className="flex flex-col w-full relative">
+											<div className="flex flex-col w-full">
 												<label
 													htmlFor="description"
 													className="text-sm font-semibold text-gray-700 pb-1"
 												>
 													Description
-													<span className="text-sm pl-1 font-light text-gray-500">
+													<span className="text-sm font-light pl-1 text-gray-500">
 														(Optional)
 													</span>
 												</label>
@@ -386,7 +372,7 @@ export const EditExpModal: React.FC<{
 						<div className="flex items-center justify-between mt-3 rounded-b">
 							<button
 								className="flex items-center justify-center w-28 text-red-500 font-semibold rounded-lg text-sm px-4 py-2.5 outline-none focus:outline-none disabled:text-red-400 cursor-pointer ease-linear transition-colors duration-150"
-								form="editExperienceDataForm"
+								form="editEducationDataForm"
 								type="button"
 								onClick={handleDelete}
 								disabled={isLoading || isDeleting}
@@ -394,9 +380,9 @@ export const EditExpModal: React.FC<{
 								{isDeleting ? <Spinner color="red" /> : "Delete"}
 							</button>
 							<button
-								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 disabled:bg-slate-800/50 disabled:cursor-not-allowed disabled:shadow-none shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 								type="submit"
-								form="editExperienceDataForm"
+								form="editEducationDataForm"
 								disabled={isLoading || isDeleting}
 							>
 								{isLoading ? (

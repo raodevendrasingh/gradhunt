@@ -3,10 +3,20 @@ import { useUser } from "@clerk/clerk-react";
 import { FaGraduationCap } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { EditEduModal } from "@/modalForms/EditEduModal";
+import { useState } from "react";
 
 export const Education = () => {
+	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);
+	const [editingEducationId, setEditingEducationId] = useState<number>();
 	const { isSignedIn } = useUser();
-	const { educationData, isLoading, refetch, error } = useFetchEducationData();
+	const { educationData, isEduLoading, refetchEdu } = useFetchEducationData();
+
+	const handleEditClick = (id: number) => {
+		setEditingEducationId(id);
+		setShowEditEduModal(true);
+	};
+
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-2">
 			<div className="flex items-center justify-between w-full">
@@ -17,7 +27,7 @@ export const Education = () => {
 					</span>
 				</div>
 			</div>
-			{isLoading ? (
+			{isEduLoading ? (
 				<div className="flex flex-col gap-3 w-full">
 					<ContentSkeleton />
 					<ContentSkeleton />
@@ -39,17 +49,12 @@ export const Education = () => {
 											{isSignedIn && (
 												<button
 													type="button"
-													// onClick={() => setShowExpModal(true)}
+													onClick={() => handleEditClick(data.id)}
 													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 												>
 													<MdModeEdit className="size-5" />
 												</button>
 											)}
-
-											{/* <EditEducationModal
-													educationId={data.educationId}
-													onSave={handleRefresh}
-												/> */}
 										</div>
 										<div className="flex text-sm items-center gap-1 text-gray-800">
 											<span>{data.degreeTitle},</span>
@@ -76,6 +81,13 @@ export const Education = () => {
 						</div>
 					)}
 				</>
+			)}
+			{showEditEduModal && (
+				<EditEduModal
+					setShowEditEduModal={setShowEditEduModal}
+					educationId={editingEducationId as number}
+					onSave={refetchEdu}
+				/>
 			)}
 		</div>
 	);

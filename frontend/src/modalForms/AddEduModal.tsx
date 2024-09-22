@@ -15,7 +15,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { degreeTypes, fieldsOfStudy } from "@/utils/selectObjects";
 import { selectFieldStyle } from "@/utils/styles";
 import { LocationSelect } from "@/helpers/LocationSelect";
-import { Education } from "@/types/userTypes";
+import { EducationForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { useState } from "react";
 import { FormFooter } from "@/components/ui/FormFooter";
@@ -31,9 +31,9 @@ export const AddEduModal: React.FC<{
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<Education>();
+	} = useForm<EducationForm>();
 
-	const onSubmit: SubmitHandler<Education> = async (data) => {
+	const onSubmit: SubmitHandler<EducationForm> = async (data) => {
 		setIsLoading(true);
 		try {
 			const token = await getToken();
@@ -221,7 +221,7 @@ export const AddEduModal: React.FC<{
 										<hr className="my-5" />
 										{/* company location and job type */}
 										<div className="flex flex-col xs:flex-row w-full gap-3">
-											<div className="w-full xs:w-1/2 flex flex-col">
+											<div className="w-full xs:w-2/3 flex flex-col">
 												<label
 													htmlFor="instituteLocation"
 													className="text-sm font-semibold text-gray-700 pb-1"
@@ -239,7 +239,7 @@ export const AddEduModal: React.FC<{
 													menuPlacement="auto"
 												/>
 											</div>
-											<div className="w-full xs:w-1/2 flex flex-col">
+											<div className="w-full xs:w-1/3 flex flex-col">
 												<label
 													htmlFor="grade"
 													className="text-sm font-semibold text-gray-700 pb-1"

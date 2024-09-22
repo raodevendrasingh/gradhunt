@@ -8,38 +8,42 @@ import { EducationData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 
-export const useFetchEducationData = () => {
-	const [educationData, SetEducationData] = useState<EducationData[]>([]);
+interface EducationDataProps {
+	eductionId: number;
+}
+
+export const useFetchEducationDataById = ({ eductionId }: EducationDataProps) => {
+	const [educationIdData, SetEducationIdData] = useState<EducationData>();
 	const [isEduLoading, setIsEduLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
-    const { getToken } = useAuth();
+	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-    const fetchData = useCallback(async () => {
+	const fetchData = useCallback(async () => {
 		setIsEduLoading(true);
 		try {
-            const token = await getToken();
+			const token = await getToken();
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/get-education-data/${username}`;
+			const url = `/api/get-education-data/${username}/${eductionId}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
-            const data = response.data;
-			SetEducationData(data);
+			const data = response.data;
+			SetEducationIdData(data);
 		} catch (err: any) {
 			setError(err);
-            toast.error("Error fetching education details");
+			toast.error("Error fetching education details");
 		} finally {
 			setIsEduLoading(false);
 		}
 	}, []);
 
-    useEffect(() => {
+	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
@@ -47,5 +51,5 @@ export const useFetchEducationData = () => {
 		fetchData();
 	}, [fetchData]);
 
-	return { educationData, isEduLoading, error, refetchEdu };
+	return { educationIdData, isEduLoading, error, refetchEdu };
 };
