@@ -7,8 +7,14 @@ import { useAuth } from "@clerk/clerk-react";
 import { ExperienceData } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
 
-export const useFetchExperienceData = () => {
-	const [experienceData, setExperienceData] = useState<ExperienceData[]>([]);
+interface ExperienceByIdProps {
+	experienceId: number;
+}
+
+export const useFetchExperienceById = ({
+	experienceId,
+}: ExperienceByIdProps) => {
+	const [experienceIdData, setExperienceIdData] = useState<ExperienceData>();
 	const [isExpLoading, setIsExpLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
 	const { getToken } = useAuth();
@@ -21,7 +27,7 @@ export const useFetchExperienceData = () => {
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/get-experience-data/${username}`;
+			const url = `/api/get-experience-data/${username}/${experienceId}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -29,7 +35,7 @@ export const useFetchExperienceData = () => {
 				},
 			});
 			const data = response.data;
-			setExperienceData(data);
+			setExperienceIdData(data);
 		} catch (err: any) {
 			setError(err);
 			toast.error("Error fetching experience details");
@@ -46,5 +52,5 @@ export const useFetchExperienceData = () => {
 		fetchData();
 	}, [fetchData]);
 
-	return { experienceData, isExpLoading, error, refetchExp };
+	return { experienceIdData, isExpLoading, error, refetchExp };
 };

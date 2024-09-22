@@ -11,6 +11,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
 
 
 # add clerk permission classes
@@ -359,30 +360,23 @@ class UpdateCompanyProfile(APIView):
 class AddExperienceData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    @transaction.atomic
     def post(self, request):
-        user = request.user
-
-        data = request.data
-        experience_data = {}
-
-        for field in Experience._meta.fields:
-            field_name = field.name
-            if field_name == 'user':
-                experience_data[field_name] = user
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    experience_data[field_name] = data[field_name]['value']
-                else:
-                    experience_data[field_name] = data[field_name]
-
         try:
-            experience = Experience.objects.create(**experience_data)
-            return Response({
-                "message": "Experience added successfully",
-            }, status=status.HTTP_201_CREATED)
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+
+            data = request.data.copy()
+            data['user'] = user.id
+
+            serializer = ExperienceSerializer(data=data)
+            if serializer.is_valid():
+                experience = serializer.save()
+                return Response(ExperienceSerializer(experience).data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GetExperienceData(APIView):
@@ -391,63 +385,73 @@ class GetExperienceData(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            experiences = Experience.objects.filter(user=user)
+            experiences = Experience.objects.filter(
+                user=user).order_by('-startYear', '-startMonth')
             serializer = ExperienceSerializer(experiences, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetExperienceDataById(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username, id):
+        try:
+            user = get_object_or_404(UserDetails, username=username)
+            experience = get_object_or_404(Experience, user=user, id=id)
+            serializer = ExperienceSerializer(experience)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UpdateExperienceData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
     @transaction.atomic
-    def put(self, request, username, id):
+    def patch(self, request, id):
         try:
-            user = UserDetails.objects.get(username=username)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            experience = Experience.objects.get(id=id, user=user)
+            experience = Experience.objects.get(
+                id=id,
+                user__clerk_user_id=request.user.clerk_user_id
+            )
         except Experience.DoesNotExist:
-            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Experience not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-        data = request.data
-        experience_data = {}
-
-        for field in Experience._meta.fields:
-            field_name = field.name
-            if field_name == 'user':
-                experience_data[field_name] = user
-            elif field_name == 'description' and 'description' in data:
-                experience_data[field_name] = data['description']
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    experience_data[field_name] = data[field_name]['value']
-                else:
-                    experience_data[field_name] = data[field_name]
-
-        for key, value in experience_data.items():
-            setattr(experience, key, value)
-
-        try:
-            experience.save()
-            return Response({
-                "message": "Experience updated successfully",
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ExperienceSerializer(
+            experience, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Experience updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteExperienceData(APIView):
-    def delete(self, request, username, id):
-        user = get_object_or_404(UserDetails, username=username)
-        experience_data = get_object_or_404(Experience, id=id, user=user)
+    permission_classes = [IsClerkAuthenticated]
 
-        experience_data.delete()
+    @transaction.atomic
+    def delete(self, request, id):
+        try:
+            user = get_object_or_404(
+                UserDetails, clerk_user_id=request.user.clerk_user_id)
+            experience_data = get_object_or_404(Experience, id=id, user=user)
 
-        return Response({"message": "Experience data deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            if experience_data.user != user:
+                raise PermissionDenied(
+                    "You don't have permission to perform this action.")
+
+            experience_data.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Experience.DoesNotExist:
+            return Response({"error": "Experience not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddEducationData(APIView):

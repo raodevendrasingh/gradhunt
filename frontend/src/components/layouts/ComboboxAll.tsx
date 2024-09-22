@@ -5,7 +5,8 @@ import { AddProjectModal } from "@/modalForms/AddProjectModal";
 import { AddSkillModal } from "@/modalForms/AddSkillModal";
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
-
+import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
+import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 export interface Option {
 	id: string;
 	label: string;
@@ -29,6 +30,9 @@ export default function ComboboxAll() {
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+    const { refetchExp } = useFetchExperienceData();
+    const { refetchAbout } = useFetchAboutSection();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -56,9 +60,9 @@ export default function ComboboxAll() {
 	return (
 		<div className="relative inline-block text-left">
 			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} />}
-			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} />}
+			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
 			{showSkillModal && (
-				<AddSkillModal setShowSkillModal={setShowSkillModal} />
+				<AddSkillModal setShowSkillModal={setShowSkillModal} onUpdate={refetchAbout} />
 			)}
 			{showProjectModal && (
 				<AddProjectModal setShowProjectModal={setShowProjectModal} />

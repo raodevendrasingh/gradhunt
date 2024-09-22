@@ -47,7 +47,7 @@ export const useCitySearch = () => {
 				);
 
 				const cities = response.data.map((city) => ({
-					value: `${city.name},${city.state_name},${city.country_name}`,
+					value: `${city.name}, ${city.state_name}, ${city.country_name}`,
 					label: `${city.name}, ${city.state_name}, ${city.country_name}`,
 					city: city.name,
 					state: city.state_name,

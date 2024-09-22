@@ -1,12 +1,28 @@
+from .models import Experience
 from rest_framework import serializers
 from .models import *
+
+
+class NestedDictField(serializers.Field):
+    def __init__(self, required=True, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.required = required
+
+    def to_internal_value(self, data):
+        if self.required and data is None:
+            raise serializers.ValidationError('This field is required')
+        if isinstance(data, dict):
+            return data.get('value')
+        return data
+
+    def to_representation(self, value):
+        return value
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetails
         fields = '__all__'
-
 
 
 class LinguisticsSerializer(serializers.ModelSerializer):
@@ -62,6 +78,7 @@ class CertificateSerializer(serializers.ModelSerializer):
         model = Certificate
         fields = '__all__'
 
+
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
@@ -91,9 +108,29 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
+    jobTitle = NestedDictField()
+    jobType = NestedDictField()
+    startMonth = NestedDictField()
+    startYear = NestedDictField()
+    endMonth = NestedDictField(required=False)
+    endYear = NestedDictField(required=False)
+    locationType = NestedDictField()
+
     class Meta:
         model = Experience
-        fields = '__all__'
+        fields = ['id', 'companyName', 'jobTitle', 'jobType', 'startMonth', 'startYear',
+                  'endMonth', 'endYear', 'jobLocation', 'locationType', 'description',
+                  'isCurrentlyWorking', 'user']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return Experience.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class EducationSerializer(serializers.ModelSerializer):

@@ -33,8 +33,9 @@ urlpatterns = [
     # experience section
     path('api/add-experience-data', AddExperienceData.as_view(), name='add-experience'),
     path('api/get-experience-data/<str:username>', GetExperienceData.as_view(), name='get-experience'),
-    path('api/recruiter/<str:username>/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='get-experience'),
-    path('api/recruiter/<str:username>/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),
+    path('api/get-experience-data/<str:username>/<str:id>', GetExperienceDataById.as_view(), name='get-experience'),
+    path('api/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),
+    path('api/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='delete-experience'),
     
     # education section
     path('api/add-education-data', AddEducationData.as_view(), name='add-education'),

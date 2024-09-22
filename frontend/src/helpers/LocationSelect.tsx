@@ -11,6 +11,7 @@ interface LocationSelectProps {
 	rules?: any;
 	error?: string;
 	menuPlacement: "auto" | "bottom" | "top" | undefined;
+	initialValue?: string;
 }
 
 export const LocationSelect: React.FC<LocationSelectProps> = ({
@@ -19,12 +20,29 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 	placeholder,
 	rules,
 	error,
-    menuPlacement,
+	menuPlacement,
+	initialValue,
 }) => {
 	const { isLoading, cityOptions, handleInputChange, formatOptionLabel } =
 		useCitySearch();
 
 	const [selectedOption, setSelectedOption] = useState<CityOption | null>(null);
+
+	useEffect(() => {
+		const cityVal = initialValue?.split(",")[0];
+		const stateVal = initialValue?.split(",")[1];
+		const countryVal = initialValue?.split(",")[2];
+		if (initialValue && !selectedOption) {
+			setSelectedOption({
+				city: cityVal as string,
+				state: stateVal as string,
+				country: countryVal as string,
+				value: initialValue,
+				label: initialValue,
+			});
+			handleInputChange(initialValue);
+		}
+	}, [initialValue]);
 
 	return (
 		<>
@@ -32,54 +50,41 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 				name={name}
 				control={control}
 				rules={rules}
-				render={({ field }) => {
-					useEffect(() => {
-						if (field.value && !selectedOption) {
-							const option = cityOptions.find(
-								(opt) => opt.value === field.value
-							);
-							if (option) {
-								setSelectedOption(option);
+				render={({ field }) => (
+					<>
+						<Select<CityOption, false>
+							{...field}
+							value={selectedOption}
+							onChange={(newValue: SingleValue<CityOption>) => {
+								setSelectedOption(newValue);
+								field.onChange(newValue ? newValue.value : null);
+							}}
+							isClearable
+							isSearchable
+							isLoading={isLoading}
+							onInputChange={handleInputChange}
+							options={cityOptions}
+							formatOptionLabel={formatOptionLabel}
+							placeholder={placeholder}
+							className="w-full"
+							classNamePrefix="react-select"
+							styles={selectFieldStyle}
+							menuPlacement={menuPlacement}
+							noOptionsMessage={({ inputValue }) =>
+								inputValue.length < 2
+									? "Type to search"
+									: error
+										? error
+										: "No cities found"
 							}
-						}
-					}, [field.value, cityOptions]);
-
-					return (
-						<>
-							<Select<CityOption, false>
-								{...field}
-								value={selectedOption}
-								onChange={(newValue: SingleValue<CityOption>) => {
-									setSelectedOption(newValue);
-									field.onChange(newValue ? newValue.value : null);
-								}}
-								isClearable
-								isSearchable
-								isLoading={isLoading}
-								onInputChange={handleInputChange}
-								options={cityOptions}
-								formatOptionLabel={formatOptionLabel}
-								placeholder={placeholder}
-								className="w-full"
-								classNamePrefix="react-select"
-								styles={selectFieldStyle}
-								menuPlacement={menuPlacement as "auto" | "bottom" | "top" | undefined}
-								noOptionsMessage={({ inputValue }) =>
-									inputValue.length < 2
-										? "Type to search"
-										: error
-											? error
-											: "No cities found"
-								}
-							/>
-							{error && (
-								<span className="form-error" role="alert">
-									{error}
-								</span>
-							)}
-						</>
-					);
-				}}
+						/>
+						{error && (
+							<span className="form-error" role="alert">
+								{error}
+							</span>
+						)}
+					</>
+				)}
 			/>
 		</>
 	);

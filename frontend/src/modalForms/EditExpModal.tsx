@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // Third-party libraries
@@ -22,22 +22,132 @@ import { selectFieldStyle } from "@/utils/styles";
 import { LocationSelect } from "@/helpers/LocationSelect";
 import { ExperienceForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
-import { FormFooter } from "@/components/ui/FormFooter";
+import { useFetchExperienceById } from "@/hooks/useFetchExperienceById";
+import Spinner from "@/components/ui/Spinner";
 
-export const AddExpModal: React.FC<{
-	setShowExpModal: React.Dispatch<React.SetStateAction<boolean>>;
+export const EditExpModal: React.FC<{
+	setShowEditExpModal: React.Dispatch<React.SetStateAction<boolean>>;
+	experienceID: number;
 	onSave: () => void;
-}> = ({ setShowExpModal, onSave }) => {
-	const [isCurrWorking, setIsCurrWorking] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
+}> = ({ setShowEditExpModal, experienceID, onSave }) => {
+	const [isCurrWorking, setIsCurrWorking] = useState<boolean>(false);
+	const [initialLocation, setInitialLocation] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [isDeleted, setIsDeleted] = useState<boolean>(false);
 	const { getToken } = useAuth();
+	const { experienceIdData } = useFetchExperienceById({
+		experienceId: experienceID,
+	});
 
 	const {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<ExperienceForm>();
+
+	useEffect(() => {
+		if (experienceIdData && !isDeleting && !isDeleted) {
+			const data = experienceIdData;
+			reset({
+				companyName: data.companyName,
+				jobTitle: { value: data.jobTitle, label: data.jobTitle },
+				jobType: { value: data.jobType, label: data.jobType },
+				startMonth: { value: data.startMonth, label: data.startMonth },
+				startYear: { value: data.startYear, label: data.startYear },
+				endMonth: data.endMonth
+					? { value: data.endMonth, label: data.endMonth }
+					: null,
+				endYear: data.endYear
+					? { value: data.endYear, label: data.endYear }
+					: null,
+				jobLocation: data.jobLocation,
+				locationType: { value: data.locationType, label: data.locationType },
+				description: data.description,
+				isCurrentlyWorking: data.isCurrentlyWorking,
+			});
+			setIsCurrWorking(data.isCurrentlyWorking as boolean);
+			setInitialLocation(data.jobLocation);
+		}
+	}, [experienceIdData, reset]);
+
+	// const handleDelete = async () => {
+	// 	setIsDeleting(true);
+	// 	try {
+	// 		const token = await getToken();
+	// 		if (!token) {
+	// 			throw new Error("Token is not available");
+	// 		}
+
+	// 		const url = `/api/delete-experience-data/${experienceID}`;
+	// 		await axios.delete(url, {
+	// 			headers: {
+	// 				Authorization: `Bearer ${token}`,
+	// 			},
+	// 		});
+
+	// 		toast.success("Experience Deleted");
+	// 		setIsDeleted(true);
+	// 		onSave(); // Trigger refetch of experience data
+	// 		setShowEditExpModal(false);
+	// 	} catch (error: any) {
+	// 		console.error("Delete error:", error);
+	// 		if (axios.isAxiosError(error)) {
+	// 			if (error.response) {
+	// 				const status = error.response.status;
+	// 				const errorMessage =
+	// 					error.response.data.error || "Failed to delete experience";
+
+	// 				if (status === 404) {
+	// 					toast.error(
+	// 						"Experience not found. It may have been already deleted."
+	// 					);
+	// 				} else if (status === 403) {
+	// 					toast.error("You don't have permission to delete this experience.");
+	// 				} else {
+	// 					toast.error(`Error: ${errorMessage}`);
+	// 				}
+	// 			} else if (error.request) {
+	// 				toast.error("No response received from server. Please try again.");
+	// 			} else {
+	// 				toast.error("An unexpected error occurred. Please try again.");
+	// 			}
+	// 		} else {
+	// 			toast.error("An unexpected error occurred. Please try again.");
+	// 		}
+	// 	} finally {
+	// 		setIsDeleting(false);
+	// 	}
+	// };
+
+	const handleDelete = async () => {
+		setIsDeleting(true);
+		try {
+			const token = await getToken();
+			if (!token) {
+				throw new Error("Token is not available");
+			}
+
+			const url = `/api/delete-experience-data/${experienceID}`;
+			await axios.delete(url, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			toast.success("Experience Deleted");
+			setIsDeleted(true);
+			onSave(); 
+			setShowEditExpModal(false);
+		} catch (error: any) {
+			console.error("Delete error:", error);
+			toast.error("Failed to delete experience. Please try again.");
+		} finally {
+			setIsDeleting(false);
+		}
+	};
 
 	const onSubmit: SubmitHandler<ExperienceForm> = async (data) => {
 		setIsLoading(true);
@@ -47,22 +157,27 @@ export const AddExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/add-experience-data`;
-			const response = await axios.post(url, data, {
+			const url = `/api/update-experience-data/${experienceID}`;
+			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-            if (response.status !== 201) {
-                throw new Error("Error occured while adding experience");
-            }
-			toast.success("Experience Added");
+			toast.success("Experience Updated");
 			onSave();
-			setShowExpModal(false);
+			setShowEditExpModal(false);
 		} catch (error: any) {
-			toast.error("Error occured while adding experience. Try again!");
-			console.log("error", error);
+			toast.error("Error occured while updating experience. Try again!");
+			if (error.response) {
+				console.log("Error Status: ", error.response.status);
+				console.log("Error Message: ", error.message);
+				console.log("Error Response: ", error.response);
+			} else if (error.request) {
+				console.log("Error Request: ", error.request);
+			} else {
+				console.log("Error Message: ", error.message);
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -74,7 +189,7 @@ export const AddExpModal: React.FC<{
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				onClick={() => setShowExpModal(false)}
+				onClick={() => setShowEditExpModal(false)}
 				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
 			>
 				<motion.div
@@ -87,11 +202,11 @@ export const AddExpModal: React.FC<{
 					<div className="relative z-10 ">
 						<div className="flex items-start justify-between ml-1 rounded-t">
 							<h3 className="text-xl font-semibold text-gray-800 mt-1">
-								Add Work Experience
+								Edit Work Experience
 							</h3>
 							<button
 								className="pb-1 ml-auto border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-								onClick={() => setShowExpModal(false)}
+								onClick={() => setShowEditExpModal(false)}
 							>
 								<span className="bg-transparent text-gray-800">
 									<HiOutlineXMark className="size-10 hover:bg-gray-100 rounded-full p-2" />
@@ -103,7 +218,7 @@ export const AddExpModal: React.FC<{
 								<div className="flex flex-col gap-3">
 									<form
 										onSubmit={handleSubmit(onSubmit)}
-										id="experienceDataForm"
+										id="editExperienceDataForm"
 									>
 										{/* section */}
 										<div className="flex flex-col-reverse sm:flex-row items-center gap-3">
@@ -139,6 +254,7 @@ export const AddExpModal: React.FC<{
 														</span>
 													)}
 												</div>
+												{/* job title and type */}
 												<div className="w-full flex flex-col">
 													<label
 														htmlFor="jobTitle"
@@ -170,7 +286,6 @@ export const AddExpModal: React.FC<{
 														</span>
 													)}
 												</div>
-												{/* job title and type */}
 												<div className="flex flex-col xs:flex-row gap-3">
 													<div className="w-full sm:w-1/2 flex flex-col">
 														<label
@@ -203,18 +318,18 @@ export const AddExpModal: React.FC<{
 															</span>
 														)}
 													</div>
-													<div className="w-full xs:w-1/2 flex flex-col ">
+													<div className="w-full xs:w-1/2 flex flex-col">
 														<label
 															htmlFor="locationType"
 															className="text-sm font-semibold text-gray-700 pb-1"
 														>
-															Location Type
+															Work Type
 														</label>
 														<Controller
 															name="locationType"
 															control={control}
 															rules={{
-																required: "Location Type is required",
+																required: "Work Type is required",
 															}}
 															render={({ field }) => (
 																<Select
@@ -241,14 +356,14 @@ export const AddExpModal: React.FC<{
 										{/* employment duration */}
 										<hr className="my-5" />
 										<DurationFields
-											checkedTitle="I'm currently working on this role"
-											name="isCurrentlyWorking"
-											startTitle="Start Date"
-											endTitle="End Date"
 											control={control}
 											register={register}
+											name="isCurrentlyWorking"
+											checkedTitle="I'm currently working on this role"
 											setEndDate={setIsCurrWorking}
 											endDate={isCurrWorking}
+											startTitle="Start Date"
+											endTitle="End Date"
 											errors={errors}
 										/>
 
@@ -259,7 +374,7 @@ export const AddExpModal: React.FC<{
 												htmlFor="jobLocation"
 												className="text-sm font-semibold text-gray-700 pb-1"
 											>
-												Location
+												Job Location
 											</label>
 											<LocationSelect
 												control={control}
@@ -267,9 +382,10 @@ export const AddExpModal: React.FC<{
 												placeholder="Location"
 												error={errors.jobLocation?.message}
 												rules={{
-													required: "Location is required",
+													required: "Job Location is required",
 												}}
 												menuPlacement="auto"
+												initialValue={initialLocation}
 											/>
 										</div>
 
@@ -316,7 +432,31 @@ export const AddExpModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="experienceDataForm" />
+						<div className="flex items-center justify-between mt-3 rounded-b">
+							<button
+								className="flex items-center justify-center w-28 text-red-500 font-semibold rounded-lg text-sm px-4 py-2.5 outline-none focus:outline-none disabled:text-red-400 cursor-pointer ease-linear transition-colors duration-150"
+								form="editExperienceDataForm"
+								type="button"
+								onClick={handleDelete}
+								disabled={isLoading || isDeleting}
+							>
+								{isDeleting ? <Spinner color="red" /> : "Delete"}
+							</button>
+							<button
+								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
+								type="submit"
+								form="editExperienceDataForm"
+								disabled={isLoading || isDeleting}
+							>
+								{isLoading ? (
+									<span className="flex items-center">
+										<Spinner />
+									</span>
+								) : (
+									"Update"
+								)}
+							</button>
+						</div>
 					</div>
 				</motion.div>
 			</motion.div>

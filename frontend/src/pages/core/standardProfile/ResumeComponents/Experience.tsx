@@ -1,26 +1,35 @@
 import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
 import { useUser } from "@clerk/clerk-react";
-import { FaBuilding } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { BsBuildingsFill } from "react-icons/bs";
+import { useState } from "react";
+import { EditExpModal } from "@/modalForms/EditExpModal";
 
 export const Experience = () => {
+	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
+	const [editingExperienceId, setEditingExperienceId] = useState<number>();
+
 	const { isSignedIn } = useUser();
-	const { experienceData, isLoading, refetch, error } =
-		useFetchExperienceData();
+	const { experienceData, isExpLoading, refetchExp } = useFetchExperienceData();
+
+	const handleEditClick = (id: number) => {
+		setEditingExperienceId(id);
+		setShowEditExpModal(true);
+	};
 
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-2">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-2">
-					<FaBuilding />
+					<BsBuildingsFill />
 					<span className="f text-gray-700 font-medium text-base">
 						Experience
 					</span>
 				</div>
 			</div>
-			{isLoading ? (
-				<ContentSkeleton/>
+			{isExpLoading ? (
+				<ContentSkeleton />
 			) : (
 				<>
 					{experienceData && experienceData.length > 0 && (
@@ -38,17 +47,12 @@ export const Experience = () => {
 											{isSignedIn && (
 												<button
 													type="button"
-													// onClick={() => setShowExpModal(true)}
+													onClick={() => handleEditClick(data.id)}
 													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 												>
 													<MdModeEdit className="size-5" />
 												</button>
 											)}
-
-											{/* <EditEducationModal
-                                        educationId={data.educationId}
-                                        onSave={handleRefresh}
-                                    /> */}
 										</div>
 										<div className="flex text-sm items-center gap-1 text-gray-800">
 											<span>{data.jobTitle},</span>
@@ -77,6 +81,13 @@ export const Experience = () => {
 						</div>
 					)}
 				</>
+			)}
+			{showEditExpModal && (
+				<EditExpModal
+					setShowEditExpModal={setShowEditExpModal}
+					onSave={refetchExp}
+					experienceID={editingExperienceId as number}
+				/>
 			)}
 		</div>
 	);

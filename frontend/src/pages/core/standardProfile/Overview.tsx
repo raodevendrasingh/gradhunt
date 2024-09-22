@@ -10,12 +10,8 @@ import FileUploadSection from "./FileUploadSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
-	const { userDesc, isAboutLoading, refetchAbout, error } = useFetchAboutSection();
+	const { userDesc, isAboutLoading, refetchAbout } = useFetchAboutSection();
 	const { isSignedIn } = useUser();
-
-    const onSave = () =>{
-        refetchAbout();
-    }
 
 	return (
 		<div className="flex flex-col">

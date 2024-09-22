@@ -4,6 +4,7 @@ import { AddExpModal } from "@/modalForms/AddExpModal";
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";
+import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
 
 const options: Option[] = [
 	{ id: "experience", label: "Experience" },
@@ -19,10 +20,13 @@ export default function ComboboxWork() {
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    
+    const { refetchExp } = useFetchExperienceData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleOptionClick = (optionId: string) => {
+
 		setSelectedOptions((prev) =>
 			prev.includes(optionId)
 				? prev.filter((id) => id !== optionId)
@@ -43,7 +47,7 @@ export default function ComboboxWork() {
 	return (
 		<div className="relative inline-block text-left">
 			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} />}
-			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} />}
+			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
 			{showCertifyModal && (
 				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} />
 			)}

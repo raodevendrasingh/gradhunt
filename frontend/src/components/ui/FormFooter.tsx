@@ -13,14 +13,7 @@ export const FormFooter = ({ isLoading, formId }: FormFooterProps) => {
 				form={formId}
 				disabled={isLoading}
 			>
-				{isLoading ? (
-					<span className="flex items-center">
-						<span className="mr-2">Saving</span>
-						<Spinner />
-					</span>
-				) : (
-					"Save"
-				)}
+				{isLoading ? <Spinner /> : "Save"}
 			</button>
 		</div>
 	);

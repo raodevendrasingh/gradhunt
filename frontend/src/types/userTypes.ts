@@ -16,7 +16,7 @@ export type UserDetails = {
 	email: string;
 	bio: string;
 	location: string;
-    resumeLink: string;
+	resumeLink: string;
 	followers: number;
 	following: number;
 	createdAt: string;
@@ -40,8 +40,8 @@ export type HiringPreference = {
 	skills: string[];
 };
 
-export type Experience = {
-	experienceId?: string;
+export type ExperienceData = {
+	id: number;
 	user?: UserDetails;
 	companyName: string;
 	jobTitle: string;
@@ -54,6 +54,21 @@ export type Experience = {
 	locationType: string;
 	description: string;
 	isCurrentlyWorking?: boolean;
+};
+
+export type ExperienceForm = {
+	id: number;
+	companyName: string;
+	jobTitle: { value: string; label: string };
+	jobType: { value: string; label: string };
+	startMonth: { value: string; label: string };
+	startYear: { value: string; label: string };
+	endMonth: { value: string; label: string } | null;
+	endYear: { value: string; label: string } | null;
+	jobLocation: string;
+	locationType: { value: string; label: string };
+	description: string;
+	isCurrentlyWorking: boolean;
 };
 
 export type CompanyProfile = {
@@ -145,33 +160,26 @@ export type JobPosting = {
 	applicationDeadline: Date;
 };
 
-export type ProfileData = {
-	user: UserDetails;
-	experience: Experience[];
-	education: Education[];
-	certificate: Certificate[];
-	project: Project[];
-};
 
 export type AboutSection = {
 	description: string;
 };
 
 export type ProgressField = {
-    label: string;
-    value: number;
-    completed: boolean;
-}
+	label: string;
+	value: number;
+	completed: boolean;
+};
 
 export type Progress = {
-    tasks: ProgressField[]
-    completion_percentage: number;
-}
+	tasks: ProgressField[];
+	completion_percentage: number;
+};
 
 export type Skill = {
-    id?: number;
-    label: string;
-    value: string;
-    image: string;
-    category: string;
-}
+	id?: number;
+	label: string;
+	value: string;
+	image: string;
+	category: string;
+};
