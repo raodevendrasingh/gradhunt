@@ -130,18 +130,41 @@ export type Certificate = {
 	endYear?: number;
 };
 
-export type socialLinks = {
-	github: string;
-	linkedin: string;
-	twitter: string;
+export type SocialLinks = {
+    github: string;
+    linkedin: string;
+    leetcode: string;
+    twitter: string;
 };
 
-export type linguistics = { language: string[]; proficiency: string[] };
+export type Linguistics = { 
+    id: number;
+    language: string; 
+    proficiency: string; 
+};
 
 export type UserBasicDetails = {
-	user_details: UserDetails;
-	socials: socialLinks[];
-	linguistics: linguistics[];
+    user_details: UserDetails;
+    social_links: SocialLinks[];
+    linguistics: Linguistics[];
+};
+
+export type UserBasicFormData = {
+	firstname: string;
+	lastname: string;
+	bio: string;
+	location: string;
+	socialLinks: {
+		github: string;
+		linkedin: string;
+		leetcode: string;
+		twitter: string;
+	};
+	languages: {
+		id: number;
+		language: string;
+		proficiency: string;
+	}[];
 };
 
 export type ProjectData = {

@@ -1,4 +1,4 @@
-import { UserBasicDetails, UserDetails } from "@/types/userTypes";
+import { UserBasicDetails } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";

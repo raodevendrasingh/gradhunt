@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 // external
@@ -21,33 +21,66 @@ import {
 	HiOutlineTrash,
 } from "react-icons/hi2";
 import { LocationSelect } from "@/helpers/LocationSelect";
-import { UserBasicDetails } from "@/types/userTypes";
 import Spinner from "@/components/ui/Spinner";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { UserBasicFormData } from "@/types/userTypes";
 
 const screens = ["Add Basic Info", "Add Social Links", "Add Languages"];
 
 export const AddBasicDetailModal: React.FC<{
 	setShowBasicDetailModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowBasicDetailModal }) => {
+	onSave: () => void;
+}> = ({ setShowBasicDetailModal, onSave }) => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [initialLocation, setInitialLocation] = useState<string>("");
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
 
 	const { getToken } = useAuth();
+	const { userDetails } = useFetchUserDetails();
 
 	const {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors, isValid },
 		trigger,
-		watch,
-	} = useForm<UserBasicDetails>({
+	} = useForm<UserBasicFormData>({
 		mode: "onChange",
-		defaultValues: {
-			socialLinks: {},
-		},
 	});
+
+    // preloading the form with the user's details
+	useEffect(() => {
+		if (userDetails) {
+			const data = userDetails;
+			const socialLinks =
+				data.social_links.length > 0
+					? {
+							github: data.social_links[0].github ?? "",
+							linkedin: data.social_links[0].linkedin ?? "",
+							leetcode: data.social_links[0].leetcode ?? "",
+							twitter: data.social_links[0].twitter ?? "",
+						}
+					: { github: "", linkedin: "", leetcode: "", twitter: "" };
+
+			const languages = data.linguistics.map((lang: any) => ({
+				id: lang.id,
+				language: lang.language,
+				proficiency: lang.proficiency,
+			}));
+
+			reset({
+				bio: data.user_details.bio,
+				firstname: data.user_details.firstname,
+				lastname: data.user_details.lastname,
+				location: data.user_details.location,
+				socialLinks: socialLinks,
+				languages: languages,
+			});
+			setInitialLocation(data.user_details.location);
+		}
+	}, [userDetails, reset]);
 
 	const handleNext = async (e: React.MouseEvent) => {
 		e.preventDefault();
@@ -72,6 +105,7 @@ export const AddBasicDetailModal: React.FC<{
 						register={register}
 						errors={errors}
 						control={control}
+						initialLocation={initialLocation}
 					/>
 				);
 			case 1:
@@ -83,7 +117,7 @@ export const AddBasicDetailModal: React.FC<{
 		}
 	};
 
-	const onSubmit: SubmitHandler<UserBasicDetails> = async (data) => {
+	const onSubmit: SubmitHandler<UserBasicFormData> = async (data) => {
 		setIsLoading(true);
 		try {
 			const token = await getToken();
@@ -92,15 +126,15 @@ export const AddBasicDetailModal: React.FC<{
 			}
 
 			const url = "/api/add-user-data";
-			const response = await axios.post(url, data, {
+			await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			// console.log(response.data);
 			toast.success("Details Updated");
 			setShowBasicDetailModal(false);
+			onSave();
 		} catch (error: any) {
 			toast.error("Error occurred while updating information. Try again!");
 			console.error("Error:", error);
@@ -145,7 +179,7 @@ export const AddBasicDetailModal: React.FC<{
 								animate={{ x: 0, opacity: 1 }}
 								exit={{ x: -slideDirection * 50, opacity: 0 }}
 								transition={{ duration: 0.3 }}
-								className="h-[45vh] overflow-y-auto scroll-smooth"
+								className="h-[360px] overflow-y-auto scroll-smooth"
 							>
 								<div className="p-3">
 									<div className="flex flex-col gap-3">{renderScreen()}</div>
@@ -205,7 +239,8 @@ const BasicInfoScreen: React.FC<{
 	errors: any;
 	control: any;
 	register: any;
-}> = ({ errors, control, register }) => {
+	initialLocation: string;
+}> = ({ errors, control, register, initialLocation }) => {
 	const [bio, setBio] = useState("");
 	const maxChars = 250;
 
@@ -325,6 +360,7 @@ const BasicInfoScreen: React.FC<{
 						required: "Location is required",
 					}}
 					menuPlacement="top"
+					initialValue={initialLocation}
 				/>
 			</div>
 		</div>
