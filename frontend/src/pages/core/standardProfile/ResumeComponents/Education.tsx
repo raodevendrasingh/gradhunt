@@ -22,7 +22,7 @@ export const Education = () => {
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-2">
 					<FaGraduationCap />
-					<span className="f text-gray-700 font-medium text-base">
+					<span className="text-gray-700 font-medium text-base">
 						Education
 					</span>
 				</div>

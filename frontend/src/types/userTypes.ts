@@ -150,7 +150,7 @@ export type ProjectData = {
 	projectName: string;
 	description: string;
 	liveLink: string;
-	skills: SelectOption[];
+	skills: string[];
 	sourceCodeLink: string | null;
 	isCurrentlyWorking: boolean;
 	startMonth: string;

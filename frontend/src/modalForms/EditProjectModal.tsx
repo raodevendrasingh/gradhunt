@@ -52,7 +52,7 @@ export const EditProjectModal: React.FC<{
 				projectName: data.projectName,
 				liveLink: data.liveLink,
 				sourceCodeLink: data.sourceCodeLink,
-				skills: data.skills,
+				skills: data.skills.map((skill: string) => ({ value: skill, label: skill })),
 				startMonth: { value: data.startMonth, label: data.startMonth },
 				startYear: { value: data.startYear, label: data.startYear },
 				endMonth: data.endMonth
