@@ -42,7 +42,7 @@ export const EditEduModal: React.FC<{
 	} = useForm<EducationForm>();
 
 	const { educationIdData } = useFetchEducationDataById({
-		eductionId: educationId,
+		educationId: educationId,
 	});
 
 	useEffect(() => {

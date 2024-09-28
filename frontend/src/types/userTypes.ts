@@ -144,8 +144,8 @@ export type UserBasicDetails = {
 	linguistics: linguistics[];
 };
 
-export type Project = {
-	projectId?: string;
+export type ProjectData = {
+	id?: number;
 	user?: UserDetails;
 	projectName: string;
 	description: string;
@@ -154,9 +154,24 @@ export type Project = {
 	sourceCodeLink: string | null;
 	isCurrentlyWorking: boolean;
 	startMonth: string;
-	startYear: number;
+	startYear: string;
 	endMonth?: string;
-	endYear?: number;
+	endYear?: string;
+};
+
+export type ProjectForm = {
+	id?: number;
+	user?: UserDetails;
+	projectName: string;
+	description: string;
+	liveLink: string;
+	skills: SelectOption[];
+	sourceCodeLink: string | null;
+	isCurrentlyWorking: boolean;
+	startMonth: { value: string; label: string };
+	startYear: { value: string; label: string };
+	endMonth: { value: string; label: string } | null;
+	endYear: { value: string; label: string } | null;
 };
 
 export type JobPosting = {

@@ -47,6 +47,7 @@ urlpatterns = [
     # project section
     path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
     path('api/get-projects/<str:username>', GetProjects.as_view(), name='get-project'),
+    path('api/get-projects/<str:username>/<str:id>', GetProjectById.as_view(), name='get-project'),
 
     # certificate section
     path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
@@ -55,8 +56,6 @@ urlpatterns = [
     # skills section
     path('api/add-skills', AddSkillData.as_view(), name='add-skills'),
     path('api/get-skills/<str:username>', GetSkill.as_view(), name='get-skills'),
-
-    # skills section
 
     # image uploads 
     path('api/upload-profile-image', SetImageUrl.as_view(), name='set-profile-image'),

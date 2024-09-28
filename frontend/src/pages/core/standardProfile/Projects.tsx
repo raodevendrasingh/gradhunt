@@ -9,11 +9,20 @@ import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { GoGlobe } from "react-icons/go";
 import { FaGithub } from "react-icons/fa";
+import { EditProjectModal } from "@/modalForms/EditProjectModal";
 
 export const Projects = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [editingProjectId, setEditingProjectId] = useState<number>();
+	const [showEditProjectModal, setShowEditProjectModal] =
+		useState<boolean>(false);
 	const { isSignedIn } = useUser();
-	const { projectData, isLoading, refetch, error } = useFetchProjectData();
+	const { projectData, isProjectLoading, refetch, error } = useFetchProjectData();
+
+	const handleEditClick = (id: number) => {
+		setEditingProjectId(id);
+		setShowEditProjectModal(true);
+	};
 
 	return (
 		<div className="flex flex-col">
@@ -35,7 +44,8 @@ export const Projects = () => {
 				{showProjectModal && (
 					<AddProjectModal setShowProjectModal={setShowProjectModal} />
 				)}
-				{isLoading ? (
+
+				{isProjectLoading ? (
 					<ContentSkeleton />
 				) : (
 					<>
@@ -54,7 +64,7 @@ export const Projects = () => {
 												{isSignedIn && (
 													<button
 														type="button"
-														// onClick={() => setShowProjectModal(true)}
+														onClick={() => handleEditClick(data.id as number)}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
@@ -116,6 +126,13 @@ export const Projects = () => {
 					</>
 				)}
 			</div>
+			{showEditProjectModal && (
+				<EditProjectModal
+					setShowEditProjectModal={setShowEditProjectModal}
+					projectId={editingProjectId as number}
+					onSave={refetch}
+				/>
+			)}
 		</div>
 	);
 };

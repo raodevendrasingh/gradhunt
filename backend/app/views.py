@@ -757,6 +757,19 @@ class GetProjects(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetProjectById(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username, id):
+        try:
+            user = get_object_or_404(UserDetails, username=username)
+            project = get_object_or_404(Project, user=user, id=id)
+            serializer = ProjectSerializer(project)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class GetCertificates(APIView):
     permission_classes = [IsClerkAuthenticated]
 

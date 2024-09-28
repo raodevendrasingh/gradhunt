@@ -8,44 +8,48 @@ import { ProjectData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 
-export const useFetchProjectData = () => {
-	const [projectData, SetProjectData] = useState<ProjectData[]>([]);
+interface ProjectDataProps {
+	projectId: number;
+}
+
+export const useFetchProjectDataById = ({ projectId }: ProjectDataProps) => {
+	const [projectIdData, SetProjectIdData] = useState<ProjectData>();
 	const [isProjectLoading, setIsProjectLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
-    const { getToken } = useAuth();
+	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-    const fetchData = useCallback(async () => {
+	const fetchData = useCallback(async () => {
 		setIsProjectLoading(true);
 		try {
-            const token = await getToken();
+			const token = await getToken();
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/get-projects/${username}`;
+			const url = `/api/get-project/${username}/${projectId}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
-            const data = response.data;
-			SetProjectData(data);
+			const data = response.data;
+			SetProjectIdData(data);
 		} catch (err: any) {
 			setError(err);
-            toast.error("Error fetching project details");
+			toast.error("Error fetching project details");
 		} finally {
 			setIsProjectLoading(false);
 		}
 	}, []);
 
-    useEffect(() => {
+	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
-	const refetch = useCallback(() => {
+	const refetchProject = useCallback(() => {
 		fetchData();
 	}, [fetchData]);
 
-	return { projectData, isProjectLoading, error, refetch };
+	return { projectIdData, isProjectLoading, error, refetchProject };
 };

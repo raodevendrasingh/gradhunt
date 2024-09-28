@@ -9,10 +9,10 @@ import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 
 interface EducationDataProps {
-	eductionId: number;
+	educationId: number;
 }
 
-export const useFetchEducationDataById = ({ eductionId }: EducationDataProps) => {
+export const useFetchEducationDataById = ({ educationId }: EducationDataProps) => {
 	const [educationIdData, SetEducationIdData] = useState<EducationData>();
 	const [isEduLoading, setIsEduLoading] = useState<boolean>(true);
 	const [error, setError] = useState<any>(null);
@@ -26,7 +26,7 @@ export const useFetchEducationDataById = ({ eductionId }: EducationDataProps) =>
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/get-education-data/${username}/${eductionId}`;
+			const url = `/api/get-education-data/${username}/${educationId}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
