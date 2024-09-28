@@ -158,7 +158,8 @@ class CompanyProfile(models.Model):
     establishedYear = models.CharField(max_length=6)
     industry = models.CharField(max_length=100)
     headquarters = models.CharField(max_length=200)
-    branches = ArrayField(models.CharField(max_length=512), blank=True, default=list)
+    branches = ArrayField(models.CharField(
+        max_length=512), blank=True, default=list)
     about = models.TextField()
     values = models.TextField()
 
@@ -217,8 +218,8 @@ class Project(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     projectName = models.CharField(max_length=50)
     description = models.TextField(blank=True, default='')
-    liveLink = models.URLField(max_length=200)
-    sourceCodeLink = models.URLField(max_length=200)
+    liveLink = models.URLField(max_length=200, blank=True, default='')
+    sourceCodeLink = models.URLField(max_length=200, blank=True, default='')
     skills = ArrayField(models.CharField(max_length=200),
                         blank=True, default=list)
     startMonth = models.CharField(max_length=20)

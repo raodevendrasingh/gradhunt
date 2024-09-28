@@ -68,9 +68,26 @@ class AwardSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    skills = serializers.ListField(child=NestedDictField())
+    startMonth = NestedDictField()
+    startYear = NestedDictField()
+    endMonth = NestedDictField(required=False)
+    endYear = NestedDictField(required=False)
+
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ['id', 'projectName', 'description', 'liveLink', 'skills', 'sourceCodeLink',
+                  'isCurrentlyWorking', 'startMonth', 'startYear', 'endMonth', 'endYear', 'user']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return Project.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class CertificateSerializer(serializers.ModelSerializer):

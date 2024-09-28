@@ -554,31 +554,70 @@ class DeleteEducationData(APIView):
 class AddProjectData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    @transaction.atomic
     def post(self, request):
-        user = request.user
-
-        data = request.data
-        project_data = {}
-
-        for field in Project._meta.fields:
-            field_name = field.name
-
-            if field_name == 'user':
-                project_data[field_name] = user
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    project_data[field_name] = data[field_name]['value']
-                else:
-                    project_data[field_name] = data[field_name]
-
         try:
-            project = Project.objects.create(**project_data)
-            return Response({
-                'message': 'Project added sucessfully',
-            }, status=status.HTTP_201_CREATED)
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+
+            data = request.data.copy()
+            data['user'] = user.id
+
+            serializer = ProjectSerializer(data=data)
+            if serializer.is_valid():
+                project = serializer.save()
+                return Response(ProjectSerializer(project).data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UpdateProjectData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def patch(self, request, id):
+        try:
+            project = Project.objects.get(
+                id=id,
+                user__clerk_user_id=request.user.clerk_user_id
+            )
+        except Project.DoesNotExist:
+            return Response(
+                {"error": "Project not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = ProjectSerializer(
+            project, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Project updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteProjectData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def delete(self, request, id):
+        try:
+            user = get_object_or_404(
+                UserDetails, clerk_user_id=request.user.clerk_user_id)
+            project = get_object_or_404(Project, id=id, user=user)
+
+            if project.user != user:
+                raise PermissionDenied(
+                    "You don't have permission to perform this action.")
+
+            project.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Project.DoesNotExist:
+            return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 class AddCertificateData(APIView):

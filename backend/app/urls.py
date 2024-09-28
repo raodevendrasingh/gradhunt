@@ -39,15 +39,17 @@ urlpatterns = [
     
     # education section
     path('api/add-education-data', AddEducationData.as_view(), name='add-education'),
-    path('api/get-education-data/<str:username>', GetEducationData.as_view(), name='get-experience'),
-    path('api/get-education-data/<str:username>/<str:id>', GetEducationDataById.as_view(), name='get-experience-by-id'),
+    path('api/get-education-data/<str:username>', GetEducationData.as_view(), name='get-education'),
+    path('api/get-education-data/<str:username>/<str:id>', GetEducationDataById.as_view(), name='get-education-by-id'),
     path('api/update-education-data/<str:id>', UpdateEducationData.as_view(), name='update-education'),
-    path('api/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='delete-experience'),
+    path('api/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='delete-education'),
 
     # project section
     path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
     path('api/get-projects/<str:username>', GetProjects.as_view(), name='get-project'),
-    path('api/get-projects/<str:username>/<str:id>', GetProjectById.as_view(), name='get-project'),
+    path('api/get-project/<str:username>/<str:id>', GetProjectById.as_view(), name='get-project-by-id'),
+    path('api/update-project/<str:id>', UpdateProjectData.as_view(), name='update-project'),
+    path('api/delete-project/<str:id>', DeleteProjectData.as_view(), name='delete-project'),
 
     # certificate section
     path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
