@@ -41,7 +41,7 @@ export const EditEduModal: React.FC<{
 		formState: { errors },
 	} = useForm<EducationForm>();
 
-	const { educationIdData } = useFetchEducationDataById({
+	const { data: educationIdData } = useFetchEducationDataById({
 		educationId: educationId,
 	});
 

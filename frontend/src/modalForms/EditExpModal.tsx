@@ -36,7 +36,8 @@ export const EditExpModal: React.FC<{
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [isDeleted, setIsDeleted] = useState<boolean>(false);
 	const { getToken } = useAuth();
-	const { experienceIdData } = useFetchExperienceById({
+
+	const { data: experienceIdData } = useFetchExperienceById({
 		experienceId: experienceID,
 	});
 
@@ -90,7 +91,7 @@ export const EditExpModal: React.FC<{
 
 			toast.success("Experience Deleted");
 			setIsDeleted(true);
-			onSave(); 
+			onSave();
 			setShowEditExpModal(false);
 		} catch (error: any) {
 			console.error("Delete error:", error);
@@ -140,7 +141,6 @@ export const EditExpModal: React.FC<{
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				onClick={() => setShowEditExpModal(false)}
 				className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center overflow-y-scroll cursor-pointer "
 			>
 				<motion.div

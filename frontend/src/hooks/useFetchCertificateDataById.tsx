@@ -14,7 +14,7 @@ export const useFetchCertificateDataById = ({
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-	const fetchData = async (): Promise<CertificateData> => {
+	const fetchCertificateDataById = async (): Promise<CertificateData> => {
 		const token = await getToken();
 		if (!token) {
 			throw new Error("User Unauthorized!");
@@ -30,6 +30,6 @@ export const useFetchCertificateDataById = ({
 	};
 	return useQuery<CertificateData, AxiosError>({
 		queryKey: ["certificateIdData", username, certificateId],
-		queryFn: fetchData,
+		queryFn: fetchCertificateDataById,
 	});
 };

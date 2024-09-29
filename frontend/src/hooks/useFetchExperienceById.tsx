@@ -1,8 +1,5 @@
-// !for fetching experience data in the experience tab
-
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "sonner";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { ExperienceData } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
@@ -13,44 +10,27 @@ interface ExperienceByIdProps {
 
 export const useFetchExperienceById = ({
 	experienceId,
-}: ExperienceByIdProps) => {
-	const [experienceIdData, setExperienceIdData] = useState<ExperienceData>();
-	const [isExpLoading, setIsExpLoading] = useState<boolean>(true);
-	const [error, setError] = useState<any>(null);
+}: ExperienceByIdProps): UseQueryResult<ExperienceData, AxiosError> => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-	const fetchData = useCallback(async () => {
-		setIsExpLoading(true);
-		try {
-			const token = await getToken();
-			if (!token) {
-				throw new Error("User Unauthorized!");
-			}
-			const url = `/api/get-experience-data/${username}/${experienceId}`;
-			const response = await axios.get(url, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			const data = response.data;
-			setExperienceIdData(data);
-		} catch (err: any) {
-			setError(err);
-			toast.error("Error fetching experience details");
-		} finally {
-			setIsExpLoading(false);
+	const fetchExperienceDataById = async (): Promise<ExperienceData> => {
+		const token = await getToken();
+		if (!token) {
+			throw new Error("User Unauthorized!");
 		}
-	}, []);
+		const url = `/api/get-experience-data/${username}/${experienceId}`;
+		const response = await axios.get(url, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	};
 
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
-
-	const refetchExp = useCallback(() => {
-		fetchData();
-	}, [fetchData]);
-
-	return { experienceIdData, isExpLoading, error, refetchExp };
+	return useQuery<ExperienceData, AxiosError>({
+		queryKey: ["experienceIdData", username, experienceId],
+		queryFn: fetchExperienceDataById,
+	});
 };

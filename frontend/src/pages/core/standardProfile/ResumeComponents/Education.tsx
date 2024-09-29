@@ -2,7 +2,7 @@ import { useFetchEducationData } from "@/hooks/useFetchEducationData";
 import { useUser } from "@clerk/clerk-react";
 import { FaGraduationCap } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
-import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { EditEduModal } from "@/modalForms/EditEduModal";
 import { useState } from "react";
 
@@ -10,7 +10,11 @@ export const Education = () => {
 	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);
 	const [editingEducationId, setEditingEducationId] = useState<number>();
 	const { isSignedIn } = useUser();
-	const { educationData, isEduLoading, refetchEdu } = useFetchEducationData();
+	const {
+		data: educationData,
+		isLoading: isEduLoading,
+		refetch: refetchEdu,
+	} = useFetchEducationData();
 
 	const handleEditClick = (id: number) => {
 		setEditingEducationId(id);
@@ -22,9 +26,7 @@ export const Education = () => {
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-2">
 					<FaGraduationCap />
-					<span className="text-gray-700 font-medium text-base">
-						Education
-					</span>
+					<span className="text-gray-700 font-medium text-base">Education</span>
 				</div>
 			</div>
 			{isEduLoading ? (

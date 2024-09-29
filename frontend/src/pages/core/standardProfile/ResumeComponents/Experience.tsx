@@ -1,7 +1,7 @@
 import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
-import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { BsBuildingsFill } from "react-icons/bs";
 import { useState } from "react";
 import { EditExpModal } from "@/modalForms/EditExpModal";
@@ -11,7 +11,11 @@ export const Experience = () => {
 	const [editingExperienceId, setEditingExperienceId] = useState<number>();
 
 	const { isSignedIn } = useUser();
-	const { experienceData, isExpLoading, refetchExp } = useFetchExperienceData();
+	const {
+		data: experienceData,
+		isLoading: isExpLoading,
+		refetch: refetchExp,
+	} = useFetchExperienceData();
 
 	const handleEditClick = (id: number) => {
 		setEditingExperienceId(id);
