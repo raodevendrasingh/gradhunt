@@ -18,9 +18,14 @@ export default function StandardUserProfile(): React.JSX.Element {
 
 	const [showBasicDetailModal, setShowBasicDetailModal] =
 		useState<boolean>(false);
-	const { user, isSignedIn } = useUser();
+	const { isSignedIn } = useUser();
 
-	const { userDetails, isLoading, error, refetchUserDetails } = useFetchUserDetails();
+	const {
+		data: userDetails,
+		isLoading,
+		error,
+		refetch: refetchUserDetails,
+	} = useFetchUserDetails();
 
 	if (isLoading) {
 		return (
@@ -93,31 +98,13 @@ export default function StandardUserProfile(): React.JSX.Element {
 										{showBasicDetailModal && (
 											<AddBasicDetailModal
 												setShowBasicDetailModal={setShowBasicDetailModal}
-                                                onSave={refetchUserDetails}
+												onSave={refetchUserDetails}
 											/>
 										)}
 									</>
 								)}
-								{/* : (
-									<button className="flex items-center justify-center bg-slate-800 hover:bg-slate-700 hover:shadow rounded-lg border gap-2 px-3 py-2 transition-colors">
-										<span className="text-base font-medium text-white">
-											Follow
-										</span>
-										<FaUserPlus className="w-4 h-4 text-white" />
-									</button>
-								)} */}
 							</div>
 						</div>
-						{/* <div className="flex items-center justify-center sm:justify-start w-full gap-4 mt-2 select-none">
-							<div className="flex items-center gap-1 text-sm font-normal">
-								<span className="font-semibold">20</span>
-								<span>Following</span>
-							</div>
-							<div className="flex items-center gap-1 text-sm font-normal">
-								<span className="font-semibold">20</span>
-								<span>Followers</span>
-							</div>
-						</div> */}
 					</div>
 				</div>
 				<div className="flex flex-col justify-start gap-3 px-5 ">

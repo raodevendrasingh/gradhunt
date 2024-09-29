@@ -35,9 +35,9 @@ export const AddBasicDetailModal: React.FC<{
 	const [initialLocation, setInitialLocation] = useState<string>("");
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
-
+    const [bio, setBio] = useState("");
 	const { getToken } = useAuth();
-	const { userDetails } = useFetchUserDetails();
+	const { data: userDetails } = useFetchUserDetails();
 
 	const {
 		control,
@@ -50,7 +50,7 @@ export const AddBasicDetailModal: React.FC<{
 		mode: "onChange",
 	});
 
-    // preloading the form with the user's details
+	// preloading the form with the user's details
 	useEffect(() => {
 		if (userDetails) {
 			const data = userDetails;
@@ -70,14 +70,19 @@ export const AddBasicDetailModal: React.FC<{
 				proficiency: lang.proficiency,
 			}));
 
-			reset({
+			const defaultValues = {
 				bio: data.user_details.bio,
 				firstname: data.user_details.firstname,
 				lastname: data.user_details.lastname,
 				location: data.user_details.location,
 				socialLinks: socialLinks,
 				languages: languages,
-			});
+			};
+
+			console.log("Resetting form with values:", defaultValues);
+
+			reset(defaultValues);
+            setBio(data.user_details.bio);
 			setInitialLocation(data.user_details.location);
 		}
 	}, [userDetails, reset]);
@@ -105,6 +110,8 @@ export const AddBasicDetailModal: React.FC<{
 						register={register}
 						errors={errors}
 						control={control}
+                        setBio={setBio}
+                        bio={bio}
 						initialLocation={initialLocation}
 					/>
 				);
@@ -179,7 +186,7 @@ export const AddBasicDetailModal: React.FC<{
 								animate={{ x: 0, opacity: 1 }}
 								exit={{ x: -slideDirection * 50, opacity: 0 }}
 								transition={{ duration: 0.3 }}
-								className="h-[360px] overflow-y-auto scroll-smooth"
+								className="h-[365px] overflow-y-auto scroll-smooth"
 							>
 								<div className="p-3">
 									<div className="flex flex-col gap-3">{renderScreen()}</div>
@@ -239,9 +246,10 @@ const BasicInfoScreen: React.FC<{
 	errors: any;
 	control: any;
 	register: any;
+    bio: string;
+    setBio: React.Dispatch<React.SetStateAction<string>>;
 	initialLocation: string;
-}> = ({ errors, control, register, initialLocation }) => {
-	const [bio, setBio] = useState("");
+}> = ({ errors, control, register, initialLocation, bio, setBio }) => {
 	const maxChars = 250;
 
 	return (

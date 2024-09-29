@@ -1,46 +1,33 @@
 import { UserBasicDetails } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
-import axios from "axios";
-import { useState, useEffect, useCallback } from "react";
+import axios, { AxiosError } from "axios";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
-export const useFetchUserDetails = () => {
-	const [userDetails, setUserDetails] = useState<UserBasicDetails>();
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
+export const useFetchUserDetails = (): UseQueryResult<
+	UserBasicDetails,
+	AxiosError
+> => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-	const fetchData = useCallback(async () => {
-		setIsLoading(true);
-		try {
-			const token = await getToken();
-			if (!token) {
-				throw new Error("User Unauthorized!");
-			}
-			const url = `/api/get-user-details/${username}`;
-			const response = await axios.get(url, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			const data = response.data;
-			setUserDetails(data);
-		} catch (err: any) {
-			setError(err);
-		} finally {
-			setIsLoading(false);
+	const fetchUserDetails = async (): Promise<UserBasicDetails> => {
+		const token = await getToken();
+		if (!token) {
+			throw new Error("User Unauthorized!");
 		}
-	}, []);
+		const url = `/api/get-user-details/${username}`;
+		const response = await axios.get<UserBasicDetails>(url, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	};
 
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
-
-	const refetchUserDetails = useCallback(() => {
-		fetchData();
-	}, [fetchData]);
-
-	return { userDetails, isLoading, error, refetchUserDetails };
+	return useQuery<UserBasicDetails, AxiosError>({
+		queryKey: ["userDetails", username],
+		queryFn: fetchUserDetails,
+	});
 };

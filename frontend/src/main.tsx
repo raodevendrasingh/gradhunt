@@ -1,11 +1,12 @@
 // from react
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "@/index.css";
 
 // external packages
 import { Toaster } from "sonner";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
 	RouteObject,
 	RouterProvider,
@@ -28,13 +29,13 @@ declare global {
 			VITE_BASE_RECRUITER_URL: string;
 			VITE_RAPID_API_KEY: string;
 			VITE_RAPID_API_HOST: string;
-            VITE_FIREBASE_API_KEY: string;
-            VITE_FIREBASE_AUTH_DOMAIN: string;
-            VITE_FIREBASE_PROJECT_ID: string;
-            VITE_FIREBASE_STORAGE_BUCKET: string;
-            VITE_FIREBASE_MESSAGING_SENDER_ID: string;
-            VITE_FIREBASE_APP_ID: string
-            VITE_FIREBASE_MEASUREMENT_ID: string
+			VITE_FIREBASE_API_KEY: string;
+			VITE_FIREBASE_AUTH_DOMAIN: string;
+			VITE_FIREBASE_PROJECT_ID: string;
+			VITE_FIREBASE_STORAGE_BUCKET: string;
+			VITE_FIREBASE_MESSAGING_SENDER_ID: string;
+			VITE_FIREBASE_APP_ID: string;
+			VITE_FIREBASE_MEASUREMENT_ID: string;
 		};
 	}
 }
@@ -61,12 +62,15 @@ if (subdomain === "localhost") {
 // }
 
 const router = createBrowserRouter(routes);
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<React.StrictMode>
-		<ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-			<Toaster position="bottom-right" />
-			<RouterProvider router={router} />
-		</ClerkProvider>
-	</React.StrictMode>
+	<StrictMode>
+		<QueryClientProvider client={queryClient}>
+			<ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+				<Toaster position="bottom-right" />
+				<RouterProvider router={router} />
+			</ClerkProvider>
+		</QueryClientProvider>
+	</StrictMode>
 );
