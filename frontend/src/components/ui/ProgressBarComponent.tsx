@@ -11,7 +11,12 @@ interface Task {
 }
 
 export const ProfileCompletion = () => {
-	const { progress, isLoading, refetch, error } = useFetchProfileCompletion();
+	const {
+		data: progress,
+		isLoading,
+		refetch,
+		error,
+	} = useFetchProfileCompletion();
 	const [tasks, setTasks] = useState<Task[]>([
 		{ id: "1", label: "Add a Profile Picture", value: 10, completed: false },
 		{ id: "2", label: "Add a Bio", value: 10, completed: false },
