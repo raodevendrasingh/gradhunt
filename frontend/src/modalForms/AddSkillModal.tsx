@@ -21,8 +21,11 @@ export const AddSkillModal: React.FC<{
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
-	const { skillData, isSkillLoading } = useFetchSkillData();
-
+    const {
+		data: skillData,
+		isLoading: isSkillLoading
+	} = useFetchSkillData();
+    
 	useEffect(() => {
 		if (skillData && skillData.length > 0) {
 			setSelectedSkills(

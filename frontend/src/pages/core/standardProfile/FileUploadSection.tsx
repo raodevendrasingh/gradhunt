@@ -64,7 +64,7 @@ export default function FileUploadSection() {
 	const { getToken } = useAuth();
 	const { isSignedIn } = useUser();
 
-	const { userDetails, isLoading, refetch } = useFetchUserDetails();
+	const { data: userDetails, isLoading, refetch } = useFetchUserDetails();
 
 	useEffect(() => {
 		if (userDetails && userDetails.user_details.resumeLink.length > 0) {

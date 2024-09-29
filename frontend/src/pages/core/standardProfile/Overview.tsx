@@ -1,17 +1,29 @@
 import ReorderButton from "@/components/layouts/ReorderButton";
 import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
 import { MdModeEdit } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ComboboxAll from "@/components/layouts/ComboboxAll";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
 import { SkillSection } from "./ResumeComponents/SkillSection";
 import FileUploadSection from "./FileUploadSection";
+import { toast } from "sonner";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
-	const { userDesc, isAboutLoading, refetchAbout } = useFetchAboutSection();
+	const {
+		data: userDesc,
+		isLoading: isAboutLoading,
+		error,
+		refetch: refetchAbout,
+	} = useFetchAboutSection();
 	const { isSignedIn } = useUser();
+
+	useEffect(() => {
+		if (error) {
+			toast.error("Error fetching About Section details");
+		}
+	}, [error]);
 
 	return (
 		<div className="flex flex-col">
@@ -59,12 +71,13 @@ export const Overview = () => {
 					</div>
 				)}
 
-				{showAboutModal && <UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />}
+				{showAboutModal && (
+					<UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />
+				)}
 			</div>
 			<SkillSection />
 
-            <FileUploadSection/>
-			
+			<FileUploadSection />
 		</div>
 	);
 };

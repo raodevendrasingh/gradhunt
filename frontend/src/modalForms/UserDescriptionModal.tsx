@@ -28,20 +28,18 @@ export const UserAboutModal: React.FC<{
 	const maxChars = 2000;
 	const { getToken } = useAuth();
 
-	const { userDesc, isAboutLoading } = useFetchAboutSection();
+	const { data: userDesc, isLoading: isAboutLoading } = useFetchAboutSection();
 	const {
-		control,
 		register,
 		handleSubmit,
-		reset,
 		formState: { errors },
 	} = useForm<FormData>();
 
 	useEffect(() => {
 		if (userDesc && userDesc.description.length > 0) {
-			reset({ description: userDesc.description });
+			setDescription(userDesc.description);
 		}
-	}, [userDesc, reset]);
+	}, [userDesc]);
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		setIsLoading(true);

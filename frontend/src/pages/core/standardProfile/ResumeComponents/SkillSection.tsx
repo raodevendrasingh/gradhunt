@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
 import { Skill } from "@/types/userTypes";
 import { AddSkillModal } from "@/modalForms/AddSkillModal";
+import { toast } from "sonner";
 
 type GroupedSkills = {
 	[key: string]: Skill[];
@@ -12,7 +13,18 @@ type GroupedSkills = {
 export const SkillSection: React.FC = () => {
 	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
 	const { isSignedIn } = useUser();
-	const { skillData, isSkillLoading, refetch, error } = useFetchSkillData();
+	const {
+		data: skillData,
+		isLoading: isSkillLoading,
+		refetch,
+		error,
+	} = useFetchSkillData();
+
+	useEffect(() => {
+		if (error) {
+			toast.error("Error fetching Skills");
+		}
+	}, [error]);
 
 	const groupedSkills: GroupedSkills = skillData
 		? skillData.reduce((acc: GroupedSkills, skill: Skill) => {
@@ -25,10 +37,6 @@ export const SkillSection: React.FC = () => {
 		: {};
 
 	const sortedCategories = Object.keys(groupedSkills).sort();
-
-    const refetchData = () => {
-        refetch();
-    }
 
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
@@ -44,7 +52,10 @@ export const SkillSection: React.FC = () => {
 					</button>
 				)}
 				{showSkillModal && (
-					<AddSkillModal setShowSkillModal={setShowSkillModal} onUpdate={refetchData}  />
+					<AddSkillModal
+						setShowSkillModal={setShowSkillModal}
+						onUpdate={refetch}
+					/>
 				)}
 			</div>
 			<div className="flex items-center justify-start w-full">
