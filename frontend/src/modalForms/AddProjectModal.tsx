@@ -15,13 +15,14 @@ import { HiOutlineXMark } from "react-icons/hi2";
 // Local imports
 import { skills, SelectOption } from "@/utils/selectObjects";
 import { selectFieldStyle } from "@/utils/styles";
-import { Project } from "@/types/userTypes";
+import { ProjectForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddProjectModal: React.FC<{
 	setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowProjectModal }) => {
+    onSave: () => void;
+}> = ({ setShowProjectModal, onSave }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
 	const [description, setDescription] = useState("");
 	const maxChars = 2000;
@@ -33,19 +34,19 @@ export const AddProjectModal: React.FC<{
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<Project>();
+	} = useForm<ProjectForm>();
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setDescription(event.target.value);
 	};
 
-	const onSubmit: SubmitHandler<Project> = async (data) => {
+	const onSubmit: SubmitHandler<ProjectForm> = async (data) => {
 		setIsLoading(true);
 		const transformedSkills: SelectOption[] = data.skills.map((skill) => ({
 			label: skill.label,
 			value: skill.value,
 		}));
-		const projectData: Project = {
+		const projectData: ProjectForm = {
 			...data,
 			skills: transformedSkills,
 		};
@@ -65,6 +66,7 @@ export const AddProjectModal: React.FC<{
 			// console.log(response.data);
 			toast.success("Project Added");
 			setShowProjectModal(false);
+            onSave();
 		} catch (error: any) {
 			toast.error("Error occured while adding project. Try again!");
 			if (error.response) {

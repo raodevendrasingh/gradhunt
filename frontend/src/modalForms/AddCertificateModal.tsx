@@ -18,7 +18,8 @@ import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddCertificateModal: React.FC<{
 	setShowCertifyModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowCertifyModal }) => {
+    onSave: () => void;
+}> = ({ setShowCertifyModal, onSave }) => {
 	const [isExpired, setIsExpired] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
@@ -47,8 +48,8 @@ export const AddCertificateModal: React.FC<{
 			});
 			// console.log(response.data);
 			toast.success("Certificate Added");
-
 			setShowCertifyModal(false);
+            onSave();
 		} catch (error: any) {
 			toast.error("Error occured while adding certificate. Try again!");
 			if (error.response) {

@@ -1,12 +1,15 @@
+import { useState } from "react";
+import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
 import { AddEduModal } from "@/modalForms/AddEduModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
 import { AddProjectModal } from "@/modalForms/AddProjectModal";
 import { AddSkillModal } from "@/modalForms/AddSkillModal";
-import { useState } from "react";
-import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
+import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
+import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
+import { useFetchEducationData } from "@/hooks/useFetchEducationData";
 export interface Option {
 	id: string;
 	label: string;
@@ -19,6 +22,7 @@ const options: Option[] = [
 	{ id: "projects", label: "Projects" },
 	{ id: "certifications", label: "Certifications" },
 	{ id: "achievements", label: "Achievements" },
+	{ id: "publications", label: "Publications" },
 ];
 
 export default function ComboboxAll() {
@@ -32,7 +36,10 @@ export default function ComboboxAll() {
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const { refetchExp } = useFetchExperienceData();
+    const { refetchEdu } = useFetchEducationData();
     const { refetchAbout } = useFetchAboutSection();
+    const { refetchProjects } = useFetchProjectData();
+    const { refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -47,7 +54,6 @@ export default function ComboboxAll() {
 			setShowExpModal(true);
 		} else if (optionId === "education") {
 			setShowEduModal(true);
-			<AddEduModal setShowEduModal={setShowEduModal} />;
 		} else if (optionId === "certifications") {
 			setShowCertifyModal(true);
 		} else if (optionId === "projects") {
@@ -55,22 +61,25 @@ export default function ComboboxAll() {
 		} else if (optionId === "skills") {
 			setShowSkillModal(true);
 		}
+        setIsOpen(false);
 	};
 
 	return (
 		<div className="relative inline-block text-left">
-			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} />}
+			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />}
 			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
 			{showSkillModal && (
 				<AddSkillModal setShowSkillModal={setShowSkillModal} onUpdate={refetchAbout} />
 			)}
 			{showProjectModal && (
-				<AddProjectModal setShowProjectModal={setShowProjectModal} />
+				<AddProjectModal setShowProjectModal={setShowProjectModal} onSave={refetchProjects} />
 			)}
 			{showCertifyModal && (
-				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} />
+				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} onSave={refetchCertificates} />
 			)}
 			{/* {showAchieveModal && <AddAchievementModal setShowAchieveModal={setShowAchieveModal} />} */}
+			{/* {showPublishModal && <AddPublicationModal setShowPublishModal={setShowPublishModal} />} */}
+
 			<div>
 				<button
 					type="button"
@@ -83,7 +92,7 @@ export default function ComboboxAll() {
 			</div>
 
 			{isOpen && (
-				<div className="origin-top-right absolute left-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+				<div className="origin-top-right absolute left-0 z-10 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
 					<div
 						className="p-1"
 						role="menu"

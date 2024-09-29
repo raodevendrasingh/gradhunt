@@ -1,7 +1,5 @@
 import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
-import { AddProjectModal } from "@/modalForms/AddProjectModal";
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa6";
 import { ContentSkeleton } from "../components/ui/ContentSkeleton";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
@@ -15,6 +13,7 @@ import { AiFillSafetyCertificate } from "react-icons/ai";
 import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
 import { EditCertificateModal } from "@/modalForms/EditCertificateModal";
+import ComboboxCurriculars from "@/components/layouts/ComboboxCurriculars";
 
 export const ExtraCurriculars = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
@@ -28,11 +27,8 @@ export const ExtraCurriculars = () => {
 	const { projectData, isProjectLoading, refetchProjects, error } =
 		useFetchProjectData();
 
-	const {
-		certificateData,
-		isCertifyLoading,
-		refetchCertificates,
-	} = useFetchCertificateData();
+	const { certificateData, isCertifyLoading, refetchCertificates } =
+		useFetchCertificateData();
 
 	const handleEditProject = (id: number) => {
 		setEditingProjectId(id);
@@ -48,16 +44,11 @@ export const ExtraCurriculars = () => {
 		<div className="flex flex-col">
 			{isSignedIn && (
 				<div className="flex justify-between items-center">
-					<button
-						type="button"
-						onClick={() => setShowProjectModal(true)}
-						className="inline-flex items-center justify-center gap-2 w-32 rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-0"
-					>
-						<FaPlus />
-						Add Project
-					</button>
+					<ComboboxCurriculars />
 				</div>
 			)}
+
+			{/* project section */}
 			<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-2">
 				<div className="flex items-center justify-between w-full">
 					<div className="flex items-center gap-2">
@@ -128,7 +119,7 @@ export const ExtraCurriculars = () => {
 													<p>{data.description}</p>
 												</div>
 											)}
-											
+
 											{data.skills && (
 												<div className="flex items-center flex-wrap">
 													{data.skills.map((skill, index) => (
@@ -150,6 +141,7 @@ export const ExtraCurriculars = () => {
 				)}
 			</div>
 
+			{/* certificate section */}
 			<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-2">
 				<div className="flex items-center justify-between w-full">
 					<div className="flex items-center gap-2">
@@ -179,7 +171,9 @@ export const ExtraCurriculars = () => {
 												{isSignedIn && (
 													<button
 														type="button"
-														onClick={() => handleEditCertificate(data.id as number)}
+														onClick={() =>
+															handleEditCertificate(data.id as number)
+														}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
@@ -227,10 +221,6 @@ export const ExtraCurriculars = () => {
 				)}
 			</div>
 
-			{showProjectModal && (
-				<AddProjectModal setShowProjectModal={setShowProjectModal} />
-			)}
-
 			{showEditProjectModal && (
 				<EditProjectModal
 					setShowEditProjectModal={setShowEditProjectModal}
@@ -239,13 +229,13 @@ export const ExtraCurriculars = () => {
 				/>
 			)}
 
-            {showEditCertifyModal && (  
-                <EditCertificateModal
-                    setShowEditCertifyModal={setShowEditCertifyModal}
-                    certificateId={editingCertifyId as number}
-                    onSave={refetchCertificates}
-                />
-            )}
+			{showEditCertifyModal && (
+				<EditCertificateModal
+					setShowEditCertifyModal={setShowEditCertifyModal}
+					certificateId={editingCertifyId as number}
+					onSave={refetchCertificates}
+				/>
+			)}
 		</div>
 	);
 };

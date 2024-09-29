@@ -42,7 +42,7 @@ export const ProfileCompletion = () => {
 		},
 		{
 			id: "8",
-			label: "Connect at least one featured social",
+			label: "Add at least one Social link",
 			value: 10,
 			completed: false,
 		},

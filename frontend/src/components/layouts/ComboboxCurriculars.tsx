@@ -1,27 +1,26 @@
-import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
-import { AddEduModal } from "@/modalForms/AddEduModal";
-import { AddExpModal } from "@/modalForms/AddExpModal";
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";
-import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
-import { useFetchEducationData } from "@/hooks/useFetchEducationData";
+import { AddProjectModal } from "@/modalForms/AddProjectModal";
+import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
+import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
+import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 
 const options: Option[] = [
-	{ id: "experience", label: "Experience" },
-	{ id: "education", label: "Education" },
-	{ id: "publications", label: "Publications" },
+	{ id: "projects", label: "Projects" },
+	{ id: "certifications", label: "Certifications" },
+	{ id: "achievements", label: "Achievements" },
 ];
 
-export default function ComboboxWork() {
+export default function ComboboxCurriculars() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [showExpModal, setShowExpModal] = useState<boolean>(false);
-	const [showEduModal, setShowEduModal] = useState<boolean>(false);
-	const [showPublishModal, setShowPublishModal] = useState<boolean>(false);
+    const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
+	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     
-    const { refetchExp } = useFetchExperienceData();
-    const { refetchEdu } = useFetchEducationData();
+    const { refetchProjects } = useFetchProjectData();
+    const { refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -33,22 +32,25 @@ export default function ComboboxWork() {
 				: [...prev, optionId]
 		);
 
-		if (optionId === "experience") {
-			setShowExpModal(true);
-		} else if (optionId === "education") {
-			setShowEduModal(true);
-		} else if (optionId === "publications") {
-			setShowPublishModal(true);
+        if (optionId === "certifications") {
+			setShowCertifyModal(true);
+		} else if (optionId === "projects") {
+			setShowProjectModal(true);
+		} else if (optionId === "achievements") {
+			setShowAchieveModal(true);
 		}
         setIsOpen(false);
 	};
 
 	return (
 		<div className="relative inline-block text-left">
-			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />}
-			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
-			
-			{/* {showPublishModal && <AddPublishmentModal setShowPublishModal={setShowPublishModal} />} */}
+			{showProjectModal && (
+				<AddProjectModal setShowProjectModal={setShowProjectModal} onSave={refetchProjects} />
+			)}
+			{showCertifyModal && (
+				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} onSave={refetchCertificates} />
+			)}
+			{/* {showAchieveModal && <AddAchievementModal setShowAchieveModal={setShowAchieveModal} />} */}
 			<div>
 				<button
 					type="button"
