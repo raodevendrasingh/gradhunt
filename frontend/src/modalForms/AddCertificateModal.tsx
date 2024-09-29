@@ -13,7 +13,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
 import { DurationFields } from "@/helpers/DurationFields";
-import { Certificate } from "@/types/userTypes";
+import { CertificateData } from "@/types/userTypes";
 import { FormFooter } from "@/components/ui/FormFooter";
 
 export const AddCertificateModal: React.FC<{
@@ -28,9 +28,9 @@ export const AddCertificateModal: React.FC<{
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<Certificate>();
+	} = useForm<CertificateData>();
 
-	const onSubmit: SubmitHandler<Certificate> = async (data) => {
+	const onSubmit: SubmitHandler<CertificateData> = async (data) => {
 		setIsLoading(true);
 		try {
 			const token = await getToken();

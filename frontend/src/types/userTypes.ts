@@ -116,19 +116,6 @@ export type EducationForm = {
     [key: string]: any;
 };
 
-export type Certificate = {
-	certificateId?: string;
-	user?: UserDetails;
-	certificateName: string;
-	issuerOrg: string;
-	credentialUrl: string;
-	credentialId: string;
-	isValid: boolean;
-	startMonth: string;
-	startYear: number;
-	endMonth?: string;
-	endYear?: number;
-};
 
 export type SocialLinks = {
     github: string;
@@ -191,6 +178,34 @@ export type ProjectForm = {
 	skills: SelectOption[];
 	sourceCodeLink: string | null;
 	isCurrentlyWorking: boolean;
+	startMonth: { value: string; label: string };
+	startYear: { value: string; label: string };
+	endMonth: { value: string; label: string } | null;
+	endYear: { value: string; label: string } | null;
+};
+
+export type CertificateData = {
+	id?: number;
+	user?: UserDetails;
+	certificateName: string;
+	issuerOrg: string;
+	credentialUrl: string;
+	credentialId: string;
+	isValid: boolean;
+	startMonth: string;
+	startYear: number;
+	endMonth?: string;
+	endYear?: number;
+};
+
+export type CertificateForm = {
+	id?: number;
+	user?: UserDetails;
+	certificateName: string;
+	issuerOrg: string;
+	credentialUrl: string;
+	credentialId: string;
+	isValid: boolean;
 	startMonth: { value: string; label: string };
 	startYear: { value: string; label: string };
 	endMonth: { value: string; label: string } | null;
