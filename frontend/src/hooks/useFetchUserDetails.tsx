@@ -38,9 +38,9 @@ export const useFetchUserDetails = () => {
 		fetchData();
 	}, [fetchData]);
 
-	const refetch = useCallback(() => {
+	const refetchUserDetails = useCallback(() => {
 		fetchData();
 	}, [fetchData]);
 
-	return { userDetails, isLoading, error, refetch };
+	return { userDetails, isLoading, error, refetchUserDetails };
 };

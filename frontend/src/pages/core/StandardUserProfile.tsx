@@ -3,7 +3,6 @@ import { FaCalendarCheck } from "react-icons/fa6";
 import { HiMiniLanguage } from "react-icons/hi2";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BiEditAlt } from "react-icons/bi";
-
 import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
@@ -21,7 +20,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 		useState<boolean>(false);
 	const { user, isSignedIn } = useUser();
 
-	const { userDetails, isLoading, error, refetch } = useFetchUserDetails();
+	const { userDetails, isLoading, error, refetchUserDetails } = useFetchUserDetails();
 
 	if (isLoading) {
 		return (
@@ -94,6 +93,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 										{showBasicDetailModal && (
 											<AddBasicDetailModal
 												setShowBasicDetailModal={setShowBasicDetailModal}
+                                                onSave={refetchUserDetails}
 											/>
 										)}
 									</>
@@ -178,7 +178,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 							<button
 								key={idx}
 								onClick={() => setSelected(idx)}
-								className={`px-2 py-1 rounded-lg text-sm font-medium transition-colors ${
+								className={`px-2.5 py-1 rounded-md text-sm font-medium transition-colors ${
 									selected === idx
 										? "bg-slate-800 text-white"
 										: "bg-slate-100 text-gray-700 hover:bg-slate-200"

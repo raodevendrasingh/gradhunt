@@ -1,7 +1,6 @@
-import { ResumePage } from "@/pages/core/standardProfile/ResumePage";
-import { Featured } from "@/pages/core/standardProfile/Featured";
 import { Overview } from "@/pages/core/standardProfile/Overview";
-import { Projects } from "@/pages/core/standardProfile/Projects";
+import { ExtraCurriculars } from "@/pages/core/standardProfile/ExtraCurriculars";
+import { ProfessionalBackground } from "@/pages/core/standardProfile/ProfessionalBackground";
 
 export const standardTabsData = [
 	{
@@ -9,15 +8,12 @@ export const standardTabsData = [
 		content: <Overview/>
 	},
 	{
-		title: "Projects",
-		content: <Projects/>,
+		title: "Extra Curriculars",
+		content: <ExtraCurriculars/>,
 	},
 	{
-		title: "Resume",
-		content: <ResumePage/>,
-	},
-	{
-		title: "Featured",
-		content: <Featured/>,
+		title: "Professional Background",
+		content: <ProfessionalBackground />,
 	},
 ];
+

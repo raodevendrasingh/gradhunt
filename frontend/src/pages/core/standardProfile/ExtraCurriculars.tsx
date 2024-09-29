@@ -16,7 +16,7 @@ import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
 import { EditCertificateModal } from "@/modalForms/EditCertificateModal";
 
-export const Projects = () => {
+export const ExtraCurriculars = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
 	const [editingProjectId, setEditingProjectId] = useState<number>();
 	const [showEditProjectModal, setShowEditProjectModal] =
