@@ -43,9 +43,9 @@ export const useFetchProjectData = () => {
 		fetchData();
 	}, [fetchData]);
 
-	const refetch = useCallback(() => {
+	const refetchProjects = useCallback(() => {
 		fetchData();
 	}, [fetchData]);
 
-	return { projectData, isProjectLoading, error, refetch };
+	return { projectData, isProjectLoading, error, refetchProjects };
 };

@@ -93,8 +93,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 class CertificateSerializer(serializers.ModelSerializer):
     startMonth = NestedDictField()
     startYear = NestedDictField()
-    endMonth = NestedDictField(required=False)
-    endYear = NestedDictField(required=False)
+    endMonth = serializers.CharField(allow_blank=True, allow_null=True, required=False)
+    endYear = serializers.CharField(allow_blank=True, allow_null=True, required=False)
 
     class Meta:
         model = Certificate

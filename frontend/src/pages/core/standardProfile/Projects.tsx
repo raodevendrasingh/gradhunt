@@ -14,26 +14,34 @@ import { IoMdCube } from "react-icons/io";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
+import { EditCertificateModal } from "@/modalForms/EditCertificateModal";
 
 export const Projects = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
 	const [editingProjectId, setEditingProjectId] = useState<number>();
 	const [showEditProjectModal, setShowEditProjectModal] =
 		useState<boolean>(false);
+	const [editingCertifyId, setEditingCertifyId] = useState<number>();
+	const [showEditCertifyModal, setShowEditCertifyModal] =
+		useState<boolean>(false);
 	const { isSignedIn } = useUser();
-	const { projectData, isProjectLoading, refetch, error } =
+	const { projectData, isProjectLoading, refetchProjects, error } =
 		useFetchProjectData();
 
 	const {
 		certificateData,
 		isCertifyLoading,
-		certifyError,
 		refetchCertificates,
 	} = useFetchCertificateData();
 
-	const handleEditClick = (id: number) => {
+	const handleEditProject = (id: number) => {
 		setEditingProjectId(id);
 		setShowEditProjectModal(true);
+	};
+
+	const handleEditCertificate = (id: number) => {
+		setEditingCertifyId(id);
+		setShowEditCertifyModal(true);
 	};
 
 	return (
@@ -79,7 +87,7 @@ export const Projects = () => {
 												{isSignedIn && (
 													<button
 														type="button"
-														onClick={() => handleEditClick(data.id as number)}
+														onClick={() => handleEditProject(data.id as number)}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
@@ -171,7 +179,7 @@ export const Projects = () => {
 												{isSignedIn && (
 													<button
 														type="button"
-														onClick={() => handleEditClick(data.id as number)}
+														onClick={() => handleEditCertificate(data.id as number)}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
@@ -227,9 +235,17 @@ export const Projects = () => {
 				<EditProjectModal
 					setShowEditProjectModal={setShowEditProjectModal}
 					projectId={editingProjectId as number}
-					onSave={refetch}
+					onSave={refetchProjects}
 				/>
 			)}
+
+            {showEditCertifyModal && (  
+                <EditCertificateModal
+                    setShowEditCertifyModal={setShowEditCertifyModal}
+                    certificateId={editingCertifyId as number}
+                    onSave={refetchCertificates}
+                />
+            )}
 		</div>
 	);
 };

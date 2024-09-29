@@ -83,13 +83,13 @@ export const EditEduModal: React.FC<{
 				},
 			});
 
-			toast.success("Experience Deleted");
+			toast.success("Education Deleted");
 			setIsDeleted(true);
 			onSave();
 			setShowEditEduModal(false);
 		} catch (error: any) {
 			console.error("Delete error:", error);
-			toast.error("Failed to delete experience. Please try again.");
+			toast.error("Failed to delete education. Please try again.");
 		} finally {
 			setIsDeleting(false);
 		}

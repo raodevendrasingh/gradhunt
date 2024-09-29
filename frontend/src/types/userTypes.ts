@@ -193,9 +193,9 @@ export type CertificateData = {
 	credentialId: string;
 	isValid: boolean;
 	startMonth: string;
-	startYear: number;
+	startYear: string;
 	endMonth?: string;
-	endYear?: number;
+	endYear?: string;
 };
 
 export type CertificateForm = {
