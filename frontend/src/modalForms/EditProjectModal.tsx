@@ -41,7 +41,7 @@ export const EditProjectModal: React.FC<{
 		formState: { errors },
 	} = useForm<ProjectForm>();
 
-	const { projectIdData } = useFetchProjectDataById({
+	const { data: projectIdData } = useFetchProjectDataById({
 		projectId: projectId,
 	});
 
@@ -52,7 +52,10 @@ export const EditProjectModal: React.FC<{
 				projectName: data.projectName,
 				liveLink: data.liveLink,
 				sourceCodeLink: data.sourceCodeLink,
-				skills: data.skills.map((skill: string) => ({ value: skill, label: skill })),
+				skills: data.skills.map((skill: string) => ({
+					value: skill,
+					label: skill,
+				})),
 				startMonth: { value: data.startMonth, label: data.startMonth },
 				startYear: { value: data.startYear, label: data.startYear },
 				endMonth: data.endMonth

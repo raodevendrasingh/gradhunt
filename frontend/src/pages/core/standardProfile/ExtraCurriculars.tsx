@@ -24,11 +24,18 @@ export const ExtraCurriculars = () => {
 	const [showEditCertifyModal, setShowEditCertifyModal] =
 		useState<boolean>(false);
 	const { isSignedIn } = useUser();
-	const { projectData, isProjectLoading, refetchProjects, error } =
-		useFetchProjectData();
+	const {
+		data: projectData,
+		isLoading: isProjectLoading,
+		refetch: refetchProjects,
+		error,
+	} = useFetchProjectData();
 
-	const { certificateData, isCertifyLoading, refetchCertificates } =
-		useFetchCertificateData();
+	const {
+		data: certificateData,
+		isLoading: isCertifyLoading,
+		refetch: refetchCertificates,
+	} = useFetchCertificateData();
 
 	const handleEditProject = (id: number) => {
 		setEditingProjectId(id);

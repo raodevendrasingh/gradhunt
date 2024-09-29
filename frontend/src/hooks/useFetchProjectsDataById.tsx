@@ -1,9 +1,7 @@
 // ?for fetching project data in the project tab
 
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-
-import { toast } from "sonner";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { ProjectData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
@@ -12,44 +10,29 @@ interface ProjectDataProps {
 	projectId: number;
 }
 
-export const useFetchProjectDataById = ({ projectId }: ProjectDataProps) => {
-	const [projectIdData, SetProjectIdData] = useState<ProjectData>();
-	const [isProjectLoading, setIsProjectLoading] = useState<boolean>(true);
-	const [error, setError] = useState<any>(null);
+export const useFetchProjectDataById = ({
+	projectId,
+}: ProjectDataProps): UseQueryResult<ProjectData, AxiosError> => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
 
-	const fetchData = useCallback(async () => {
-		setIsProjectLoading(true);
-		try {
-			const token = await getToken();
-			if (!token) {
-				throw new Error("User Unauthorized!");
-			}
-			const url = `/api/get-project/${username}/${projectId}`;
-			const response = await axios.get(url, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			const data = response.data;
-			SetProjectIdData(data);
-		} catch (err: any) {
-			setError(err);
-			toast.error("Error fetching project details");
-		} finally {
-			setIsProjectLoading(false);
+	const fetchProjectDataById = async (): Promise<ProjectData> => {
+		const token = await getToken();
+		if (!token) {
+			throw new Error("User Unauthorized!");
 		}
-	}, []);
+		const url = `/api/get-project/${username}/${projectId}`;
+		const response = await axios.get(url, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	};
 
-	useEffect(() => {
-		fetchData();
-	}, [fetchData]);
-
-	const refetchProject = useCallback(() => {
-		fetchData();
-	}, [fetchData]);
-
-	return { projectIdData, isProjectLoading, error, refetchProject };
+	return useQuery<ProjectData, AxiosError>({
+		queryKey: ["projectIdData", username, projectId],
+		queryFn: fetchProjectDataById,
+	});
 };

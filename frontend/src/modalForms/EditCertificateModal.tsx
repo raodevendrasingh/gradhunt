@@ -28,7 +28,7 @@ export const EditCertificateModal: React.FC<{
 	const [isDeleted, setIsDeleted] = useState<boolean>(false);
 	const { getToken } = useAuth();
 
-	const { certificateIdData } = useFetchCertificateDataById({
+	const { data: certificateIdData } = useFetchCertificateDataById({
 		certificateId: certificateId,
 	});
 
@@ -107,7 +107,7 @@ export const EditCertificateModal: React.FC<{
 			});
 			console.log(response.data);
 			toast.success("Certificate Added");
-            onSave();
+			onSave();
 			setShowEditCertifyModal(false);
 		} catch (error: any) {
 			toast.error("Error occured while adding certificate. Try again!");
