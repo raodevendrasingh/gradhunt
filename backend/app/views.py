@@ -554,6 +554,7 @@ class DeleteEducationData(APIView):
 class AddProjectData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    @transaction.atomic
     def post(self, request):
         try:
             user = UserDetails.objects.get(
@@ -618,6 +619,103 @@ class DeleteProjectData(APIView):
         except Project.DoesNotExist:
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+class AddCertificateData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+
+            data = request.data.copy()
+            data['user'] = user.id
+
+            serializer = CertificateSerializer(data=data)
+            if serializer.is_valid():
+                cerificate = serializer.save()
+                return Response(CertificateSerializer(cerificate).data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetCertificates(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            certificates = Certificate.objects.filter(
+                user=user).order_by('-startYear', '-startMonth')
+            serializer = CertificateSerializer(certificates, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetCertificateById(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username, id):
+        try:
+            user = get_object_or_404(UserDetails, username=username)
+            certificate = get_object_or_404(Certificate, user=user, id=id)
+            serializer = CertificateSerializer(certificate)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UpdateCertificateData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def patch(self, request, id):
+        try:
+            cerificate = Certificate.objects.get(
+                id=id,
+                user__clerk_user_id=request.user.clerk_user_id
+            )
+        except Certificate.DoesNotExist:
+            return Response(
+                {"error": "Certificate not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = CertificateSerializer(
+            cerificate, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Certificate updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteCertificateData(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def delete(self, request, id):
+        try:
+            user = get_object_or_404(
+                UserDetails, clerk_user_id=request.user.clerk_user_id)
+            certificate = get_object_or_404(Certificate, id=id, user=user)
+
+            if certificate.user != user:
+                raise PermissionDenied(
+                    "You don't have permission to perform this action.")
+
+            certificate.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Certificate.DoesNotExist:
+            return Response({"error": "Certificate not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddCertificateData(APIView):
@@ -787,7 +885,8 @@ class GetProjects(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            projects = Project.objects.filter(user=user)
+            projects = Project.objects.filter(
+                user=user).order_by('-startYear', '-startMonth')
             serializer = ProjectSerializer(projects, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
@@ -807,21 +906,6 @@ class GetProjectById(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class GetCertificates(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
-    def get(self, request, username):
-        try:
-            user = UserDetails.objects.get(username=username)
-            certificates = Certificate.objects.filter(user=user)
-            serializer = CertificateSerializer(certificates, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetSkill(APIView):

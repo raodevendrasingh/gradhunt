@@ -91,9 +91,25 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class CertificateSerializer(serializers.ModelSerializer):
+    startMonth = NestedDictField()
+    startYear = NestedDictField()
+    endMonth = NestedDictField(required=False)
+    endYear = NestedDictField(required=False)
+
     class Meta:
         model = Certificate
-        fields = '__all__'
+        fields = ['id', 'certificateName', 'issuerOrg', 'credentialUrl', 'credentialId',
+                  'isValid', 'startMonth', 'startYear', 'endMonth', 'endYear', 'user']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return Certificate.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class SkillsSerializer(serializers.ModelSerializer):

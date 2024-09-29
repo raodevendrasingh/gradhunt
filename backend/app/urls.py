@@ -54,6 +54,9 @@ urlpatterns = [
     # certificate section
     path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
     path('api/get-certificates/<str:username>', GetCertificates.as_view(), name='get-certificate'),
+    path('api/get-certificate/<str:username>/<str:id>', GetCertificateById.as_view(), name='get-certificate-by-id'),
+    path('api/update-certificate/<str:id>', UpdateCertificateData.as_view(), name='update-certificate'),
+    path('api/delete-certificate/<str:id>', DeleteCertificateData.as_view(), name='delete-certificate'),
 
     # skills section
     path('api/add-skills', AddSkillData.as_view(), name='add-skills'),
