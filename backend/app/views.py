@@ -82,7 +82,7 @@ class GetCompletionPercentage(APIView):
         try:
             user = UserDetails.objects.get(username=username)
             social = SocialLinks.objects.get(user=user)
-            about = AboutData.objects.get(user=user)
+            about = UserDescription.objects.get(user=user)
 
             tasks = [
                 {"label": "Add a Profile Picture", "value": 10,
@@ -96,7 +96,7 @@ class GetCompletionPercentage(APIView):
                 {"label": "Add at least one Experience", "value": 15,
                     "completed": Experience.objects.filter(user=user).exists()},
                 {"label": "Add at least one Project", "value": 10,
-                    "completed": Project.objects.filter(user=user).exists()},
+                    "completed": Projects.objects.filter(user=user).exists()},
                 {
                     "label": "Connect at least one featured social", "value": 10,
                     "completed": any([
@@ -162,14 +162,14 @@ class SaveUserDesc(APIView):
             return Response({'error': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            about_data = AboutData.objects.get(user=user)
+            about_data = UserDescription.objects.get(user=user)
             about_data.description = description
-        except AboutData.DoesNotExist:
-            about_data = AboutData(user=user, description=description)
+        except UserDescription.DoesNotExist:
+            about_data = UserDescription(user=user, description=description)
 
         about_data.save()
 
-        serializer = AboutDataSerializer(about_data)
+        serializer = UserDescriptionSerializer(about_data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -219,15 +219,14 @@ class GetRecruiterDetails(APIView):
         try:
             user = UserDetails.objects.get(username__iexact=username)
             recruiter = Recruiter.objects.get(user__exact=user.id)
-            hiring_preferences = HiringPreference.objects.get(
+            hiring_preferences = HiringPreferences.objects.get(
                 recruiter__exact=recruiter.id)
             company_profile = CompanyProfile.objects.get(
                 recruiter__exact=recruiter.id)
             experience_data = Experience.objects.filter(user=user)
             education_data = Education.objects.filter(user=user)
-            job_postings = Posting.objects.filter(
+            job_postings = JobPostings.objects.filter(
                 recruiter__exact=recruiter.id).first()
-            awards = Award.objects.filter(user=user.id).first()
 
             data = {
                 'user_details': user,
@@ -237,7 +236,6 @@ class GetRecruiterDetails(APIView):
                 'experience_data': experience_data,
                 'education_data': education_data,
                 'job_postings': job_postings,
-                'awards': awards
             }
             serializer = RecruiterDataSerializer(data)
 
@@ -247,7 +245,7 @@ class GetRecruiterDetails(APIView):
             return JsonResponse({'error': 'User not found'}, status=404)
         except Recruiter.DoesNotExist:
             return JsonResponse({'error': 'Recruiter details not found'}, status=404)
-        except HiringPreference.DoesNotExist:
+        except HiringPreferences.DoesNotExist:
             return JsonResponse({'error': 'Hiring preferences not found'}, status=404)
 
 
@@ -261,7 +259,7 @@ class GetAllRecruiters(APIView):
                 user_serializer = UserSerializer(recruiter.user)
                 recruiter_serializer = RecruiterSerializer(recruiter)
                 hiring_preference_serializer = HiringPreferenceSerializer(
-                    HiringPreference.objects.filter(recruiter=recruiter).first())
+                    HiringPreferences.objects.filter(recruiter=recruiter).first())
 
                 company_profile = CompanyProfile.objects.filter(
                     recruiter=recruiter).first()
@@ -278,13 +276,10 @@ class GetAllRecruiters(APIView):
                 education_data_serializer = EducationSerializer(
                     education_data, many=True)
 
-                job_posting = Posting.objects.filter(
+                job_posting = JobPostings.objects.filter(
                     recruiter=recruiter).first()
                 job_posting_serializer = PostingSerializer(
                     job_posting) if job_posting else None
-
-                award = Award.objects.filter(user=recruiter.user).first()
-                award_serializer = AwardSerializer(award) if award else None
 
                 recruiter_data = {
                     'user_details': user_serializer.data,
@@ -294,7 +289,6 @@ class GetAllRecruiters(APIView):
                     'experience_data': experience_data_serializer.data,
                     'education_data': education_data_serializer.data,
                     'job_postings': job_posting_serializer.data if job_posting_serializer else None,
-                    'awards': award_serializer.data if award_serializer else None
                 }
                 data.append(recruiter_data)
 
@@ -574,17 +568,46 @@ class AddProjectData(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class GetProjects(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            projects = Projects.objects.filter(
+                user=user).order_by('-startYear', '-startMonth')
+            serializer = ProjectSerializer(projects, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetProjectById(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username, id):
+        try:
+            user = get_object_or_404(UserDetails, username=username)
+            project = get_object_or_404(Projects, user=user, id=id)
+            serializer = ProjectSerializer(project)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class UpdateProjectData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def patch(self, request, id):
         try:
-            project = Project.objects.get(
+            project = Projects.objects.get(
                 id=id,
                 user__clerk_user_id=request.user.clerk_user_id
             )
-        except Project.DoesNotExist:
+        except Projects.DoesNotExist:
             return Response(
                 {"error": "Project not found"},
                 status=status.HTTP_404_NOT_FOUND
@@ -606,7 +629,7 @@ class DeleteProjectData(APIView):
         try:
             user = get_object_or_404(
                 UserDetails, clerk_user_id=request.user.clerk_user_id)
-            project = get_object_or_404(Project, id=id, user=user)
+            project = get_object_or_404(Projects, id=id, user=user)
 
             if project.user != user:
                 raise PermissionDenied(
@@ -616,7 +639,7 @@ class DeleteProjectData(APIView):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        except Project.DoesNotExist:
+        except Projects.DoesNotExist:
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
@@ -649,7 +672,7 @@ class GetCertificates(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            certificates = Certificate.objects.filter(
+            certificates = Certifications.objects.filter(
                 user=user).order_by('-startYear', '-startMonth')
             serializer = CertificateSerializer(certificates, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -665,7 +688,7 @@ class GetCertificateById(APIView):
     def get(self, request, username, id):
         try:
             user = get_object_or_404(UserDetails, username=username)
-            certificate = get_object_or_404(Certificate, user=user, id=id)
+            certificate = get_object_or_404(Certifications, user=user, id=id)
             serializer = CertificateSerializer(certificate)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
@@ -678,11 +701,11 @@ class UpdateCertificateData(APIView):
     @transaction.atomic
     def patch(self, request, id):
         try:
-            cerificate = Certificate.objects.get(
+            cerificate = Certifications.objects.get(
                 id=id,
                 user__clerk_user_id=request.user.clerk_user_id
             )
-        except Certificate.DoesNotExist:
+        except Certifications.DoesNotExist:
             return Response(
                 {"error": "Certificate not found"},
                 status=status.HTTP_404_NOT_FOUND
@@ -704,7 +727,7 @@ class DeleteCertificateData(APIView):
         try:
             user = get_object_or_404(
                 UserDetails, clerk_user_id=request.user.clerk_user_id)
-            certificate = get_object_or_404(Certificate, id=id, user=user)
+            certificate = get_object_or_404(Certifications, id=id, user=user)
 
             if certificate.user != user:
                 raise PermissionDenied(
@@ -714,38 +737,8 @@ class DeleteCertificateData(APIView):
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        except Certificate.DoesNotExist:
+        except Certifications.DoesNotExist:
             return Response({"error": "Certificate not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-class AddCertificateData(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
-    @transaction.atomic
-    def post(self, request):
-        user = request.user
-
-        data = request.data
-        certificate_data = {}
-
-        for field in Certificate._meta.fields:
-            field_name = field.name
-
-            if field_name == 'user':
-                certificate_data[field_name] = user
-            elif field_name in data:
-                if isinstance(data[field_name], dict) and 'value' in data[field_name]:
-                    certificate_data[field_name] = data[field_name]['value']
-                else:
-                    certificate_data[field_name] = data[field_name]
-
-        try:
-            certificate = Certificate.objects.create(**certificate_data)
-            return Response({
-                'message': 'Certificate Added Sucessfullly',
-            }, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddSkillData(APIView):
@@ -879,35 +872,6 @@ class GetUserDetails(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetProjects(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
-    def get(self, request, username):
-        try:
-            user = UserDetails.objects.get(username=username)
-            projects = Project.objects.filter(
-                user=user).order_by('-startYear', '-startMonth')
-            serializer = ProjectSerializer(projects, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class GetProjectById(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
-    def get(self, request, username, id):
-        try:
-            user = get_object_or_404(UserDetails, username=username)
-            project = get_object_or_404(Project, user=user, id=id)
-            serializer = ProjectSerializer(project)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 class GetSkill(APIView):
     permission_classes = [IsClerkAuthenticated]
 
@@ -959,9 +923,9 @@ class GetUserDescription(APIView):
     def get(self, request, username):
         try:
             user = UserDetails.objects.get(username=username)
-            desc = AboutData.objects.filter(user=user).first()
+            desc = UserDescription.objects.filter(user=user).first()
             if desc:
-                serializer = AboutDataSerializer(desc)
+                serializer = UserDescriptionSerializer(desc)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Description not found"}, status=status.HTTP_404_NOT_FOUND)

@@ -37,9 +37,9 @@ class SocialLinksSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AboutDataSerializer(serializers.ModelSerializer):
+class UserDescriptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AboutData
+        model = UserDescription
         fields = '__all__'
 
 
@@ -51,19 +51,13 @@ class RecruiterSerializer(serializers.ModelSerializer):
 
 class HiringPreferenceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HiringPreference
+        model = HiringPreferences
         fields = '__all__'
 
 
 class PostingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Posting
-        fields = '__all__'
-
-
-class AwardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Award
+        model = JobPostings
         fields = '__all__'
 
 
@@ -75,13 +69,13 @@ class ProjectSerializer(serializers.ModelSerializer):
     endYear = NestedDictField(required=False)
 
     class Meta:
-        model = Project
+        model = Projects
         fields = ['id', 'projectName', 'description', 'liveLink', 'skills', 'sourceCodeLink',
                   'isCurrentlyWorking', 'startMonth', 'startYear', 'endMonth', 'endYear', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        return Project.objects.create(**validated_data)
+        return Projects.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
@@ -93,17 +87,19 @@ class ProjectSerializer(serializers.ModelSerializer):
 class CertificateSerializer(serializers.ModelSerializer):
     startMonth = NestedDictField()
     startYear = NestedDictField()
-    endMonth = serializers.CharField(allow_blank=True, allow_null=True, required=False)
-    endYear = serializers.CharField(allow_blank=True, allow_null=True, required=False)
+    endMonth = serializers.CharField(
+        allow_blank=True, allow_null=True, required=False)
+    endYear = serializers.CharField(
+        allow_blank=True, allow_null=True, required=False)
 
     class Meta:
-        model = Certificate
+        model = Certifications
         fields = ['id', 'certificateName', 'issuerOrg', 'credentialUrl', 'credentialId',
                   'isValid', 'startMonth', 'startYear', 'endMonth', 'endYear', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        return Certificate.objects.create(**validated_data)
+        return Certifications.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
@@ -115,7 +111,12 @@ class CertificateSerializer(serializers.ModelSerializer):
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
-        fields = '__all__'
+        fields = ['user', 'skills_list']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['skills_list'] = instance.skills_list
+        return representation
 
 
 class CompanyProfileSerializer(serializers.ModelSerializer):
@@ -204,8 +205,7 @@ class RecruiterDataSerializer(serializers.Serializer):
     experience_data = ExperienceSerializer(many=True)
     education_data = EducationSerializer(many=True)
     job_postings = PostingSerializer(allow_null=True)
-    awards = AwardSerializer(allow_null=True)
 
     class Meta:
         fields = ['user_details', 'recruiter_details',
-                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings', 'awards']
+                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings']

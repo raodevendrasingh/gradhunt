@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import URLValidator
 from django.contrib.postgres.fields import ArrayField
 
 
@@ -15,6 +14,7 @@ class UserDetails(models.Model):
     location = models.CharField(max_length=60, null=True, blank=True)
     isProfileActivated = models.BooleanField(default=False)
     isProfilePublic = models.BooleanField(default=False)
+    isVerified = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
     resumeLink = models.URLField(max_length=512, null=True, blank=True)
 
@@ -54,7 +54,7 @@ class SocialLinks(models.Model):
         verbose_name_plural = "Social Links"
 
 
-class AboutData(models.Model):
+class UserDescription(models.Model):
     user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
     description = models.TextField()
 
@@ -82,12 +82,8 @@ class Recruiter(models.Model):
         verbose_name_plural = "Recruiter Details"
 
 
-class HiringPreference(models.Model):
-    recruiter = models.OneToOneField(
-        Recruiter,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
+class HiringPreferences(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
     experience = models.IntegerField()
     levels = ArrayField(models.CharField(max_length=200),
                         blank=True, default=list)
@@ -99,18 +95,39 @@ class HiringPreference(models.Model):
                         blank=True, default=list)
 
     def __str__(self):
-        return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
+        return f"{self.user.username}"
 
     class Meta:
         verbose_name = "Hiring Preference"
         verbose_name_plural = "Hiring Preferences"
 
 
-class Posting(models.Model):
-    recruiter = models.ForeignKey(
-        Recruiter,
-        on_delete=models.CASCADE,
-    )
+class CompanyProfile(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    companyLogo = models.URLField(max_length=512, blank=True, null=True)
+    companyBanner = models.URLField(max_length=512, blank=True, null=True)
+    companyName = models.CharField(max_length=100)
+    companyEmail = models.EmailField(max_length=100)
+    companyWebsite = models.URLField(max_length=100, blank=True, null=True)
+    employeeSize = models.CharField(max_length=50)
+    establishedYear = models.CharField(max_length=6)
+    industry = models.CharField(max_length=100)
+    headquarters = models.CharField(max_length=200)
+    branches = ArrayField(models.CharField(
+        max_length=512), blank=True, default=list)
+    about = models.TextField()
+    values = models.TextField()
+
+    def __str__(self):
+        return f"{self.companyName}'s {self.user.username}"
+
+    class Meta:
+        verbose_name = "Company Profile"
+        verbose_name_plural = "Company Profiles"
+
+
+class JobPostings(models.Model):
+    company = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE)
     isActive = models.BooleanField()
     jobTitle = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50)
@@ -124,51 +141,15 @@ class Posting(models.Model):
     experience = models.CharField(max_length=100)
     postedDate = models.DateField()
     applyLink = models.URLField(max_length=200)
+    applyWithUs = models.BooleanField(default=False)
     applicationDeadline = models.DateField()
 
     def __str__(self):
-        return f"{self.recruiter.user.username} from {self.recruiter.companyName}"
+        return f"{self.user.username}"
 
     class Meta:
         verbose_name = "Job Posting"
         verbose_name_plural = "Job Postings"
-
-
-class Award(models.Model):
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    awardName = models.CharField(max_length=255)
-    yearReceived = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.awardName} [{self.user.username}]"
-
-    class Meta:
-        verbose_name = "Award"
-        verbose_name_plural = "Awards"
-
-
-class CompanyProfile(models.Model):
-    recruiter = models.OneToOneField(
-        Recruiter, on_delete=models.CASCADE, primary_key=True)
-    companyLogo = models.URLField(max_length=512, blank=True, null=True)
-    companyBanner = models.URLField(max_length=512, blank=True, null=True)
-    companyName = models.CharField(max_length=100)
-    website = models.CharField(max_length=100, validators=[URLValidator()])
-    employeeSize = models.CharField(max_length=50)
-    establishedYear = models.CharField(max_length=6)
-    industry = models.CharField(max_length=100)
-    headquarters = models.CharField(max_length=200)
-    branches = ArrayField(models.CharField(
-        max_length=512), blank=True, default=list)
-    about = models.TextField()
-    values = models.TextField()
-
-    def __str__(self):
-        return f"{self.companyName}'s {self.recruiter.user.username}"
-
-    class Meta:
-        verbose_name = "Company Profile"
-        verbose_name_plural = "Company Profiles"
 
 
 class Experience(models.Model):
@@ -182,6 +163,9 @@ class Experience(models.Model):
     endYear = models.CharField(max_length=4, blank=True)
     jobLocation = models.CharField(max_length=100)
     locationType = models.CharField(max_length=60)
+    companyWebsite = models.URLField(max_length=100, blank=True, null=True)
+    isVerified = models.BooleanField(default=False)
+    verificationCode = models.CharField(max_length=6, blank=True, null=True)
     description = models.TextField(blank=True, default='')
     isCurrentlyWorking = models.BooleanField(default=False)
 
@@ -203,6 +187,9 @@ class Education(models.Model):
     endMonth = models.CharField(max_length=20)
     endYear = models.CharField(max_length=4)
     instituteLocation = models.CharField(max_length=100)
+    instituteWebsite = models.URLField(max_length=100, blank=True, null=True)
+    isVerified = models.BooleanField(default=False)
+    verificationCode = models.CharField(max_length=6, blank=True, null=True)
     grade = models.CharField(max_length=10, blank=True)
     description = models.TextField(blank=True, default='')
 
@@ -214,7 +201,7 @@ class Education(models.Model):
         verbose_name_plural = "Education"
 
 
-class Project(models.Model):
+class Projects(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     projectName = models.CharField(max_length=50)
     description = models.TextField(blank=True, default='')
@@ -236,7 +223,7 @@ class Project(models.Model):
         verbose_name_plural = "Projects"
 
 
-class Certificate(models.Model):
+class Certifications(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     certificateName = models.CharField(max_length=50)
     issuerOrg = models.CharField(max_length=50)
@@ -257,15 +244,17 @@ class Certificate(models.Model):
 
 
 class Skills(models.Model):
-    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
-    value = models.CharField(max_length=100)
-    label = models.CharField(max_length=100)
-    image = models.URLField(max_length=200)
-    category = models.CharField(max_length=100)
+    user = models.OneToOneField(
+        UserDetails, on_delete=models.CASCADE, related_name='skills')
+    skills_list = ArrayField(
+        models.JSONField(),
+        default=list,
+        blank=True
+    )
 
     def __str__(self):
-        return {self.user.username}
+        return f"{self.user.username}'s skills"
 
     class Meta:
-        verbose_name = "Skill"
+        verbose_name = "Skills"
         verbose_name_plural = "Skills"
