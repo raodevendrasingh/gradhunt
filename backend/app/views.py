@@ -76,7 +76,7 @@ class CheckEmailView(View):
 
 
 class GetCompletionPercentage(APIView):
-    # permission_classes = [IsClerkAuthenticated]
+    permission_classes = [IsClerkAuthenticated]
 
     def get(self, request, username):
         try:
