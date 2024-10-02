@@ -14,9 +14,12 @@ import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
 import { EditCertificateModal } from "@/modalForms/EditCertificateModal";
 import ComboboxCurriculars from "@/components/layouts/ComboboxCurriculars";
+import { AddProjectModal } from "@/modalForms/AddProjectModal";
+import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
 
 export const ExtraCurriculars = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 	const [editingProjectId, setEditingProjectId] = useState<number>();
 	const [showEditProjectModal, setShowEditProjectModal] =
 		useState<boolean>(false);
@@ -70,7 +73,7 @@ export const ExtraCurriculars = () => {
 					<ContentSkeleton />
 				) : (
 					<>
-						{projectData && projectData.length > 0 && (
+						{projectData && projectData.length > 0 ? (
 							<div className="flex flex-col gap-3 w-full">
 								{projectData.map((data, index) => (
 									<div
@@ -86,14 +89,14 @@ export const ExtraCurriculars = () => {
 													<button
 														type="button"
 														onClick={() => handleEditProject(data.id as number)}
-														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
 													</button>
 												)}
 											</div>
 
-											<div className="flex items-center justify-start gap-2 w-full text-xs font-medium ">
+											<div className="flex items-center justify-start gap-2 w-full text-xs font-medium">
 												{data.liveLink && (
 													<Link
 														to={data.liveLink}
@@ -143,6 +146,16 @@ export const ExtraCurriculars = () => {
 									</div>
 								))}
 							</div>
+						) : (
+							<div className="flex items-center justify-center w-full min-h-32">
+								<button
+									type="button"
+									onClick={() => setShowProjectModal(true)}
+									className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 w-36 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+								>
+									Add Project
+								</button>
+							</div>
 						)}
 					</>
 				)}
@@ -163,7 +176,7 @@ export const ExtraCurriculars = () => {
 					<ContentSkeleton />
 				) : (
 					<>
-						{certificateData && certificateData.length > 0 && (
+						{certificateData && certificateData.length > 0 ? (
 							<div className="flex flex-col gap-3 w-full">
 								{certificateData.map((data, index) => (
 									<div
@@ -181,7 +194,7 @@ export const ExtraCurriculars = () => {
 														onClick={() =>
 															handleEditCertificate(data.id as number)
 														}
-														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
 													</button>
@@ -195,20 +208,18 @@ export const ExtraCurriculars = () => {
 												)}
 											</div>
 											<div className="flex items-center justify-start font-medium w-full">
-												{data.isValid && (
+												{data.isValid ? (
 													<span className="text-xs text-gray-600">
 														Issued {data.startMonth} {data.startYear}
 													</span>
-												)}
-												{!data.isValid && (
+												) : (
 													<span className="flex items-center text-xs text-gray-600">
 														<LuDot />
 														Expires {data.endMonth} {data.endYear}
 													</span>
 												)}
 											</div>
-
-											<div className="flex items-center justify-start gap-2 w-full text-xs font-medium ">
+											<div className="flex items-center justify-start gap-2 w-full text-xs font-medium">
 												{data.credentialUrl && (
 													<Link
 														to={data.credentialUrl}
@@ -223,16 +234,40 @@ export const ExtraCurriculars = () => {
 									</div>
 								))}
 							</div>
+						) : (
+							<div className="flex items-center justify-center w-full min-h-32">
+								<button
+									type="button"
+									onClick={() => setShowCertifyModal(true)}
+									className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 w-44 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+								>
+									Add Certifications
+								</button>
+							</div>
 						)}
 					</>
 				)}
 			</div>
+
+			{showProjectModal && (
+				<AddProjectModal
+					setShowProjectModal={setShowProjectModal}
+					onSave={refetchProjects}
+				/>
+			)}
 
 			{showEditProjectModal && (
 				<EditProjectModal
 					setShowEditProjectModal={setShowEditProjectModal}
 					projectId={editingProjectId as number}
 					onSave={refetchProjects}
+				/>
+			)}
+
+			{showCertifyModal && (
+				<AddCertificateModal
+					setShowCertifyModal={setShowCertifyModal}
+					onSave={refetchCertificates}
 				/>
 			)}
 

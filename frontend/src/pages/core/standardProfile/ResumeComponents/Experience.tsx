@@ -5,9 +5,11 @@ import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { BsBuildingsFill } from "react-icons/bs";
 import { useState } from "react";
 import { EditExpModal } from "@/modalForms/EditExpModal";
+import { AddExpModal } from "@/modalForms/AddExpModal";
 
 export const Experience = () => {
 	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
+	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [editingExperienceId, setEditingExperienceId] = useState<number>();
 
 	const { isSignedIn } = useUser();
@@ -36,7 +38,7 @@ export const Experience = () => {
 				<ContentSkeleton />
 			) : (
 				<>
-					{experienceData && experienceData.length > 0 && (
+					{experienceData && experienceData.length > 0 ? (
 						<div className="flex flex-col gap-3 w-full">
 							{experienceData.map((data, index) => (
 								<div
@@ -52,7 +54,7 @@ export const Experience = () => {
 												<button
 													type="button"
 													onClick={() => handleEditClick(data.id)}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
+													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 												>
 													<MdModeEdit className="size-5" />
 												</button>
@@ -83,8 +85,22 @@ export const Experience = () => {
 								</div>
 							))}
 						</div>
+					) : (
+						<div className="flex items-center justify-center w-full min-h-32">
+							<button
+								type="button"
+								onClick={() => setShowExpModal(true)}
+								className="px-3 py-2 rounded-lg text-gray-700 w-36 bg-white hover:bg-slate-50 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+							>
+								Add Experience
+							</button>
+						</div>
 					)}
 				</>
+			)}
+
+			{showExpModal && (
+				<AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />
 			)}
 			{showEditExpModal && (
 				<EditExpModal

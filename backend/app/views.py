@@ -80,17 +80,19 @@ class GetCompletionPercentage(APIView):
 
     def get(self, request, username):
         try:
-            user = UserDetails.objects.get(username=username)
-            social = SocialLinks.objects.get(user=user)
-            about = UserDescription.objects.get(user=user)
+            user = get_object_or_404(UserDetails, username=username)
+            social = SocialLinks.objects.filter(user=user).first()
+            about = UserDescription.objects.filter(user=user).first()
 
             tasks = [
                 {"label": "Add a Profile Picture", "value": 10,
                     "completed": bool(user.profilePicture)},
                 {"label": "Add a Bio", "value": 10,
                     "completed": bool(user.bio)},
-                {"label": "Add your Location", "value": 5, "completed": bool(user.location)}, {
-                    "label": "Add at least one Language", "value": 5, "completed": Linguistics.objects.filter(user=user).exists()},
+                {"label": "Add your Location", "value": 5,
+                    "completed": bool(user.location)},
+                {"label": "Add at least one Language", "value": 5,
+                    "completed": Linguistics.objects.filter(user=user).exists()},
                 {"label": "Add at least one Education", "value": 15,
                     "completed": Education.objects.filter(user=user).exists()},
                 {"label": "Add at least one Experience", "value": 15,
@@ -98,16 +100,16 @@ class GetCompletionPercentage(APIView):
                 {"label": "Add at least one Project", "value": 10,
                     "completed": Projects.objects.filter(user=user).exists()},
                 {
-                    "label": "Connect at least one featured social", "value": 10,
+                    "label": "Add at least one Social link", "value": 10,
                     "completed": any([
-                        bool(social.github),
-                        bool(social.linkedin),
-                        bool(social.leetcode),
-                        bool(social.twitter)
+                        bool(social.github) if social else False,
+                        bool(social.linkedin) if social else False,
+                        bool(social.leetcode) if social else False,
+                        bool(social.twitter) if social else False
                     ])
                 },
-                {"label": "Add About Section", "value": 20,
-                    "completed": bool(about.description)},
+                {"label": "Add About Section", "value": 20, "completed": bool(
+                    about.description) if about else False},
             ]
 
             total_value = sum(task['value'] for task in tasks)
@@ -150,7 +152,7 @@ class SaveCandidateData(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
-class SaveUserDesc(APIView):
+class SaveUserDescription(APIView):
     @transaction.atomic
     def post(self, request):
         user = request.user
@@ -172,6 +174,24 @@ class SaveUserDesc(APIView):
         serializer = UserDescriptionSerializer(about_data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetUserDescription(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = UserDetails.objects.get(username=username)
+            desc = UserDescription.objects.filter(user=user).first()
+            if desc:
+                serializer = UserDescriptionSerializer(desc)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"message": "Description not found"}, status=status.HTTP_404_NOT_FOUND)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SaveRecruiterFormData(APIView):
@@ -911,24 +931,6 @@ class GetSocials(APIView):
             socials = SocialLinks.objects.filter(user=user)
             serializer = SocialLinksSerializer(socials, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class GetUserDescription(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
-    def get(self, request, username):
-        try:
-            user = UserDetails.objects.get(username=username)
-            desc = UserDescription.objects.filter(user=user).first()
-            if desc:
-                serializer = UserDescriptionSerializer(desc)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({"error": "Description not found"}, status=status.HTTP_404_NOT_FOUND)
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

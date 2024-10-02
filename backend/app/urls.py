@@ -17,8 +17,8 @@ urlpatterns = [
     path('api/get-linguistics-data/<str:username>', GetLinguistsics.as_view(), name='get-linguistics'),
     path('api/get-social-data/<str:username>', GetSocials.as_view(), name='get-socials'),
     
-    path('api/add-user-desc', SaveUserDesc.as_view(), name='save-user-desc'),
-    path('api/get-user-desc/<str:username>', GetUserDescription.as_view(), name='get-user-desc'),
+    path('api/add-user-description', SaveUserDescription.as_view(), name='save-user-desc'),
+    path('api/get-user-description/<str:username>', GetUserDescription.as_view(), name='get-user-desc'),
 
     # candidate data
     path('api/save-candidate-data/', SaveCandidateData.as_view(), name='create-candidate'),

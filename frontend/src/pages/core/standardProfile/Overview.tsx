@@ -17,10 +17,11 @@ export const Overview = () => {
 		error,
 		refetch: refetchAbout,
 	} = useFetchAboutSection();
+
 	const { isSignedIn } = useUser();
 
 	useEffect(() => {
-		if (error) {
+		if (error && error.response?.status !== 404) {
 			toast.error("Error fetching About Section details");
 		}
 	}, [error]);
@@ -48,29 +49,27 @@ export const Overview = () => {
 				</div>
 				<div className="flex items-center justify-start w-full">
 					{isAboutLoading ? (
-						<div className="flex flex-col w-full gap-2">
-							<div className="h-4 w-full skeleton" />
-							<div className="h-4 w-full skeleton" />
-							<div className="h-4 w-1/2 skeleton" />
-						</div>
+						<>
+							<div className="flex flex-col w-full gap-2">
+								<div className="h-4 w-full skeleton" />
+								<div className="h-4 w-full skeleton" />
+								<div className="h-4 w-full skeleton" />
+							</div>
+						</>
+					) : userDesc && userDesc.description.length > 0 ? (
+						<div className="flex flex-wrap text-sm">{userDesc.description}</div>
 					) : (
-						<div className="flex flex-wrap text-sm">
-							{userDesc?.description}
+						<div className="flex items-center justify-center w-full min-h-32">
+							<button
+								type="button"
+								onClick={() => setAboutModal(true)}
+								className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 w-36 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+							>
+								Add About
+							</button>
 						</div>
 					)}
 				</div>
-				{!isAboutLoading && !userDesc && (
-					<div className="flex items-center justify-center w-full min-h-32">
-						<button
-							type="button"
-							onClick={() => setAboutModal(true)}
-							className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
-						>
-							Add About
-						</button>
-					</div>
-				)}
-
 				{showAboutModal && (
 					<UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />
 				)}

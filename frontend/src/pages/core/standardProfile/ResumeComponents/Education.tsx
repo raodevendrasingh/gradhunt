@@ -5,9 +5,11 @@ import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { EditEduModal } from "@/modalForms/EditEduModal";
 import { useState } from "react";
+import { AddEduModal } from "@/modalForms/AddEduModal";
 
 export const Education = () => {
 	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);
+	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const [editingEducationId, setEditingEducationId] = useState<number>();
 	const { isSignedIn } = useUser();
 	const {
@@ -29,6 +31,7 @@ export const Education = () => {
 					<span className="text-gray-700 font-medium text-base">Education</span>
 				</div>
 			</div>
+
 			{isEduLoading ? (
 				<div className="flex flex-col gap-3 w-full">
 					<ContentSkeleton />
@@ -36,7 +39,7 @@ export const Education = () => {
 				</div>
 			) : (
 				<>
-					{educationData && educationData.length > 0 && (
+					{educationData && educationData.length > 0 ? (
 						<div className="flex flex-col gap-3 w-full">
 							{educationData.map((data, index) => (
 								<div
@@ -52,7 +55,7 @@ export const Education = () => {
 												<button
 													type="button"
 													onClick={() => handleEditClick(data.id)}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
+													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 												>
 													<MdModeEdit className="size-5" />
 												</button>
@@ -81,9 +84,23 @@ export const Education = () => {
 								</div>
 							))}
 						</div>
+					) : (
+						<div className="flex items-center justify-center w-full min-h-32">
+							<button
+								type="button"
+								onClick={() => setShowEduModal(true)}
+								className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 w-36 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+							>
+								Add Education
+							</button>
+						</div>
 					)}
 				</>
 			)}
+			{showEduModal && (
+				<AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />
+			)}
+
 			{showEditEduModal && (
 				<EditEduModal
 					setShowEditEduModal={setShowEditEduModal}

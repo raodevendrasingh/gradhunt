@@ -13,18 +13,27 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 	const { username } = useParams<{ username: string }>();
 
 	const fetchskillData = async (): Promise<Skill[]> => {
-		const token = await getToken();
-		if (!token) {
-			throw new Error("User Unauthorized!");
+		try {
+			const token = await getToken();
+			if (!token) {
+				throw new Error("User Unauthorized!");
+			}
+			const url = `/api/get-skills/${username}`;
+			const response = await axios.get(url, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			return response.data;
+		} catch (error: AxiosError | any) {
+			if (error.response && error.response.status === 404) {
+				console.warn("404 Not Found: The requested resource does not exist.");
+				return [];
+			} else {
+				throw error;
+			}
 		}
-		const url = `/api/get-skills/${username}`;
-		const response = await axios.get(url, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		return response.data;
 	};
 
 	return useQuery<Skill[], AxiosError>({

@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
-import { Skill } from "@/types/userTypes";
 import { AddSkillModal } from "@/modalForms/AddSkillModal";
 import { toast } from "sonner";
-
-type GroupedSkills = {
-	[key: string]: Skill[];
-};
 
 export const SkillSection: React.FC = () => {
 	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
@@ -25,18 +20,6 @@ export const SkillSection: React.FC = () => {
 			toast.error("Error fetching Skills");
 		}
 	}, [error]);
-
-	const groupedSkills: GroupedSkills = skillData
-		? skillData.reduce((acc: GroupedSkills, skill: Skill) => {
-				if (!acc[skill.category]) {
-					acc[skill.category] = [];
-				}
-				acc[skill.category].push(skill);
-				return acc;
-			}, {})
-		: {};
-
-	const sortedCategories = Object.keys(groupedSkills).sort();
 
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
@@ -68,46 +51,33 @@ export const SkillSection: React.FC = () => {
 							/>
 						))}
 					</div>
-				) : (
+				) : skillData && skillData.length > 0 ? (
 					<div className="w-full">
-						{/* {sortedCategories.map((category) => (
-							<div key={category} className="mb-4">
-								<h3 className="text-sm font-semibold mb-2 text-gray-600">
-									{category}
-								</h3>
-								<div className="flex flex-wrap">
-									{groupedSkills[category].map((skill: Skill) => (
-										<div
-											key={skill.id}
-											className="flex items-center justify-center text-sm px-2.5 py-[3px] bg-slate-50 text-gray-700 rounded-full border m-1"
-										>
-											<img
-												src={skill.image}
-												alt={skill.label}
-												className="size-3 mr-2"
-											/>
-											{skill.label}
-										</div>
-									))}
-								</div>
-							</div>
-						))} */}
 						<div className="flex flex-wrap text-sm w-full">
-							{skillData &&
-								skillData.map((skill) => (
-									<div
-										key={skill.id}
-										className="flex items-center justify-center px-2.5 py-[3px] bg-slate-50 text-gray-700 rounded-full border m-1"
-									>
-										<img
-											src={skill.image}
-											alt={skill.label}
-											className="size-3 mr-2"
-										/>
-										{skill.label}
-									</div>
-								))}
+							{skillData.map((skill) => (
+								<div
+									key={skill.id}
+									className="flex items-center justify-center px-2.5 py-[3px] bg-slate-50 text-gray-700 rounded-full border m-1"
+								>
+									<img
+										src={skill.image}
+										alt={skill.label}
+										className="size-3 mr-2"
+									/>
+									{skill.label}
+								</div>
+							))}
 						</div>
+					</div>
+				) : (
+					<div className="flex items-center justify-center w-full min-h-32">
+						<button
+							type="button"
+							onClick={() => setShowSkillModal(true)}
+							className="px-3 py-2 rounded-lg text-gray-700 bg-white hover:bg-slate-50 w-36 text-sm font-medium border border-gray-300 cursor-pointer transition-colors"
+						>
+							Add Skills
+						</button>
 					</div>
 				)}
 			</div>

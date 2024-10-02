@@ -67,7 +67,11 @@ export default function FileUploadSection() {
 	const { data: userDetails, isLoading, refetch } = useFetchUserDetails();
 
 	useEffect(() => {
-		if (userDetails && userDetails.user_details.resumeLink.length > 0) {
+		if (
+			userDetails &&
+			typeof userDetails.user_details.resumeLink === "string" &&
+			userDetails.user_details.resumeLink.length > 0
+		) {
 			setFileUrl(userDetails.user_details.resumeLink);
 			setUploadStatus("completed");
 		}

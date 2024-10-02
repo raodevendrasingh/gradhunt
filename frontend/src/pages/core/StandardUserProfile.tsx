@@ -6,12 +6,13 @@ import { BiEditAlt } from "react-icons/bi";
 import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
-import { ProfileCompletion } from "@/components/ui/ProgressBarComponent";
+import { UserProfileCompletion } from "@/components/ui/UserProgressBar";
 import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import NotFound from "@/pages/common/NotFound";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { getMonthYear } from "@/utils/convertTimeStamps";
+import { GoPlus } from "react-icons/go";
 
 export default function StandardUserProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
@@ -112,19 +113,22 @@ export default function StandardUserProfile(): React.JSX.Element {
 						{userDetails ? (
 							<span>{userDetails.user_details?.bio}</span>
 						) : (
-							<div className="flex flex-col">
-								<div className="h-5 w-1/2 skeleton" />
-								{/* <div className="h-5 w-1/3 skeleton" /> */}
+							<div className="flex items-center gap-1 bg-slate-50 text-slate-700 rounded-lg px-2 py-0.5 w-52 cursor-pointer">
+								<GoPlus className="size-5" />
+								<p> Add Bio</p>
 							</div>
 						)}
 					</div>
 					<div className="flex flex-row flex-wrap items-center justify-start gap-5 w-fit">
 						<div className="text-sm flex items-center gap-1">
 							<MdLocationPin className="w-5 h-5 text-gray-700" />
-							{userDetails ? (
+							{userDetails && userDetails?.user_details?.location ? (
 								<span>{userDetails?.user_details?.location}</span>
 							) : (
-								<div className="h-5 w-36 skeleton" />
+								<div className="flex items-center gap-1 bg-slate-50 text-slate-700 rounded-lg px-2 py-0.5 w-48 cursor-pointer">
+									<GoPlus className="size-5" />
+									<p> Add Location</p>
+								</div>
 							)}
 						</div>
 
@@ -144,7 +148,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 							<div className="bg-gray-700 p-[1px] rounded">
 								<HiMiniLanguage className="w-[14px] h-[14px] text-white" />
 							</div>
-							{userDetails ? (
+							{userDetails && userDetails.linguistics.length > 0 ? (
 								<>
 									{userDetails.linguistics.map((item, index) => (
 										<div key={index}>
@@ -154,7 +158,10 @@ export default function StandardUserProfile(): React.JSX.Element {
 									))}
 								</>
 							) : (
-								<div className="h-5 w-36 skeleton" />
+								<div className="flex items-center gap-1 bg-slate-50 text-slate-700 rounded-lg px-2 py-0.5 w-48 cursor-pointer">
+									<GoPlus className="size-5" />
+									<p> Add Languages</p>
+								</div>
 							)}
 						</div>
 					</div>
@@ -182,7 +189,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 			</div>
 			{/* sidebar */}
 			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
-				<ProfileCompletion />
+				<UserProfileCompletion />
 			</div>
 		</div>
 	);
