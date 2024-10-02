@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const IsUserExists = async (username: string) => {
 	try {
-		const url = `/api/check-username?username=${username}`;
+		const url = `/api/users/check-username/?username=${username}`;
 		const response = await axios.get(url);
 		return response.data.exists;
 	} catch (error) {

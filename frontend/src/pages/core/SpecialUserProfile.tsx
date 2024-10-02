@@ -152,7 +152,7 @@ export default function SpecialUserProfile(): JSX.Element {
 													<EditImageModal
 														setShowImageEditModal={setShowImageEditModal}
 														onSave={handleRefresh}
-														apiUrl={"/api/upload-profile-image"}
+														apiUrl={"/api/users/profile-image/"}
 													/>
 												)}
 											</div>

@@ -71,7 +71,7 @@ export const EditCertificateModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/delete-certificate/${certificateId}`;
+			const url = `/api/users/certificates/${certificateId}/`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ export const EditCertificateModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/update-certificate/${certificateId}`;
+			const url = `/api/users/certificates/${certificateId}/`;
 			const response = await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",

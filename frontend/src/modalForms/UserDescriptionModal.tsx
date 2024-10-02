@@ -53,7 +53,7 @@ export const UserAboutModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/add-user-desc`;
+			const url = `/api/users/description/`;
 			const response = await axios.post(url, description, {
 				headers: {
 					"Content-Type": "application/json",

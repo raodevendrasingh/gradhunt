@@ -37,7 +37,7 @@ export const handleSearch: SubmitHandler<FormData> = async (data) => {
 	});
 
 	try {
-		const url = `/api/job-search?${searchParams}`;
+		const url = `/api/jobs/query?${searchParams}`;
 		const response = await axios.get(url);
 		console.log(response.data);
 	} catch (error) {

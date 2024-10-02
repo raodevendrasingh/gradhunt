@@ -3,65 +3,56 @@ from .views import *
 
 urlpatterns = [
     path('api/', HomeView.as_view(), name='home'),
-    path('api/get-usertype/', GetUserType.as_view(), name='get-usertype'),
-    path('api/check-email/', CheckEmailView.as_view(), name='check-email'),
-    path('api/check-username/', CheckUsernameView.as_view(), name='check-username'),
+    path('api/users/type/', GetUserType.as_view(), name='get-usertype'),
+    path('api/users/check-username/', CheckUsernameView.as_view(), name='check-username'),
     
-    path('api/add-resume-link', AddResumeLink.as_view(), name='add-resume'),
-    path('api/delete-resume/', DeleteResumeLink.as_view(), name='delete-resume'),
+    path('api/users/resume/', AddResumeLink.as_view(), name='add-resume'),
+    path('api/users/resume/', DeleteResumeLink.as_view(), name='delete-resume'),
 
-    path('api/get-completion-percentage/<str:username>', GetCompletionPercentage.as_view(), name='get-usertype'),
+    path('api/users/<str:username>/completion-percentage/', GetCompletionPercentage.as_view(), name='get-completion-percentage'),
 
-    path('api/add-user-data', AddUserData.as_view(), name='add-basic-data'),
-    path('api/get-user-details/<str:username>', GetUserDetails.as_view(), name='get-user'),
-    path('api/get-linguistics-data/<str:username>', GetLinguistsics.as_view(), name='get-linguistics'),
-    path('api/get-social-data/<str:username>', GetSocials.as_view(), name='get-socials'),
+    path('api/users/onboarding/', OnboardUser.as_view(), name='create-user'),
+
+    path('api/users/', AddUserData.as_view(), name='add-user-data'),
+    path('api/users/<str:username>/', GetUserDetails.as_view(), name='get-user-details'),
+    path('api/users/<str:username>/linguistics/', GetLinguistsics.as_view(), name='get-linguistics'),
+    path('api/users/<str:username>/socials/', GetSocials.as_view(), name='get-socials'),
     
-    path('api/add-user-description', SaveUserDescription.as_view(), name='save-user-desc'),
-    path('api/get-user-description/<str:username>', GetUserDescription.as_view(), name='get-user-desc'),
-
-    # candidate data
-    path('api/save-candidate-data/', SaveCandidateData.as_view(), name='create-candidate'),
-
-    # recruiter data
-    path('api/save-recruiter-form-data/', SaveRecruiterFormData.as_view(), name='create-recruiter'),
-    path('api/recruiters/all', GetAllRecruiters.as_view(), name='show-all-recruiters'),
-    path('api/recruiter/<str:username>', GetRecruiterDetails.as_view(), name='get-recruiter'),
-    path('api/recruiter/<str:username>/get-company-data', GetCompanyProfile.as_view(), name='get-company-profile'),
-    path('api/recruiter/<str:username>/update-company-data', UpdateCompanyProfile.as_view(), name='update-company-profile'),
+    path('api/users/description/', SaveUserDescription.as_view(), name='save-user-description'),
+    path('api/users/<str:username>/description/', GetUserDescription.as_view(), name='get-user-description'),
 
     # experience section
-    path('api/add-experience-data', AddExperienceData.as_view(), name='add-experience'),
-    path('api/get-experience-data/<str:username>', GetExperienceData.as_view(), name='get-experience'),
-    path('api/get-experience-data/<str:username>/<str:id>', GetExperienceDataById.as_view(), name='get-experience-by-id'),
-    path('api/update-experience-data/<str:id>', UpdateExperienceData.as_view(), name='update-experience'),
-    path('api/delete-experience-data/<str:id>', DeleteExperienceData.as_view(), name='delete-experience'),
+    path('api/users/experiences/', AddExperienceData.as_view(), name='add-experience'),
+    path('api/users/<str:username>/experiences/', GetExperienceData.as_view(), name='list-experiences'),
+    path('api/users/<str:username>/experiences/<str:id>/', GetExperienceDataById.as_view(), name='get-experience'),
+    path('api/users/experiences/<str:id>/', UpdateExperienceData.as_view(), name='update-experience'),
+    path('api/users/experiences/<str:id>/', DeleteExperienceData.as_view(), name='delete-experience'),
     
     # education section
-    path('api/add-education-data', AddEducationData.as_view(), name='add-education'),
-    path('api/get-education-data/<str:username>', GetEducationData.as_view(), name='get-education'),
-    path('api/get-education-data/<str:username>/<str:id>', GetEducationDataById.as_view(), name='get-education-by-id'),
-    path('api/update-education-data/<str:id>', UpdateEducationData.as_view(), name='update-education'),
-    path('api/delete-education-data/<str:id>', DeleteEducationData.as_view(), name='delete-education'),
+    path('api/users/education/', AddEducationData.as_view(), name='add-education'),
+    path('api/users/<str:username>/education/', GetEducationData.as_view(), name='list-education'),
+    path('api/users/<str:username>/education/<str:id>/', GetEducationDataById.as_view(), name='get-education'),
+    path('api/users/education/<str:id>/', UpdateEducationData.as_view(), name='update-education'),
+    path('api/users/education/<str:id>/', DeleteEducationData.as_view(), name='delete-education'),
 
     # project section
-    path('api/add-project-data', AddProjectData.as_view(), name='add-project'),
-    path('api/get-projects/<str:username>', GetProjects.as_view(), name='get-project'),
-    path('api/get-project/<str:username>/<str:id>', GetProjectById.as_view(), name='get-project-by-id'),
-    path('api/update-project/<str:id>', UpdateProjectData.as_view(), name='update-project'),
-    path('api/delete-project/<str:id>', DeleteProjectData.as_view(), name='delete-project'),
+    path('api/users/projects/', AddProjectData.as_view(), name='add-project'),
+    path('api/users/<str:username>/projects/', GetProjects.as_view(), name='list-projects'),
+    path('api/users/<str:username>/projects/<str:id>/', GetProjectById.as_view(), name='get-project'),
+    path('api/users/projects/<str:id>/', UpdateProjectData.as_view(), name='update-project'),
+    path('api/users/projects/<str:id>/', DeleteProjectData.as_view(), name='delete-project'),
 
     # certificate section
-    path('api/add-certificate-data', AddCertificateData.as_view(), name='add-certificate'),
-    path('api/get-certificates/<str:username>', GetCertificates.as_view(), name='get-certificate'),
-    path('api/get-certificate/<str:username>/<str:id>', GetCertificateById.as_view(), name='get-certificate-by-id'),
-    path('api/update-certificate/<str:id>', UpdateCertificateData.as_view(), name='update-certificate'),
-    path('api/delete-certificate/<str:id>', DeleteCertificateData.as_view(), name='delete-certificate'),
+    path('api/users/certificates/', AddCertificateData.as_view(), name='add-certificate'),
+    path('api/users/<str:username>/certificates/', GetCertificates.as_view(), name='list-certificates'),
+    path('api/users/<str:username>/certificates/<str:id>/', GetCertificateById.as_view(), name='get-certificate'),
+    path('api/users/certificates/<str:id>/', UpdateCertificateData.as_view(), name='update-certificate'),
+    path('api/users/certificates/<str:id>/', DeleteCertificateData.as_view(), name='delete-certificate'),
 
     # skills section
-    path('api/add-skills', AddSkillData.as_view(), name='add-skills'),
-    path('api/get-skills/<str:username>', GetSkill.as_view(), name='get-skills'),
+    path('api/users/skills/', AddSkillData.as_view(), name='add-skills'),
+    path('api/users/<str:username>/skills/', GetSkill.as_view(), name='get-skills'),
 
     # image uploads 
-    path('api/upload-profile-image', SetImageUrl.as_view(), name='set-profile-image'),
+    path('api/users/profile-image/', SetImageUrl.as_view(), name='set-profile-image'),
 ]

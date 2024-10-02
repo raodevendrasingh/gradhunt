@@ -56,7 +56,7 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 				return;
 			}
 
-			const url = `/api/delete-resume`;
+			const url = `/api/users/resume/`;
 			const response = await axios.delete(url, {
 				headers: {
 					"Content-Type": "application/json",

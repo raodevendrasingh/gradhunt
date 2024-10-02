@@ -16,7 +16,7 @@ export const useFetchProfileCompletion = (): UseQueryResult<
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/get-completion-percentage/${username}`;
+		const url = `/api/users/${username}/completion-percentage/`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",

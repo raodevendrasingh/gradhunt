@@ -18,7 +18,7 @@ export const useUsernameCheck = () => {
                 setIsCheckingUsername(true);
                 setUsernameMsg("");
                 try {
-                    const url = `/api/check-username?username=${username}`;
+                    const url = `/api/users/check-username/?username=${username}`;                    
                     const response = await axios.get(url);
                     if (response.data.exists) {
                         setUsernameMsg("This username is already taken, choose something else.😞");

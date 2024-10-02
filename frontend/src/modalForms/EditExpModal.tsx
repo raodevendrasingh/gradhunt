@@ -27,9 +27,9 @@ import Spinner from "@/components/ui/Spinner";
 
 export const EditExpModal: React.FC<{
 	setShowEditExpModal: React.Dispatch<React.SetStateAction<boolean>>;
-	experienceID: number;
+	experienceId: number;
 	onSave: () => void;
-}> = ({ setShowEditExpModal, experienceID, onSave }) => {
+}> = ({ setShowEditExpModal, experienceId, onSave }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState<boolean>(false);
 	const [initialLocation, setInitialLocation] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,7 +38,7 @@ export const EditExpModal: React.FC<{
 	const { getToken } = useAuth();
 
 	const { data: experienceIdData } = useFetchExperienceById({
-		experienceId: experienceID,
+		experienceId: experienceId,
 	});
 
 	const {
@@ -82,7 +82,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/delete-experience-data/${experienceID}`;
+			const url = `/api/users/experiences/${experienceId}/`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/update-experience-data/${experienceID}`;
+			const url = `/api/users/experiences/${experienceId}/`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",

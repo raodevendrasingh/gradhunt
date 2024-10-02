@@ -21,7 +21,7 @@ export const useFetchProjectDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/get-project/${username}/${projectId}`;
+		const url = `/api/users/${username}/projects/${projectId}/`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",

@@ -43,12 +43,6 @@ class UserDescriptionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RecruiterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recruiter
-        fields = '__all__'
-
-
 class HiringPreferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = HiringPreferences
@@ -119,28 +113,6 @@ class SkillsSerializer(serializers.ModelSerializer):
         return representation
 
 
-class CompanyProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CompanyProfile
-        fields = ['companyLogo', 'companyCover', 'companyName', 'website', 'employeeSize',
-                  'establishedYear', 'industry', 'headquarters', 'branches', 'about', 'values']
-        read_only_fields = ['recruiter']
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        if instance.companyLogo:
-            representation['companyLogo'] = instance.companyLogo.url
-        if instance.companyCover:
-            representation['companyCover'] = instance.companyCover.url
-        return representation
-
-    def update(self, instance, validated_data):
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-        return instance
-
-
 class ExperienceSerializer(serializers.ModelSerializer):
     jobTitle = NestedDictField()
     jobType = NestedDictField()
@@ -195,17 +167,3 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skills
         fields = '__all__'
-
-
-class RecruiterDataSerializer(serializers.Serializer):
-    user_details = UserSerializer()
-    recruiter_details = RecruiterSerializer()
-    hiring_preference = HiringPreferenceSerializer()
-    company_profile = CompanyProfileSerializer()
-    experience_data = ExperienceSerializer(many=True)
-    education_data = EducationSerializer(many=True)
-    job_postings = PostingSerializer(allow_null=True)
-
-    class Meta:
-        fields = ['user_details', 'recruiter_details',
-                  'hiring_preference', 'company_profile', 'experience_data', 'education_data', 'job_postings']

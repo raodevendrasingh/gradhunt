@@ -95,7 +95,7 @@ export const AddSkillModal: React.FC<{
 			if (!token) {
 				throw new Error("Token is not available");
 			}
-			const url = "/api/add-skills";
+			const url = "/api/users/skills/";
 			await axios.post(url, skillData, {
 				headers: {
 					"Content-Type": "application/json",

@@ -17,7 +17,7 @@ export const useFetchAboutSection = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/get-user-description/${username}`;
+			const url = `/api/users/${username}/description/`;
 			const response = await axios.get<AboutSection>(url, {
 				headers: {
 					"Content-Type": "application/json",

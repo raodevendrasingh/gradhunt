@@ -19,7 +19,7 @@ export const useFetchEducationDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/get-education-data/${username}/${educationId}`;
+		const url = `/api/users/${username}/education/${educationId}/`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",

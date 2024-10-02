@@ -43,7 +43,7 @@ const sendFileToServer = async (fileUrl: string, token: string) => {
 	if (!token) {
 		throw new Error("Token is not available");
 	}
-	const url = `/api/add-resume-link`;
+	const url = `/api/users/resume/`;
 	await axios.post(url, fileUrl, {
 		headers: {
 			"Content-Type": "application/json",

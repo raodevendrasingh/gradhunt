@@ -106,7 +106,7 @@ export const Experience = () => {
 				<EditExpModal
 					setShowEditExpModal={setShowEditExpModal}
 					onSave={refetchExp}
-					experienceID={editingExperienceId as number}
+					experienceId={editingExperienceId as number}
 				/>
 			)}
 		</div>

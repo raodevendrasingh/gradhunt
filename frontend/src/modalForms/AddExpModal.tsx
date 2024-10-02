@@ -47,7 +47,7 @@ export const AddExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/add-experience-data`;
+			const url = `/api/users/experiences/`;
 			const response = await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",

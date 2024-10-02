@@ -16,7 +16,7 @@ export const useFetchUserDetails = (): UseQueryResult<
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/get-user-details/${username}`;
+		const url = `/api/users/${username}/`;
 		const response = await axios.get<UserBasicDetails>(url, {
 			headers: {
 				"Content-Type": "application/json",

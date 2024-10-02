@@ -66,22 +66,6 @@ class UserDescription(models.Model):
         verbose_name_plural = "AboutData"
 
 
-class Recruiter(models.Model):
-    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
-    companyName = models.CharField(max_length=100)
-    jobTitle = models.CharField(max_length=100)
-    startDate = models.DateField()
-    endDate = models.DateField(blank=True, null=True)
-    companyLocation = models.CharField(max_length=100, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.user.username} from {self.companyName}"
-
-    class Meta:
-        verbose_name = "Recruiter Detail"
-        verbose_name_plural = "Recruiter Details"
-
-
 class HiringPreferences(models.Model):
     user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
     experience = models.IntegerField()
