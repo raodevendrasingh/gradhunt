@@ -70,7 +70,6 @@ ROOT_URLCONF = 'gradHunt.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://admin.localhost:5173",
-    "http://hire.localhost:5173",
 ]
 
 TEMPLATES = [
