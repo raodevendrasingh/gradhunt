@@ -82,7 +82,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/experiences/${experienceId}/`;
+			const url = `/api/users/experiences/${experienceId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/experiences/${experienceId}/`;
+			const url = `/api/users/experiences/${experienceId}`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",

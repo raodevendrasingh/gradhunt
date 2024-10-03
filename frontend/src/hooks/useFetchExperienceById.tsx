@@ -19,7 +19,7 @@ export const useFetchExperienceById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/experiences/${experienceId}/`;
+		const url = `/api/users/${username}/experiences/${experienceId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -32,5 +32,6 @@ export const useFetchExperienceById = ({
 	return useQuery<ExperienceData, AxiosError>({
 		queryKey: ["experienceIdData", username, experienceId],
 		queryFn: fetchExperienceDataById,
+        staleTime: 30000,
 	});
 };

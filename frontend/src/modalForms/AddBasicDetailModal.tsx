@@ -129,7 +129,7 @@ export const AddBasicDetailModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = "/api/users/";
+			const url = "/api/users";
 			await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",

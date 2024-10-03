@@ -76,7 +76,7 @@ export const EditEduModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/education/${educationId}/`;
+			const url = `/api/users/education/${educationId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ export const EditEduModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/education/${educationId}/`;
+			const url = `/api/users/education/${educationId}`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",

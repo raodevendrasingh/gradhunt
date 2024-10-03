@@ -17,7 +17,7 @@ export const useFetchEducationData = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/education/`;
+			const url = `/api/users/${username}/education`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -38,5 +38,6 @@ export const useFetchEducationData = (): UseQueryResult<
 	return useQuery<EducationData[], AxiosError>({
 		queryKey: ["educationData", username],
 		queryFn: fetchEducationData,
+        staleTime: 30000,
 	});
 };

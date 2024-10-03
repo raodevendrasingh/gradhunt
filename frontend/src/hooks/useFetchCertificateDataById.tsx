@@ -19,7 +19,7 @@ export const useFetchCertificateDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/certificates/${certificateId}/`;
+		const url = `/api/users/${username}/certificates/${certificateId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -31,5 +31,6 @@ export const useFetchCertificateDataById = ({
 	return useQuery<CertificateData, AxiosError>({
 		queryKey: ["certificateIdData", username, certificateId],
 		queryFn: fetchCertificateDataById,
+        staleTime: 30000,
 	});
 };

@@ -18,7 +18,7 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/skills/`;
+			const url = `/api/users/${username}/skills`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -39,5 +39,6 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 	return useQuery<Skill[], AxiosError>({
 		queryKey: ["skillData", username],
 		queryFn: fetchskillData,
+        staleTime: 30000,
 	});
 };

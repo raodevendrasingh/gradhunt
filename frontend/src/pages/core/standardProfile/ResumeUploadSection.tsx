@@ -43,7 +43,7 @@ const sendFileToServer = async (fileUrl: string, token: string) => {
 	if (!token) {
 		throw new Error("Token is not available");
 	}
-	const url = `/api/users/resume/`;
+	const url = `/api/users/resume`;
 	await axios.post(url, fileUrl, {
 		headers: {
 			"Content-Type": "application/json",
@@ -52,7 +52,7 @@ const sendFileToServer = async (fileUrl: string, token: string) => {
 	});
 };
 
-export default function FileUploadSection() {
+export const ResumeUploadSection = () => {
 	const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
 	const [progress, setProgress] = useState(0);
 	const [fileName, setFileName] = useState("");
@@ -310,4 +310,4 @@ export default function FileUploadSection() {
 			</div>
 		</div>
 	);
-}
+};

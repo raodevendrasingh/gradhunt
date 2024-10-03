@@ -81,7 +81,7 @@ export const EditProjectModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/projects/${projectId}/`;
+			const url = `/api/users/projects/${projectId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -117,7 +117,7 @@ export const EditProjectModal: React.FC<{
 			}
 			console.log("projectData sent to backend", projectData);
 
-			const url = `/api/users/projects/${projectId}/`;
+			const url = `/api/users/projects/${projectId}`;
 			const response = await axios.patch(url, projectData, {
 				headers: {
 					"Content-Type": "application/json",

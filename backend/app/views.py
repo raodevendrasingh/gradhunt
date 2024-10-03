@@ -215,7 +215,7 @@ class GetExperienceDataById(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UpdateExperienceData(APIView):
+class ManageExperienceData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
@@ -237,10 +237,6 @@ class UpdateExperienceData(APIView):
             serializer.save()
             return Response({"message": "Experience updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteExperienceData(APIView):
-    permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def delete(self, request, id):
@@ -312,7 +308,7 @@ class GetEducationDataById(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UpdateEducationData(APIView):
+class ManageEducationData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
@@ -334,10 +330,6 @@ class UpdateEducationData(APIView):
             serializer.save()
             return Response({"message": "Education updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteEducationData(APIView):
-    permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def delete(self, request, id):
@@ -410,7 +402,7 @@ class GetProjectById(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UpdateProjectData(APIView):
+class ManageProjectData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
@@ -432,10 +424,6 @@ class UpdateProjectData(APIView):
             serializer.save()
             return Response({"message": "Project updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteProjectData(APIView):
-    permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def delete(self, request, id):
@@ -508,7 +496,7 @@ class GetCertificateById(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UpdateCertificateData(APIView):
+class ManageCertificateData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
@@ -530,10 +518,6 @@ class UpdateCertificateData(APIView):
             serializer.save()
             return Response({"message": "Certificate updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteCertificateData(APIView):
-    permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def delete(self, request, id):
@@ -730,7 +714,7 @@ class GetSocials(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AddResumeLink(APIView):
+class ManageResumeLink(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     def post(self, request):
@@ -751,10 +735,6 @@ class AddResumeLink(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteResumeLink(APIView):
-    permission_classes = [IsClerkAuthenticated]
 
     def delete(self, request):
         try:

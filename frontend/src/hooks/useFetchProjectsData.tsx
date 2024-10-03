@@ -17,7 +17,7 @@ export const useFetchProjectData = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/projects/`;
+			const url = `/api/users/${username}/projects`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -38,5 +38,6 @@ export const useFetchProjectData = (): UseQueryResult<
 	return useQuery<ProjectData[], AxiosError>({
 		queryKey: ["projectsData", username],
 		queryFn: fetchProjectData,
+        staleTime: 30000,
 	});
 };

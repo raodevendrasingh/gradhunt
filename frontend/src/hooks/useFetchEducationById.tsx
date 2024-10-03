@@ -19,7 +19,7 @@ export const useFetchEducationDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/education/${educationId}/`;
+		const url = `/api/users/${username}/education/${educationId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -32,5 +32,6 @@ export const useFetchEducationDataById = ({
 	return useQuery<EducationData, AxiosError>({
 		queryKey: ["educationIdData", username, educationId],
 		queryFn: fetchEducationDataById,
+        staleTime: 30000,
 	});
 };

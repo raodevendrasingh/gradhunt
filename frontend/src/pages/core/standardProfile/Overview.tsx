@@ -6,8 +6,8 @@ import ComboboxAll from "@/components/layouts/ComboboxAll";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
 import { SkillSection } from "./ResumeComponents/SkillSection";
-import FileUploadSection from "./FileUploadSection";
 import { toast } from "sonner";
+import { ResumeUploadSection } from "./ResumeUploadSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -76,7 +76,7 @@ export const Overview = () => {
 			</div>
 			<SkillSection />
 
-			<FileUploadSection />
+			<ResumeUploadSection />
 		</div>
 	);
 };

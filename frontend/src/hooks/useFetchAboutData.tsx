@@ -17,7 +17,7 @@ export const useFetchAboutSection = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/description/`;
+			const url = `/api/users/${username}/description`;
 			const response = await axios.get<AboutSection>(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -38,5 +38,6 @@ export const useFetchAboutSection = (): UseQueryResult<
 	return useQuery<AboutSection, AxiosError>({
 		queryKey: ["aboutSection", username],
 		queryFn: fetchAboutSection,
+        staleTime: 30000,
 	});
 };
