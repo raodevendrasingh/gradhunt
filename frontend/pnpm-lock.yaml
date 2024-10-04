@@ -23,6 +23,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       firebase:
         specifier: ^10.13.2
         version: 10.13.2
@@ -1017,6 +1020,36 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  '@types/glob@7.2.0':
+    resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+
+  '@types/imagemin-gifsicle@7.0.4':
+    resolution: {integrity: sha512-ZghMBd/Jgqg5utTJNPmvf6DkuHzMhscJ8vgf/7MUGCpO+G+cLrhYltL+5d+h3A1B4W73S2SrmJZ1jS5LACpX+A==}
+
+  '@types/imagemin-jpegtran@5.0.4':
+    resolution: {integrity: sha512-PSMxOeJa8q94Y+qx8Yriw+qj1+vH5xWpvar63o6SGO0Xi5RlKuwHHfJmN2GRUngPrlhe394jOUmpVq8jQlVmFA==}
+
+  '@types/imagemin-mozjpeg@8.0.4':
+    resolution: {integrity: sha512-ZCAxV8SYJB8ehwHpnbRpHjg5Wc4HcyuAMiDhXbkgC7gujDoOTyHO3dhDkUtZ1oK1DLBRZapqG9etdLVhUml7yQ==}
+
+  '@types/imagemin-optipng@5.2.4':
+    resolution: {integrity: sha512-mvKnDMC8eCYZetAQudjs1DbgpR84WhsTx1wgvdiXnpuUEti3oJ+MaMYBRWPY0JlQ4+y4TXKOfa7+LOuT8daegQ==}
+
+  '@types/imagemin-svgo@10.0.5':
+    resolution: {integrity: sha512-9U2Rf7vWBHeqJvzmWNP3vYAKqR0208QqQ9Mkrq9OLIL5AeoF/dRVRou6iUYCufBSim57BpBpCJhZLrTgfS3k1g==}
+
+  '@types/imagemin-webp@7.0.3':
+    resolution: {integrity: sha512-C2/EMohS4bzsvY5VJvdzHFdcfmnZoui54DmM/9bFtK57/CgGmKkc+p6n49euPGmMFDDvwm4yVl60nwxcZOmH5A==}
+
+  '@types/imagemin@7.0.1':
+    resolution: {integrity: sha512-xEn5+M3lDBtI3JxLy6eU3ksoVurygnlG7OYhTqJfGGP4PcvYnfn+IABCmMve7ziM/SneHDm5xgJFKC8hCYPicw==}
+
+  '@types/keyv@3.1.4':
+    resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/minimatch@5.1.2':
+    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
+
   '@types/node@22.1.0':
     resolution: {integrity: sha512-AOmuRF0R2/5j1knA3c6G3HOk523Ga+l+ZXltX8SF1+5oqcXijjfTd8fY3XRZqSihEu9XhtQnKYLmkFaoxgsJHw==}
 
@@ -1548,6 +1581,10 @@ packages:
 
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
+
+  dotenv@16.4.5:
+    resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
 
   download@6.2.5:
     resolution: {integrity: sha512-DpO9K1sXAST8Cpzb7kmEhogJxymyVUd5qz/vCOSyvwtp2Klj2XcDt5YUuasgxka44SxF0q5RriKIwJmQHG2AuA==}
@@ -4806,6 +4843,48 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/estree@1.0.6': {}
+
+  '@types/glob@7.2.0':
+    dependencies:
+      '@types/minimatch': 5.1.2
+      '@types/node': 22.1.0
+
+  '@types/imagemin-gifsicle@7.0.4':
+    dependencies:
+      '@types/imagemin': 7.0.1
+
+  '@types/imagemin-jpegtran@5.0.4':
+    dependencies:
+      '@types/imagemin': 7.0.1
+
+  '@types/imagemin-mozjpeg@8.0.4':
+    dependencies:
+      '@types/imagemin': 7.0.1
+
+  '@types/imagemin-optipng@5.2.4':
+    dependencies:
+      '@types/imagemin': 7.0.1
+
+  '@types/imagemin-svgo@10.0.5':
+    dependencies:
+      '@types/imagemin': 7.0.1
+      '@types/svgo': 2.6.4
+
+  '@types/imagemin-webp@7.0.3':
+    dependencies:
+      '@types/imagemin': 7.0.1
+
+  '@types/imagemin@7.0.1':
+    dependencies:
+      '@types/node': 22.1.0
+
+  '@types/keyv@3.1.4':
+    dependencies:
+      '@types/node': 22.1.0
+
+  '@types/minimatch@5.1.2': {}
+
   '@types/node@22.1.0':
     dependencies:
       undici-types: 6.13.0
@@ -5428,6 +5507,8 @@ snapshots:
     dependencies:
       no-case: 3.0.4
       tslib: 2.6.2
+
+  dotenv@16.4.5: {}
 
   download@6.2.5:
     dependencies:
@@ -7746,7 +7827,41 @@ snapshots:
   v8-compile-cache-lib@3.0.1:
     optional: true
 
-  vite-plugin-svgr@4.2.0(rollup@4.21.3)(typescript@5.5.4)(vite@5.4.5(@types/node@22.1.0)):
+  validate-npm-package-license@3.0.4:
+    dependencies:
+      spdx-correct: 3.2.0
+      spdx-expression-parse: 3.0.1
+
+  vite-plugin-imagemin@0.6.1(vite@5.4.5(@types/node@22.1.0)):
+    dependencies:
+      '@types/imagemin': 7.0.1
+      '@types/imagemin-gifsicle': 7.0.4
+      '@types/imagemin-jpegtran': 5.0.4
+      '@types/imagemin-mozjpeg': 8.0.4
+      '@types/imagemin-optipng': 5.2.4
+      '@types/imagemin-svgo': 10.0.5
+      '@types/imagemin-webp': 7.0.3
+      '@types/svgo': 2.6.4
+      chalk: 4.1.2
+      debug: 4.3.4
+      esbuild: 0.14.54
+      fs-extra: 10.1.0
+      gifsicle: 5.2.0
+      imagemin: 7.0.1
+      imagemin-gifsicle: 7.0.0
+      imagemin-jpegtran: 7.0.0
+      imagemin-mozjpeg: 9.0.0
+      imagemin-optipng: 8.0.0
+      imagemin-pngquant: 9.0.2
+      imagemin-svgo: 9.0.0
+      imagemin-webp: 6.1.0
+      jpegtran-bin: 6.0.1
+      pathe: 0.2.0
+      vite: 5.4.5(@types/node@22.1.0)
+    transitivePeerDependencies:
+      - supports-color
+
+  vite-plugin-svgr@4.2.0(rollup@4.24.0)(typescript@5.5.4)(vite@5.4.5(@types/node@22.1.0)):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.24.0)
       '@svgr/core': 8.1.0(typescript@5.5.4)

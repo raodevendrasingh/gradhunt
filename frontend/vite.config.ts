@@ -4,14 +4,18 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { fileURLToPath } from "url";
 import viteImagemin from "vite-plugin-imagemin";
+import dotenv from "dotenv";
 
-// Convert import.meta.url to a file path
+dotenv.config();
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const apiUrl = process.env.VITE_API_URL!;
 
 export default defineConfig({
 	server: {
 		proxy: {
-			"/api": "http://localhost:8000",
+            "/api": apiUrl!,
 		},
 	},
 	plugins: [
@@ -53,7 +57,7 @@ export default defineConfig({
 		outDir: "dist",
 		minify: "esbuild",
 		sourcemap: false,
-        chunkSizeWarningLimit: 500,
+		chunkSizeWarningLimit: 500,
 		rollupOptions: {
 			output: {
 				manualChunks: (id) => {

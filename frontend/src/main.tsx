@@ -23,6 +23,7 @@ declare global {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
 			NODE_ENV: string;
+            VITE_API_URL: string;
             VITE_HOST: string;
 			VITE_BASE_URL: string;
 			VITE_BASE_ADMIN_URL: string;
@@ -41,7 +42,6 @@ declare global {
 }
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
 if (!PUBLISHABLE_KEY) {
 	throw new Error("Missing Publishable Key");
 }
@@ -51,7 +51,7 @@ let routes: RouteObject[];
 
 const host = import.meta.env.VITE_HOST;
 
-if (subdomain === "localhost") {
+if (subdomain === host) {
 	routes = [{ path: "/*", element: <AppRoutes /> }];
 } else if (subdomain === "admin") {
 	routes = [{ path: "/*", element: <AdminRoutes /> }];
