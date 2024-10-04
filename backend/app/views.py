@@ -542,38 +542,21 @@ class AddSkillData(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
-    def post(self, request):
+    def patch(self, request):
         user = request.user
-
-        data = request.data.get('skills', [])
+        data = request.data.get('skills_list', [])
 
         if not isinstance(data, list):
             return Response({"error": "Invalid data format. Expected a list of skills."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Delete to overwrite existing skills for the user
-        Skills.objects.filter(user=user).delete()
+        skills, created = Skills.objects.get_or_create(user=user)
+        serializer = SkillsSerializer(
+            skills, data={'skills_list': data}, partial=True)
 
-        skills = []
-        for skill in data:
-            skill_data = {}
-            for field in Skills._meta.fields:
-                field_name = field.name
-
-                if field_name == 'user':
-                    skill_data[field_name] = user
-                elif field_name in skill:
-                    if isinstance(skill[field_name], dict) and 'value' in skill[field_name]:
-                        skill_data[field_name] = skill[field_name]['value']
-                    else:
-                        skill_data[field_name] = skill[field_name]
-
-            try:
-                skill_instance = Skills.objects.create(**skill_data)
-                skills.append(skill_instance)
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({"message": "Skills added successfully."}, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddUserData(APIView):

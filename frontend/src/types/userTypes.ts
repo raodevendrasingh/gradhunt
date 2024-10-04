@@ -110,30 +110,29 @@ export type EducationForm = {
 	startYear: { value: string; label: string };
 	endMonth: { value: string; label: string } | null;
 	endYear: { value: string; label: string } | null;
-    instituteLocation: string;
+	instituteLocation: string;
 	grade: string;
 	description: string;
-    [key: string]: any;
+	[key: string]: any;
 };
-
 
 export type SocialLinks = {
-    github: string;
-    linkedin: string;
-    leetcode: string;
-    twitter: string;
+	github: string;
+	linkedin: string;
+	leetcode: string;
+	twitter: string;
 };
 
-export type Linguistics = { 
-    id: number;
-    language: string; 
-    proficiency: string; 
+export type Linguistics = {
+	id: number;
+	language: string;
+	proficiency: string;
 };
 
 export type UserBasicDetails = {
-    user_details: UserDetails;
-    social_links: SocialLinks[];
-    linguistics: Linguistics[];
+	user_details: UserDetails;
+	social_links: SocialLinks[];
+	linguistics: Linguistics[];
 };
 
 export type UserBasicFormData = {
@@ -243,10 +242,15 @@ export type Progress = {
 	completion_percentage: number;
 };
 
-export type Skill = {
+export type SkillObject = {
 	id?: number;
 	label: string;
 	value: string;
 	image: string;
 	category: string;
+};
+
+export type Skill = {
+    user: number;
+	skills_list: SkillObject[];
 };

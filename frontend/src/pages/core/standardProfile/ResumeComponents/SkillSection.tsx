@@ -51,12 +51,14 @@ export const SkillSection: React.FC = () => {
 							/>
 						))}
 					</div>
-				) : skillData && skillData.length > 0 ? (
+				) : skillData &&
+				  skillData.length > 0 &&
+				  skillData[0].skills_list.length > 0 ? (
 					<div className="w-full">
 						<div className="flex flex-wrap text-sm w-full">
-							{skillData.map((skill) => (
+							{skillData[0].skills_list.map((skill) => (
 								<div
-									key={skill.id}
+									key={skill.value}
 									className="flex items-center justify-center px-2.5 py-[3px] bg-slate-50 text-gray-700 rounded-full border m-1"
 								>
 									<img

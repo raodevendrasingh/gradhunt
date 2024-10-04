@@ -8,16 +8,16 @@ import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { HiOutlineSearch } from "react-icons/hi";
 import { skillSearchFieldStyle } from "@/utils/styles";
-import { skillObject } from "@/utils/skillOptions";
+import { skillOptions } from "@/utils/skillOptions";
 import { FormFooter } from "@/components/ui/FormFooter";
 import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
-import { Skill } from "@/types/userTypes";
+import { Skill, SkillObject } from "@/types/userTypes";
 
 export const AddSkillModal: React.FC<{
 	setShowSkillModal: React.Dispatch<SetStateAction<boolean>>;
     onUpdate: () => void;
 }> = ({ setShowSkillModal, onUpdate }) => {
-	const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
+    const [selectedSkills, setSelectedSkills] = useState<SkillObject[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
@@ -26,40 +26,32 @@ export const AddSkillModal: React.FC<{
 		isLoading: isSkillLoading
 	} = useFetchSkillData();
     
-	useEffect(() => {
-		if (skillData && skillData.length > 0) {
-			setSelectedSkills(
-				skillData.map((skill) => ({
-					id: skill.id, //
-					value: skill.value,
-					label: skill.label,
-					image: skill.image,
-					category: skill.category,
-				}))
-			);
-		}
-	}, [skillData]);
+    useEffect(() => {
+        if (skillData && skillData.length > 0) {
+            setSelectedSkills(skillData[0].skills_list);
+        }
+    }, [skillData]);
 
 	const {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormData>();
 
-	const loadOptions = (
-		inputValue: string,
-		callback: (options: Skill[]) => void
-	) => {
-		const filteredOptions = skillObject.filter(
-			(option) =>
-				option.label.toLowerCase().includes(inputValue.toLowerCase()) &&
-				!selectedSkills.some((skill) => skill.value === option.value)
-		);
-		callback(filteredOptions);
-	};
+    const loadOptions = (
+        inputValue: string,
+        callback: (options: SkillObject[]) => void
+    ) => {
+        const filteredOptions = skillOptions.filter(
+            (option) =>
+                option.label.toLowerCase().includes(inputValue.toLowerCase()) &&
+                !selectedSkills.some((skill) => skill.value === option.value)
+        );
+        callback(filteredOptions);
+    };
 
 	const [searchInputValue, setSearchInputValue] = useState<string>("");
 
-	const handleSkillSelect = (newSkill: Skill | null) => {
+    const handleSkillSelect = (newSkill: SkillObject | null) => {
 		if (selectedSkills.length >= 20) {
 			toast.error("You cannot select more than 20 skills.");
 			return;
@@ -74,7 +66,7 @@ export const AddSkillModal: React.FC<{
 		}
 	};
 
-	const handleSkillRemove = (removedSkill: Skill) => {
+    const handleSkillRemove = (removedSkill: SkillObject) => {
 		setSelectedSkills(
 			selectedSkills.filter((skill) => skill.value !== removedSkill.value)
 		);
@@ -82,21 +74,16 @@ export const AddSkillModal: React.FC<{
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		setIsLoading(true);
-		const skillData = {
-			skills: selectedSkills.map((skill) => ({
-				value: skill.value,
-				label: skill.label,
-				image: skill.image,
-				category: skill.category,
-			})),
-		};
+        const skillData = {
+            skills_list: selectedSkills
+        };
 		try {
 			const token = await getToken();
 			if (!token) {
 				throw new Error("Token is not available");
 			}
 			const url = "/api/users/skills";
-			await axios.post(url, skillData, {
+			await axios.patch(url, skillData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,

@@ -108,9 +108,19 @@ class SkillsSerializer(serializers.ModelSerializer):
         fields = ['user', 'skills_list']
 
     def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['skills_list'] = instance.skills_list
-        return representation
+        return {
+            'user': instance.user.id,
+            'skills_list': instance.skills_list
+        }
+
+    def validate_skills_list(self, value):
+        if not isinstance(value, list):
+            raise serializers.ValidationError("skills_list must be a list")
+        for item in value:
+            if not isinstance(item, dict) or not all(key in item for key in ['value', 'label', 'image', 'category']):
+                raise serializers.ValidationError(
+                    "Each skill must be a dictionary with 'value', 'label', 'image', and 'category' keys")
+        return value
 
 
 class ExperienceSerializer(serializers.ModelSerializer):

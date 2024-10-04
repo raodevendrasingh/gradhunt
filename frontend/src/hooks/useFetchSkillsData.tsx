@@ -1,8 +1,4 @@
-// !for fetching skill data in the skill tab
-
-import { useCallback, useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
 import { Skill } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
