@@ -15,7 +15,6 @@ import {
 
 // local imports
 import { AdminRoutes } from "./pages/admin/AdminRoutes";
-import { RecruiterRoutes } from "./pages/recruiter/RecruiterRoutes";
 import AppRoutes from "./pages/core/AppRoutes";
 import NotFound from "./pages/common/NotFound";
 
@@ -24,6 +23,7 @@ declare global {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
 			NODE_ENV: string;
+            VITE_HOST: string;
 			VITE_BASE_URL: string;
 			VITE_BASE_ADMIN_URL: string;
 			VITE_BASE_RECRUITER_URL: string;
@@ -49,6 +49,8 @@ if (!PUBLISHABLE_KEY) {
 const subdomain = window.location.hostname.split(".")[0];
 let routes: RouteObject[];
 
+const host = import.meta.env.VITE_HOST;
+
 if (subdomain === "localhost") {
 	routes = [{ path: "/*", element: <AppRoutes /> }];
 } else if (subdomain === "admin") {
@@ -57,9 +59,6 @@ if (subdomain === "localhost") {
 	routes = [{ path: "*", element: <NotFound /> }];
 }
 
-// else if (subdomain === "hire") {
-// 	routes = [{ path: "/*", element: <RecruiterRoutes /> }];
-// }
 
 const router = createBrowserRouter(routes);
 const queryClient = new QueryClient();

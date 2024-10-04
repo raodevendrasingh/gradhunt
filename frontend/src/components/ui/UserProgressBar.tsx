@@ -82,7 +82,7 @@ export const UserProfileCompletion = () => {
 		>
 			<div className="space-y-4">
 				<div className="flex justify-between items-center">
-					{progress ? (
+					{progress && progress?.completion_percentage ? (
 						<span className="text-3xl font-bold text-gray-800">
 							{progress?.completion_percentage.toFixed(0)}%
 						</span>
@@ -142,7 +142,11 @@ export const UserProfileCompletion = () => {
 							<input
 								type="checkbox"
 								id={task.id}
-								checked={progress?.tasks[index].completed === true}
+								checked={
+									progress?.tasks &&
+									progress.tasks[index] &&
+									progress.tasks[index].completed === true
+								}
 								onChange={() => handleTaskToggle(task.id)}
 								disabled
 								className="form-checkbox size-4 text-slate-800 rounded-full border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
@@ -151,7 +155,9 @@ export const UserProfileCompletion = () => {
 								htmlFor={task.id}
 								className={clsx(
 									"text-xs transition-all duration-150 ease-in-out",
-									progress?.tasks[index].completed === true
+									progress?.tasks &&
+										progress.tasks[index] &&
+										progress.tasks[index].completed === true
 										? "line-through text-gray-400"
 										: "text-gray-700 hover:text-gray-900"
 								)}

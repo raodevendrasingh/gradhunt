@@ -32,8 +32,6 @@ export const EditCertificateModal: React.FC<{
 		certificateId: certificateId,
 	});
 
-	console.log(certificateIdData);
-
 	const {
 		control,
 		register,

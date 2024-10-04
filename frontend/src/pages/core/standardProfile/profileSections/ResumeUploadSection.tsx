@@ -67,15 +67,17 @@ export const ResumeUploadSection = () => {
 	const { data: userDetails, isLoading, refetch } = useFetchUserDetails();
 
 	useEffect(() => {
-		if (
-			userDetails &&
-			typeof userDetails.user_details.resumeLink === "string" &&
-			userDetails.user_details.resumeLink.length > 0
-		) {
-			setFileUrl(userDetails.user_details.resumeLink);
-			setUploadStatus("completed");
-		}
-	}, [userDetails]);
+        if (
+            userDetails &&
+            userDetails.user_details &&
+            userDetails.user_details.resumeLink &&
+            typeof userDetails.user_details.resumeLink === "string" &&
+            userDetails.user_details.resumeLink.length > 0
+        ) {
+            setFileUrl(userDetails.user_details.resumeLink as string);
+            setUploadStatus("completed");
+        }
+    }, [userDetails]);
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;

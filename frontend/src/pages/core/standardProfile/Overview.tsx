@@ -56,7 +56,9 @@ export const Overview = () => {
 								<div className="h-4 w-full skeleton" />
 							</div>
 						</>
-					) : userDesc && userDesc.description.length > 0 ? (
+					) : userDesc &&
+					  userDesc.description as string &&
+					  userDesc.description.length > 0 ? (
 						<div className="flex flex-wrap text-sm">{userDesc.description}</div>
 					) : (
 						<div className="flex items-center justify-center w-full min-h-32">

@@ -53,6 +53,8 @@ export const SkillSection: React.FC = () => {
 					</div>
 				) : skillData &&
 				  skillData.length > 0 &&
+				  skillData[0] &&
+				  skillData[0].skills_list &&
 				  skillData[0].skills_list.length > 0 ? (
 					<div className="w-full">
 						<div className="flex flex-wrap text-sm w-full">

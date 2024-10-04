@@ -148,7 +148,9 @@ export default function StandardUserProfile(): React.JSX.Element {
 							<div className="bg-gray-700 p-[1px] rounded">
 								<HiMiniLanguage className="w-[14px] h-[14px] text-white" />
 							</div>
-							{userDetails && userDetails.linguistics.length > 0 ? (
+							{userDetails &&
+							userDetails.linguistics &&
+							userDetails.linguistics.length > 0 ? (
 								<>
 									{userDetails.linguistics.map((item, index) => (
 										<div key={index}>
