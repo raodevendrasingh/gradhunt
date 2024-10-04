@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import ComboboxAll from "@/components/layouts/ComboboxAll";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
-import { SkillSection } from "./ResumeComponents/SkillSection";
+import { SkillSection } from "./profileSections/SkillSection";
 import { toast } from "sonner";
-import { ResumeUploadSection } from "./ResumeUploadSection";
+import { ResumeUploadSection } from "./profileSections/ResumeUploadSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -74,8 +74,8 @@ export const Overview = () => {
 					<UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />
 				)}
 			</div>
-			<SkillSection />
 
+			<SkillSection />
 			<ResumeUploadSection />
 		</div>
 	);

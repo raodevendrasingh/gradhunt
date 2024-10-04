@@ -10,8 +10,8 @@ import { useFetchEducationData } from "@/hooks/useFetchEducationData";
 const options: Option[] = [
 	{ id: "experience", label: "Experience" },
 	{ id: "education", label: "Education" },
-	{ id: "publications", label: "Publications" },
 ];
+// { id: "publications", label: "Publications" },
 
 export default function ComboboxWork() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +20,8 @@ export default function ComboboxWork() {
 	const [showPublishModal, setShowPublishModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     
-    const { refetchExp } = useFetchExperienceData();
-    const { refetchEdu } = useFetchEducationData();
+    const { refetch: refetchExp } = useFetchExperienceData();
+    const { refetch: refetchEdu } = useFetchEducationData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 

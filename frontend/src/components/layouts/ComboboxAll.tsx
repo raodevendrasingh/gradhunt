@@ -10,6 +10,7 @@ import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
 import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { useFetchEducationData } from "@/hooks/useFetchEducationData";
+
 export interface Option {
 	id: string;
 	label: string;
@@ -18,12 +19,11 @@ export interface Option {
 const options: Option[] = [
 	{ id: "experience", label: "Experience" },
 	{ id: "education", label: "Education" },
-	{ id: "skills", label: "Skills" },
 	{ id: "projects", label: "Projects" },
 	{ id: "certifications", label: "Certifications" },
-	{ id: "achievements", label: "Achievements" },
-	{ id: "publications", label: "Publications" },
 ];
+// { id: "achievements", label: "Achievements" },
+// { id: "publications", label: "Publications" },
 
 export default function ComboboxAll() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -35,11 +35,11 @@ export default function ComboboxAll() {
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-    const { refetchExp } = useFetchExperienceData();
-    const { refetchEdu } = useFetchEducationData();
-    const { refetchAbout } = useFetchAboutSection();
-    const { refetchProjects } = useFetchProjectData();
-    const { refetchCertificates } = useFetchCertificateData();
+    const { refetch: refetchExp } = useFetchExperienceData();
+    const { refetch: refetchEdu } = useFetchEducationData();
+    const { refetch: refetchAbout } = useFetchAboutSection();
+    const { refetch: refetchProjects } = useFetchProjectData();
+    const { refetch: refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 

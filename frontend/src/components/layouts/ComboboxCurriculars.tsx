@@ -9,8 +9,8 @@ import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 const options: Option[] = [
 	{ id: "projects", label: "Projects" },
 	{ id: "certifications", label: "Certifications" },
-	{ id: "achievements", label: "Achievements" },
 ];
+// { id: "achievements", label: "Achievements" },
 
 export default function ComboboxCurriculars() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -19,8 +19,8 @@ export default function ComboboxCurriculars() {
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     
-    const { refetchProjects } = useFetchProjectData();
-    const { refetchCertificates } = useFetchCertificateData();
+    const { refetch: refetchProjects } = useFetchProjectData();
+    const { refetch: refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
