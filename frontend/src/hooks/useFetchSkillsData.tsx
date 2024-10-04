@@ -36,5 +36,6 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 		queryKey: ["skillData", username],
 		queryFn: fetchskillData,
         staleTime: 30000,
+        refetchInterval: 30000,
 	});
 };
