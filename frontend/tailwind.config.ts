@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import colors from "tailwindcss/colors";
 import form from "@tailwindcss/forms";
 
 export default {
@@ -10,7 +9,6 @@ export default {
 			fontFamily: {
 				NotoSans: ["Noto Sans", "sans-serif"],
 			},
-			colors: colors,
 			screens: {
 				xs: "475px",
 				xsm: "520px",
