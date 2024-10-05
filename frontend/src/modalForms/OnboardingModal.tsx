@@ -223,7 +223,7 @@ export const UserOnboardingModal = ({
 				};
 
 				await axios.post(
-					"api/users/onboarding/",
+					"/api/users/onboarding",
 					userProfileData,
 					{
 						headers: {

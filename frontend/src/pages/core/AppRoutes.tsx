@@ -15,6 +15,7 @@ import StandardProfileLayout from "./StandardProfileLayout";
 import SettingsPage from "./SettingsPage";
 import SpecialUserProfile from "@/pages/core/SpecialUserProfile";
 import NotFound from "@/pages/common/NotFound";
+import OnboardingPage from "./OnboardingPage";
 
 export default function AppRoutes(): ReactNode {
 	return (
@@ -23,6 +24,7 @@ export default function AppRoutes(): ReactNode {
 				<Route path="/" element={<LandingPage />} />
 				<Route path="/login/*" element={<SignInPage />} />
 				<Route path="/signup/*" element={<SignUpPage />} />
+				<Route path="/onboarding" element={<OnboardingPage/>} />
 				<Route path="/*" element={<StandardProfileLayout />}>
 					<Route path="job-search" element={<JobSearchPage />} />
 					<Route path="job-search/:params" element={<JobsFeedPage />} />

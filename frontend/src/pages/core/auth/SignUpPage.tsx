@@ -57,7 +57,7 @@ export default function SignUpPage() {
                             username: username || '',
                         }}
                         signInUrl="/login"
-                        forceRedirectUrl={`/p/${user?.username}`}
+                        forceRedirectUrl={`/onboarding`}
                     />
 
                     <div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">

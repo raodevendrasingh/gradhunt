@@ -4,11 +4,11 @@ from .views import *
 urlpatterns = [
     path('api', HomeView.as_view(), name='home'),
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
-    path('api/users/check-username', CheckUsernameView.as_view(), name='check-username'),
+    path('api/users/check-username/', CheckUsernameView.as_view(), name='check-username'),
     
+    path('api/users', AddUserData.as_view(), name='add-user-data'),
     path('api/users/onboarding', OnboardUser.as_view(), name='create-user'),
     path('api/users/profile-image', SetImageUrl.as_view(), name='set-profile-image'),
-    path('api/users', AddUserData.as_view(), name='add-user-data'),
 
     path('api/users/description', SaveUserDescription.as_view(), name='save-user-description'),
     path('api/users/skills', AddSkillData.as_view(), name='add-skills'),
