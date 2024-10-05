@@ -6,6 +6,7 @@ import { BsBuildingsFill } from "react-icons/bs";
 import { useState } from "react";
 import { EditExpModal } from "@/modalForms/EditExpModal";
 import { AddExpModal } from "@/modalForms/AddExpModal";
+import { GoUnverified, GoVerified } from "react-icons/go";
 
 export const Experience = () => {
 	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
@@ -18,6 +19,8 @@ export const Experience = () => {
 		isLoading: isExpLoading,
 		refetch: refetchExp,
 	} = useFetchExperienceData();
+
+    console.log(experienceData)
 
 	const handleEditClick = (id: number) => {
 		setEditingExperienceId(id);
@@ -51,13 +54,20 @@ export const Experience = () => {
 												{data.companyName}
 											</span>
 											{isSignedIn && (
-												<button
-													type="button"
-													onClick={() => handleEditClick(data.id)}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
-												>
-													<MdModeEdit className="size-5" />
-												</button>
+												<span className="flex items-center gap-2">
+                                                    {data.isVerified ? (
+                                                        <GoVerified className="text-sky-500 size-5" />
+                                                    ) : (
+                                                        <GoUnverified className="text-gray-400 hover:text-sky-600 transition-colors cursor-pointer size-5" />
+                                                    )}
+													<button
+														type="button"
+														onClick={() => handleEditClick(data.id)}
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
+													>
+														<MdModeEdit className="size-5" />
+													</button>
+												</span>
 											)}
 										</div>
 										<div className="flex text-sm items-center gap-1 text-gray-800">

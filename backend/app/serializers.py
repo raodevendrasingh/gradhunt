@@ -136,9 +136,8 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ['id', 'companyName', 'jobTitle', 'jobType', 'startMonth', 'startYear',
-                  'endMonth', 'endYear', 'jobLocation', 'locationType', 'description',
-                  'isCurrentlyWorking', 'user']
+        fields = ['id', 'companyName', 'jobTitle', 'jobType', 'startMonth', 'startYear', 'endMonth', 'endYear', 'jobLocation',
+                  'locationType', 'companyWebsite', 'isVerified', 'verificationCode', 'description', 'isCurrentlyWorking', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -161,8 +160,8 @@ class EducationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Education
-        fields = ['id', 'instituteName', 'degreeTitle', 'studyField', 'startMonth', 'startYear',
-                  'endMonth', 'endYear', 'instituteLocation', 'grade', 'description', 'user']
+        fields = ['id', 'instituteName', 'degreeTitle', 'studyField', 'startMonth', 'startYear', 'endMonth', 'endYear',
+                  'instituteLocation', 'grade', 'instituteWebsite', 'isVerified', 'verificationCode', 'description', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):

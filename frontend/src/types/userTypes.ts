@@ -52,6 +52,9 @@ export type ExperienceData = {
 	endYear: string;
 	jobLocation: string;
 	locationType: string;
+	companyWebsite: string;
+	isVerified: boolean;
+	verificationCode: string;
 	description: string;
 	isCurrentlyWorking?: boolean;
 };
@@ -68,6 +71,9 @@ export type ExperienceForm = {
 	jobLocation: string;
 	locationType: { value: string; label: string };
 	description: string;
+	companyWebsite: string;
+	isVerified: boolean;
+	verificationCode: string;
 	isCurrentlyWorking: boolean;
 };
 
@@ -98,6 +104,9 @@ export type EducationData = {
 	endYear: string;
 	grade: string;
 	instituteLocation: string;
+	instituteWebsite: string;
+	isVerified: boolean;
+	verificationCode: string;
 	description: string;
 };
 
@@ -113,6 +122,9 @@ export type EducationForm = {
 	instituteLocation: string;
 	grade: string;
 	description: string;
+	instituteWebsite: string;
+	isVerified: boolean;
+	verificationCode: string;
 	[key: string]: any;
 };
 
@@ -251,6 +263,6 @@ export type SkillObject = {
 };
 
 export type Skill = {
-    user: number;
+	user: number;
 	skills_list: SkillObject[];
 };

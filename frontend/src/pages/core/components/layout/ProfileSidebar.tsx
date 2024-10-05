@@ -1,11 +1,12 @@
 import { ReactNode, useState } from "react";
 import { motion } from "framer-motion";
-import { GoBook, GoHome, GoLightBulb, GoBell } from "react-icons/go";
+
 import {
 	GoBriefcase,
 	GoBookmark,
 	GoPaperAirplane,
 	GoGear,
+	GoLaw,
 } from "react-icons/go";
 import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
@@ -59,11 +60,9 @@ export const ProfileSidebar = () => {
 		{
 			icon: <GoBookmark size={20} />,
 			label: "Saved Jobs",
-			route: "/saved-jobs",
+			route: "/jobs-saved",
 		},
-		// { icon: <GoHome size={20} />, label: "Feed", route: "/posts" },
-		// { icon: <GoBook size={20} />, label: "News", route: "/news-feed" },
-		// { icon: <GoLightBulb size={20} />, label: "Showcase", route: "/showcase" },
+		{ icon: <GoLaw size={20} />, label: "Salaries", route: "/salaries" },
 	];
 	const personalTabs = [];
 
@@ -79,6 +78,7 @@ export const ProfileSidebar = () => {
 			label: user?.firstName as string,
 			route: `/p/${user?.username}`,
 		});
+
 		personalTabs.push({
 			icon: <GoGear size={20} />,
 			label: "Settings",

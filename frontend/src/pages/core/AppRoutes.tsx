@@ -16,6 +16,8 @@ import SettingsPage from "./SettingsPage";
 import SpecialUserProfile from "@/pages/core/SpecialUserProfile";
 import NotFound from "@/pages/common/NotFound";
 import OnboardingPage from "./OnboardingPage";
+import SalariesPage from "./SalariesPage";
+import CompanyProfileForm from "./CompanyProfileForm";
 
 export default function AppRoutes(): ReactNode {
 	return (
@@ -24,13 +26,15 @@ export default function AppRoutes(): ReactNode {
 				<Route path="/" element={<LandingPage />} />
 				<Route path="/login/*" element={<SignInPage />} />
 				<Route path="/signup/*" element={<SignUpPage />} />
-				<Route path="/onboarding" element={<OnboardingPage/>} />
+				<Route path="/onboarding" element={<OnboardingPage />} />
 				<Route path="/*" element={<StandardProfileLayout />}>
 					<Route path="job-search" element={<JobSearchPage />} />
 					<Route path="job-search/:params" element={<JobsFeedPage />} />
 					<Route path="job-applications" element={<JobApplicationsPage />} />
-					<Route path="saved-jobs" element={<SavedJobsPage />} />
+					<Route path="jobs-saved" element={<SavedJobsPage />} />
+					<Route path="salaries" element={<SalariesPage />} />
 					<Route path="p/:username" element={<StandardUserProfile />} />
+					<Route path="create-company-profile" element={<CompanyProfileForm />} />
 					<Route path="settings" element={<SettingsPage />} />
 				</Route>
 				<Route path="/s/:username" element={<SpecialUserProfile />} />
