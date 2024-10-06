@@ -52,7 +52,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 					type={type}
 					id={name}
 					placeholder={label}
-					className={`${icon ? "pl-10" : "pl-3"} w-full py-2.5 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 block transition duration-200 ${
+					className={`${icon ? "pl-10" : "pl-3"} w-full py-2.5 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 block transition duration-200 ${
 						error
 							? "border-red-500 focus:ring-red-500 focus:border-red-500"
 							: ""

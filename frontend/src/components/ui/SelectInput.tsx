@@ -17,7 +17,7 @@ interface SelectInputProps {
 	error?: FieldError;
 }
 
-const selectStyles: StylesConfig<Option, false> = {
+export const selectStyles: StylesConfig<Option, false> = {
 	control: (provided, state) => ({
 		...provided,
 		width: "100%",
@@ -33,9 +33,9 @@ const selectStyles: StylesConfig<Option, false> = {
 	}),
 	option: (provided, state) => ({
 		...provided,
-        width: "99%",
+		width: "99%",
 		alignContent: "center",
-        borderRadius: "0.225rem",
+		borderRadius: "0.225rem",
 		margin: "2px auto",
 		backgroundColor: state.isSelected ? "#E5E7EB" : "white",
 		color: "#1F2937", // matches text-gray-800
@@ -50,6 +50,7 @@ const selectStyles: StylesConfig<Option, false> = {
 		backgroundColor: "white",
 		border: "1px solid #E5E7EB",
 		borderRadius: "0.5rem",
+		zIndex: 30,
 		boxShadow:
 			"0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
 	}),
@@ -116,4 +117,3 @@ export const SelectInput: React.FC<SelectInputProps> = ({
 		)}
 	</div>
 );
-

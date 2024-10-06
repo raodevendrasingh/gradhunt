@@ -77,15 +77,15 @@ export type ExperienceForm = {
 	isCurrentlyWorking: boolean;
 };
 
-export type CompanyProfile = {
+export type CompanyForm = {
 	recruiter: Recruiter;
 	companyName: string;
 	website: string;
 	companyLogo: string;
 	companyCover: string;
-	employeeSize: string;
+	employeeSize: { value: string; label: string };
 	establishedYear: string;
-	industry: string;
+	industry: { value: string; label: string };
 	headquarters: string;
 	branches: { city: string; state: string; country: string }[];
 	about: string;

@@ -2,24 +2,23 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/TextInput";
 import { SelectInput } from "@/components/ui/SelectInput";
-import { FiCamera, FiGlobe, FiMapPin, FiUsers } from "react-icons/fi";
+import { FiCamera, FiGlobe, FiUsers } from "react-icons/fi";
 import { FaBuilding } from "react-icons/fa6";
 import { LuCalendar } from "react-icons/lu";
 import { BiBriefcase } from "react-icons/bi";
-import { CompanyProfile } from "@/types/userTypes";
+import { CompanyForm } from "@/types/userTypes";
 import { companySize, sectors } from "@/utils/selectObjects";
-
-const locationOptions = [
-	{ value: "us", label: "United States" },
-	{ value: "uk", label: "United Kingdom" },
-	{ value: "ca", label: "Canada" },
-	{ value: "au", label: "Australia" },
-];
+import { LocationSelect } from "@/helpers/LocationSelect2";
 
 export default function CompanyProfileForm() {
-	const { register, control, handleSubmit } = useForm<CompanyProfile>();
+	const {
+		register,
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<CompanyForm>();
 
-	const onSubmit: SubmitHandler<CompanyProfile> = (data) => {
+	const onSubmit: SubmitHandler<CompanyForm> = (data) => {
 		console.log(data);
 	};
 
@@ -27,6 +26,7 @@ export default function CompanyProfileForm() {
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
+				<h2 className="text-lg font-semibold pb-5">Create Company Profile </h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
 					{/* Cover Image Upload */}
 					<div className="relative w-full h-48 bg-gray-100 rounded-xl mb-16">
@@ -39,8 +39,8 @@ export default function CompanyProfileForm() {
 
 						{/* Company Logo Upload */}
 						<div className="absolute -bottom-12 left-8">
-							<div className="relative w-28 h-28 bg-white rounded-xl border-4 border-white shadow-lg">
-								<div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-lg">
+							<div className="relative w-28 h-28 bg-white rounded-xl border-2 border-gray-300">
+								<div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
 									<FiCamera className="h-8 w-8 text-gray-400" />
 								</div>
 							</div>
@@ -96,13 +96,32 @@ export default function CompanyProfileForm() {
 							icon={<BiBriefcase className="h-5 w-5" />}
 							isRequired
 						/>
-						<SelectInput
-							label="Headquarters"
-							name="headquarters"
-							options={locationOptions}
+						<div className="">
+							<label className="block text-sm font-medium text-gray-700 mb-1">
+								Company Headquarters
+							</label>
+							<LocationSelect
+								control={control}
+								name="headquarters"
+								placeholder="Location"
+								error={errors.headquarters?.message}
+								rules={{
+									required: "Location is required",
+								}}
+							/>
+						</div>
+					</div>
+
+					<div className="col-span-2">
+						<label className="block text-sm font-medium text-gray-700 mb-1">
+							Company Branches
+						</label>
+						<LocationSelect
 							control={control}
-							icon={<FiMapPin className="h-5 w-5" />}
-							isRequired
+							name="branches"
+							placeholder="Location"
+							isMulti
+							error={errors.branches?.message}
 						/>
 					</div>
 
@@ -113,7 +132,7 @@ export default function CompanyProfileForm() {
 						<textarea
 							{...register("about")}
 							rows={4}
-							className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
+							className="w-full p-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
 							placeholder="Tell us about your company..."
 						/>
 					</div>
@@ -125,7 +144,7 @@ export default function CompanyProfileForm() {
 						<textarea
 							{...register("values")}
 							rows={4}
-							className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
+							className="w-full p-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
 							placeholder="What are your company's core values?"
 						/>
 					</div>
@@ -142,7 +161,7 @@ export default function CompanyProfileForm() {
 			</div>
 
 			{/* sidebar */}
-			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-x scrollbar-hide overflow-y-auto p-4"></div>
+			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4"></div>
 		</div>
 	);
 }
