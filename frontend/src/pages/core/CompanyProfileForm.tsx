@@ -9,8 +9,12 @@ import { BiBriefcase } from "react-icons/bi";
 import { CompanyForm } from "@/types/userTypes";
 import { companySize, sectors } from "@/utils/selectObjects";
 import { LocationSelect } from "@/helpers/LocationSelect2";
+import { TiptapEditor } from "@/components/ui/TiptapEditor";
+import { useState } from "react";
 
 export default function CompanyProfileForm() {
+	const [editorInstance, setEditorInstance] = useState(null);
+
 	const {
 		register,
 		control,
@@ -19,6 +23,11 @@ export default function CompanyProfileForm() {
 	} = useForm<CompanyForm>();
 
 	const onSubmit: SubmitHandler<CompanyForm> = (data) => {
+		if (editorInstance) {
+			const content = (editorInstance as any).getHTML();
+			console.log("Editor content:", content);
+			// Send the content to your backend or process it as needed
+		}
 		console.log(data);
 	};
 
@@ -129,12 +138,13 @@ export default function CompanyProfileForm() {
 						<label className="block text-sm font-medium text-gray-700 mb-1">
 							About Company
 						</label>
-						<textarea
+                        <TiptapEditor onEditorReady={setEditorInstance} />
+						{/* <textarea
 							{...register("about")}
 							rows={4}
 							className="w-full p-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
 							placeholder="Tell us about your company..."
-						/>
+						/> */}
 					</div>
 
 					<div className="col-span-2">

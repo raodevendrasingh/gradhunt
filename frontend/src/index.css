@@ -30,6 +30,14 @@
 	.skeleton {
 		@apply bg-slate-300 animate-pulse rounded-lg;
 	}
+
+	.editor-button {
+		@apply px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-0;
+	}
+
+	.editor-button-active {
+		@apply bg-blue-100 text-slate-700 border-blue-300;
+	}
 }
 
 /* width */

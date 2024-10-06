@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import form from "@tailwindcss/forms";
+import typography from '@tailwindcss/typography'
 
 export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -24,6 +25,7 @@ export default {
 	},
 	plugins: [
 		form,
+        typography,
 		function ({ addUtilities }) {
 			addUtilities({
 				".scrollbar-hide": {
