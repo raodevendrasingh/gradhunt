@@ -2,6 +2,7 @@ export const Button: React.FC<{
 	children: React.ReactNode;
 	icon?: React.ReactNode;
 	variant?: "primary" | "danger" | "secondary";
+    type?: "button" | "submit" | "reset";
 	fullWidth?: boolean;
 	className?: string;
 }> = ({ children, icon, variant = "primary", fullWidth, className = "" }) => {

@@ -11,6 +11,10 @@ interface ValidationRules {
 		value: number;
 		message: string;
 	};
+	pattern?: {
+		value: RegExp;
+		message: string;
+	};
 }
 
 interface TextInputProps {
@@ -63,4 +67,3 @@ export const TextInput: React.FC<TextInputProps> = ({
 		)}
 	</div>
 );
-

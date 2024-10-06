@@ -10,7 +10,7 @@ export const languageProficiency: readonly SelectOption[] = [
 	{ label: "Native", value: "Native" },
 ];
 
-export const companySize: readonly SelectOption[] = [
+export const companySize: SelectOption[] = [
 	{ label: "1 - 9 Employees", value: "1 - 9" },
 	{ label: "10 - 49 Employees", value: "10 - 49" },
 	{ label: "50 - 99 Employees", value: "50 - 99" },
@@ -558,7 +558,7 @@ export const experience: readonly SelectOption[] = [
 	{ value: "15", label: "More than 15 Years" },
 ];
 
-export const sectors: readonly SelectOption[] = [
+export const sectors: SelectOption[] = [
 	{
 		label: "Engineering",
 		value: "Engineering",
