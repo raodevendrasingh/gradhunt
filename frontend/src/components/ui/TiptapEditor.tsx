@@ -207,16 +207,20 @@ export const TiptapEditor = ({
 		},
 		editorProps: {
 			attributes: {
-				class: "prose prose-sm focus:outline-none",
+				class:
+					"prose prose-sm max-w-none w-full min-h-[200px] focus:outline-none",
 			},
 		},
 	});
 
 	return (
-		<div className="relative w-full pb-2.5 min-h-[200px] bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus-within:ring focus-within:ring-gray-100 transition duration-200">
+		<div className="relative w-full pb-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus-within:ring focus-within:ring-gray-100 transition duration-200">
 			<MenuBar editor={editor} />
-			<div className="px-3 pb-2">
-				<EditorContent editor={editor} className="min-h-52" />
+			<div className="px-3 pb-2 w-full">
+				<EditorContent
+					editor={editor}
+					className="w-full min-h-[200px] [&>div]:w-full"
+				/>
 			</div>
 			<span className="absolute bottom-0 right-0 text-xs p-1 mt-2">
 				{editor?.storage.characterCount.characters()} / {limit} chars
