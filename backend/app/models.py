@@ -101,21 +101,14 @@ class CompanyProfile(models.Model):
     establishedYear = models.CharField(max_length=4)
     industry = models.CharField(max_length=100)
     headquarters = models.CharField(max_length=200)
-    addressLine1 = models.CharField(max_length=255, blank=True, null=True)
     branches = ArrayField(models.CharField(
         max_length=512), blank=True, default=list)
-    description = models.TextField(blank=True, null=True)
-    values = models.TextField(blank=True, null=True)
-    mission = models.TextField(blank=True, null=True)
-    vision = models.TextField(blank=True, null=True)
-    services = models.TextField(blank=True, null=True)
     marketCap = models.CharField(max_length=50, blank=True, null=True)
     fundingRaised = models.CharField(max_length=50, blank=True, null=True)
     companyType = models.CharField(max_length=50, blank=True, null=True)
     openPositions = models.IntegerField(blank=True, null=True)
-    culture = models.TextField(blank=True, null=True)
-    benefits = models.TextField(blank=True, null=True)
-    revenue = models.CharField(max_length=50, blank=True, null=True)
+    yearlyRevenue = models.CharField(max_length=50, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     isDraft = models.BooleanField(default=False)
 
     def __str__(self):

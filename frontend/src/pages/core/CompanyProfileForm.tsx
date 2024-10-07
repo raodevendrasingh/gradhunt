@@ -146,20 +146,7 @@ export default function CompanyProfileForm() {
 							placeholder="Tell us about your company..."
 						/> */}
 					</div>
-
-					<div className="col-span-2">
-						<label className="block text-sm font-medium text-gray-700 mb-1">
-							Company Values
-						</label>
-						<textarea
-							{...register("values")}
-							rows={4}
-							className="w-full p-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
-							placeholder="What are your company's core values?"
-						/>
-					</div>
-
-					<div className="flex justify-between">
+					<div className="flex justify-between pt-5">
 						<Button type="button" variant="secondary" className="px-8">
 							Save as Draft
 						</Button>

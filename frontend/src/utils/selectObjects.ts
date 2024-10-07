@@ -900,3 +900,15 @@ export const skills: SelectOption[] = [
 		value: "Programmable Logic Controllers",
 	},
 ];
+
+export const companyTypes: readonly SelectOption[] = [
+    { label: "Private", value: "Private" },
+    { label: "Public", value: "Public" },
+    { label: "Non-Profit", value: "Non-Profit" },
+    { label: "Government", value: "Government" },
+    { label: "Partnership", value: "Partnership" },
+    { label: "Sole Proprietorship", value: "Sole Proprietorship" },
+    { label: "Cooperative", value: "Cooperative" },
+    { label: "LLC", value: "Limited Liability Company" },
+    { label: "Corporation", value: "Corporation" },
+];

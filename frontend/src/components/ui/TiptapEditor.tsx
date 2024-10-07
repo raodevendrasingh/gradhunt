@@ -171,7 +171,7 @@ export const TiptapEditor = ({
 }: {
 	onEditorReady: (editor: any) => void;
 }) => {
-	const limit = 5000;
+	const limit = 6000;
 
 	const editor = useEditor({
 		extensions: [
