@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/TextInput";
 import { SelectInput } from "@/components/ui/SelectInput";
 import { FiCamera, FiGlobe, FiUsers } from "react-icons/fi";
+import { TbCameraPlus } from "react-icons/tb";
 import { FaBuilding } from "react-icons/fa6";
 import { LuCalendar } from "react-icons/lu";
 import { BiBriefcase } from "react-icons/bi";
@@ -10,10 +11,21 @@ import { CompanyForm } from "@/types/userTypes";
 import { companySize, sectors } from "@/utils/selectObjects";
 import { LocationSelect } from "@/helpers/LocationSelect2";
 import { TiptapEditor } from "@/components/ui/TiptapEditor";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import dummyLogo from "@/assets/avatar/dummyLogo.png";
+import { LogoCropper } from "@/components/common/LogoCropper";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [uploadedLogo, setUploadedLogo] = useState<string | null>(null);
+	const [croppedLogo, setCroppedLogo] = useState<string | null>(null);
+	const [croppedBanner, setCroppedBanner] = useState<string | null>(null);
+	const [uploadedBanner, setUploadedBanner] = useState<string | null>(null);
+	const [isCropperOpen, setIsCropperOpen] = useState(false);
+
+	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const {
 		register,
@@ -22,14 +34,57 @@ export default function CompanyProfileForm() {
 		formState: { errors },
 	} = useForm<CompanyForm>();
 
-	const onSubmit: SubmitHandler<CompanyForm> = (data) => {
-		if (editorInstance) {
-			const content = (editorInstance as any).getHTML();
-			console.log("Editor content:", content);
-			// Send the content to your backend or process it as needed
-		}
-		console.log(data);
+	const openFileDialog = () => {
+		inputRef.current?.click();
+		setUploadedLogo(null);
 	};
+
+	const handleCrop = (croppedImageData: string) => {
+		setCroppedLogo(croppedImageData);
+		setIsCropperOpen(false);
+	};
+
+	const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setCroppedLogo(null);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setUploadedLogo(reader.result as string);
+			};
+			reader.readAsDataURL(file);
+		}
+		setIsCropperOpen(true);
+	};
+
+	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
+		setIsLoading(true);
+		try {
+			let content = "";
+			if (editorInstance) {
+				content = (editorInstance as any).getHTML();
+				console.log("Editor content:", content);
+			}
+
+			let cloudinaryBannerUrl = "";
+			let cloudinaryLogoUrl = "";
+			if (croppedLogo) {
+				cloudinaryLogoUrl = await uploadToCloudinary(croppedLogo as string);
+			}
+			const formData = {
+				...data,
+				companyLogo: cloudinaryLogoUrl,
+				companyBanner: cloudinaryBannerUrl,
+				description: content,
+			};
+			console.log(formData);
+		} catch (error) {
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	console.log("cropped logo: ", croppedLogo);
 
 	return (
 		<div className="flex h-full">
@@ -48,9 +103,50 @@ export default function CompanyProfileForm() {
 
 						{/* Company Logo Upload */}
 						<div className="absolute -bottom-12 left-8">
-							<div className="relative w-28 h-28 bg-white rounded-xl border-2 border-gray-300">
-								<div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
-									<FiCamera className="h-8 w-8 text-gray-400" />
+							<div className="relative w-28 h-28 rounded-xl ">
+								<div className="absolute inset-0 flex items-center justify-center">
+									<input
+										{...register("companyLogo")}
+										aria-invalid={errors.companyLogo ? "true" : "false"}
+										type="file"
+										name="companyLogo"
+										className="hidden"
+										ref={(e) => (inputRef.current = e)}
+										onChange={handleLogoUpload}
+									/>
+									{croppedLogo ? (
+										<img
+											src={croppedLogo}
+											alt="Cropped"
+											className="relative left-6 h-28 w-28 object-cover rounded-xl bg-gray-400"
+										/>
+									) : uploadedLogo ? (
+										<>
+											<LogoCropper
+												imageSrc={uploadedLogo}
+												onCropComplete={handleCrop}
+												onClose={() => setUploadedLogo(null)}
+											/>
+											<img
+												src={dummyLogo}
+												alt="User profile"
+												className="relative left-6 h-28 w-28 object-cover rounded-xl"
+											/>
+										</>
+									) : (
+										<img
+											src={dummyLogo}
+											alt="User profile"
+											className="relative left-6 h-28 w-28 object-cover rounded-xl"
+										/>
+									)}
+									<button
+										type="button"
+										onClick={openFileDialog}
+										className="relative -left-14 bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
+									>
+										<TbCameraPlus className="size-7 text-gray-50" />
+									</button>
 								</div>
 							</div>
 						</div>
@@ -138,7 +234,7 @@ export default function CompanyProfileForm() {
 						<label className="block text-sm font-medium text-gray-700 mb-1">
 							About Company
 						</label>
-                        <TiptapEditor onEditorReady={setEditorInstance} />
+						<TiptapEditor onEditorReady={setEditorInstance} />
 						{/* <textarea
 							{...register("about")}
 							rows={4}
