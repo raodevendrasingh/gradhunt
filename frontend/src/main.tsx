@@ -22,6 +22,10 @@ declare global {
 	interface ImportMeta {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
+            VITE_CLOUDINARY_API_SECRET: string;
+            VITE_CLOUDINARY_API_KEY: string;
+            VITE_CLOUDINARY_UPLOAD_PRESET: string;
+            VITE_CLOUDINARY_CLOUD_NAME: string;
 			NODE_ENV: string;
             VITE_API_URL: string;
             VITE_HOST: string;

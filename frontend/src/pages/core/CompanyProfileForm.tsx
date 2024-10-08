@@ -13,7 +13,6 @@ import { LocationSelect } from "@/helpers/LocationSelect2";
 import { TiptapEditor } from "@/components/ui/TiptapEditor";
 import { useRef, useState } from "react";
 import { LogoCropper } from "@/components/common/LogoCropper";
-import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { BannerCropper } from "@/components/common/BannerCropper";
 import dummyLogo from "@/assets/avatar/dummyLogo.png";
 import clsx from "clsx";
@@ -22,6 +21,7 @@ import {
 	handleUpload,
 	openFileDialog,
 } from "@/utils/FileUploadMethods";
+import { handleCloudinaryUpload } from "@/lib/handleCloudinaryUpload";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
@@ -55,6 +55,33 @@ export default function CompanyProfileForm() {
 		setIsBannerCropperOpen
 	);
 
+	const handleDummyUpload = async () => {
+		console.log("upload initiated");
+		try {
+			let cloudinaryBannerUrl = "";
+			let cloudinaryLogoUrl = "";
+
+			if (croppedBanner) {
+				cloudinaryBannerUrl = await handleCloudinaryUpload(
+					croppedBanner,
+					"gradhunt/banners"
+				);
+			}
+
+			if (croppedLogo) {
+				cloudinaryLogoUrl = await handleCloudinaryUpload(
+					croppedLogo,
+					"gradhunt/logos"
+				);
+			}
+
+			console.log("cloudinaryBannerUrl:", cloudinaryBannerUrl);
+			console.log("cloudinaryLogoUrl:", cloudinaryLogoUrl);
+		} catch (error) {
+			console.error("Error in handleDummyUpload:", error);
+		}
+	};
+
 	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
 		setIsLoading(true);
 		try {
@@ -64,15 +91,25 @@ export default function CompanyProfileForm() {
 				console.log("Editor content:", content);
 			}
 
-			let cloudinaryBannerUrl = "";
-			let cloudinaryLogoUrl = "";
-			if (croppedLogo) {
-				cloudinaryLogoUrl = await uploadToCloudinary(croppedLogo as string);
-			}
+			// let cloudinaryBannerUrl = "";
+			// if (croppedBanner) {
+			// 	cloudinaryBannerUrl = await uploadToCloudinary(
+			// 		croppedBanner as string,
+			// 		"gradhunt/banners"
+			// 	);
+			// }
+
+			// let cloudinaryLogoUrl = "";
+			// if (croppedLogo) {
+			// 	cloudinaryLogoUrl = await uploadToCloudinary(
+			// 		croppedLogo as string,
+			// 		"gradhunt/logos"
+			// 	);
+			// }
 			const formData = {
 				...data,
-				companyLogo: cloudinaryLogoUrl,
-				companyBanner: cloudinaryBannerUrl,
+				// companyLogo: cloudinaryLogoUrl,
+				// companyBanner: cloudinaryBannerUrl,
 				description: content,
 			};
 			console.log(formData);
@@ -173,6 +210,10 @@ export default function CompanyProfileForm() {
 							</div>
 						</div>
 					</div>
+
+					<button onClick={handleDummyUpload} className="border px-2 py-1">
+						Upload Dummy
+					</button>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-5">
 						<TextInput
