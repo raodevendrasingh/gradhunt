@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/TextInput";
 import { SelectInput } from "@/components/ui/SelectInput";
 import { FiCamera, FiGlobe, FiUsers } from "react-icons/fi";
-import { TbCameraPlus } from "react-icons/tb";
+import { TbCameraPlus, TbX } from "react-icons/tb";
 import { FaBuilding } from "react-icons/fa6";
 import { LuCalendar } from "react-icons/lu";
 import { BiBriefcase } from "react-icons/bi";
@@ -12,9 +12,11 @@ import { companySize, sectors } from "@/utils/selectObjects";
 import { LocationSelect } from "@/helpers/LocationSelect2";
 import { TiptapEditor } from "@/components/ui/TiptapEditor";
 import { useRef, useState } from "react";
-import dummyLogo from "@/assets/avatar/dummyLogo.png";
 import { LogoCropper } from "@/components/common/LogoCropper";
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
+import { BannerCropper } from "@/components/common/BannerCropper";
+import dummyLogo from "@/assets/avatar/dummyLogo.png";
+import clsx from "clsx";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
@@ -23,9 +25,11 @@ export default function CompanyProfileForm() {
 	const [croppedLogo, setCroppedLogo] = useState<string | null>(null);
 	const [croppedBanner, setCroppedBanner] = useState<string | null>(null);
 	const [uploadedBanner, setUploadedBanner] = useState<string | null>(null);
-	const [isCropperOpen, setIsCropperOpen] = useState(false);
+	const [isLogoCropperOpen, setIsLogoCropperOpen] = useState(false);
+	const [isBannerCropperOpen, setIsBannerCropperOpen] = useState(false);
 
-	const inputRef = useRef<HTMLInputElement | null>(null);
+	const logoInputRef = useRef<HTMLInputElement | null>(null);
+	const bannerInputRef = useRef<HTMLInputElement | null>(null);
 
 	const {
 		register,
@@ -34,27 +38,46 @@ export default function CompanyProfileForm() {
 		formState: { errors },
 	} = useForm<CompanyForm>();
 
-	const openFileDialog = () => {
-		inputRef.current?.click();
-		setUploadedLogo(null);
+	const openLogoFileDialog = () => {
+		logoInputRef.current?.click();
 	};
 
-	const handleCrop = (croppedImageData: string) => {
+	const openBannerFileDialog = () => {
+		bannerInputRef.current?.click();
+	};
+
+	const handleLogoCrop = (croppedImageData: string) => {
 		setCroppedLogo(croppedImageData);
-		setIsCropperOpen(false);
+		setIsLogoCropperOpen(false);
+	};
+
+	const handleBannerCrop = (croppedImageData: string) => {
+		setCroppedBanner(croppedImageData);
+		setIsBannerCropperOpen(false);
 	};
 
 	const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
-			setCroppedLogo(null);
 			const reader = new FileReader();
 			reader.onloadend = () => {
 				setUploadedLogo(reader.result as string);
+				setIsLogoCropperOpen(true);
 			};
 			reader.readAsDataURL(file);
 		}
-		setIsCropperOpen(true);
+	};
+
+	const handleBannerUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setUploadedBanner(reader.result as string);
+				setIsBannerCropperOpen(true);
+			};
+			reader.readAsDataURL(file);
+		}
 	};
 
 	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
@@ -84,26 +107,63 @@ export default function CompanyProfileForm() {
 		}
 	};
 
-	console.log("cropped logo: ", croppedLogo);
-
 	return (
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
 				<h2 className="text-lg font-semibold pb-5">Create Company Profile </h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-					{/* Cover Image Upload */}
-					<div className="relative w-full h-48 bg-gray-100 rounded-xl mb-16">
-						<div className="absolute inset-0 flex items-center justify-center">
-							<div className="text-center">
-								<FiCamera className="mx-auto h-12 w-12 text-gray-400" />
-								<p className="mt-2 text-sm text-gray-500">Upload Cover Image</p>
+					<div
+						className={clsx(
+							"relative w-full aspect-[4/1] mb-16 rounded-xl",
+							croppedBanner
+								? "bg-transparent"
+								: " bg-slate-200 border-2 border-dashed border-gray-500"
+						)}
+					>
+						{/* Cover Image container */}
+						<div className="relative aspect-[4/1] w-full rounded-xl overflow-hidden">
+							<input
+								{...register("companyBanner")}
+								aria-invalid={errors.companyBanner ? "true" : "false"}
+								type="file"
+								name="companyBanner"
+								className="hidden"
+                                ref={bannerInputRef}
+								onChange={handleBannerUpload}
+							/>
+							{croppedBanner && (
+								<img
+									src={croppedBanner}
+									alt="banner"
+									className="absolute inset-0 h-full w-full object-cover"
+								/>
+							)}
+							<div className="absolute inset-0 flex items-center justify-center">
+								<div className="flex items-center gap-4">
+									<button
+										type="button"
+										onClick={openBannerFileDialog}
+										className="bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
+									>
+										<TbCameraPlus className="size-5 sm:size-7 text-gray-50" />
+									</button>
+									{croppedBanner && (
+										<button
+											type="button"
+											onClick={() => setCroppedBanner(null)}
+											className="bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
+										>
+											<TbX className="size-5 sm:size-7 text-gray-50" />
+										</button>
+									)}
+								</div>
 							</div>
 						</div>
 
 						{/* Company Logo Upload */}
-						<div className="absolute -bottom-12 left-8">
-							<div className="relative w-28 h-28 rounded-xl ">
+						<div className="absolute -bottom-14 sm:-bottom-12 left-5 sm:left-8">
+							<div className="relative w-24 h-24 sm:w-28 sm:h-28 aspect-square rounded-xl ">
 								<div className="absolute inset-0 flex items-center justify-center">
 									<input
 										{...register("companyLogo")}
@@ -111,39 +171,26 @@ export default function CompanyProfileForm() {
 										type="file"
 										name="companyLogo"
 										className="hidden"
-										ref={(e) => (inputRef.current = e)}
+										ref={logoInputRef}
 										onChange={handleLogoUpload}
 									/>
 									{croppedLogo ? (
 										<img
 											src={croppedLogo}
 											alt="Cropped"
-											className="relative left-6 h-28 w-28 object-cover rounded-xl bg-gray-400"
+											className="relative left-6 w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-xl bg-gray-400"
 										/>
-									) : uploadedLogo ? (
-										<>
-											<LogoCropper
-												imageSrc={uploadedLogo}
-												onCropComplete={handleCrop}
-												onClose={() => setUploadedLogo(null)}
-											/>
-											<img
-												src={dummyLogo}
-												alt="User profile"
-												className="relative left-6 h-28 w-28 object-cover rounded-xl"
-											/>
-										</>
 									) : (
 										<img
 											src={dummyLogo}
 											alt="User profile"
-											className="relative left-6 h-28 w-28 object-cover rounded-xl"
+											className="relative left-6 w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-xl"
 										/>
 									)}
 									<button
 										type="button"
-										onClick={openFileDialog}
-										className="relative -left-14 bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
+										onClick={openLogoFileDialog}
+										className="relative -left-12 sm:-left-14 bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
 									>
 										<TbCameraPlus className="size-7 text-gray-50" />
 									</button>
@@ -255,6 +302,24 @@ export default function CompanyProfileForm() {
 
 			{/* sidebar */}
 			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4"></div>
+
+			{/* Logo Cropper */}
+			{isLogoCropperOpen && uploadedLogo && (
+				<LogoCropper
+					imageSrc={uploadedLogo}
+					onCropComplete={handleLogoCrop}
+					onClose={() => setIsLogoCropperOpen(false)}
+				/>
+			)}
+
+			{/* Banner Cropper */}
+			{isBannerCropperOpen && uploadedBanner && (
+				<BannerCropper
+					imageSrc={uploadedBanner}
+					onCropComplete={handleBannerCrop}
+					onClose={() => setIsBannerCropperOpen(false)}
+				/>
+			)}
 		</div>
 	);
 }
