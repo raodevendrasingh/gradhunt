@@ -28,6 +28,7 @@ import {
 	LuRedo,
 } from "react-icons/lu";
 import { VscHorizontalRule, VscNewline } from "react-icons/vsc";
+import { useEffect } from "react";
 
 const MenuBar = ({ editor }: { editor: any }) => {
 	if (!editor) {
@@ -186,12 +187,6 @@ export const TiptapEditor = ({
 				},
 			}),
 			Underline,
-			Heading.configure({
-				levels: [1, 2, 3],
-			}),
-			BulletList,
-			OrderedList,
-			ListItem,
 			CharacterCount.configure({
 				limit,
 			}),
@@ -202,9 +197,6 @@ export const TiptapEditor = ({
 				types: ["heading", "paragraph"],
 			}),
 		],
-		onBeforeCreate: ({ editor }) => {
-			onEditorReady(editor);
-		},
 		editorProps: {
 			attributes: {
 				class:
@@ -212,6 +204,12 @@ export const TiptapEditor = ({
 			},
 		},
 	});
+
+	useEffect(() => {
+		if (editor) {
+			onEditorReady(editor);
+		}
+	}, [editor, onEditorReady]);
 
 	return (
 		<div className="relative w-full pb-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus-within:ring focus-within:ring-gray-100 transition duration-200">

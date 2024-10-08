@@ -11,7 +11,7 @@ import { CompanyForm } from "@/types/userTypes";
 import { companySize, sectors } from "@/utils/selectObjects";
 import { LocationSelect } from "@/helpers/LocationSelect2";
 import { TiptapEditor } from "@/components/ui/TiptapEditor";
-import { useRef, useState } from "react";
+import { SetStateAction, useCallback, useRef, useState } from "react";
 import { LogoCropper } from "@/components/common/LogoCropper";
 import { BannerCropper } from "@/components/common/BannerCropper";
 import dummyLogo from "@/assets/avatar/dummyLogo.png";
@@ -55,9 +55,19 @@ export default function CompanyProfileForm() {
 		setIsBannerCropperOpen
 	);
 
-	const handleDummyUpload = async () => {
-		console.log("upload initiated");
+	const handleEditorReady = useCallback((editor: SetStateAction<null>) => {
+		setEditorInstance(editor);
+	}, []);
+
+	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
+		setIsLoading(true);
 		try {
+			let content = "";
+			if (editorInstance) {
+				content = (editorInstance as any).getHTML();
+				console.log("Editor content:", content);
+			}
+
 			let cloudinaryBannerUrl = "";
 			let cloudinaryLogoUrl = "";
 
@@ -77,39 +87,10 @@ export default function CompanyProfileForm() {
 
 			console.log("cloudinaryBannerUrl:", cloudinaryBannerUrl);
 			console.log("cloudinaryLogoUrl:", cloudinaryLogoUrl);
-		} catch (error) {
-			console.error("Error in handleDummyUpload:", error);
-		}
-	};
-
-	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
-		setIsLoading(true);
-		try {
-			let content = "";
-			if (editorInstance) {
-				content = (editorInstance as any).getHTML();
-				console.log("Editor content:", content);
-			}
-
-			// let cloudinaryBannerUrl = "";
-			// if (croppedBanner) {
-			// 	cloudinaryBannerUrl = await uploadToCloudinary(
-			// 		croppedBanner as string,
-			// 		"gradhunt/banners"
-			// 	);
-			// }
-
-			// let cloudinaryLogoUrl = "";
-			// if (croppedLogo) {
-			// 	cloudinaryLogoUrl = await uploadToCloudinary(
-			// 		croppedLogo as string,
-			// 		"gradhunt/logos"
-			// 	);
-			// }
 			const formData = {
 				...data,
-				// companyLogo: cloudinaryLogoUrl,
-				// companyBanner: cloudinaryBannerUrl,
+				companyLogo: cloudinaryLogoUrl,
+				companyBanner: cloudinaryBannerUrl,
 				description: content,
 			};
 			console.log(formData);
@@ -211,10 +192,6 @@ export default function CompanyProfileForm() {
 						</div>
 					</div>
 
-					<button onClick={handleDummyUpload} className="border px-2 py-1">
-						Upload Dummy
-					</button>
-
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-5">
 						<TextInput
 							label="Company Name"
@@ -297,13 +274,7 @@ export default function CompanyProfileForm() {
 						<label className="block text-sm font-medium text-gray-700 mb-1">
 							About Company
 						</label>
-						<TiptapEditor onEditorReady={setEditorInstance} />
-						{/* <textarea
-							{...register("about")}
-							rows={4}
-							className="w-full p-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 transition duration-200"
-							placeholder="Tell us about your company..."
-						/> */}
+						<TiptapEditor onEditorReady={handleEditorReady} />
 					</div>
 					<div className="flex justify-between pt-5">
 						<Button type="button" variant="secondary" className="px-8">
