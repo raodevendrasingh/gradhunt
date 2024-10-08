@@ -17,6 +17,11 @@ import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { BannerCropper } from "@/components/common/BannerCropper";
 import dummyLogo from "@/assets/avatar/dummyLogo.png";
 import clsx from "clsx";
+import {
+	handleCrop,
+	handleUpload,
+	openFileDialog,
+} from "@/utils/FileUploadMethods";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
@@ -38,47 +43,17 @@ export default function CompanyProfileForm() {
 		formState: { errors },
 	} = useForm<CompanyForm>();
 
-	const openLogoFileDialog = () => {
-		logoInputRef.current?.click();
-	};
+	const openLogoFileDialog = () => openFileDialog(logoInputRef);
+	const openBannerFileDialog = () => openFileDialog(bannerInputRef);
 
-	const openBannerFileDialog = () => {
-		bannerInputRef.current?.click();
-	};
+	const handleLogoCrop = handleCrop(setCroppedLogo, setIsLogoCropperOpen);
+	const handleBannerCrop = handleCrop(setCroppedBanner, setIsBannerCropperOpen);
 
-	const handleLogoCrop = (croppedImageData: string) => {
-		setCroppedLogo(croppedImageData);
-		setIsLogoCropperOpen(false);
-	};
-
-	const handleBannerCrop = (croppedImageData: string) => {
-		setCroppedBanner(croppedImageData);
-		setIsBannerCropperOpen(false);
-	};
-
-	const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setUploadedLogo(reader.result as string);
-				setIsLogoCropperOpen(true);
-			};
-			reader.readAsDataURL(file);
-		}
-	};
-
-	const handleBannerUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setUploadedBanner(reader.result as string);
-				setIsBannerCropperOpen(true);
-			};
-			reader.readAsDataURL(file);
-		}
-	};
+	const handleLogoUpload = handleUpload(setUploadedLogo, setIsLogoCropperOpen);
+	const handleBannerUpload = handleUpload(
+		setUploadedBanner,
+		setIsBannerCropperOpen
+	);
 
 	const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
 		setIsLoading(true);
@@ -129,7 +104,7 @@ export default function CompanyProfileForm() {
 								type="file"
 								name="companyBanner"
 								className="hidden"
-                                ref={bannerInputRef}
+								ref={bannerInputRef}
 								onChange={handleBannerUpload}
 							/>
 							{croppedBanner && (

@@ -17,7 +17,10 @@ interface BannerCropperProps {
 }
 
 const ASPECT_RATIO = 4 / 1;
-const MIN_DIMENSION = 150;
+const MIN_WIDTH = 150; 
+const MIN_HEIGHT = 38; 
+const MAX_WIDTH = 1200;
+const MAX_HEIGHT = 300; 
 const ZOOM_STEP = 0.1;
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 3;
@@ -72,7 +75,7 @@ export const BannerCropper: React.FC<BannerCropperProps> = ({
 
 		setImageSize({ width: newWidth, height: newHeight });
 
-		const cropWidthInPercent = (MIN_DIMENSION / newWidth) * 100;
+		const cropWidthInPercent = (MIN_WIDTH / newWidth) * 100;
 
 		const crop = makeAspectCrop(
 			{
@@ -124,7 +127,10 @@ export const BannerCropper: React.FC<BannerCropperProps> = ({
 							onChange={(_, percentCrop) => setCrop(percentCrop)}
 							onComplete={(c) => setCompletedCrop(c)}
 							aspect={ASPECT_RATIO}
-							minWidth={MIN_DIMENSION}
+							minWidth={MIN_WIDTH} 
+							maxWidth={MAX_WIDTH} 
+							minHeight={MIN_HEIGHT} 
+							maxHeight={MAX_HEIGHT} 
 						>
 							<div className="w-full h-full flex items-center justify-center overflow-hidden">
 								<img
