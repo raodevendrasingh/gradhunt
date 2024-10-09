@@ -174,7 +174,25 @@ class EducationSerializer(serializers.ModelSerializer):
         return instance
 
 
-class SkillSerializer(serializers.ModelSerializer):
+class CompanyProfileSerializer(serializers.ModelSerializer):
+    employeeSize = NestedDictField()
+    companyType = NestedDictField()
+    industry = NestedDictField()
+    branches = NestedDictField(required=False)
+
     class Meta:
-        model = Skills
-        fields = '__all__'
+        model = CompanyProfile
+        fields = ['id', 'companyBanner', 'companyLogo', 'companyName', 'companyEmail',
+                  'companyPhone', 'establishedYear', 'marketCap', 'fundingRaised',
+                  'yearlyRevenue', 'headquarters', 'branches', 'description', 'companyType',
+                  'industry', 'branches', 'companyWebsite', 'employeeSize', 'user']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        return CompanyProfile.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
