@@ -24,6 +24,8 @@ const citySelectStyles = {
 		...provided,
 		width: "100%",
 		padding: "0.125rem",
+		paddingLeft: "2rem",
+		fontSize: "0.875rem",
 		backgroundColor: "#F9FAFB",
 		border: state.isFocused ? "1px solid #6B7280" : "1px solid #D1D5DB",
 		borderRadius: "0.5rem",
@@ -54,10 +56,6 @@ const citySelectStyles = {
 		borderRadius: "0.5rem",
 		boxShadow:
 			"0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-	}),
-	input: (provided: any) => ({
-		...provided,
-		fontSize: "0.875rem",
 	}),
 	singleValue: (provided: any) => ({
 		...provided,
@@ -140,69 +138,73 @@ export function LocationSelect<IsMulti extends boolean = false>({
 
 	return (
 		<div className="w-full flex flex-col mb-6">
-			<div className="flex gap-2">
-				<div className="relative flex-grow">
-					<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 z-10">
-						<FiMapPin size={20} />
-					</div>
-					<Controller
-						name={name}
-						control={control}
-						rules={rules}
-						render={({ field }) => (
-							<>
-								<Select<CityOption, IsMulti>
-									{...field}
-									value={selectedOption}
-									onChange={(newValue) => {
-										setSelectedOption(newValue as SelectValue<IsMulti>);
-										if (isMulti) {
-											field.onChange(
-												(newValue as MultiValue<CityOption>)?.map(
-													(item) => item.value
-												)
-											);
-										} else {
-											field.onChange(
-												(newValue as SingleValue<CityOption>)?.value
-											);
-										}
-									}}
-									isMulti={isMulti}
-									isClearable
-									isSearchable
-									isLoading={isLoading}
-									onInputChange={handleInputChange}
-									options={cityOptions}
-									formatOptionLabel={formatOptionLabel}
-									placeholder={placeholder}
-									styles={{
-										...citySelectStyles,
-										control: (base, state) => ({
-											...citySelectStyles.control(base, state),
-											paddingLeft: "2.5rem",
-										}),
-									}}
-									className={error ? "select-error" : ""}
-									menuPlacement={menuPlacement}
-									noOptionsMessage={({ inputValue }) =>
-										inputValue.length < 2
-											? "Type to search"
-											: error
-												? error
-												: "No cities found"
-									}
-								/>
-								{error && (
-									<span className="text-red-500 text-sm mt-1" role="alert">
-										{error}
-									</span>
-								)}
-							</>
-						)}
-					/>
+			<div className="relative">
+				<div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10">
+					<FiMapPin size={20} />
 				</div>
+				<Controller
+					name={name}
+					control={control}
+					rules={rules}
+					render={({ field }) => (
+						<div className="flex flex-col">
+							<Select<CityOption, IsMulti>
+								{...field}
+								value={selectedOption}
+								onChange={(newValue) => {
+									setSelectedOption(newValue as SelectValue<IsMulti>);
+									if (isMulti) {
+										field.onChange(
+											(newValue as MultiValue<CityOption>)?.map(
+												(item) => item.value
+											)
+										);
+									} else {
+										field.onChange(
+											(newValue as SingleValue<CityOption>)?.value
+										);
+									}
+								}}
+								isMulti={isMulti}
+								isClearable
+								isSearchable
+								isLoading={isLoading}
+								onInputChange={handleInputChange}
+								options={cityOptions}
+								formatOptionLabel={formatOptionLabel}
+								placeholder={placeholder}
+								styles={{
+									...citySelectStyles,
+									control: (base, state) => ({
+										...citySelectStyles.control?.(base, state),
+										...(error && {
+											border: "1px solid #EF4444", // border-red-500
+											"&:hover": {
+												border: "1px solid #EF4444", // border-red-500
+											},
+											boxShadow: "0 0 0 1px #FEE2E2", // focus:ring-red-100
+											"&:focus-within": {
+												border: "1px solid #EF4444", // focus:border-red-500
+												boxShadow: "0 0 0 1px #FEE2E2", // focus:ring-red-100
+											},
+										}),
+									}),
+								}}
+								className={error ? "select-error" : ""}
+								menuPlacement={menuPlacement}
+								noOptionsMessage={({ inputValue }) =>
+									inputValue.length < 2 ? "Type to search" : "No cities found"
+								}
+							/>
+						</div>
+					)}
+				/>
 			</div>
+			{error && (
+				<span className="text-red-500 text-sm mt-1" role="alert">
+					{error}
+				</span>
+			)}
 		</div>
 	);
 }

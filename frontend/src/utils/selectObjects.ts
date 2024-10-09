@@ -901,7 +901,7 @@ export const skills: SelectOption[] = [
 	},
 ];
 
-export const companyTypes: readonly SelectOption[] = [
+export const companyTypes: SelectOption[] = [
     { label: "Private", value: "Private" },
     { label: "Public", value: "Public" },
     { label: "Non-Profit", value: "Non-Profit" },

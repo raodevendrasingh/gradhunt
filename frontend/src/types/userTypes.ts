@@ -78,18 +78,22 @@ export type ExperienceForm = {
 };
 
 export type CompanyForm = {
-	recruiter: Recruiter;
-	companyName: string;
-	website: string;
-	companyLogo: string;
 	companyBanner: string;
+	companyLogo: string;
+	companyName: string;
+	companyWebsite: string;
+	companyEmail: string;
+	companyPhone: string;
 	employeeSize: { value: string; label: string };
 	establishedYear: string;
+	marketCap: string;
+	fundingRaised: string;
+	companyType: { value: string; label: string };
+	yearlyRevenue: string;
 	industry: { value: string; label: string };
 	headquarters: string;
 	branches: { city: string; state: string; country: string }[];
-	about: string;
-	values: string;
+	description: string;
 };
 
 export type EducationData = {

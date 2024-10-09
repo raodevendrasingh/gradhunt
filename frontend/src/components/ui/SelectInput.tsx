@@ -1,6 +1,6 @@
 import React from "react";
 import Select, { StylesConfig } from "react-select";
-import { Control, Controller, FieldError } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 interface Option {
 	value: string;
@@ -14,7 +14,7 @@ interface SelectInputProps {
 	control: Control<any>;
 	icon?: React.ReactNode;
 	isRequired?: boolean;
-	error?: FieldError;
+	error?: string;
 }
 
 export const selectStyles: StylesConfig<Option, false> = {
@@ -22,14 +22,16 @@ export const selectStyles: StylesConfig<Option, false> = {
 		...provided,
 		width: "100%",
 		padding: "0.125rem",
-		backgroundColor: "#F9FAFB", // matches bg-gray-50 from TextInput
-		border: state.isFocused ? "1px solid #6B7280" : "1px solid #D1D5DB", // matches border-gray-300
-		borderRadius: "0.5rem", // matches rounded-lg
+		paddingLeft: "2rem",
+		fontSize: "0.875rem",
+		backgroundColor: "#F9FAFB",
+		border: state.isFocused ? "1px solid #6B7280" : "1px solid #D1D5DB",
+		borderRadius: "0.5rem",
 		boxShadow: "none",
 		"&:hover": {
 			border: "1px solid #6B7280",
 		},
-		transition: "all 200ms", // matches transition duration-200
+		transition: "all 200ms",
 	}),
 	option: (provided, state) => ({
 		...provided,
@@ -38,11 +40,11 @@ export const selectStyles: StylesConfig<Option, false> = {
 		borderRadius: "0.225rem",
 		margin: "2px auto",
 		backgroundColor: state.isSelected ? "#E5E7EB" : "white",
-		color: "#1F2937", // matches text-gray-800
+		color: "#1F2937",
 		"&:hover": {
 			backgroundColor: "#F3F4F6",
 		},
-		fontSize: "0.875rem", // matches text-sm
+		fontSize: "0.875rem",
 		padding: "0.5rem",
 	}),
 	menu: (provided) => ({
@@ -56,12 +58,12 @@ export const selectStyles: StylesConfig<Option, false> = {
 	}),
 	input: (provided) => ({
 		...provided,
-		fontSize: "0.875rem", // matches text-sm
+		fontSize: "0.875rem",
 	}),
 	singleValue: (provided) => ({
 		...provided,
-		fontSize: "0.875rem", // matches text-sm
-		color: "#1F2937", // matches text-gray-800
+		fontSize: "0.875rem",
+		color: "#1F2937",
 	}),
 	indicatorSeparator: () => ({
 		display: "none",
@@ -81,38 +83,49 @@ export const SelectInput: React.FC<SelectInputProps> = ({
 		<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
 			{label}
 		</label>
-		<div className="flex gap-2">
-			<div className="relative flex-grow">
-				{icon && (
-					<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 z-10">
-						{icon}
-					</div>
-				)}
-				<Controller
-					name={name}
-					control={control}
-					rules={{ required: isRequired ? `${label} is required` : false }}
-					render={({ field }) => (
-						<Select
-							{...field}
-							options={options}
-							styles={{
-								...selectStyles,
-								control: (base, state) => ({
-									...selectStyles.control?.(base, state),
-									paddingLeft: icon ? "2.5rem" : "0.5rem",
+
+		<div className="relative">
+			{icon && (
+				<div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10">
+					{icon}
+				</div>
+			)}
+			<Controller
+				name={name}
+				control={control}
+				rules={{ required: isRequired ? `${label} is required` : false }}
+				render={({ field }) => (
+					<Select
+						{...field}
+						options={options}
+						styles={{
+							...selectStyles,
+							control: (base, state) => ({
+								...selectStyles.control?.(base, state),
+								paddingLeft: icon ? "2rem" : "0.5rem",
+								...(error && {
+									border: "1px solid #EF4444", // border-red-500
+									"&:hover": {
+										border: "1px solid #EF4444", // border-red-500
+									},
+									boxShadow: "0 0 0 1px #FEE2E2", // focus:ring-red-100
+									"&:focus-within": {
+										border: "1px solid #EF4444", // focus:border-red-500
+										boxShadow: "0 0 0 1px #FEE2E2", // focus:ring-red-100
+									},
 								}),
-							}}
-							className={error ? "select-error" : ""}
-							placeholder={`Select ${label}`}
-						/>
-					)}
-				/>
-			</div>
+							}),
+						}}
+						className={error ? "select-error" : ""}
+						placeholder={`Select ${label}`}
+					/>
+				)}
+			/>
 		</div>
+
 		{error && (
 			<span className="text-red-500 text-sm mt-1" role="alert">
-				{error.message}
+				{error}
 			</span>
 		)}
 	</div>
