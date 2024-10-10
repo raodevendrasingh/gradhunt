@@ -185,7 +185,7 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'companyBanner', 'companyLogo', 'companyName', 'companyEmail',
                   'companyPhone', 'establishedYear', 'marketCap', 'fundingRaised',
                   'yearlyRevenue', 'headquarters', 'branches', 'description', 'companyType',
-                  'industry', 'branches', 'companyWebsite', 'employeeSize', 'user']
+                  'industry', 'branches', 'companyWebsite', 'employeeSize', 'linkedin', 'instagram', 'twitter', 'isDraft', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):

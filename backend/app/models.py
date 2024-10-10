@@ -16,6 +16,7 @@ class UserDetails(models.Model):
     isProfilePublic = models.BooleanField(default=False)
     isVerified = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
+    isCompanyAdmin = models.BooleanField(default=False)
     resumeLink = models.URLField(max_length=512, null=True, blank=True)
 
     def __str__(self):

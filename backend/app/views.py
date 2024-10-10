@@ -734,7 +734,7 @@ class ManageResumeLink(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CreateCompanyView(APIView):
+class CompanyProfileView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
@@ -742,6 +742,9 @@ class CreateCompanyView(APIView):
         try:
             user = UserDetails.objects.get(
                 clerk_user_id=request.user.clerk_user_id)
+
+            user.isCompanyAdmin = True
+            user.save()
 
             data = request.data.copy()
             data['user'] = user.id
@@ -755,3 +758,46 @@ class CreateCompanyView(APIView):
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request):
+        try:
+            try:
+                user = UserDetails.objects.get(
+                    clerk_user_id=request.user.clerk_user_id)
+            except UserDetails.DoesNotExist:
+                return Response(
+                    {"error": "User not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            try:
+                company = CompanyProfile.objects.get(user=user)
+            except CompanyProfile.DoesNotExist:
+                return Response(
+                    {"error": "Company profile not found for this user"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            serializer = CompanyProfileSerializer(company)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class GetCompanyProfile(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request, companyName):
+        try:
+            company = CompanyProfile.objects.filter(
+                companyName__iexact=companyName)
+            serializer = CompanyProfileSerializer(company, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

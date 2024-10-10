@@ -19,6 +19,10 @@ export type UserDetails = {
 	resumeLink: string;
 	followers: number;
 	following: number;
+	isProfileActivated: boolean;
+	isProfilePublic: boolean;
+	isVerified: boolean;
+	isCompanyAdmin: boolean;
 	createdAt: string;
 };
 
@@ -84,16 +88,17 @@ export type CompanyForm = {
 	companyWebsite: string;
 	companyEmail: string;
 	companyPhone: string;
-	employeeSize: { value: string; label: string };
+	employeeSize: string | { value: string; label: string };
 	establishedYear: string;
 	marketCap: string;
 	fundingRaised: string;
-	companyType: { value: string; label: string };
+	companyType: string | { value: string; label: string };
 	yearlyRevenue: string;
-	industry: { value: string; label: string };
+	industry: string | { value: string; label: string };
 	headquarters: string;
-	branches: { city: string; state: string; country: string }[];
+	branches: [] | { city: string; state: string; country: string }[];
 	description: string;
+	isDraft: boolean;
 };
 
 export type EducationData = {

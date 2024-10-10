@@ -4,7 +4,8 @@ from .views import *
 urlpatterns = [
     path('api', HomeView.as_view(), name='home'),
 
-    path('api/company', CreateCompanyView.as_view(), name='company'),
+    path('api/company/', CompanyProfileView.as_view(), name='company'),
+    path('api/company/<str:companyName>', GetCompanyProfile.as_view(), name='company'),
 
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
     path('api/users/check-username/',

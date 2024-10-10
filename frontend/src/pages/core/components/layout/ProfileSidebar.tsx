@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import {
@@ -10,6 +10,8 @@ import {
 } from "react-icons/go";
 import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
+import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 interface TabProps {
 	icon: ReactNode;
@@ -43,8 +45,22 @@ const Tab: React.FC<TabProps> = ({ icon, label, isActive }) => {
 };
 
 export const ProfileSidebar = () => {
-	const { user, isSignedIn } = useUser();
 	const [activeTab, setActiveTab] = useState("Feed");
+
+	const { user, isSignedIn } = useUser();
+	const { data: userData, isLoading: isUserDataLoading } =
+		useFetchUserDetails();
+	const isCompanyAdmin = userData?.user_details?.isCompanyAdmin;
+
+	const { data: companyProfileData, error: companyProfileError } =
+		useFetchCompanyProfile(isUserDataLoading ? false : !!isCompanyAdmin);
+
+	useEffect(() => {
+		const errorStatus = companyProfileError?.response?.status;
+		if (companyProfileError && errorStatus !== 404 && errorStatus !== 400) {
+			console.log("Error fetching company details");
+		}
+	}, [companyProfileError]);
 
 	const commonTabs = [
 		{
@@ -78,6 +94,20 @@ export const ProfileSidebar = () => {
 			label: user?.firstName as string,
 			route: `/p/${user?.username}`,
 		});
+
+		if (companyProfileData && companyProfileData.isDraft === false) {
+			personalTabs.push({
+				icon: (
+					<img
+						src={companyProfileData.companyLogo}
+						alt="Compamy Profile"
+						className="size-5 rounded object-cover"
+					/>
+				),
+				label: companyProfileData.companyName,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}`,
+			});
+		}
 
 		personalTabs.push({
 			icon: <GoGear size={20} />,

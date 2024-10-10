@@ -1,5 +1,5 @@
 import { UserBasicDetails } from "@/types/userTypes";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import axios, { AxiosError } from "axios";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -9,26 +9,31 @@ export const useFetchUserDetails = (): UseQueryResult<
 	AxiosError
 > => {
 	const { getToken } = useAuth();
+	const { user } = useUser();
 	const { username } = useParams<{ username: string }>();
 
 	const fetchUserDetails = async (): Promise<UserBasicDetails> => {
-		const token = await getToken();
-		if (!token) {
-			throw new Error("User Unauthorized!");
+		if (user) {
+			const currentUser = user.username;
+			const token = await getToken();
+			if (!token) {
+				throw new Error("User Unauthorized!");
+			}
+			const url = `/api/users/${username || currentUser}`;
+			const response = await axios.get<UserBasicDetails>(url, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			return response.data;
 		}
-		const url = `/api/users/${username}`;
-		const response = await axios.get<UserBasicDetails>(url, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		return response.data;
+		throw new Error("User Unauthorized!");
 	};
 
 	return useQuery<UserBasicDetails, AxiosError>({
 		queryKey: ["userDetails", username],
 		queryFn: fetchUserDetails,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

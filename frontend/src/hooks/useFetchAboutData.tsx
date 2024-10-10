@@ -26,18 +26,13 @@ export const useFetchAboutSection = (): UseQueryResult<
 			});
 			return response.data;
 		} catch (error: AxiosError | any) {
-			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
-				return { description: "" };
-			} else {
-				throw error;
-			}
+			return { description: "" };
 		}
 	};
 
 	return useQuery<AboutSection, AxiosError>({
 		queryKey: ["aboutSection", username],
 		queryFn: fetchAboutSection,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };
