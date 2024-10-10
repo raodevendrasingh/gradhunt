@@ -6,11 +6,11 @@ import { useState } from "react";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import NotFound from "@/pages/common/NotFound";
 import { GoPlus } from "react-icons/go";
-import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
 import { CompanyTabs } from "@/utils/CompanyTabs";
 import { Link } from "react-router-dom";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { FaCalendarCheck } from "react-icons/fa6";
+import { useFetchCompanyProfileByName } from "@/hooks/useFetchCompanyProfileByName";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
@@ -22,7 +22,7 @@ export default function CompanyProfile(): React.JSX.Element {
 		isLoading,
 		error,
 		refetch,
-	} = useFetchCompanyProfile();
+	} = useFetchCompanyProfileByName();
 
 	const { data: currentUser } = useFetchUserDetails();
 
@@ -34,7 +34,7 @@ export default function CompanyProfile(): React.JSX.Element {
 		);
 	}
 
-	if (!companyProfile) {
+	if (!companyProfile || companyProfile.isDraft) {
 		return <NotFound />;
 	}
 
@@ -42,15 +42,17 @@ export default function CompanyProfile(): React.JSX.Element {
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide">
-				<div className="bg-slate-50 w-full">
+				<div className="w-full">
 					{companyProfile && companyProfile.companyBanner ? (
 						<img
 							src={companyProfile.companyBanner}
 							alt="profile"
-							className="rounded-b-xl object-cover aspect-auto "
+							className=" sm:rounded-b-xl object-cover aspect-auto "
 						/>
 					) : (
-						<div className="size-32 border-4 rounded-xl skeleton" />
+						<div className="bg-white">
+							<div className="h-32 rounded-b-xl border-b" />
+						</div>
 					)}
 				</div>
 				<div className="flex flex-col items-center w-full px-5 pt-4 pb-6">
@@ -59,10 +61,10 @@ export default function CompanyProfile(): React.JSX.Element {
 							<img
 								src={companyProfile.companyLogo}
 								alt="profile"
-								className="w-32 h-32 rounded-xl object-cover border-4 border-white shadow-md"
+								className="h-24 w-24 sm:w-32 sm:h-32 rounded-xl object-cover border-4 border-white shadow-md"
 							/>
 						) : (
-							<div className="size-32 border-4 rounded-xl skeleton" />
+							<div className="size-24 sm:size-32 border-4 rounded-xl skeleton" />
 						)}
 					</div>
 					<div className="flex flex-col items-center gap-3 w-full -mt-10">

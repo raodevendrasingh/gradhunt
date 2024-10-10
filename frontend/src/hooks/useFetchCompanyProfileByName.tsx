@@ -4,11 +4,12 @@ import { CompanyForm } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 
-export const useFetchCompanyProfile = (
-	isCompanyAdmin?: boolean
-): UseQueryResult<CompanyForm, AxiosError> => {
+export const useFetchCompanyProfileByName = (): UseQueryResult<
+	CompanyForm,
+	AxiosError
+> => {
 	const { getToken } = useAuth();
-	const { username } = useParams<{ username: string }>();
+	const { companyname } = useParams<{ companyname: string }>();
 
 	const fetchCompanyProfile = async (): Promise<CompanyForm> => {
 		try {
@@ -16,7 +17,7 @@ export const useFetchCompanyProfile = (
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/company/`;
+			const url = `/api/company/${companyname}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -31,7 +32,7 @@ export const useFetchCompanyProfile = (
 					companyBanner: "",
 					companyLogo: "",
 					companyName: "",
-                    tagline: "",
+					tagline: "",
 					companyEmail: "",
 					companyPhone: "",
 					establishedYear: "",
@@ -54,9 +55,8 @@ export const useFetchCompanyProfile = (
 	};
 
 	return useQuery<CompanyForm, AxiosError>({
-		queryKey: ["companyProfile", username],
+		queryKey: ["companyProfileByName", companyname],
 		queryFn: fetchCompanyProfile,
 		staleTime: 30000,
-		enabled: isCompanyAdmin,
 	});
 };

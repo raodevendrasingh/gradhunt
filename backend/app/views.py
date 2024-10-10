@@ -793,11 +793,16 @@ class GetCompanyProfile(APIView):
 
     def get(self, request, companyName):
         try:
-            company = CompanyProfile.objects.filter(
+            company = CompanyProfile.objects.get(
                 companyName__iexact=companyName)
-            serializer = CompanyProfileSerializer(company, many=True)
+            serializer = CompanyProfileSerializer(company)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except UserDetails.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except CompanyProfile.DoesNotExist:
+            return Response(
+                {"error": "Company not found!"}, status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

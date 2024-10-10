@@ -44,17 +44,17 @@ export default function StandardUserProfile(): React.JSX.Element {
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide">
-				<div className="bg-slate-50 h-32 w-full border-b"></div>
+				<div className="bg-slate-50 h-24 sm:h-32 w-full border-b"></div>
 				<div className="flex flex-col items-center w-full px-5 pt-4 pb-6">
 					<div className="relative -top-16 mb-2 select-none">
 						{userDetails?.user_details?.profilePicture ? (
 							<img
 								src={userDetails?.user_details?.profilePicture}
 								alt="profile"
-								className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md"
+								className="h-24 w-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white shadow-md"
 							/>
 						) : (
-							<div className="size-32 border-4 rounded-xl skeleton" />
+							<div className="size-24 sm:size-32 border-4 rounded-xl skeleton" />
 						)}
 					</div>
 					<div className="flex flex-col items-center gap-3 w-full -mt-10">
