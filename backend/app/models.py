@@ -92,6 +92,7 @@ class CompanyProfile(models.Model):
     companyLogo = models.URLField(max_length=512, blank=True, null=True)
     companyBanner = models.URLField(max_length=512, blank=True, null=True)
     companyName = models.CharField(max_length=100, blank=True, null=True)
+    tagline = models.CharField(max_length=255, blank=True, null=True)
     companyEmail = models.EmailField(max_length=100, blank=True, null=True)
     companyPhone = models.CharField(max_length=20, blank=True, null=True)
     companyWebsite = models.URLField(max_length=100, blank=True, null=True)

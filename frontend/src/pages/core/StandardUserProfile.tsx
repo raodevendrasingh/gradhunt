@@ -51,10 +51,10 @@ export default function StandardUserProfile(): React.JSX.Element {
 							<img
 								src={userDetails?.user_details?.profilePicture}
 								alt="profile"
-								className="w-28 h-28 rounded-xl object-cover border-4 border-white shadow-md"
+								className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md"
 							/>
 						) : (
-							<div className="size-28 border-4 rounded-xl skeleton" />
+							<div className="size-32 border-4 rounded-xl skeleton" />
 						)}
 					</div>
 					<div className="flex flex-col items-center gap-3 w-full -mt-10">

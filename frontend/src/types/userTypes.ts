@@ -86,6 +86,7 @@ export type CompanyForm = {
 	companyLogo: string;
 	companyName: string;
 	companyWebsite: string;
+    tagline: string;
 	companyEmail: string;
 	companyPhone: string;
 	employeeSize: string | { value: string; label: string };
