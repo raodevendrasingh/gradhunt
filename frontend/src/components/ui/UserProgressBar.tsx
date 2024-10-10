@@ -65,14 +65,6 @@ export const UserProfileCompletion = () => {
 	};
 	const strength = getStrength(progress?.completion_percentage as number);
 
-	const handleTaskToggle = (id: string) => {
-		setTasks(
-			tasks.map((task) =>
-				task.id === id ? { ...task, completed: !task.completed } : task
-			)
-		);
-	};
-
 	return (
 		<div
 			className={clsx(
@@ -142,12 +134,7 @@ export const UserProfileCompletion = () => {
 							<input
 								type="checkbox"
 								id={task.id}
-								checked={
-									progress?.tasks &&
-									progress.tasks[index] &&
-									progress.tasks[index].completed === true
-								}
-								onChange={() => handleTaskToggle(task.id)}
+								checked={progress?.tasks?.[index]?.completed ?? false}
 								disabled
 								className="form-checkbox size-4 text-slate-800 rounded-full border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
 							/>
