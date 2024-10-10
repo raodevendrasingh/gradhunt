@@ -1,28 +1,23 @@
-import { MdLocationPin } from "react-icons/md";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { BiEditAlt } from "react-icons/bi";
-import { useUser } from "@clerk/clerk-react";
-import { useState } from "react";
-import { LoadingBlock } from "@/components/ui/LoadingBlock";
-import NotFound from "@/pages/common/NotFound";
-import { GoPlus } from "react-icons/go";
-import { CompanyTabs } from "@/utils/CompanyTabs";
-import { Link } from "react-router-dom";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
-import { FaCalendarCheck } from "react-icons/fa6";
-import { useFetchCompanyProfileByName } from "@/hooks/useFetchCompanyProfileByName";
+import NotFound from '@/pages/common/NotFound';
+import { BiEditAlt } from 'react-icons/bi';
+import { CompanyTabs } from '@/utils/CompanyTabs';
+import { FaCalendarCheck } from 'react-icons/fa6';
+import { GoPlus } from 'react-icons/go';
+import { Link } from 'react-router-dom';
+import { LoadingBlock } from '@/components/ui/LoadingBlock';
+import { MdLocationPin } from 'react-icons/md';
+import { RiVerifiedBadgeFill } from 'react-icons/ri';
+import { useFetchCompanyProfileByName } from '@/hooks/useFetchCompanyProfileByName';
+import { useFetchUserDetails } from '@/hooks/useFetchUserDetails';
+import { useState } from 'react';
+import { useUser } from '@clerk/clerk-react';
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
 
 	const { isSignedIn, user } = useUser();
 
-	const {
-		data: companyProfile,
-		isLoading,
-		error,
-		refetch,
-	} = useFetchCompanyProfileByName();
+	const { data: companyProfile, isLoading } = useFetchCompanyProfileByName();
 
 	const { data: currentUser } = useFetchUserDetails();
 
@@ -154,7 +149,7 @@ export default function CompanyProfile(): React.JSX.Element {
 						))}
 					</div>
 				</nav>
-				<main className="flex-grow w-full p-5">
+				<main className="flex-grow w-full">
 					<div>{CompanyTabs[selected].content}</div>
 				</main>
 			</div>
