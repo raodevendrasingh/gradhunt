@@ -3,7 +3,7 @@ export interface SelectOption {
 	value: string;
 }
 
-export const languageProficiency: readonly SelectOption[] = [
+export const languageProficiency: SelectOption[] = [
 	{ label: "Beginner", value: "Beginner" },
 	{ label: "Intermediate", value: "Intermediate" },
 	{ label: "Expert", value: "Expert" },
@@ -18,7 +18,7 @@ export const companySize: SelectOption[] = [
 	{ label: "More than 250 Employees", value: "More than 250" },
 ];
 
-export const jobTitleOptions: readonly SelectOption[] = [
+export const jobTitleOptions: SelectOption[] = [
 	{ label: "Software Developer", value: "Software Developer" },
 	{ label: "Full Stack Developer", value: "Full Stack Developer" },
 	{ label: "Data Scientist", value: "Data Scientist" },
@@ -89,7 +89,7 @@ export const jobTitleOptions: readonly SelectOption[] = [
 	{ label: "Police Officer", value: "Police Officer" },
 ];
 
-export const startYearOptions: readonly SelectOption[] = [
+export const startYearOptions: SelectOption[] = [
 	{ label: "2024", value: "2024" },
 	{ label: "2023", value: "2023" },
 	{ label: "2022", value: "2022" },
@@ -122,7 +122,7 @@ export const startYearOptions: readonly SelectOption[] = [
 	{ label: "1995", value: "1995" },
 ];
 
-export const monthOptions: readonly SelectOption[] = [
+export const monthOptions: SelectOption[] = [
 	{ label: "January", value: "January" },
 	{ label: "February", value: "February" },
 	{ label: "March", value: "March" },
@@ -137,7 +137,7 @@ export const monthOptions: readonly SelectOption[] = [
 	{ label: "December", value: "December" },
 ];
 
-export const endYearOptions: readonly SelectOption[] = [
+export const endYearOptions: SelectOption[] = [
 	{ label: "2030", value: "2030" },
 	{ label: "2029", value: "2029" },
 	{ label: "2028", value: "2028" },
@@ -181,7 +181,7 @@ export const endYearOptions: readonly SelectOption[] = [
 	{ label: "1990", value: "1990" },
 ];
 
-export const employmentType: readonly SelectOption[] = [
+export const employmentType: SelectOption[] = [
 	{ label: "Full Time", value: "Full Time" },
 	{ label: "Part Time", value: "Part Time" },
 	{ label: "Contract", value: "Contract" },
@@ -190,7 +190,7 @@ export const employmentType: readonly SelectOption[] = [
 	{ label: "Trainee", value: "Trainee" },
 ];
 
-export const degreeTypes: readonly SelectOption[] = [
+export const degreeTypes: SelectOption[] = [
 	{ label: "Associate in Arts (AA)", value: "Associate in Arts" },
 	{ label: "Associate in Science (AS)", value: "Associate in Science" },
 	{ label: "Associate in Commerce (AC)", value: "Associate in Commerce" },
@@ -408,7 +408,7 @@ export const degreeTypes: readonly SelectOption[] = [
 	},
 ];
 
-export const fieldsOfStudy: readonly SelectOption[] = [
+export const fieldsOfStudy: SelectOption[] = [
 	{ label: "Accounting", value: "Accounting" },
 	{ label: "Actuarial Science", value: "Actuarial Science" },
 	{ label: "Aeronautical Engineering", value: "Aeronautical Engineering" },
@@ -515,20 +515,20 @@ export const fieldsOfStudy: readonly SelectOption[] = [
 	{ label: "Zoology", value: "Zoology" },
 ];
 
-export const locationType: readonly SelectOption[] = [
+export const locationType: SelectOption[] = [
 	{ label: "Remote", value: "Remote" },
 	{ label: "On-Site", value: "On-Site" },
 	{ label: "Hybrid", value: "Hybrid" },
 ];
 
-export const levels: readonly SelectOption[] = [
+export const levels: SelectOption[] = [
 	{ label: "Junior Level", value: "Junior Level" },
 	{ label: "Mid Level", value: "Mid Level" },
 	{ label: "High Level", value: "High Level" },
 	{ label: "Top Management", value: "Top Management" },
 ];
 
-export const requiredExperience: readonly SelectOption[] = [
+export const experienceLevels: SelectOption[] = [
 	{ value: "0-1", label: "Less than 1 Year" },
 	{ value: "1-3", label: "1 to 3 Years" },
 	{ value: "3-5", label: "3 to 5 Years" },
@@ -539,7 +539,7 @@ export const requiredExperience: readonly SelectOption[] = [
 	{ value: "15+", label: "15+ Years" },
 ];
 
-export const experience: readonly SelectOption[] = [
+export const experience: SelectOption[] = [
 	{ value: "0", label: "Less than 1 Year" },
 	{ value: "1", label: "1+ Year" },
 	{ value: "2", label: "2+ Years" },
@@ -648,7 +648,7 @@ export const sectors: SelectOption[] = [
 	{ label: "Creative Arts", value: "Creative Arts" },
 ];
 
-export const functions: readonly SelectOption[] = [
+export const functions: SelectOption[] = [
 	{
 		label: "Software Development",
 		value: "Software Development",
@@ -902,13 +902,13 @@ export const skills: SelectOption[] = [
 ];
 
 export const companyTypes: SelectOption[] = [
-    { label: "Private", value: "Private" },
-    { label: "Public", value: "Public" },
-    { label: "Non-Profit", value: "Non-Profit" },
-    { label: "Government", value: "Government" },
-    { label: "Partnership", value: "Partnership" },
-    { label: "Sole Proprietorship", value: "Sole Proprietorship" },
-    { label: "Cooperative", value: "Cooperative" },
-    { label: "LLC", value: "Limited Liability Company" },
-    { label: "Corporation", value: "Corporation" },
+	{ label: "Private", value: "Private" },
+	{ label: "Public", value: "Public" },
+	{ label: "Non-Profit", value: "Non-Profit" },
+	{ label: "Government", value: "Government" },
+	{ label: "Partnership", value: "Partnership" },
+	{ label: "Sole Proprietorship", value: "Sole Proprietorship" },
+	{ label: "Cooperative", value: "Cooperative" },
+	{ label: "LLC", value: "Limited Liability Company" },
+	{ label: "Corporation", value: "Corporation" },
 ];

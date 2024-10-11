@@ -86,7 +86,7 @@ export type CompanyForm = {
 	companyLogo: string;
 	companyName: string;
 	companyWebsite: string;
-    tagline: string;
+	tagline: string;
 	companyEmail: string;
 	companyPhone: string;
 	employeeSize: string | { value: string; label: string };
@@ -234,15 +234,13 @@ export type CertificateForm = {
 };
 
 export type JobPosting = {
-	recruiter: RecruiterDetails;
 	jobTitle: string;
-	jobType: SelectOption;
+	jobType: string | { value: string; label: string };
 	jobDescription: string;
-	workType: SelectOption;
-	companySize: SelectOption;
+	workType: string | { value: string; label: string };
+	companySize: string | { value: string; label: string };
 	skillsRequired: string;
-	experience: SelectOption;
-	datePosted: Date;
+	experience: string | { value: string; label: string };
 	isActive: Boolean;
 	salaryRange: string;
 	jobLocation: string;

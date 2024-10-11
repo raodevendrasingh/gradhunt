@@ -1,7 +1,7 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 
-interface ValidationRules {
+export interface ValidationRules {
 	required?: string;
 	minLength?: {
 		value: number;
