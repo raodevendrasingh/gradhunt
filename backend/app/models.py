@@ -122,25 +122,26 @@ class CompanyProfile(models.Model):
 
 
 class JobPostings(models.Model):
-    company = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE)
-    isActive = models.BooleanField()
+    company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='job_postings')
+    jobId = models.CharField(max_length=8, blank=True, null=True)
+    isActive = models.BooleanField(default=True)
     jobTitle = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50)
+    workType = models.CharField(max_length=50, blank=True, null=True)
     jobDescription = models.TextField()
     salaryRange = models.CharField(max_length=50)
-    companySize = models.CharField(max_length=100)
+    companySize = models.CharField(max_length=100)  # remove it
     skillsRequired = ArrayField(models.CharField(
         max_length=200), blank=True, default=list)
-    jobLocation = ArrayField(models.CharField(
-        max_length=200), blank=True, default=list)
+    jobLocation = models.CharField(max_length=200, blank=True, null=True)
     experience = models.CharField(max_length=100)
-    postedDate = models.DateField()
+    postedDate = models.DateTimeField(auto_now_add=True)
+    applicationDeadline = models.DateField()
     applyLink = models.URLField(max_length=200)
     applyWithUs = models.BooleanField(default=False)
-    applicationDeadline = models.DateField()
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.jobTitle} at {self.company.companyName}"
 
     class Meta:
         verbose_name = "Job Posting"

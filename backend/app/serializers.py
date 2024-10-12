@@ -1,6 +1,8 @@
 from .models import Experience
 from rest_framework import serializers
 from .models import *
+import secrets
+import string
 
 
 class NestedDictField(serializers.Field):
@@ -190,6 +192,34 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return CompanyProfile.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
+
+class JobPostingSerializer(serializers.ModelSerializer):
+    jobType = NestedDictField()
+    workType = NestedDictField()
+    companySize = NestedDictField()
+    experience = NestedDictField()
+    company = serializers.PrimaryKeyRelatedField(queryset=CompanyProfile.objects.all())
+    skillsRequired = serializers.ListField(child=NestedDictField())
+
+
+    class Meta:
+        model = JobPostings
+        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'companySize', 'experience',
+                  'skillsRequired', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline']
+        read_only_fields = ['id', 'jobId', 'company']
+
+    def create(self, validated_data):
+        validated_data['jobId'] = ''.join(secrets.choice(
+            string.ascii_letters + string.digits) for _ in range(8))
+
+        return JobPostings.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():

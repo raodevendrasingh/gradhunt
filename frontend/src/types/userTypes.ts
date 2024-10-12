@@ -238,8 +238,8 @@ export type JobPosting = {
 	jobType: string | { value: string; label: string };
 	jobDescription: string;
 	workType: string | { value: string; label: string };
-	companySize: string | { value: string; label: string };
-	skillsRequired: string;
+	companySize: string | { value: string; label: string }; //remove it and add apply-link, apply-with-us toggle
+	skillsRequired: SkillObject[];
 	experience: string | { value: string; label: string };
 	isActive: Boolean;
 	salaryRange: string;

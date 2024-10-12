@@ -43,8 +43,8 @@ export const SkillSelect: React.FC<SkillSelectProps> = ({
 		if (isRequired && (!selectedSkills || selectedSkills.length === 0)) {
 			return `${label} is required`;
 		}
-		if (selectedSkills.length < 5) {
-			return `Please select at least 5 skills.`;
+		if (selectedSkills.length < 2) {
+			return `Please select at least 2 skills.`;
 		}
 		if (selectedSkills.length > 20) {
 			return `You can select up to 20 skills.`;

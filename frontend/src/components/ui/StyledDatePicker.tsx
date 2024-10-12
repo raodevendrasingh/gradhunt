@@ -32,8 +32,10 @@ export const StyledDatePicker: React.FC<DatePickerInputProps> = ({
 				rules={validationRules}
 				render={({ field: { onChange, value, ref } }) => (
 					<DatePicker
-						selected={value}
-						onChange={onChange}
+						selected={value ? new Date(value) : null}
+						onChange={(date) =>
+							onChange(date ? date.toISOString().split("T")[0] : null)
+						} // YYYY-MM-DD
 						placeholderText={placeholder || label}
 						customInput={
 							<input

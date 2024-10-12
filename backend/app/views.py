@@ -806,3 +806,28 @@ class GetCompanyProfile(APIView):
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class JobPostingView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            company_profile = CompanyProfile.objects.get(user=user)
+
+            request.data['company'] = company_profile.id
+
+            serializer = JobPostingSerializer(data=request.data)
+            if serializer.is_valid():
+                job_posting = serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except CompanyProfile.DoesNotExist:
+            return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

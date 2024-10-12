@@ -48,7 +48,6 @@ export const JobPostingForm = () => {
 	const handleEditorReady = useCallback(
 		(editor: React.SetStateAction<null>) => {
 			setEditorInstance(editor);
-			// Add a change event listener to update content
 			if (editor) {
 				(editor as any).on("update", ({ editor }: any) => {
 					const content = editor.getHTML();
@@ -81,9 +80,9 @@ export const JobPostingForm = () => {
 				jobDescription: content,
 			};
 
-			// console.log(formData);
+			console.log(formData);
 
-			const url = "/api/job-posting";
+			const url = "/api/post-job";
 			const response = await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -193,7 +192,7 @@ export const JobPostingForm = () => {
 
 					<div className="col-span-2">
 						<SkillSelect
-							name="skills"
+							name="skillsRequired"
 							label="Skills"
 							control={control}
 							isRequired={true}
