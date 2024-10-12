@@ -130,14 +130,13 @@ class JobPostings(models.Model):
     workType = models.CharField(max_length=50, blank=True, null=True)
     jobDescription = models.TextField()
     salaryRange = models.CharField(max_length=50)
-    companySize = models.CharField(max_length=100)  # remove it
     skillsRequired = ArrayField(models.CharField(
         max_length=200), blank=True, default=list)
     jobLocation = models.CharField(max_length=200, blank=True, null=True)
     experience = models.CharField(max_length=100)
     postedDate = models.DateTimeField(auto_now_add=True)
     applicationDeadline = models.DateField()
-    applyLink = models.URLField(max_length=200)
+    applyLink = models.URLField(max_length=255, blank=True, null=True)
     applyWithUs = models.BooleanField(default=False)
 
     def __str__(self):

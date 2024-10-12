@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
@@ -12,38 +12,35 @@ import { JobPosting } from "@/types/userTypes";
 import {
 	employmentType,
 	locationType,
-	companySize,
 	experienceLevels,
 } from "@/utils/selectObjects";
-import {
-	FiBriefcase,
-	FiClock,
-	FiUsers,
-	FiMapPin,
-	FiCalendar,
-	FiDollarSign,
-	FiCode,
-} from "react-icons/fi";
+import { FiBriefcase, FiClock, FiDollarSign } from "react-icons/fi";
 import { StyledDatePicker } from "@/components/ui/StyledDatePicker";
 import { SkillSelect } from "@/components/ui/SkillSelect";
 import { LocationSelect } from "@/helpers/LocationSelect2";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
+import { IoPaperPlaneOutline } from "react-icons/io5";
+import { LuGraduationCap, LuMapPin } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 export const JobPostingForm = () => {
-	const [startDate, setStartDate] = useState(new Date());
 	const [isLoading, setIsLoading] = useState(false);
 	const [editorInstance, setEditorInstance] = useState(null);
 	const [editorContent, setEditorContent] = useState("");
 	const [editorError, setEditorError] = useState("");
 	const { getToken } = useAuth();
+	const navigate = useNavigate();
 
 	const {
 		register,
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<JobPosting>();
+	} = useForm<JobPosting>({
+		defaultValues: {
+			applyWithUs: true,
+		},
+	});
 
 	const handleEditorReady = useCallback(
 		(editor: React.SetStateAction<null>) => {
@@ -79,18 +76,14 @@ export const JobPostingForm = () => {
 				...data,
 				jobDescription: content,
 			};
-
-			console.log(formData);
-
 			const url = "/api/post-job";
-			const response = await axios.post(url, formData, {
+			await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			console.log(response.data);
-			toast.success("Job posting created successfully");
+			navigate("success");
 		} catch (error) {
 			console.error(error);
 			toast.error("Failed to create job posting");
@@ -118,7 +111,7 @@ export const JobPostingForm = () => {
 							name="jobType"
 							options={employmentType}
 							control={control}
-							icon={<FiClock className="h-5 w-5" />}
+							icon={<LuGraduationCap className="h-5 w-5" />}
 							error={errors.jobType?.message}
 							isRequired
 						/>
@@ -130,38 +123,18 @@ export const JobPostingForm = () => {
 							name="workType"
 							options={locationType}
 							control={control}
-							icon={<FiBriefcase className="h-5 w-5" />}
+							icon={<LuMapPin className="h-5 w-5" />}
 							error={errors.workType?.message}
 							isRequired
 						/>
 						<SelectInput
-							label="Company Size"
-							name="companySize"
-							options={companySize}
-							control={control}
-							icon={<FiUsers className="h-5 w-5" />}
-							error={errors.companySize?.message}
-							isRequired
-						/>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<SelectInput
-							label="Experience"
+							label="Experience Required"
 							name="experience"
 							options={experienceLevels}
 							control={control}
 							icon={<FiClock className="h-5 w-5" />}
 							error={errors.experience?.message}
 							isRequired
-						/>
-
-						<StyledDatePicker
-							name="applicationDeadline"
-							label="Application Deadline"
-							control={control}
-							error={errors.applicationDeadline?.message}
-							validationRules={{ required: "Application Deadline is required" }}
 						/>
 					</div>
 
@@ -190,13 +163,47 @@ export const JobPostingForm = () => {
 						</div>
 					</div>
 
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<StyledDatePicker
+							name="applicationDeadline"
+							label="Application Deadline"
+							control={control}
+							error={errors.applicationDeadline?.message}
+							validationRules={{ required: "Application Deadline is required" }}
+						/>
+						<TextInput
+							label="Apply Link"
+							name="applyLink"
+							register={register}
+							icon={<IoPaperPlaneOutline className="h-5 w-5" />}
+							error={errors.applyLink?.message}
+							validationRules={{
+								pattern: {
+									value: /^(http|https):\/\/[^ "]+$/,
+									message: "Must be a valid URL starting with http or https",
+								},
+							}}
+						/>
+					</div>
+
 					<div className="col-span-2">
 						<SkillSelect
 							name="skillsRequired"
-							label="Skills"
+							label="Skills Required"
 							control={control}
 							isRequired={true}
 							error={errors.skillsRequired?.message}
+						/>
+					</div>
+
+					<div className="col-span-2">
+						<ToggleSwitch
+							control={control}
+							icon={<IoPaperPlaneOutline className="h-6 w-6" />}
+							label="Apply with GradHunt"
+							helptext="Allow candidates to apply with GradHunt, if turned off, candidates cannot be managed through GradHunt"
+							name="applyWithUs"
+							defaultValue={true}
 						/>
 					</div>
 

@@ -24,7 +24,7 @@ export const Opportunities = () => {
 								Sort
 							</button>
 						</Link>
-						<Link to="/create-job-post">
+						<Link to="post-job">
 							<button className="inline-flex justify-center items-center gap-2 w-28 rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-0">
 								Post Job
 								<HiPlus className="size-5" />

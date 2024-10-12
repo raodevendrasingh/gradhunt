@@ -203,22 +203,22 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
 class JobPostingSerializer(serializers.ModelSerializer):
     jobType = NestedDictField()
     workType = NestedDictField()
-    companySize = NestedDictField()
     experience = NestedDictField()
-    company = serializers.PrimaryKeyRelatedField(queryset=CompanyProfile.objects.all())
+    company = serializers.PrimaryKeyRelatedField(
+        queryset=CompanyProfile.objects.all())
     skillsRequired = serializers.ListField(child=NestedDictField())
-
 
     class Meta:
         model = JobPostings
-        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'companySize', 'experience',
-                  'skillsRequired', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline']
+        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'experience',
+                  'skillsRequired', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline', 'applyLink', 'applyWithUs']
         read_only_fields = ['id', 'jobId', 'company']
 
     def create(self, validated_data):
-        validated_data['jobId'] = ''.join(secrets.choice(
-            string.ascii_letters + string.digits) for _ in range(8))
-
+        validated_data['jobId'] = (
+            ''.join(secrets.choice(string.ascii_uppercase) for _ in range(4)) +
+            ''.join(secrets.choice(string.digits) for _ in range(4))
+        )
         return JobPostings.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

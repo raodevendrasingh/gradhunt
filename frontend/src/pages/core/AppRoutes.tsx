@@ -20,6 +20,7 @@ import SalariesPage from "./SalariesPage";
 import CompanyProfileForm from "./CompanyProfileForm";
 import CompanyProfile from "./CompanyProfile";
 import { JobPostingForm } from "./JobPostingForm";
+import { SuccessJobPage } from "./SuccessJobPage";
 
 export default function AppRoutes(): ReactNode {
 	return (
@@ -37,8 +38,9 @@ export default function AppRoutes(): ReactNode {
 					<Route path="salaries" element={<SalariesPage />} />
 					<Route path="p/:username" element={<StandardUserProfile />} />
 					<Route path="create-company-profile" element={<CompanyProfileForm />} />
-					<Route path="create-job-post" element={<JobPostingForm/>} />
 					<Route path="company/:companyname" element={<CompanyProfile />} />
+					<Route path="company/:companyname/post-job" element={<JobPostingForm/>} />
+					<Route path="company/:companyname/post-job/success" element={<SuccessJobPage/>} />
 					<Route path="settings" element={<SettingsPage />} />
 				</Route>
 				<Route path="/s/:username" element={<SpecialUserProfile />} />

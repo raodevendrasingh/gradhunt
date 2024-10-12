@@ -119,14 +119,14 @@ export const SkillSelect: React.FC<SkillSelectProps> = ({
 										{value.map((skill: SkillObject) => (
 											<div
 												key={skill.value}
-												className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
+												className="flex items-center justify-center px-2.5 py-1.5 bg-slate-50 text-gray-700 rounded-full border"
 											>
 												{skill.image && (
 													<span className="inline-block">
 														<img
 															src={skill.image}
 															alt={skill.label}
-															className="size-3 mr-2"
+															className="size-3.5 mr-2"
 														/>
 													</span>
 												)}

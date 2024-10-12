@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Select, { SingleValue, MultiValue } from "react-select";
 import { Controller } from "react-hook-form";
 import { useCitySearch, CityOption } from "@/hooks/useCitySearch";
-import { FiMapPin } from "react-icons/fi";
+import { LuMapPin } from "react-icons/lu";
 
 type SelectValue<IsMulti extends boolean> = IsMulti extends true
 	? MultiValue<CityOption>
@@ -140,7 +140,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 		<div className="w-full flex flex-col mb-6">
 			<div className="relative">
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10">
-					<FiMapPin size={20} />
+					<LuMapPin size={20} />
 				</div>
 				<Controller
 					name={name}
