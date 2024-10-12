@@ -234,17 +234,36 @@ export type CertificateForm = {
 };
 
 export type JobPosting = {
+	id: number;
 	jobTitle: string;
-	jobType: string | { value: string; label: string };
+	jobType: { value: string; label: string };
 	jobDescription: string;
-	workType: string | { value: string; label: string };
+	workType: { value: string; label: string };
 	skillsRequired: SkillObject[];
-	experience: string | { value: string; label: string };
+	experience: { value: string; label: string };
 	isActive: Boolean;
-    applyLink: string;
-    applyWithUs: boolean;   
+	applyLink: string;
+	applyWithUs: boolean;
 	salaryRange: string;
 	jobLocation: string;
+	applicationDeadline: Date;
+};
+
+export type JobPosts = {
+	id: number;
+    jobId: string;
+	jobTitle: string;
+	jobType: string;
+	jobDescription: string;
+	workType: string;
+	skillsRequired: SkillObject[];
+	experience: string;
+	isActive: Boolean;
+	applyLink: string;
+	applyWithUs: boolean;
+	salaryRange: string;
+	jobLocation: string;
+    postedDate: Date;
 	applicationDeadline: Date;
 };
 

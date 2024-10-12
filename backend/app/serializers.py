@@ -210,7 +210,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobPostings
-        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'experience',
+        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate',
                   'skillsRequired', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline', 'applyLink', 'applyWithUs']
         read_only_fields = ['id', 'jobId', 'company']
 

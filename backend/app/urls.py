@@ -7,7 +7,9 @@ urlpatterns = [
     path('api/company/', CompanyProfileView.as_view(), name='company'),
     path('api/company/<str:companyName>', GetCompanyProfile.as_view(), name='company'),
 
-    path('api/post-job', JobPostingView.as_view(), name='company'),
+    path('api/post-job', JobPostingView.as_view(), name='post-job'),
+
+    path('api/company/<str:companyName>/jobs', ListJobPosts.as_view(), name='get-job-posts'),
 
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
     path('api/users/check-username/',

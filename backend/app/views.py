@@ -831,3 +831,21 @@ class JobPostingView(APIView):
             return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListJobPosts(APIView):
+
+    @transaction.atomic
+    def get(self, request, companyName):
+        try:
+            company_profile = CompanyProfile.objects.get(companyName__iexact=companyName)
+
+            job_posts = JobPostings.objects.filter(company=company_profile)
+            serializer = JobPostingSerializer(job_posts, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except CompanyProfile.DoesNotExist:
+            return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
