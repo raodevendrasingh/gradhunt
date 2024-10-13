@@ -130,8 +130,7 @@ class JobPostings(models.Model):
     workType = models.CharField(max_length=50, blank=True, null=True)
     jobDescription = models.TextField()
     salaryRange = models.CharField(max_length=50)
-    skillsRequired = ArrayField(models.CharField(
-        max_length=200), blank=True, default=list)
+    requiredSkills = ArrayField(models.JSONField(), default=list, blank=True)
     jobLocation = models.CharField(max_length=200, blank=True, null=True)
     experience = models.CharField(max_length=100)
     postedDate = models.DateTimeField(auto_now_add=True)

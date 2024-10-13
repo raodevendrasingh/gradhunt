@@ -102,13 +102,18 @@ export const JobDetailsPage: React.FC = () => {
 											className="h-8 w-24 bg-gray-200 rounded-full animate-pulse"
 										/>
 									))
-								: data.skillsRequired.map((skill) => (
-										<span
-											key={skill.label}
-											className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+								: data.requiredSkills.map((skill) => (
+										<div
+											key={skill.value}
+											className="flex items-center justify-center text-sm px-2.5 py-[3px] bg-slate-50 text-gray-700 rounded-full border m-1 cursor-context-menu"
 										>
+											<img
+												src={skill.image}
+												alt={skill.label}
+												className="size-4 mr-2"
+											/>
 											{skill.label}
-										</span>
+										</div>
 									))}
 						</div>
 					</div>

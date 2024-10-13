@@ -206,12 +206,12 @@ class JobPostingSerializer(serializers.ModelSerializer):
     experience = NestedDictField()
     company = serializers.PrimaryKeyRelatedField(
         queryset=CompanyProfile.objects.all())
-    skillsRequired = serializers.ListField(child=NestedDictField())
+    requiredSkills = serializers.ListField(child=NestedDictField())
 
     class Meta:
         model = JobPostings
         fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate',
-                  'skillsRequired', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline', 'applyLink', 'applyWithUs']
+                  'requiredSkills', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline', 'applyLink', 'applyWithUs']
         read_only_fields = ['id', 'jobId', 'company']
 
     def create(self, validated_data):

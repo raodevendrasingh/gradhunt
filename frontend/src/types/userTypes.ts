@@ -239,7 +239,7 @@ export type JobPosting = {
 	jobType: { value: string; label: string };
 	jobDescription: string;
 	workType: { value: string; label: string };
-	skillsRequired: SkillObject[];
+	requiredSkills: SkillObject[];
 	experience: { value: string; label: string };
 	isActive: Boolean;
 	applyLink: string;
@@ -256,7 +256,7 @@ export type JobPosts = {
 	jobType: string;
 	jobDescription: string;
 	workType: string;
-	skillsRequired: SkillObject[];
+	requiredSkills: SkillObject[];
 	experience: string;
 	isActive: Boolean;
 	applyLink: string;

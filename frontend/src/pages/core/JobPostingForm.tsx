@@ -188,11 +188,11 @@ export const JobPostingForm = () => {
 
 					<div className="col-span-2">
 						<SkillSelect
-							name="skillsRequired"
+							name="requiredSkills"
 							label="Skills Required"
 							control={control}
 							isRequired={true}
-							error={errors.skillsRequired?.message}
+							error={errors.requiredSkills?.message}
 						/>
 					</div>
 
