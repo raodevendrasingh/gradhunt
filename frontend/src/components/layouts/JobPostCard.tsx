@@ -46,7 +46,7 @@ export const JobPostCard = ({ jobPost }: JobCardProps) => {
 					<span>Posted {timesAgo(jobPost.postedDate)}</span>
 				</div>
 				<Link
-					to={`job/${jobPost.jobId}`}
+					to={`job/${jobPost.jobId.toLowerCase()}`}
 					className="px-4 py-1.5 text-gray-600 hover:bg-slate-700 hover:text-white font-medium rounded-xl border-2 border-gray-400 hover:border-gray-700 transition-colors"
 				>
 					Details

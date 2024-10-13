@@ -9,7 +9,7 @@ import { MdLocationPin } from 'react-icons/md';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
 import { useFetchCompanyProfileByName } from '@/hooks/useFetchCompanyProfileByName';
 import { useFetchUserDetails } from '@/hooks/useFetchUserDetails';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 
 export default function CompanyProfile(): React.JSX.Element {
@@ -20,6 +20,14 @@ export default function CompanyProfile(): React.JSX.Element {
 	const { data: companyProfile, isLoading } = useFetchCompanyProfileByName();
 
 	const { data: currentUser } = useFetchUserDetails();
+
+    useEffect(() => {
+		// Retrieve the selected tab from local storage
+		const storedTab = localStorage.getItem('selectedTab');
+		if (storedTab) {
+			setSelected(Number(storedTab));
+		}
+	}, []);
 
 	if (isLoading) {
 		return (
