@@ -21,7 +21,7 @@ import CompanyProfileForm from "./CompanyProfileForm";
 import CompanyProfile from "./CompanyProfile";
 import { JobPostingForm } from "./JobPostingForm";
 import { SuccessJobPage } from "./SuccessJobPage";
-import { JobDetailsPage } from "./JobdetailsPage";
+import { JobDetailsPage } from "./JobDetailsPage";
 
 export default function AppRoutes(): ReactNode {
 	return (

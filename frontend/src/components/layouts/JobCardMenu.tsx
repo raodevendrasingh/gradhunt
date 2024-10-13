@@ -9,20 +9,30 @@ const options: Option[] = [
 	{ id: "delete", label: "Delete" },
 ];
 
-export default function MenuBox({ jobId }: { jobId: string }) {
+interface JobCardMenuProps {
+	editUrl: string;
+}
+
+export default function JobCardMenu({ editUrl }: JobCardMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [showDeleteDailog, setShowDeleteDailog] = useState<boolean>(false);
-	const dropdownRef = useRef<HTMLDivElement>(null); // Create a ref for the dropdown
+	const dropdownRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 	const navigate = useNavigate();
 
-	const toggleDropdown = () => setIsOpen(!isOpen);
+	const toggleDropdown = (event: React.MouseEvent) => {
+		event.stopPropagation();
+		setIsOpen(!isOpen);
+	};
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
 				dropdownRef.current &&
-				!dropdownRef.current.contains(event.target as Node)
+				!dropdownRef.current.contains(event.target as Node) &&
+				buttonRef.current &&
+				!buttonRef.current.contains(event.target as Node)
 			) {
 				setIsOpen(false);
 			}
@@ -32,7 +42,7 @@ export default function MenuBox({ jobId }: { jobId: string }) {
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [dropdownRef]);
+	}, []);
 
 	const handleOptionClick = (optionId: string) => {
 		setSelectedOptions((prev) =>
@@ -41,7 +51,7 @@ export default function MenuBox({ jobId }: { jobId: string }) {
 				: [...prev, optionId]
 		);
 		if (optionId === "edit") {
-			navigate(`job/${jobId}/edit`);
+			navigate(editUrl);
 		} else if (optionId === "archive") {
 			console.log("Archived");
 		} else if (optionId === "delete") {
@@ -52,8 +62,8 @@ export default function MenuBox({ jobId }: { jobId: string }) {
 
 	return (
 		<div className="relative inline-block text-left">
-			<div>
-				<button onClick={toggleDropdown}>
+			<div className="mt-0.5 ">
+				<button ref={buttonRef} onClick={toggleDropdown}>
 					<HiDotsVertical className="size-5 text-gray-700" />
 				</button>
 			</div>

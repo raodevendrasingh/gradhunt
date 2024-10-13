@@ -2,7 +2,7 @@ import { JobPosts } from "@/types/userTypes";
 import { LuMapPin, LuCalendarClock } from "react-icons/lu";
 import { timesAgo } from "@/utils/DaysAgo";
 import { Link } from "react-router-dom";
-import MenuBox from "./MenuBox";
+import JobCardMenu from "./JobCardMenu";
 import { LuIndianRupee } from "react-icons/lu";
 
 interface JobCardProps {
@@ -13,7 +13,9 @@ export const JobPostCard = ({ jobPost }: JobCardProps) => {
 	return (
 		<div className="bg-slate-50 border rounded-2xl p-4 mb-4 w-full relative">
 			<div className="absolute top-4 right-4">
-				<MenuBox jobId={jobPost.jobId} />
+				<JobCardMenu
+					editUrl={`job/${jobPost.jobId}/edit`}
+				/>
 			</div>
 
 			<h2 className="text-xl font-bold text-gray-800 mb-1">

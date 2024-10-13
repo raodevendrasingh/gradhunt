@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
 import { useParams } from "react-router-dom";
@@ -11,22 +11,43 @@ import {
 	LuClock,
 	LuIndianRupee,
 	LuMapPin,
-	LuPencil,
 } from "react-icons/lu";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import clsx from "clsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import JobCardMenu from "@/components/layouts/JobCardMenu";
 
 export const JobDetailsPage: React.FC = () => {
 	const [scrolled, setScrolled] = useState(false);
 	const contentRef = useRef<HTMLDivElement>(null);
+	const { jobId } = useParams<{ jobId: string }>();
+
+	if (!jobId) {
+		return <NotFound />;
+	}
+
+	const checkScroll = () => {
+		if (contentRef.current) {
+			const isScrolled = contentRef.current.scrollTop > 0;
+			setScrolled(isScrolled);
+		}
+	};
 
 	useEffect(() => {
+		// Check scroll position after initial render
+		checkScroll();
+
+		// Set up mutation observer to detect when content is fully loaded
+		const observer = new MutationObserver(() => {
+			checkScroll();
+		});
+
+		if (contentRef.current) {
+			observer.observe(contentRef.current, { childList: true, subtree: true });
+		}
+
 		const handleScroll = () => {
-			if (contentRef.current) {
-				const isScrolled = contentRef.current.scrollTop > 0;
-				setScrolled(isScrolled);
-			}
+			checkScroll();
 		};
 
 		const currentRef = contentRef.current;
@@ -38,14 +59,9 @@ export const JobDetailsPage: React.FC = () => {
 			if (currentRef) {
 				currentRef.removeEventListener("scroll", handleScroll);
 			}
+			observer.disconnect();
 		};
 	}, []);
-
-	const { jobId } = useParams<{ jobId: string }>();
-
-	if (!jobId) {
-		return <NotFound />;
-	}
 
 	const { data, isLoading } = useFetchJobDetails({ jobId });
 
@@ -58,10 +74,6 @@ export const JobDetailsPage: React.FC = () => {
 		window.history.back();
 	};
 
-	const handleEditClick = () => {
-		// Implement edit functionality
-		console.log("Edit clicked");
-	};
 	return (
 		<div className="flex h-full">
 			<div className="relative flex flex-col w-full lg2:w-[70%] overflow-hidden border-r">
@@ -69,10 +81,9 @@ export const JobDetailsPage: React.FC = () => {
 					title={data.jobTitle}
 					isScrolled={scrolled}
 					onBackClick={handleBackClick}
-					onEditClick={handleEditClick}
 				/>
 				<div ref={contentRef} className="flex-1 overflow-y-auto scrollbar-hide">
-					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 p-5 bg-slate-50">
+					<div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6 p-5 bg-slate-100 rounded-b-2xl">
 						<InfoItem icon={<LuMapPin size={20} />} text={data.jobLocation} />
 						<InfoItem icon={<LuBriefcase size={20} />} text={data.jobType} />
 						<InfoItem icon={<LuMapPin size={20} />} text={data.workType} />
@@ -174,97 +185,70 @@ interface ScrollableHeaderProps {
 	title: string;
 	isScrolled: boolean;
 	onBackClick: () => void;
-	onEditClick: () => void;
 }
 
 export const ScrollableHeader: React.FC<ScrollableHeaderProps> = ({
 	title,
 	isScrolled,
 	onBackClick,
-	onEditClick,
 }) => {
-	const transition = { duration: 0.2, ease: "easeInOut" };
+	const [animate, setAnimate] = useState(false);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setAnimate(true), 100);
+		return () => clearTimeout(timer);
+	}, []);
+
+	const transition = { duration: 0, ease: "easeInOut" };
 
 	return (
 		<motion.div
 			className={clsx(
 				"sticky top-0 left-0 right-0 z-40 transition-all",
-				isScrolled ? "bg-white border-b" : "bg-gray-100"
+				isScrolled
+					? "bg-white bg-opacity-20 backdrop-blur-md border-b"
+					: "bg-slate-200"
 			)}
-			animate={{ height: isScrolled ? 60 : 130 }}
+			animate={{ height: animate ? (isScrolled ? 60 : 130) : 130 }}
 			transition={transition}
 		>
-			<div
-				className={clsx(
-					"flex items-center h-full w-full p-4",
-					isScrolled ? "justify-between" : "justify-between flex-col"
-				)}
-			>
-				<div
-					className={clsx(
-						"flex items-center",
-						isScrolled ? "gap-5" : "w-full justify-between mb-2"
-					)}
-				>
+			<div className="flex flex-col content-center h-full w-full py-4">
+				<div className="flex justify-between items-center px-4">
 					<BsArrowLeftCircle
 						className="cursor-pointer text-gray-600"
 						size={24}
 						onClick={onBackClick}
 					/>
-					<motion.h1
-						initial={false}
-						animate={{
-							opacity: isScrolled ? 1 : 0,
-							x: isScrolled ? 0 : -20,
-							position: isScrolled ? "relative" : "absolute",
-						}}
-						transition={transition}
-						className="text-xl font-bold text-gray-800 w-80"
-					>
-						{title}
-					</motion.h1>
-					<motion.div
-						initial={false}
-						animate={{
-							opacity: isScrolled ? 0 : 1,
-							scale: isScrolled ? 0.8 : 1,
-							position: isScrolled ? "absolute" : "relative",
-							right: isScrolled ? 16 : 0,
-						}}
-						transition={transition}
-					>
-						<Button variant="outline" onClick={onEditClick}>
-							Edit
-						</Button>
-					</motion.div>
+					<JobCardMenu editUrl="edit" />
 				</div>
-				<motion.h1
-					initial={false}
-					animate={{
-						opacity: isScrolled ? 0 : 1,
-						y: isScrolled ? -20 : 0,
-						height: isScrolled ? 0 : "auto",
-						marginTop: isScrolled ? 0 : 8,
-					}}
-					transition={transition}
-					className="text-2xl font-bold text-gray-800 w-full overflow-hidden"
-				>
-					{title}
-				</motion.h1>
-				<motion.div
-					initial={false}
-					animate={{
-						opacity: isScrolled ? 1 : 0,
-						scale: isScrolled ? 1 : 0.8,
-						position: isScrolled ? "relative" : "absolute",
-						right: isScrolled ? 0 : 16,
-					}}
-					transition={transition}
-				>
-					<Button variant="outline" onClick={onEditClick}>
-						Edit
-					</Button>
-				</motion.div>
+
+				<div className="flex-grow flex items-center px-4">
+					<AnimatePresence initial={false} mode="wait">
+						{isScrolled ? (
+							<motion.h1
+								key="scrolled-title"
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: -30 }}
+								exit={{ opacity: 0, y: 20 }}
+								transition={transition}
+								className="text-xl ml-12 font-bold text-gray-800 truncate w-fit"
+							>
+								{title}
+							</motion.h1>
+						) : (
+							<motion.h1
+								key="full-title"
+								initial={{ opacity: 0, y: 15 }}
+								animate={{ opacity: 1, y: 15 }}
+								exit={{ opacity: 0, y: 15 }}
+								transition={transition}
+								className="text-2xl font-bold text-gray-800 truncate flex-grow"
+							>
+								{title}
+							</motion.h1>
+						)}
+					</AnimatePresence>
+				</div>
 			</div>
 		</motion.div>
 	);
