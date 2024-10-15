@@ -122,7 +122,8 @@ class CompanyProfile(models.Model):
 
 
 class JobPostings(models.Model):
-    company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='job_postings')
+    company = models.ForeignKey(
+        CompanyProfile, on_delete=models.CASCADE, related_name='job_postings')
     jobId = models.CharField(max_length=8, blank=True, null=True)
     isActive = models.BooleanField(default=True)
     jobTitle = models.CharField(max_length=100)
@@ -137,6 +138,7 @@ class JobPostings(models.Model):
     applicationDeadline = models.DateField()
     applyLink = models.URLField(max_length=255, blank=True, null=True)
     applyWithUs = models.BooleanField(default=False)
+    isSaved = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.jobTitle} at {self.company.companyName}"
@@ -144,6 +146,22 @@ class JobPostings(models.Model):
     class Meta:
         verbose_name = "Job Posting"
         verbose_name_plural = "Job Postings"
+
+
+class JobApplication(models.Model):
+    candidate = models.ForeignKey(
+        UserDetails, on_delete=models.CASCADE, related_name='job_applications')
+    jobPosting = models.ForeignKey(
+        JobPostings, on_delete=models.CASCADE, related_name='applications')
+    appliedDate = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, default='applied')
+
+    def __str__(self):
+        return f"{self.candidate.username} applied to {self.jobPosting.jobTitle}"
+
+    class Meta:
+        verbose_name = "Job Application"
+        verbose_name_plural = "Job Applications"
 
 
 class Experience(models.Model):

@@ -917,3 +917,25 @@ class JobSearchView(APIView):
             return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ApplyJobView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def post(self, request):
+        candidate = request.user
+        job_posting_id = request.data.get('job_posting_id')
+
+        try:
+            job_posting = JobPostings.objects.get(jobId=job_posting_id)
+            if JobApplication.objects.filter(user=candidate, job_posting=job_posting).exists():
+                return Response({'error': 'You have already applied for this job.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            job_application = JobApplication.objects.create(
+                user=candidate, job_posting=job_posting)
+            serializer = JobApplicationSerializer(job_application)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except JobPostings.DoesNotExist:
+            return Response({'error': 'Job posting not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

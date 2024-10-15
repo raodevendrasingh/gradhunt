@@ -226,3 +226,24 @@ class JobPostingSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
+
+
+class JobApplicationSerializer(serializers.ModelSerializer):
+    jobPosting = serializers.PrimaryKeyRelatedField(
+        queryset=JobPostings.objects.all())
+    candidate = serializers.PrimaryKeyRelatedField(
+        queryset=UserDetails.objects.all())
+
+    class Meta:
+        model = JobApplication
+        fields = ['id', 'jobPosting', 'candidate', 'status', 'appliedDate']
+        read_only_fields = ['id', 'appliedDate']
+
+    def create(self, validated_data):
+        return JobApplication.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
