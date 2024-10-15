@@ -139,6 +139,7 @@ class JobPostings(models.Model):
     applyLink = models.URLField(max_length=255, blank=True, null=True)
     applyWithUs = models.BooleanField(default=False)
     isSaved = models.BooleanField(default=False)
+    isApplied = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.jobTitle} at {self.company.companyName}"

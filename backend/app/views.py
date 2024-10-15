@@ -931,6 +931,9 @@ class ApplyJobView(APIView):
             if JobApplication.objects.filter(user=candidate, job_posting=job_posting).exists():
                 return Response({'error': 'You have already applied for this job.'}, status=status.HTTP_400_BAD_REQUEST)
 
+            job_posting.isApplied = True
+            job_posting.save()
+
             job_application = JobApplication.objects.create(
                 user=candidate, job_posting=job_posting)
             serializer = JobApplicationSerializer(job_application)
