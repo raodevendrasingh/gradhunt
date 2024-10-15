@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SubmitHandler } from "react-hook-form";
 import { useCitySearch } from "@/hooks/useCitySearch";
 
@@ -19,31 +19,7 @@ import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 import { FormData } from "@/components/layouts/JobSearchBar";
 import React from "react";
-
-export const handleSearch: SubmitHandler<FormData> = async (data) => {
-	const encodeValue = (value: string) => value.replace(/ /g, "+");
-	const searchParams = new URLSearchParams({
-		position: encodeValue(data.position),
-		experience: encodeValue(
-			typeof data.experience === "object"
-				? data.experience?.value || ""
-				: data.experience || ""
-		),
-		location: encodeValue(
-			typeof data.location === "object"
-				? data.location?.value || ""
-				: data.location || ""
-		),
-	});
-
-	try {
-		const url = `/api/jobs/query?${searchParams}`;
-		const response = await axios.get(url);
-		console.log(response.data);
-	} catch (error) {
-		throw new Error("Error Completing Search, Try Again!");
-	}
-};
+import { encodeSearchParams } from "@/utils/encodeSearchParams";
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -53,6 +29,20 @@ export default function JobSearchPage(): React.JSX.Element {
 		handleInputChange,
 		formatOptionLabel,
 	} = useCitySearch();
+
+	const navigate = useNavigate();
+
+	const handleSearch: SubmitHandler<FormData> = async (data) => {
+		const searchParams = encodeSearchParams(data);
+		try {
+			navigate(`/job-search/query?${searchParams}`);
+			const url = `/api/jobs/query?${searchParams}`;
+			const response = await axios.get(url);
+			console.log(response.data);
+		} catch (error) {
+			throw new Error("Error Completing Search, Try Again!");
+		}
+	};
 
 	return (
 		<main className="max-w-screen-2xl mx-auto overflow-hidden scroll-smooth">

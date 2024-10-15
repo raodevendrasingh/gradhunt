@@ -8,13 +8,15 @@ interface Option {
 }
 
 interface SelectInputProps {
-	label: string;
+	label?: string;
 	name: string;
+	placeholder?: string;
 	options: Option[];
 	control: Control<any>;
 	icon?: React.ReactNode;
 	isRequired?: boolean;
 	error?: string;
+    styles?: any;
 }
 
 export const selectStyles: StylesConfig<Option, false> = {
@@ -73,16 +75,20 @@ export const selectStyles: StylesConfig<Option, false> = {
 export const SelectInput: React.FC<SelectInputProps> = ({
 	label,
 	name,
+	placeholder = label,
 	options,
 	control,
 	icon,
 	isRequired = false,
 	error,
+    styles = selectStyles,
 }) => (
-	<div className="w-full flex flex-col mb-6">
-		<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
-			{label}
-		</label>
+	<div className="w-full flex flex-col">
+		{label && (
+			<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
+				{label}
+			</label>
+		)}
 
 		<div className="relative">
 			{icon && (
@@ -99,9 +105,9 @@ export const SelectInput: React.FC<SelectInputProps> = ({
 						{...field}
 						options={options}
 						styles={{
-							...selectStyles,
+							...styles,
 							control: (base, state) => ({
-								...selectStyles.control?.(base, state),
+								...styles.control?.(base, state),
 								paddingLeft: icon ? "2rem" : "0.5rem",
 								...(error && {
 									border: "1px solid #EF4444", // border-red-500
@@ -117,7 +123,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
 							}),
 						}}
 						className={error ? "select-error" : ""}
-						placeholder={`Select ${label}`}
+						placeholder={placeholder}
 					/>
 				)}
 			/>

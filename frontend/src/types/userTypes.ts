@@ -251,7 +251,7 @@ export type JobPosting = {
 
 export type JobPosts = {
 	id: number;
-    jobId: string;
+	jobId: string;
 	jobTitle: string;
 	jobType: string;
 	jobDescription: string;
@@ -263,7 +263,7 @@ export type JobPosts = {
 	applyWithUs: boolean;
 	salaryRange: string;
 	jobLocation: string;
-    postedDate: Date;
+	postedDate: Date;
 	applicationDeadline: Date;
 };
 
@@ -293,4 +293,10 @@ export type SkillObject = {
 export type Skill = {
 	user: number;
 	skills_list: SkillObject[];
+};
+
+export type SearchParams = {
+	position: string;
+	experience: string | null;
+	location: string | null;
 };

@@ -18,28 +18,34 @@ export interface ValidationRules {
 }
 
 interface TextInputProps {
-	label: string;
+	label?: string;
 	name: string;
+	placeholder?: string;
 	type?: string;
 	icon?: React.ReactNode;
 	register: UseFormRegister<any>;
 	validationRules?: ValidationRules;
 	error?: string;
+    className?: string;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
 	label,
 	name,
+	placeholder = label,
 	type = "text",
 	icon,
 	register,
 	validationRules,
 	error,
+    className,
 }) => (
-	<div className="w-full flex flex-col mb-6">
-		<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
-			{label}
-		</label>
+	<div className="w-full flex flex-col">
+		{label && (
+			<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
+				{label}
+			</label>
+		)}
 
 		<div className="relative">
 			{icon && (
@@ -51,15 +57,15 @@ export const TextInput: React.FC<TextInputProps> = ({
 				{...register(name, validationRules)}
 				type={type}
 				id={name}
-				placeholder={label}
-				className={`${icon ? "pl-10" : "pl-3"} w-full py-2.5 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 block transition duration-200 ${
+				placeholder={placeholder}
+				className={`${icon ? "pl-10" : "pl-3"} ${className} w-full py-2.5 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 block transition duration-200 ${
 					error ? "border-red-500 focus:ring-red-100 focus:border-red-500" : ""
 				}`}
 			/>
 		</div>
 
 		{error && (
-			<span className="text-red-500 text-sm mt-1" role="alert">
+			<span className="text-red-500 text-sm mt-1 pl-2" role="alert">
 				{error}
 			</span>
 		)}

@@ -1,44 +1,115 @@
 import { JobSearchForm } from "@/components/layouts/JobSearchBar";
 import { useCitySearch } from "@/hooks/useCitySearch";
-import { handleSearch } from "./JobSearchPage";
 import { FilterSideBar } from "./components/layout/FilterSideBar";
-import {
-	FaClock,
-	FaIndianRupeeSign,
-	FaRegBookmark,
-} from "react-icons/fa6";
+import { FaClock, FaIndianRupeeSign, FaRegBookmark } from "react-icons/fa6";
 import { HiMiniArrowUpRight } from "react-icons/hi2";
 import { MdWork } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useState } from "react";
 import { jobsData } from "@/utils/dummyData";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
+import { TextInput } from "@/components/ui/TextInput";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FiBriefcase, FiSearch } from "react-icons/fi";
+import { SearchParams } from "@/types/userTypes";
+import { SelectInput, selectStyles } from "@/components/ui/SelectInput";
+import { BsBriefcase } from "react-icons/bs";
+import { experience } from "@/utils/selectObjects";
+import { GoBriefcase, GoSearch } from "react-icons/go";
+import { citySelectStyles, LocationSelect } from "@/helpers/LocationSelect2";
+import { Button } from "@/components/ui/Button";
+import { CSSObjectWithLabel } from "react-select";
+import axios from "axios";
+import { encodeSearchParams } from "@/utils/encodeSearchParams";
 
 export default function JobsFeedPage() {
 	const [jobs] = useState(jobsData);
 
 	const {
-		isLoading,
-		error,
-		cityOptions,
-		handleInputChange,
-		formatOptionLabel,
-	} = useCitySearch();
+		register,
+		control,
+		handleSubmit,
+	} = useForm<SearchParams>();
+
+    const onSubmit: SubmitHandler<SearchParams> = async (data) => {
+		const searchParams = encodeSearchParams(data);
+        console.log(data)
+		try {
+			const url = `/api/jobs/query?${searchParams}`;
+			const response = await axios.get(url);
+			console.log(response.data);
+		} catch (error) {
+			throw new Error("Error Completing Search, Try Again!");
+		}
+	};
 
 	return (
 		<div className="flex h-full">
 			<div className="flex flex-col w-[70%] pb-20 overflow-y-auto scrollbar-hide">
-				<div className="flex items-center justify-center px-3">
-					<JobSearchForm
-						onSubmit={handleSearch}
-						isLoading={isLoading}
-						cityOptions={cityOptions}
-						handleInputChange={handleInputChange}
-						formatOptionLabel={formatOptionLabel}
-						error={error || undefined}
-					/>
+				<div className="flex items-center justify-center w-full p-5">
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className="flex flex-col w-full"
+					>
+						<div className="flex flex-col lg:flex-row items-center gap-2 w-full rounded-xl py-2">
+							<div className="flex w-full lg:w-1/3">
+								<TextInput
+									name="position"
+									placeholder="Positions / skills / companies"
+									register={register}
+									icon={<GoSearch className="h-5 w-5" />}
+									className="py-3 bg-white focus:ring-0"
+								/>
+							</div>
+
+							<div className="flex flex-col md:flex-row gap-2 w-full lg:w-2/3 ">
+								<div className="flex w-full items-center md:w-1/2 gap-2 ">
+									<SelectInput
+										placeholder="Experience"
+										name="experience"
+										options={experience}
+										control={control}
+										icon={<GoBriefcase className="h-5 w-5" />}
+										styles={{
+											...selectStyles,
+											control: (base: CSSObjectWithLabel, state: any) => ({
+												...selectStyles.control?.(base, state),
+												paddingTop: "0.2rem",
+												paddingBottom: "0.2rem",
+												backgroundColor: "white",
+												
+											}),
+										}}
+									/>
+								</div>
+
+								<div className="flex w-full md:w-1/2 gap-2 ">
+									<LocationSelect
+										control={control}
+										name="location"
+										placeholder="Location"
+										styles={{
+											...selectStyles,
+											control: (base: CSSObjectWithLabel, state: any) => ({
+												...citySelectStyles.control?.(base, state),
+												paddingTop: "0.2rem",
+												paddingBottom: "0.2rem",
+												backgroundColor: "white",
+												
+											}),
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="w-full flex justify-end">
+							<Button type="submit" className="w-fit rounded-lg">
+								Search
+							</Button>
+						</div>
+					</form>
 				</div>
-				<div className="flex w-full items-start gap-3 pt-10 px-3 ">
+				<div className="flex w-full items-start gap-3 pt-10 px-5 ">
 					<div className="space-y-4 w-full">
 						{jobs.map((job) => (
 							<div

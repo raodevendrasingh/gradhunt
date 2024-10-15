@@ -93,7 +93,7 @@ export const selectFieldStyle = {
 		backgroundColor: state.isSelected && "#F1F5F9",
 		color: state.isSelected && "#1F2937",
 		"&:hover": {
-			backgroundColor: "#F1F5F9", 
+			backgroundColor: "#F1F5F9",
 		},
 	}),
 	menu: (provided: any) => ({
@@ -144,18 +144,19 @@ export const inputSearchFieldStyle = {
 		textOverflow: "ellipsis",
 		whiteSpace: "nowrap",
 	}),
-	option: (provided: any, state: { isSelected: any; isFocused: any }) => ({
+	option: (provided: any, state: any) => ({
 		...provided,
-		backgroundColor: state.isSelected
-			? "#2563EB"
-			: state.isFocused
-				? "#BFDBFE"
-				: "white",
-		color: state.isSelected ? "white" : "#1F2937",
-		"&:active": {
-			backgroundColor: "#2563EB",
-			color: "white",
+		width: "99%",
+		alignContent: "center",
+		borderRadius: "0.225rem",
+		margin: "2px auto",
+		backgroundColor: state.isSelected ? "#E5E7EB" : "white",
+		color: "#1F2937",
+		"&:hover": {
+			backgroundColor: "#F3F4F6",
 		},
+		fontSize: "0.875rem",
+		padding: "0.5rem",
 	}),
 	indicatorSeparator: () => ({
 		display: "none",

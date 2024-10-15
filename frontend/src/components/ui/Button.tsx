@@ -13,12 +13,11 @@ export const Button: React.FC<{
 	icon,
 	variant = "primary",
 	type = "button",
-	fullWidth,
 	className = "",
 	onClick,
 }) => {
 	const baseStyles =
-		"flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors text-sm";
+		"flex items-center justify-center px-4 py-2 font-medium transition-colors text-sm";
 	const variantStyles = {
 		primary: "bg-gray-800 hover:bg-gray-900 text-white",
 		secondary: "bg-gray-100 hover:bg-gray-200 text-gray-800",
@@ -30,7 +29,7 @@ export const Button: React.FC<{
 	return (
 		<button
 			type={type}
-			className={`${baseStyles} ${variantStyles[variant]} ${fullWidth ? "w-full" : ""} ${className}`}
+			className={`${baseStyles} ${variantStyles[variant]} ${className}`}
 			onClick={onClick}
 		>
 			{icon && <span className="mr-2">{icon}</span>}

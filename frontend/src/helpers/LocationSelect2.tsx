@@ -17,9 +17,10 @@ interface LocationSelectProps<IsMulti extends boolean> {
 	menuPlacement?: "auto" | "bottom" | "top";
 	initialValue?: IsMulti extends true ? string[] : string;
 	isMulti?: IsMulti;
+    styles?: any;
 }
 
-const citySelectStyles = {
+export const citySelectStyles = {
 	control: (provided: any, state: any) => ({
 		...provided,
 		width: "100%",
@@ -97,6 +98,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 	menuPlacement = "auto",
 	initialValue,
 	isMulti,
+    styles= citySelectStyles,
 }: LocationSelectProps<IsMulti>) {
 	const { isLoading, cityOptions, handleInputChange, formatOptionLabel } =
 		useCitySearch();
@@ -128,7 +130,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 				setSelectedOption({
 					city: cityVal,
 					state: stateVal,
-					country: countryVal,
+					// country: countryVal,
 					value: initialValue,
 					label: initialValue,
 				} as SelectValue<IsMulti>);
@@ -137,7 +139,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 	}, [initialValue, selectedOption, isMulti]);
 
 	return (
-		<div className="w-full flex flex-col mb-6">
+		<div className="w-full flex flex-col">
 			<div className="relative">
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10">
 					<LuMapPin size={20} />
@@ -174,9 +176,9 @@ export function LocationSelect<IsMulti extends boolean = false>({
 								formatOptionLabel={formatOptionLabel}
 								placeholder={placeholder}
 								styles={{
-									...citySelectStyles,
+									...styles,
 									control: (base, state) => ({
-										...citySelectStyles.control?.(base, state),
+										...styles.control?.(base, state),
 										...(error && {
 											border: "1px solid #EF4444", // border-red-500
 											"&:hover": {
