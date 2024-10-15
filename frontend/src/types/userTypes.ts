@@ -102,6 +102,27 @@ export type CompanyForm = {
 	isDraft: boolean;
 };
 
+export type CompanyData = {
+	companyBanner: string;
+	companyLogo: string;
+	companyName: string;
+	companyWebsite: string;
+	tagline: string;
+	companyEmail: string;
+	companyPhone: string;
+	employeeSize: string;
+	establishedYear: string;
+	marketCap: string;
+	fundingRaised: string;
+	companyType: string;
+	yearlyRevenue: string;
+	industry: string;
+	headquarters: string;
+	branches: [];
+	description: string;
+	isDraft: boolean;
+};
+
 export type EducationData = {
 	id: number;
 	user?: UserDetails;
@@ -264,6 +285,7 @@ export type JobPosts = {
 	salaryRange: string;
 	jobLocation: string;
 	postedDate: Date;
+    company: CompanyData;
 	applicationDeadline: Date;
 };
 
@@ -300,3 +322,8 @@ export type SearchParams = {
 	experience: string | null;
 	location: string | null;
 };
+
+export type SearchQuery = {
+    exact_matches: JobPosts[];
+    related_matches: JobPosts[];
+}

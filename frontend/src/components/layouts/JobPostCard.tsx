@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import JobCardMenu from "./JobCardMenu";
 import { LuIndianRupee } from "react-icons/lu";
 
-interface JobCardProps {
+export interface JobCardProps {
 	jobPost: JobPosts;
 }
 

@@ -838,7 +838,8 @@ class ListJobPosts(APIView):
     @transaction.atomic
     def get(self, request, companyName):
         try:
-            company_profile = CompanyProfile.objects.get(companyName__iexact=companyName)
+            company_profile = CompanyProfile.objects.get(
+                companyName__iexact=companyName)
 
             job_posts = JobPostings.objects.filter(company=company_profile)
             serializer = JobPostingSerializer(job_posts, many=True)
@@ -849,7 +850,7 @@ class ListJobPosts(APIView):
             return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
 
 class JobDetailsView(APIView):
     permission_classes = [IsClerkAuthenticated]
@@ -862,5 +863,57 @@ class JobDetailsView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except JobPostings.DoesNotExist:
             return Response({"error": "Job not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class JobSearchView(APIView):
+
+    @transaction.atomic
+    def get(self, request):
+        try:
+            position = request.query_params.get('position')
+            experience = request.query_params.get('experience')
+            location = request.query_params.get('location')
+
+            if not position:
+                return Response({'error': 'Position is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            exact_match_jobs = JobPostings.objects.filter(
+                jobTitle__icontains=position,
+                experience__icontains=experience,
+                jobLocation__icontains=location
+            )
+
+            individual_jobs_set = set()
+
+            if position:
+                position_jobs = JobPostings.objects.filter(
+                    jobTitle__icontains=position)
+                individual_jobs_set.update(position_jobs)
+
+            if experience:
+                experience_jobs = JobPostings.objects.filter(
+                    experience__icontains=experience)
+                individual_jobs_set.update(experience_jobs)
+
+            if location:
+                location_jobs = JobPostings.objects.filter(
+                    jobLocation__icontains=location)
+                individual_jobs_set.update(location_jobs)
+
+            individual_jobs_list = list(individual_jobs_set)
+
+            exact_match_serializer = JobPostingSerializer(
+                exact_match_jobs, many=True)
+            individual_jobs_serializer = JobPostingSerializer(
+                individual_jobs_list, many=True)
+
+            return Response({
+                'exact_matches': exact_match_serializer.data,
+                'related_matches': individual_jobs_serializer.data
+            }, status=status.HTTP_200_OK)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
