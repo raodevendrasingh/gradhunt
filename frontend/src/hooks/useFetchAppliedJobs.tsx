@@ -4,12 +4,12 @@ import { AppliedJobsType } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 
 export const useFetchAppliedJobs = (): UseQueryResult<
-	AppliedJobsType,
+	AppliedJobsType[],
 	AxiosError
 > => {
 	const { getToken } = useAuth();
 
-	const fetchAppliedJobsData = async (): Promise<AppliedJobsType> => {
+	const fetchAppliedJobsData = async (): Promise<AppliedJobsType[]> => {
 		const token = await getToken();
 		if (!token) {
 			throw new Error("User Unauthorized!");
@@ -24,7 +24,7 @@ export const useFetchAppliedJobs = (): UseQueryResult<
 		return response.data;
 	};
 
-	return useQuery<AppliedJobsType, AxiosError>({
+	return useQuery<AppliedJobsType[], AxiosError>({
 		queryKey: ["AppliedJobsType"],
 		queryFn: fetchAppliedJobsData,
 		staleTime: 10000,

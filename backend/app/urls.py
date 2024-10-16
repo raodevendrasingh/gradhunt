@@ -7,16 +7,15 @@ urlpatterns = [
     path('api/company/', CompanyProfileView.as_view(), name='company'),
     path('api/company/<str:companyName>', GetCompanyProfile.as_view(), name='company'),
 
+    path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
+
     path('api/jobs/save/<str:jobId>', SaveJobView.as_view(), name='save-jobs'),
     path('api/jobs/saved', GetSavedJobs.as_view(), name='saved-jobs'),
-
-    path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
 
     path('api/jobs/apply/<str:jobId>', ApplyJobView.as_view(), name='saved-jobs'),
     path('api/jobs/applied', GetAppliedJobs.as_view(), name='saved-jobs'),
     
-
     path('api/post-job', JobPostingView.as_view(), name='post-job'),
     path('api/job/<str:jobId>', JobDetailsView.as_view(), name='post-job'),
 
