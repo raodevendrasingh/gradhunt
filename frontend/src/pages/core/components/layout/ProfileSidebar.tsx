@@ -12,6 +12,7 @@ import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
 interface TabProps {
 	icon: ReactNode;
@@ -69,7 +70,7 @@ export const ProfileSidebar = () => {
 			route: "/job-search",
 		},
 		{
-			icon: <GoPaperAirplane size={20} />,
+			icon: <IoPaperPlaneOutline size={20} />,
 			label: "Applications",
 			route: "/job-applications",
 		},
