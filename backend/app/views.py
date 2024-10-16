@@ -981,3 +981,12 @@ class GetAppliedJobs(APIView):
         applied_jobs = JobApplication.objects.filter(candidate=candidate)
         serializer = JobApplicationSerializer(applied_jobs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class JobListView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request):
+        jobs = JobPostings.objects.all()
+        serializer = JobPostingSerializer(jobs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
