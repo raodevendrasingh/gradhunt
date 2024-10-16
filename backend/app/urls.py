@@ -10,6 +10,9 @@ urlpatterns = [
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
     path('api/jobs/save/<str:jobId>', SaveJobView.as_view(), name='save-jobs'),
     path('api/jobs/saved', GetSavedJobs.as_view(), name='saved-jobs'),
+
+    path('api/jobs/apply/<str:jobId>', ApplyJobView.as_view(), name='saved-jobs'),
+    path('api/jobs/applied', GetAppliedJobs.as_view(), name='saved-jobs'),
     
 
     path('api/post-job', JobPostingView.as_view(), name='post-job'),

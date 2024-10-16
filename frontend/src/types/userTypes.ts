@@ -330,8 +330,14 @@ export type SearchQuery = {
 	related_matches: JobPosts[];
 };
 
-export type SavedJobs = {
-    some(arg0: (savedJob: SavedJobs) => boolean): unknown;
+export type SavedJobsType = {
+    some(arg0: (savedJob: SavedJobsType) => boolean): unknown;
+	candidates: number;
+	jobPosting: number;
+};
+
+export type AppliedJobsType = {
+    some(arg0: (savedJob: AppliedJobsType) => boolean): unknown;
 	candidates: number;
 	jobPosting: number;
 };

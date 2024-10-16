@@ -1,7 +1,8 @@
 import { JobCardProps } from "@/components/layouts/JobPostCard";
 import { Button } from "@/components/ui/Button";
+import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
-import { SavedJobs } from "@/types/userTypes";
+import { AppliedJobsType, SavedJobsType } from "@/types/userTypes";
 import { timesAgo } from "@/utils/DaysAgo";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import axios from "axios";
@@ -17,6 +18,9 @@ import { toast } from "sonner";
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);
 	const [optimisticSaved, setOptimisticSaved] = useState<boolean | null>(null);
+	const [optimisticApplied, setOptimisticApplied] = useState<boolean | null>(
+		null
+	);
 
 	const { isSignedIn } = useUser();
 	const { getToken } = useAuth();
@@ -27,12 +31,43 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 		isLoading: isSavedJobLoading,
 	} = useFetchSavedJobs();
 
-	const handleJobApplication = () => {
+	const {
+		data: appliedJobs,
+		refetch: refetchAppliedJob,
+		isLoading: isAppliedJobLoading,
+	} = useFetchAppliedJobs();
+
+	const handleJobApplication = async () => {
 		if (!isSignedIn) {
 			setShowLoginModal(true);
 			return;
 		}
-		console.log("Job Application");
+		setOptimisticApplied(true);
+
+		try {
+			const token = await getToken();
+			if (!token) {
+				setOptimisticApplied(false);
+				return "User Unauthorized!";
+			}
+			const url = `/api/jobs/apply/${jobPost.jobId}`;
+			await axios.post(
+				url,
+				{},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			refetchAppliedJob();
+			console.log("Job Applied");
+		} catch (error) {
+			setOptimisticApplied(false);
+			console.log(error);
+			toast.error("Error Saving Job");
+		}
 	};
 
 	const handleSaveJob = async () => {
@@ -42,7 +77,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 		}
 
 		const isCurrentlySaved = savedJobs?.some(
-			(savedJob) => savedJob.jobPosting === jobPost.id
+			(savedJob: SavedJobsType) => savedJob.jobPosting === jobPost.id
 		) as boolean;
 		setOptimisticSaved(!isCurrentlySaved);
 
@@ -52,7 +87,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				return "User Unauthorized!";
 			}
 			const url = `/api/jobs/save/${jobPost.jobId}`;
-			await axios.patch(
+			await axios.post(
 				url,
 				{},
 				{
@@ -75,6 +110,38 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 			? optimisticSaved
 			: savedJobs &&
 				savedJobs.some((savedJob) => savedJob.jobPosting === jobPost.id);
+
+	const isApplied =
+		optimisticApplied !== null
+			? optimisticApplied
+			: appliedJobs?.some((appliedJob) => appliedJob.jobPosting === jobPost.id);
+
+	const renderApplyButton = () => {
+		if (isAppliedJobLoading) {
+			return <div className="h-10 w-32 skeleton" />;
+		}
+
+		if (isApplied) {
+			return (
+				<Button
+					variant="secondary"
+					className="bg-sky-100 hover:bg-sky-200 font-semibold text-blue-700 border border-blue-600 rounded-lg w-1/2 md:w-fit"
+				>
+					Applied
+				</Button>
+			);
+		}
+
+		return (
+			<Button
+				variant="primary"
+				className="rounded-lg w-1/2 md:w-fit whitespace-nowrap"
+				onClick={handleJobApplication}
+			>
+				Easy Apply
+			</Button>
+		);
+	};
 
 	return (
 		<div
@@ -172,15 +239,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 									<HiMiniArrowUpRight className="size-5" />
 								</Button>
 							)}
-							{jobPost.applyWithUs && (
-								<Button
-									variant="primary"
-									className="rounded-lg w-1/2 md:w-fit whitespace-nowrap"
-									onClick={handleJobApplication}
-								>
-									Ezy Apply
-								</Button>
-							)}
+							{jobPost.applyWithUs && renderApplyButton()}
 						</div>
 					</div>
 				</div>

@@ -921,17 +921,16 @@ class JobSearchView(APIView):
 class ApplyJobView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    def post(self, request):
+    def post(self, request, jobId):
         candidate = request.user
-        job_posting_id = request.data.get('job_posting_id')
 
         try:
-            job_posting = JobPostings.objects.get(jobId=job_posting_id)
-            if JobApplication.objects.filter(user=candidate, job_posting=job_posting).exists():
+            job_posting = JobPostings.objects.get(jobId=jobId)
+            if JobApplication.objects.filter(candidate=candidate, jobPosting=job_posting).exists():
                 return Response({'error': 'You have already applied for this job.'}, status=status.HTTP_400_BAD_REQUEST)
 
             job_application = JobApplication.objects.create(
-                user=candidate, job_posting=job_posting)
+                candidate=candidate, jobPosting=job_posting)
             serializer = JobApplicationSerializer(job_application)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except JobPostings.DoesNotExist:
@@ -943,7 +942,7 @@ class ApplyJobView(APIView):
 class SaveJobView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    def patch(self, request, jobId):
+    def post(self, request, jobId):
         candidate = request.user
         try:
             job_posting = JobPostings.objects.get(jobId=jobId)
@@ -957,7 +956,7 @@ class SaveJobView(APIView):
                 SavedJob.objects.create(
                     candidate=candidate, jobPosting=job_posting)
                 return Response({'message': 'Job saved successfully'}, status=status.HTTP_201_CREATED)
-        
+
         except JobPostings.DoesNotExist:
             return Response({'error': 'Job posting not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
@@ -971,4 +970,14 @@ class GetSavedJobs(APIView):
         candidate = request.user
         saved_jobs = SavedJob.objects.filter(candidate=candidate)
         serializer = SavedJobSerializer(saved_jobs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetAppliedJobs(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def get(self, request):
+        candidate = request.user
+        applied_jobs = JobApplication.objects.filter(candidate=candidate)
+        serializer = JobApplicationSerializer(applied_jobs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
