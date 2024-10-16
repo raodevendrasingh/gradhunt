@@ -22,15 +22,12 @@ export default function JobsFeedPage() {
 
 	const { register, control, handleSubmit } = useForm<SearchParams>();
 
-	// let result = {} as SearchQuery;
-
 	const fetchJobs = async (params: string) => {
 		setIsLoading(true);
 		try {
 			const url = `/api/jobs/query?${params}`;
 			const response = await axios.get(url);
 			setResult(response.data);
-			console.log("result: ", response.data);
 		} catch (error) {
 			console.error("Error Completing Search:", error);
 		} finally {
@@ -47,11 +44,8 @@ export default function JobsFeedPage() {
 
 	const onSubmit: SubmitHandler<SearchParams> = async (data) => {
 		const searchParams = encodeSearchParams(data);
-		console.log(data);
 		navigate(`?${searchParams}`);
 	};
-
-	console.log("result aotside", result);
 
 	return (
 		<div className="flex h-full">

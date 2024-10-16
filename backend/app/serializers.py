@@ -199,13 +199,19 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+class CompanyDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompanyProfile
+        fields = ['companyName', 'companyLogo']
 
 class JobPostingSerializer(serializers.ModelSerializer):
     jobType = NestedDictField()
     workType = NestedDictField()
     experience = NestedDictField()
-    company = serializers.PrimaryKeyRelatedField(
-        queryset=CompanyProfile.objects.all())
+    # company = serializers.PrimaryKeyRelatedField(
+    #     queryset=CompanyProfile.objects.all())
+    company = CompanyDataSerializer(read_only=True)
+
     requiredSkills = serializers.ListField(child=NestedDictField())
 
     class Meta:
@@ -241,6 +247,26 @@ class JobApplicationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return JobApplication.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+    
+class SavedJobSerializer(serializers.ModelSerializer):
+    jobPosting = serializers.PrimaryKeyRelatedField(
+        queryset=JobPostings.objects.all())
+    candidate = serializers.PrimaryKeyRelatedField(
+        queryset=UserDetails.objects.all())
+
+    class Meta:
+        model = SavedJob
+        fields = ['id', 'jobPosting', 'candidate', 'savedAt']
+        read_only_fields = ['id', 'appliedDate']
+
+    def create(self, validated_data):
+        return SavedJob.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():

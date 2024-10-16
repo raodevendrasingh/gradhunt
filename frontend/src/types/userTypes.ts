@@ -285,8 +285,10 @@ export type JobPosts = {
 	salaryRange: string;
 	jobLocation: string;
 	postedDate: Date;
-    company: CompanyData;
+	company: CompanyData;
 	applicationDeadline: Date;
+	isSaved: boolean;
+	isApplied: boolean;
 };
 
 export type AboutSection = {
@@ -324,6 +326,12 @@ export type SearchParams = {
 };
 
 export type SearchQuery = {
-    exact_matches: JobPosts[];
-    related_matches: JobPosts[];
-}
+	exact_matches: JobPosts[];
+	related_matches: JobPosts[];
+};
+
+export type SavedJobs = {
+    some(arg0: (savedJob: SavedJobs) => boolean): unknown;
+	candidates: number;
+	jobPosting: number;
+};

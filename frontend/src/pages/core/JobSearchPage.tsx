@@ -37,8 +37,7 @@ export default function JobSearchPage(): React.JSX.Element {
 		try {
 			navigate(`/job-search/query?${searchParams}`);
 			const url = `/api/jobs/query?${searchParams}`;
-			const response = await axios.get(url);
-			console.log(response.data);
+			await axios.get(url);
 		} catch (error) {
 			throw new Error("Error Completing Search, Try Again!");
 		}

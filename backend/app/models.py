@@ -161,8 +161,24 @@ class JobApplication(models.Model):
         return f"{self.candidate.username} applied to {self.jobPosting.jobTitle}"
 
     class Meta:
+        unique_together = ('candidate', 'jobPosting')
         verbose_name = "Job Application"
         verbose_name_plural = "Job Applications"
+
+
+class SavedJob(models.Model):
+    candidate = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    jobPosting = models.ForeignKey(JobPostings, on_delete=models.CASCADE)
+    savedAt = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.candidate.username} saved {self.jobPosting.jobTitle}"
+
+    class Meta:
+        unique_together = ('candidate', 'jobPosting')
+        verbose_name = "Saved Job"
+        verbose_name_plural = "Saved Jobs"
+
 
 
 class Experience(models.Model):
