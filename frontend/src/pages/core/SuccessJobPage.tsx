@@ -23,10 +23,10 @@ export const SuccessJobPage: React.FC = () => {
 					</h2>
 					<div className="flex flex-col xs:flex-row gap-4 mt-6 w-full">
 						<Link to={`/company/${data?.companyName.toLowerCase()}`} className="w-full xs:w-1/2">
-							<Button className="w-full">Go to Profile</Button>
+							<Button className="w-full rounded-lg">Go to Profile</Button>
 						</Link>
 						<Link to={`/company/${data?.companyName.toLowerCase()}/post-job`} className="w-full xs:w-1/2">
-							<Button variant="secondary" className="w-full">
+							<Button variant="secondary" className="w-full rounded-lg">
 								Post Another Job
 							</Button>
 						</Link>

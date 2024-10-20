@@ -21,6 +21,17 @@ class NestedDictField(serializers.Field):
         return value
 
 
+class SkillDictField(serializers.Field):
+    def to_internal_value(self, data):
+        if not isinstance(data, dict):
+            raise serializers.ValidationError(
+                'Invalid format - expected dictionary')
+        return data
+
+    def to_representation(self, value):
+        return value
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetails
@@ -199,33 +210,36 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class CompanyDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyProfile
         fields = ['companyName', 'companyLogo']
 
+    # company = serializers.PrimaryKeyRelatedField(
+    #     queryset=CompanyProfile.objects.all())
+    # company = CompanyDataSerializer(read_only=True)
+
+
 class JobPostingSerializer(serializers.ModelSerializer):
     jobType = NestedDictField()
     workType = NestedDictField()
     experience = NestedDictField()
-    # company = serializers.PrimaryKeyRelatedField(
-    #     queryset=CompanyProfile.objects.all())
-    company = CompanyDataSerializer(read_only=True)
-
-    requiredSkills = serializers.ListField(child=NestedDictField())
+    currency = NestedDictField()
+    requiredSkills = serializers.ListField(child=SkillDictField())
+    companyData = CompanyDataSerializer(source='company', read_only=True)
 
     class Meta:
         model = JobPostings
-        fields = ['id', 'jobId', 'company', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate',
-                  'requiredSkills', 'salaryRange', 'jobLocation', 'jobDescription', 'applicationDeadline', 'applyLink', 'applyWithUs']
+        fields = ['id', 'jobId', 'company', 'companyData', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate', 'currency', 'lowestSalary', 'highestSalary',
+                  'requiredSkills', 'jobLocation', 'jobDescription', 'applicationDeadline', 'openings', 'applicants', 'applyLink', 'applyWithUs']
         read_only_fields = ['id', 'jobId', 'company']
 
     def create(self, validated_data):
-        validated_data['jobId'] = (
-            ''.join(secrets.choice(string.ascii_uppercase) for _ in range(4)) +
-            ''.join(secrets.choice(string.digits) for _ in range(4))
-        )
-        return JobPostings.objects.create(**validated_data)
+        company = validated_data.pop('company', None)
+        job_id = ''.join(secrets.choice(string.ascii_uppercase) for _ in range(4)) + \
+                 ''.join(secrets.choice(string.digits) for _ in range(4))
+        return JobPostings.objects.create(company=company, jobId=job_id, **validated_data)
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
@@ -253,7 +267,8 @@ class JobApplicationSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
-    
+
+
 class SavedJobSerializer(serializers.ModelSerializer):
     jobPosting = serializers.PrimaryKeyRelatedField(
         queryset=JobPostings.objects.all())

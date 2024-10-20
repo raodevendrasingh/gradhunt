@@ -1,13 +1,19 @@
 import React from "react";
-import { useController, Control } from "react-hook-form";
+import { useController, Control, UseFormRegister } from "react-hook-form";
 
+export interface ValidationRules {
+	required?: boolean;
+	validate?: (value: any) => boolean | string | Promise<boolean | string>;
+}
 interface ToggleSwitchProps {
 	label: string;
 	helptext?: string;
 	control: Control<any>;
 	name: string;
+    register: UseFormRegister<any>;
 	icon: React.ReactNode;
 	defaultValue?: boolean;
+	validationRules?: ValidationRules;
 }
 
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
@@ -16,7 +22,9 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 	name,
 	control,
 	icon,
+    register,
 	defaultValue = false,
+    validationRules,
 }) => {
 	const {
 		field: { onChange, value },
@@ -35,8 +43,9 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 					<span className="text-xs font-normal text-gray-800">{helptext}</span>
 				</div>
 			</div>
-			<label className="relative inline-flex items-center cursor-pointer">
+			<label className="relative inline-flex items-center cursor-pointer ml-3">
 				<input
+                {...register(name, validationRules)}
 					type="checkbox"
 					className="sr-only peer"
 					checked={value}

@@ -818,11 +818,9 @@ class JobPostingView(APIView):
                 clerk_user_id=request.user.clerk_user_id)
             company_profile = CompanyProfile.objects.get(user=user)
 
-            request.data['company'] = company_profile.id
-
             serializer = JobPostingSerializer(data=request.data)
             if serializer.is_valid():
-                job_posting = serializer.save()
+                job_posting = serializer.save(company=company_profile)
                 return Response({'message': 'Job posted successfully'}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except UserDetails.DoesNotExist:
@@ -931,6 +929,10 @@ class ApplyJobView(APIView):
 
             job_application = JobApplication.objects.create(
                 candidate=candidate, jobPosting=job_posting)
+
+            job_posting.applicants += 1
+            job_posting.save()
+
             serializer = JobApplicationSerializer(job_application)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except JobPostings.DoesNotExist:

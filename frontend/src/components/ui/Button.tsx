@@ -7,6 +7,7 @@ export const Button: React.FC<{
 	type?: "button" | "submit" | "reset";
 	fullWidth?: boolean;
 	className?: string;
+    disabled?: boolean;
 	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }> = ({
 	children,
@@ -15,6 +16,7 @@ export const Button: React.FC<{
 	type = "button",
 	className = "",
 	onClick,
+    disabled = false,
 }) => {
 	const baseStyles =
 		"flex items-center justify-center px-4 py-2 font-medium transition-colors text-sm";
@@ -29,8 +31,9 @@ export const Button: React.FC<{
 	return (
 		<button
 			type={type}
-			className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+			className={`${baseStyles} ${variantStyles[variant]} ${className} disabled:opacity-50 disabled:cursor-not-allowed`}
 			onClick={onClick}
+            disabled={disabled}
 		>
 			{icon && <span className="mr-2">{icon}</span>}
 			{children}

@@ -1,19 +1,18 @@
-import { JobCardProps } from "@/components/layouts/JobPostCard";
-import { Button } from "@/components/ui/Button";
-import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
-import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
-import { AppliedJobsType, SavedJobsType } from "@/types/userTypes";
-import { timesAgo } from "@/utils/DaysAgo";
-import { useAuth, useUser } from "@clerk/clerk-react";
 import axios from "axios";
-import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { FaClock, FaMoneyBill1Wave } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { FaClock, FaIndianRupeeSign } from "react-icons/fa6";
 import { GoBookmark, GoBookmarkFill } from "react-icons/go";
 import { HiMiniArrowUpRight } from "react-icons/hi2";
-import { MdWork } from "react-icons/md";
+import { JobCardProps } from "@/components/layouts/JobPostCard";
 import { Link } from "react-router-dom";
+import { SavedJobsType } from "@/types/userTypes";
+import { timesAgo } from "@/utils/DaysAgo";
 import { toast } from "sonner";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
+import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
+import { useState } from "react";
 
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);
@@ -153,24 +152,24 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 					<div className="flex items-center space-x-4">
 						<div className="w-16 h-16 bg-gray-200 rounded-xl flex-shrink-0 overflow-hidden">
 							<img
-								src={jobPost.company.companyLogo}
-								alt={`${jobPost.company} logo`}
-								className="w-full h-full object-cover"
+								src={jobPost.companyData.companyLogo}
+								alt={`${jobPost.companyData} logo`}
+								className="w-full h-full object-cover border rounded-xl"
 							/>
 						</div>
 						<div>
 							<Link
-								to={`/company/${jobPost.company.companyName.toLowerCase()}/job/${jobPost.jobId.toLowerCase()}`}
+								to={`/company/${jobPost.companyData.companyName.toLowerCase()}/job/${jobPost.jobId.toLowerCase()}`}
 							>
 								<h2 className="text-xl font-semibold text-gray-800 hover:underline decoration-gray-800 decoration-1 transition-all duration-1000">
 									{jobPost.jobTitle}
 								</h2>
 							</Link>
 							<Link
-								to={`/company/${jobPost.company.companyName.toLowerCase()}`}
+								to={`/company/${jobPost.companyData.companyName.toLowerCase()}`}
 							>
 								<p className="text-gray-600 hover:underline decoration-gray-600  decoration-1 transition-all duration-1000">
-									{jobPost.company.companyName}
+									{jobPost.companyData.companyName}
 								</p>
 							</Link>
 						</div>
@@ -198,25 +197,34 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 						}}
 					></p>
 				</div>
-				<div className="mt-4 flex flex-col gap-2 md:flex-row justify-between text-sm text-gray-500">
+				<div className="mt-2 flex flex-col gap-2 md:flex-row justify-between text-sm text-gray-500">
 					<div className="space-y-2">
 						<div className="flex items-center space-x-2">
-							<FaMapMarkerAlt className="w-4 h-4" />
-							<span className="text-sm text-gray-800">
-								{jobPost.workType === "Remote"
-									? jobPost.workType
-									: jobPost.jobLocation}
-							</span>
+							<div className="flex items-center gap-4">
+								<span className="text-sm text-gray-800 px-2 py-0.5 border border-gray-300 bg-slate-50 rounded-full">
+									{jobPost.jobType}
+								</span>
+								<span className="text-sm text-gray-800 px-2 py-0.5 border border-gray-300 bg-slate-50 rounded-full">
+									{jobPost.workType}
+								</span>
+							</div>
 						</div>
 						<div className="flex md:flex-col gap-5 md:gap-2">
 							<div className="flex items-center space-x-2">
-								<MdWork className="w-4 h-4" />
-								<span className="text-sm text-gray-800">{jobPost.jobType}</span>
-							</div>
-							<div className="flex items-center space-x-2">
-								<FaIndianRupeeSign className="w-4 h-4" />
+								<FaMapMarkerAlt className="w-4 h-4" />
 								<span className="text-sm text-gray-800">
-									{jobPost.salaryRange}
+									{jobPost.jobLocation}
+								</span>
+							</div>
+
+							<div className="flex items-center space-x-2">
+								<FaMoneyBill1Wave className="w-4 h-4" />
+								<span className="text-sm text-gray-800">
+									{jobPost.currency +
+										" " +
+										jobPost.lowestSalary +
+										" - " +
+										jobPost.highestSalary}
 								</span>
 							</div>
 						</div>

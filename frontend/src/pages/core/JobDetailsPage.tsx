@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
 import { useParams } from "react-router-dom";
@@ -7,15 +7,17 @@ import { Button } from "@/components/ui/Button";
 import {
 	LuArrowUpRight,
 	LuBriefcase,
-	LuCalendarClock,
+	LuCalendar,
 	LuClock,
-	LuIndianRupee,
 	LuMapPin,
 } from "react-icons/lu";
 import { BsArrowLeftCircle } from "react-icons/bs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import JobCardMenu from "@/components/layouts/JobCardMenu";
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { formatDate } from "@/utils/FormatDate";
 
 export const JobDetailsPage: React.FC = () => {
 	const [scrolled, setScrolled] = useState(false);
@@ -34,10 +36,8 @@ export const JobDetailsPage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		// Check scroll position after initial render
 		checkScroll();
 
-		// Set up mutation observer to detect when content is fully loaded
 		const observer = new MutationObserver(() => {
 			checkScroll();
 		});
@@ -78,6 +78,7 @@ export const JobDetailsPage: React.FC = () => {
 		<div className="flex h-full">
 			<div className="relative flex flex-col w-full lg2:w-[70%] overflow-hidden border-r">
 				<ScrollableHeader
+					jobId={data.jobId}
 					title={data.jobTitle}
 					isScrolled={scrolled}
 					onBackClick={handleBackClick}
@@ -92,13 +93,28 @@ export const JobDetailsPage: React.FC = () => {
 							text={`${data.experience} years`}
 						/>
 						<InfoItem
-							icon={<LuIndianRupee size={20} />}
-							text={data.salaryRange}
+							icon={<LiaMoneyBillWaveAltSolid size={20} />}
+							text={
+								data.currency +
+								" " +
+								data.lowestSalary +
+								" - " +
+								data.highestSalary
+							}
 						/>
 						<InfoItem
-							icon={<LuCalendarClock size={20} />}
-							text={`Apply by: ${new Date(data.applicationDeadline).toLocaleDateString()}`}
+							icon={<HiOutlineUsers size={20} />}
+							text={`Openings: ${data.openings}`}
 						/>
+						<InfoItem
+							icon={<LuCalendar size={20} />}
+							text={`Apply by: ${formatDate(data.applicationDeadline)}`}
+						/>
+					</div>
+					<div className="p-5">
+						<h4 className="font-medium mb-2 text-gray-800">
+							Applicants: {data.applicants}
+						</h4>
 					</div>
 
 					<div className="p-5">
@@ -144,8 +160,7 @@ export const JobDetailsPage: React.FC = () => {
 						{data.applyWithUs && (
 							<Button
 								variant="secondary"
-								fullWidth
-								className="flex items-center gap-2"
+								className="flex w-full items-center gap-2 rounded-lg py-2.5"
 							>
 								Apply Now
 								<IoPaperPlaneOutline size={18} />
@@ -154,8 +169,7 @@ export const JobDetailsPage: React.FC = () => {
 						{data.applyLink && (
 							<Button
 								variant="primary"
-								fullWidth
-								className="flex items-center gap-2"
+								className="flex w-full items-center gap-2 rounded-lg py-2.5"
 								onClick={() =>
 									window.open(data.applyLink, "_blank", "noopener,noreferrer")
 								}
@@ -182,12 +196,14 @@ const InfoItem: React.FC<{ icon: React.ReactNode; text: string }> = ({
 );
 
 interface ScrollableHeaderProps {
+	jobId: string;
 	title: string;
 	isScrolled: boolean;
 	onBackClick: () => void;
 }
 
 export const ScrollableHeader: React.FC<ScrollableHeaderProps> = ({
+	jobId,
 	title,
 	isScrolled,
 	onBackClick,
@@ -227,7 +243,7 @@ export const ScrollableHeader: React.FC<ScrollableHeaderProps> = ({
 						{isScrolled ? (
 							<motion.h1
 								key="scrolled-title"
-								initial={{ opacity: 0, y: 20 }}
+								initial={{ opacity: 0, y: 30 }}
 								animate={{ opacity: 1, y: -30 }}
 								exit={{ opacity: 0, y: 20 }}
 								transition={transition}
@@ -242,9 +258,12 @@ export const ScrollableHeader: React.FC<ScrollableHeaderProps> = ({
 								animate={{ opacity: 1, y: 15 }}
 								exit={{ opacity: 0, y: 15 }}
 								transition={transition}
-								className="text-2xl font-bold text-gray-800 truncate flex-grow"
+								className="text-2xl font-bold text-gray-800 truncate flex-grow py-1"
 							>
 								{title}
+								<span className="ml-2 mb-2 py-1 px-2 rounded-lg bg-slate-50 text-gray-600 text-sm font-normal border border-slate-50">
+									JobID: {jobId}
+								</span>
 							</motion.h1>
 						)}
 					</AnimatePresence>

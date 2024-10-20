@@ -122,24 +122,25 @@ class CompanyProfile(models.Model):
 
 
 class JobPostings(models.Model):
-    company = models.ForeignKey(
-        CompanyProfile, on_delete=models.CASCADE, related_name='job_postings')
+    company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE)
     jobId = models.CharField(max_length=8, blank=True, null=True)
     isActive = models.BooleanField(default=True)
     jobTitle = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50)
     workType = models.CharField(max_length=50, blank=True, null=True)
     jobDescription = models.TextField()
-    salaryRange = models.CharField(max_length=50)
+    currency = models.CharField(max_length=100)
+    lowestSalary = models.CharField(max_length=100)
+    highestSalary = models.CharField(max_length=100)
     requiredSkills = ArrayField(models.JSONField(), default=list, blank=True)
     jobLocation = models.CharField(max_length=200, blank=True, null=True)
     experience = models.CharField(max_length=100)
     postedDate = models.DateTimeField(auto_now_add=True)
     applicationDeadline = models.DateField()
+    openings = models.IntegerField(default=1)
+    applicants = models.IntegerField(default=0)
     applyLink = models.URLField(max_length=255, blank=True, null=True)
     applyWithUs = models.BooleanField(default=False)
-    isSaved = models.BooleanField(default=False)
-    isApplied = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.jobTitle} at {self.company.companyName}"
@@ -178,7 +179,6 @@ class SavedJob(models.Model):
         unique_together = ('candidate', 'jobPosting')
         verbose_name = "Saved Job"
         verbose_name_plural = "Saved Jobs"
-
 
 
 class Experience(models.Model):

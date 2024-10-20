@@ -22,7 +22,7 @@ export const StyledDatePicker: React.FC<DatePickerInputProps> = ({
 	validationRules,
 	error,
 }) => (
-	<div className="w-full flex flex-col mb-6">
+	<div className="w-full flex flex-col">
 		<label className="text-sm font-medium text-gray-700 pb-1">{label}</label>
 
 		<div className="relative w-full">

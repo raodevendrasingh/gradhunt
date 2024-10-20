@@ -15,6 +15,7 @@ export interface ValidationRules {
 		value: RegExp;
 		message: string;
 	};
+    validate?: (value: any) => boolean | string | Promise<boolean | string>;
 }
 
 interface TextInputProps {

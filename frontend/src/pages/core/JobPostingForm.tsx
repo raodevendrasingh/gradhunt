@@ -13,15 +13,17 @@ import {
 	employmentType,
 	locationType,
 	experienceLevels,
+	currency,
 } from "@/utils/selectObjects";
 import { FiBriefcase, FiClock, FiDollarSign } from "react-icons/fi";
 import { StyledDatePicker } from "@/components/ui/StyledDatePicker";
 import { SkillSelect } from "@/components/ui/SkillSelect";
 import { LocationSelect } from "@/helpers/LocationSelect2";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
-import { IoPaperPlaneOutline } from "react-icons/io5";
+import { IoPaperPlaneOutline, IoPeopleOutline } from "react-icons/io5";
 import { LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 
 export const JobPostingForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +37,7 @@ export const JobPostingForm = () => {
 		register,
 		control,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm<JobPosting>({
 		defaultValues: {
@@ -58,6 +61,12 @@ export const JobPostingForm = () => {
 		[]
 	);
 
+	const applyWithUs = watch("applyWithUs");
+	const applyLink = watch("applyLink");
+
+	const atLeastOneRequired =
+		"Either 'Apply with GradHunt' must be enabled or provide an external apply link";
+
 	const onSubmit = async (data: JobPosting) => {
 		setIsLoading(true);
 		try {
@@ -76,17 +85,27 @@ export const JobPostingForm = () => {
 				...data,
 				jobDescription: content,
 			};
+            console.log(formData)
 			const url = "/api/post-job";
-			await axios.post(url, formData, {
+			const response = await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
+            console.log(response);
 			navigate("success");
-		} catch (error) {
-			console.error(error);
-			toast.error("Failed to create job posting");
+		} catch (error: any) {
+			if (error.response) {
+                toast.error("Failed to create job posting");
+				console.log("Error Status: ", error.response.status);
+				console.log("Error Message: ", error.message);
+				console.log("Error Response: ", error.response);
+			} else if (error.request) {
+				console.log("Error Request: ", error.request);
+			} else {
+				console.log("Error Message: ", error.message);
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -96,7 +115,7 @@ export const JobPostingForm = () => {
 		<div className="flex h-full">
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
 				<h2 className="text-lg font-semibold pb-5">Create Job Posting </h2>
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<TextInput
 							label="Job Title"
@@ -139,14 +158,6 @@ export const JobPostingForm = () => {
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<TextInput
-							label="Salary Range"
-							name="salaryRange"
-							register={register}
-							icon={<FiDollarSign className="h-5 w-5" />}
-							error={errors.salaryRange?.message}
-							validationRules={{ required: "Salary range is required" }}
-						/>
 						<div className="">
 							<label className="block text-sm font-medium text-gray-700 mb-1">
 								Job Location
@@ -161,9 +172,48 @@ export const JobPostingForm = () => {
 								}}
 							/>
 						</div>
+						<TextInput
+							label="Open Positions"
+							name="openings"
+							register={register}
+							icon={<IoPeopleOutline className="h-5 w-5" />}
+							error={errors.openings?.message}
+							validationRules={{
+								pattern: {
+									value: /^[0-9]+$/,
+									message: "Must be a valid number",
+								},
+							}}
+						/>
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<TextInput
+							label="Lowest Salary"
+							name="lowestSalary"
+							register={register}
+							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+							error={errors.lowestSalary?.message}
+							validationRules={{ required: "Lowest Salary is required" }}
+						/>
+						<TextInput
+							label="Highest Salary"
+							name="highestSalary"
+							register={register}
+							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+						/>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<SelectInput
+							label="Currency"
+							name="currency"
+							options={currency}
+							control={control}
+							icon={<FiDollarSign className="h-5 w-5" />}
+							error={errors.currency?.message}
+							isRequired
+						/>
 						<StyledDatePicker
 							name="applicationDeadline"
 							label="Application Deadline"
@@ -171,6 +221,9 @@ export const JobPostingForm = () => {
 							error={errors.applicationDeadline?.message}
 							validationRules={{ required: "Application Deadline is required" }}
 						/>
+					</div>
+
+					<div className="col-span-2">
 						<TextInput
 							label="Apply Link"
 							name="applyLink"
@@ -178,6 +231,14 @@ export const JobPostingForm = () => {
 							icon={<IoPaperPlaneOutline className="h-5 w-5" />}
 							error={errors.applyLink?.message}
 							validationRules={{
+								validate: (value) => {
+									return (
+										(!!value || applyWithUs || atLeastOneRequired) &&
+										(!value ||
+											/^(http|https):\/\/[^ "]+$/.test(value) ||
+											"Must be a valid URL starting with http or https")
+									);
+								},
 								pattern: {
 									value: /^(http|https):\/\/[^ "]+$/,
 									message: "Must be a valid URL starting with http or https",
@@ -199,11 +260,17 @@ export const JobPostingForm = () => {
 					<div className="col-span-2">
 						<ToggleSwitch
 							control={control}
+							register={register}
 							icon={<IoPaperPlaneOutline className="h-6 w-6" />}
 							label="Apply with GradHunt"
 							helptext="Allow candidates to apply with GradHunt, if turned off, candidates cannot be managed through GradHunt"
 							name="applyWithUs"
 							defaultValue={true}
+							validationRules={{
+								validate: (value) => {
+									return value || !!applyLink || atLeastOneRequired;
+								},
+							}}
 						/>
 					</div>
 
@@ -218,17 +285,26 @@ export const JobPostingForm = () => {
 					</div>
 
 					<div className="flex justify-between pt-5">
-						<Button type="button" variant="secondary" className="w-32">
+						<Button
+							type="button"
+							variant="secondary"
+							className="rounded-lg w-32 py-2.5"
+							disabled
+						>
 							Save as Draft
 						</Button>
-						<Button type="submit" variant="primary" className="w-32">
+						<Button
+							type="submit"
+							variant="primary"
+							className="rounded-lg w-32 py-2.5"
+						>
 							{isLoading ? <Spinner /> : "Publish"}
 						</Button>
 					</div>
 				</form>
 			</div>
 			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
-				sidebar
+				
 			</div>
 		</div>
 	);

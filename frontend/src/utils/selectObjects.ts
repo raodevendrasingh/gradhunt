@@ -521,6 +521,16 @@ export const locationType: SelectOption[] = [
 	{ label: "Hybrid", value: "Hybrid" },
 ];
 
+export const currency: SelectOption[] = [
+	{ label: "INR / ₹", value: "INR" },
+	{ label: "USD / $", value: "UDS" },
+	{ label: "EUR / €", value: "EUR" },
+	{ label: "GBP / £", value: "GBP" },
+	{ label: "AUD / A$", value: "AUD" },
+	{ label: "CAD / C$", value: "CAD" },
+	{ label: "JYEN / ¥", value: "JYEN" },
+];
+
 export const levels: SelectOption[] = [
 	{ label: "Junior Level", value: "Junior Level" },
 	{ label: "Mid Level", value: "Mid Level" },
