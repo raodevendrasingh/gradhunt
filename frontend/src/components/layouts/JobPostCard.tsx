@@ -1,57 +1,66 @@
+import React from "react";
 import { JobPosts } from "@/types/userTypes";
-import { LuMapPin, LuCalendarClock } from "react-icons/lu";
+import { FaMapMarkerAlt, FaRegClock, FaRupeeSign } from "react-icons/fa";
 import { timesAgo } from "@/utils/DaysAgo";
 import { Link } from "react-router-dom";
 import JobCardMenu from "./JobCardMenu";
-import { LuIndianRupee } from "react-icons/lu";
+import { FaMoneyBill1Wave } from "react-icons/fa6";
 
 export interface JobCardProps {
 	jobPost: JobPosts;
 }
 
-export const JobPostCard = ({ jobPost }: JobCardProps) => {
+export const JobPostCard: React.FC<JobCardProps> = ({ jobPost }) => {
 	return (
-		<div className="bg-slate-50 border rounded-2xl p-4 mb-4 w-full relative">
+		<div className="border border-gray-200 rounded-2xl p-6 mb-4 bg-gradient-to-br from-gray-50 to-white relative">
 			<div className="absolute top-4 right-4">
-				<JobCardMenu
-					editUrl={`job/${jobPost.jobId}/edit`}
-				/>
+				<JobCardMenu editUrl={`job/${jobPost.jobId}/edit`} />
 			</div>
 
-			<h2 className="text-xl font-bold text-gray-800 mb-1">
+			<h2 className="text-2xl font-bold text-gray-800 mb-2">
 				{jobPost.jobTitle}
 			</h2>
 
-			<div className="flex gap-2 mb-4">
-				<span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+			<div className="flex flex-wrap gap-2 mb-3">
+				<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
 					{jobPost.jobType}
 				</span>
-				<span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+				<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
 					{jobPost.workType}
 				</span>
 			</div>
 
-			<div className="flex flex-col sm:flex-row sm:items-center justify-start gap-4 mb-2 text-sm">
+			<p
+				className="text-gray-700 text-sm mb-4 line-clamp-2"
+				dangerouslySetInnerHTML={{
+					__html:
+						jobPost.jobDescription.split(" ").slice(0, 15).join(" ") +
+						(jobPost.jobDescription.split(" ").length > 15 ? "..." : ""),
+				}}
+			/>
+
+			<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
 				<div className="flex items-center text-gray-600">
-					<LuMapPin size={18} className="mr-1" />
+					<FaMapMarkerAlt className="mr-2 text-gray-400" />
 					<span>{jobPost.jobLocation}</span>
 				</div>
 				<div className="flex items-center text-gray-600">
-					<LuIndianRupee size={16} className="mr-1" />
-					<span>{jobPost.salaryRange}</span>
+					<FaMoneyBill1Wave className="mr-2 text-gray-400" />
+					<span>
+						{jobPost.currency} {jobPost.lowestSalary} - {jobPost.highestSalary}
+					</span>
 				</div>
 			</div>
 
-			<div className="flex  gap-2 justify-between">
-				<div className="flex items-center text-gray-600 text-sm">
-					<LuCalendarClock size={18} className="mr-2" />
+			<div className="flex items-center justify-between">
+				<div className="flex items-center text-gray-500 text-xs">
+					<FaRegClock className="mr-2 mt-[1px]" />
 					<span>Posted {timesAgo(jobPost.postedDate)}</span>
 				</div>
-				<Link
-					to={`job/${jobPost.jobId.toLowerCase()}`}
-					className="px-4 py-1.5 text-gray-600 hover:bg-slate-700 hover:text-white font-medium rounded-xl border-2 border-gray-400 hover:border-gray-700 transition-colors"
-				>
-					Details
+				<Link to={`job/${jobPost.jobId.toLowerCase()}`}>
+					<button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+						View Details
+					</button>
 				</Link>
 			</div>
 		</div>
