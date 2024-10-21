@@ -41,8 +41,8 @@ export default function StandardUserProfile(): React.JSX.Element {
 	}
 
 	return (
-		<div className="flex h-full">
-			{/* main */}
+		<div className="flex flex-col lg2:flex-row h-full">
+			{/* main content - takes full width on mobile, 70% on larger screens */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide">
 				<div className="bg-slate-50 h-24 sm:h-32 w-full border-b"></div>
 				<div className="flex flex-col items-center w-full px-5 pt-4 pb-6">
@@ -190,7 +190,7 @@ export default function StandardUserProfile(): React.JSX.Element {
 				</main>
 			</div>
 			{/* sidebar */}
-			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
+			<div className="hidden lg2:flex flex-col gap-2 w-full lg2:w-64 xl:w-[25%] h-full border-t lg2:border-t-0 lg2:border-l scrollbar-hide overflow-y-auto p-4">
 				<UserProfileCompletion />
 			</div>
 		</div>

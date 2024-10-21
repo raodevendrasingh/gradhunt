@@ -3,15 +3,15 @@ import brandIcon from "@/assets/brand/brandIcon.png";
 import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 import { Link } from "react-router-dom";
 
-interface HomeNavbarProps {
+interface JobFeedNavbarProps {
 	isSidebarOpen: boolean;
 	setIsSidebarOpen: (value: boolean) => void;
 }
 
-export default function HomeNavbar({
+export default function JobFeedNavbar({
 	isSidebarOpen,
 	setIsSidebarOpen,
-}: HomeNavbarProps) {
+}: JobFeedNavbarProps) {
 	return (
 		<nav className="bg-white border-b relative z-50">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,8 +22,8 @@ export default function HomeNavbar({
 							className={`relative block h-10 w-10 mr-4 md:hidden ${
 								isSidebarOpen
 									? `visible opacity-100 [&_span:nth-child(1)]:w-6
-                      [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45
-                      [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 `
+                     [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45
+                     [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 `
 									: ""
 							}`}
 							aria-expanded={isSidebarOpen ? "true" : "false"}
@@ -34,17 +34,17 @@ export default function HomeNavbar({
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-9/12 -translate-y-2 transform rounded-full bg-gray-600
-                      transition-all duration-300"
+                   transition-all duration-300"
 								></span>
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-6 transform rounded-full bg-gray-600 transition
-                      duration-300"
+                   duration-300"
 								></span>
 								<span
 									aria-hidden="true"
 									className="absolute block h-0.5 w-1/2 origin-top-left translate-y-2 transform rounded-full
-                      bg-gray-600 transition-all duration-300"
+                   bg-gray-600 transition-all duration-300"
 								></span>
 							</div>
 						</button>

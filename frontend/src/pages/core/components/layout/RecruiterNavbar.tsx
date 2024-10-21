@@ -3,15 +3,15 @@ import brandIcon from "@/assets/brand/brandIcon.png";
 import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 import { Link } from "react-router-dom";
 
-interface HomeNavbarProps {
+interface RecruiterNavbarProps {
 	isSidebarOpen: boolean;
 	setIsSidebarOpen: (value: boolean) => void;
 }
 
-export default function HomeNavbar({
+export default function RecruiterNavbar({
 	isSidebarOpen,
 	setIsSidebarOpen,
-}: HomeNavbarProps) {
+}: RecruiterNavbarProps) {
 	return (
 		<nav className="bg-white border-b relative z-50">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,16 +55,6 @@ export default function HomeNavbar({
 							<span className="ml-2 text-2xl font-bold text-gray-800 xs:inline">
 								GradHunt
 							</span>
-						</div>
-
-						{/* Explore Jobs - Only visible on larger screens */}
-						<div className="hidden md:flex ml-6">
-							<Link
-								to="/job-search"
-								className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg"
-							>
-								Explore Jobs
-							</Link>
 						</div>
 					</div>
 

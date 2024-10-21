@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BiBriefcase, BiSort } from "react-icons/bi";
 import { JobPostCard } from "@/components/layouts/JobPostCard";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
-import { JobCardSkeleton } from "../components/ui/JobCardSkeleton";
+import { JobCardSkeleton } from "../../components/ui/JobCardSkeleton";
 
 export const Opportunities = () => {
 	const { isSignedIn, user } = useUser();
