@@ -148,7 +148,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 			className="border border-gray-200 rounded-xl overflow-hidden bg-gradient-to-br from-gray-50 to-white"
 		>
 			<div className="p-6">
-				<div className="flex items-center justify-between mb-4">
+				<div className="flex items-center justify-between mb-2">
 					<div className="flex items-center space-x-4">
 						<div className="w-16 h-16 bg-gray-100 rounded-xl border flex-shrink-0 overflow-hidden">
 							<img
