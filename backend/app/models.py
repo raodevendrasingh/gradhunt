@@ -125,6 +125,7 @@ class JobPostings(models.Model):
     company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE)
     jobId = models.CharField(max_length=8, blank=True, null=True)
     isActive = models.BooleanField(default=True)
+    isArchived = models.BooleanField(default=False)
     jobTitle = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50)
     workType = models.CharField(max_length=50, blank=True, null=True)

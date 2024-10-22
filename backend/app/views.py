@@ -10,8 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 
 
-# add clerk permission classes
-
 class HomeView(APIView):
     def get(self, request):
         return Response('This is the API home page', status=status.HTTP_200_OK)
@@ -839,7 +837,7 @@ class ListJobPosts(APIView):
             company_profile = CompanyProfile.objects.get(
                 companyName__iexact=companyName)
 
-            job_posts = JobPostings.objects.filter(company=company_profile)
+            job_posts = JobPostings.objects.filter(company=company_profile).order_by('-postedDate')
             serializer = JobPostingSerializer(job_posts, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:

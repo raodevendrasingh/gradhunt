@@ -284,6 +284,7 @@ export type JobPosts = {
 	requiredSkills: SkillObject[];
 	experience: string;
 	isActive: Boolean;
+	isArchived: Boolean;
 	applyLink: string;
 	applyWithUs: boolean;
 	jobLocation: string;
@@ -295,8 +296,6 @@ export type JobPosts = {
 	currency: string;
     openings: number;
     applicants: number;
-	isSaved: boolean;
-	isApplied: boolean;
 };
 
 export type AboutSection = {

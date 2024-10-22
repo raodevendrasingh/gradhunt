@@ -216,10 +216,6 @@ class CompanyDataSerializer(serializers.ModelSerializer):
         model = CompanyProfile
         fields = ['companyName', 'companyLogo']
 
-    # company = serializers.PrimaryKeyRelatedField(
-    #     queryset=CompanyProfile.objects.all())
-    # company = CompanyDataSerializer(read_only=True)
-
 
 class JobPostingSerializer(serializers.ModelSerializer):
     jobType = NestedDictField()
@@ -232,7 +228,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPostings
         fields = ['id', 'jobId', 'company', 'companyData', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate', 'currency', 'lowestSalary', 'highestSalary',
-                  'requiredSkills', 'jobLocation', 'jobDescription', 'applicationDeadline', 'openings', 'applicants', 'applyLink', 'applyWithUs']
+                  'requiredSkills', 'jobLocation', 'jobDescription', 'applicationDeadline', 'openings', 'applicants', 'applyLink', 'applyWithUs', 'isActive', 'isArchived']
         read_only_fields = ['id', 'jobId', 'company']
 
     def create(self, validated_data):

@@ -10,12 +10,17 @@ export interface JobCardProps {
 	jobPost: JobPosts;
 }
 
-export const JobPostCard: React.FC<JobCardProps> = ({ jobPost }) => {
+export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 	return (
 		<div className="border border-gray-200 rounded-2xl p-6 mb-4 bg-gradient-to-br from-gray-50 to-white relative">
+			<div className="absolute top-4 right-4">
+				<JobCardMenu editUrl={`job/${jobPost.jobId}/edit`} />
+			</div>
+
 			<h2 className="text-2xl font-bold text-gray-800 mb-2">
 				{jobPost.jobTitle}
 			</h2>
+
 			<div className="flex flex-wrap gap-2 mb-3">
 				<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
 					{jobPost.jobType}
@@ -52,7 +57,7 @@ export const JobPostCard: React.FC<JobCardProps> = ({ jobPost }) => {
 					<FaRegClock className="mr-2 mt-[1px]" />
 					<span>Posted {timesAgo(jobPost.postedDate)}</span>
 				</div>
-				<Link to={`job/${jobPost.jobId.toLowerCase()}`}>
+				<Link to={`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}`}>
 					<button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
 						View Details
 					</button>

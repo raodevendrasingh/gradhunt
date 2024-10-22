@@ -1,24 +1,21 @@
 import JobCardMenu from '@/components/layouts/JobCardMenu';
 import NotFound from '../common/NotFound';
 import { BsArrowLeftCircle } from 'react-icons/bs';
-import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/utils/FormatDate';
 import { HiOutlineUsers } from 'react-icons/hi2';
-import { IoPaperPlaneOutline } from 'react-icons/io5';
 import { LiaMoneyBillWaveAltSolid } from 'react-icons/lia';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { timesAgo } from '@/utils/DaysAgo';
 import { useFetchJobDetails } from '@/hooks/useFetchJobDetails';
 import { useParams } from 'react-router-dom';
 import {
-	LuArrowUpRight,
 	LuBriefcase,
 	LuCalendar,
 	LuClock,
 	LuMapPin,
 } from "react-icons/lu";
 
-export const JobDetailsPage: React.FC = () => {
+export const ManageJobDetails: React.FC = () => {
 	const { jobId } = useParams<{ jobId: string }>();
 
 	if (!jobId) {
@@ -44,7 +41,7 @@ export const JobDetailsPage: React.FC = () => {
 		<div className="flex h-full">
 			<div className="relative flex flex-col w-full lg2:w-[70%] overflow-hidden border-r">
 				<div className="sticky top-0 left-0 right-0 z-40 bg-slate-50 px-4 pt-4">
-					<div className="flex justify-start items-center mb-4">
+					<div className="flex justify-between items-center mb-4">
 						<div className="flex items-center justify-start">
 							<button
 								onClick={handleBackClick}
@@ -66,6 +63,7 @@ export const JobDetailsPage: React.FC = () => {
 								</div>
 							</div>
 						</div>
+						<JobCardMenu editUrl="edit" />
 					</div>
 				</div>
 				<div className="flex-1 overflow-y-auto scrollbar-hide">
@@ -156,57 +154,6 @@ export const JobDetailsPage: React.FC = () => {
 							className="text-gray-700 prose max-w-none"
 							style={{ lineHeight: "1.6" }}
 						/>
-					</div>
-					<div className=" sticky bottom-0 flex items-center justify-end bg-white border-t p-3 space-x-4">
-						{data.applyWithUs && data.applyLink ? (
-							<>
-								<Button
-									variant="primary"
-									className="flex w-full items-center gap-2 rounded-lg py-2.5"
-								>
-									Easy Apply
-									<IoPaperPlaneOutline size={18} />
-								</Button>
-								<Button
-									variant="secondary"
-									className="flex w-full items-center gap-2 rounded-lg py-2.5"
-									onClick={() =>
-										window.open(data.applyLink, "_blank", "noopener,noreferrer")
-									}
-								>
-									Apply
-									<LuArrowUpRight size={18} />
-								</Button>
-							</>
-						) : (
-							<>
-								{data.applyWithUs && (
-									<Button
-										variant="primary"
-										className="flex w-44 items-center gap-2 rounded-lg py-2.5"
-									>
-										Easy Apply
-										<IoPaperPlaneOutline size={18} />
-									</Button>
-								)}
-								{data.applyLink && (
-									<Button
-										variant="secondary"
-										className="flex w-44 items-center gap-2 rounded-lg py-2.5"
-										onClick={() =>
-											window.open(
-												data.applyLink,
-												"_blank",
-												"noopener,noreferrer"
-											)
-										}
-									>
-										Apply
-										<LuArrowUpRight size={18} />
-									</Button>
-								)}
-							</>
-						)}
 					</div>
 				</div>
 			</div>

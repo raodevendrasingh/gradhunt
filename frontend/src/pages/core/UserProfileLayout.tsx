@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ProfileSidebar } from './components/layout/ProfileSidebar';
 import { useState } from 'react';
 
-export default function StandardProfileLayout(): JSX.Element {
+export default function UserProfileLayout(): JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	return (

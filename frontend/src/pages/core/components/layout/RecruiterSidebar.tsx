@@ -94,33 +94,37 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 			{
 				icon: <GoBriefcase size={20} />,
 				label: "Manage Postings",
-				route: `/manage-jobs`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/manage-jobs`,
 			},
 			{
 				icon: <HiOutlineUsers size={20} />,
 				label: "Manage Applicants",
-				route: `/manage-applicants`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/manage-applicants`,
 			},
 			{
 				icon: <GoArchive size={20} />,
 				label: "Archived Postings",
-				route: `/archived-postings`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/archived-postings`,
 			},
 			{
 				icon: <LuLineChart size={20} />,
 				label: "Analytics",
-				route: `/analytics`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/analytics`,
 			},
-			{ icon: <HiOutlineUserGroup size={20} />, label: "Team", route: `/team` },
+			{
+				icon: <HiOutlineUserGroup size={20} />,
+				label: "Team",
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/team`,
+			},
 			{
 				icon: <IoExtensionPuzzleOutline size={20} />,
 				label: "Integrations",
-				route: `/integrations`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/integrations`,
 			},
 			{
 				icon: <GoGear size={20} />,
 				label: "Settings",
-				route: `/company/settings`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/settings`,
 			}
 		);
 	}
@@ -153,11 +157,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 	);
 
 	if (!isMobile) {
-		return (
-			<div className="hidden md:flex w-64 pt-2">
-				{sidebarContent}
-			</div>
-		);
+		return <div className="hidden md:flex w-64 pt-2">{sidebarContent}</div>;
 	}
 
 	return (
