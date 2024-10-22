@@ -59,7 +59,7 @@ export default function RecruiterNavbar({
 					</div>
 
 					{/* Navigation Items */}
-					<div className="flex items-center space-x-4">
+					<div className="flex items-center space-x-8">
 						<button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-0">
 							<Link to="notifications">
 								<GoBell className="h-6 w-6" />

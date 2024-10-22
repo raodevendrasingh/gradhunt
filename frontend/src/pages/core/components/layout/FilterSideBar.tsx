@@ -32,7 +32,7 @@ export const FilterSideBar = () => {
     const handleFilter: SubmitHandler<FilterFormData> = async (data) => {};
 
 	return (
-		<div className="border rounded-lg">
+		<div className="border rounded-lg w-64 xl:w-72 ">
 			<form
 				onSubmit={handleSubmit(handleFilter)}
 				className="flex flex-col gap-2"

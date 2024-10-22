@@ -1,14 +1,14 @@
-import { ProfileSidebar } from "./components/layout/ProfileSidebar";
-import { Outlet } from "react-router-dom";
-import HomeNavbar from "./components/layout/HomeNavbar";
-import { useState } from "react";
+import ProfileNavbar from './components/layout/ProfileNavbar';
+import { Outlet } from 'react-router-dom';
+import { ProfileSidebar } from './components/layout/ProfileSidebar';
+import { useState } from 'react';
 
 export default function StandardProfileLayout(): JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 	return (
 		<div className="flex flex-col h-screen">
-			<HomeNavbar
+			<ProfileNavbar
 				isSidebarOpen={isSidebarOpen}
 				setIsSidebarOpen={setIsSidebarOpen}
 			/>
