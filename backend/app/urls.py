@@ -14,12 +14,13 @@ urlpatterns = [
     path('api/jobs/saved', GetSavedJobs.as_view(), name='saved-jobs'),
 
     path('api/jobs/apply/<str:jobId>', ApplyJobView.as_view(), name='saved-jobs'),
-    path('api/jobs/applied', GetAppliedJobs.as_view(), name='saved-jobs'),
+    path('api/jobs/applied', GetAppliedJobs.as_view(), name='applied-jobs'),
     
     path('api/post-job', JobPostingView.as_view(), name='post-job'),
     path('api/job/<str:jobId>', JobDetailsView.as_view(), name='post-job'),
 
     path('api/company/<str:companyName>/jobs', ListJobPosts.as_view(), name='get-job-posts'),
+    path('api/company/<str:companyName>/applicants/<str:jobId>', GetJobsApplications.as_view(), name='get-job-applicants'),
 
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
     path('api/users/check-username/',

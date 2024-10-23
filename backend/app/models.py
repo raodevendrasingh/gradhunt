@@ -152,10 +152,8 @@ class JobPostings(models.Model):
 
 
 class JobApplication(models.Model):
-    candidate = models.ForeignKey(
-        UserDetails, on_delete=models.CASCADE, related_name='job_applications')
-    jobPosting = models.ForeignKey(
-        JobPostings, on_delete=models.CASCADE, related_name='applications')
+    candidate = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    jobPosting = models.ForeignKey(JobPostings, on_delete=models.CASCADE)
     appliedDate = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, default='applied')
 

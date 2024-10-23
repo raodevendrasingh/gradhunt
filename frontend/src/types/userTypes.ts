@@ -268,8 +268,8 @@ export type JobPosting = {
 	lowestSalary: string;
 	highestSalary: string;
 	currency: { value: string; label: string };
-    openings: number;
-    applicants: number;
+	openings: number;
+	applicants: number;
 	jobLocation: string;
 	applicationDeadline: Date;
 };
@@ -291,11 +291,11 @@ export type JobPosts = {
 	postedDate: Date;
 	companyData: CompanyData;
 	applicationDeadline: Date;
-    lowestSalary: string;
+	lowestSalary: string;
 	highestSalary: string;
 	currency: string;
-    openings: number;
-    applicants: number;
+	openings: number;
+	applicants: number;
 };
 
 export type AboutSection = {
@@ -338,13 +338,38 @@ export type SearchQuery = {
 };
 
 export type SavedJobsType = {
-    some(arg0: (savedJob: SavedJobsType) => boolean): unknown;
+	some(arg0: (savedJob: SavedJobsType) => boolean): unknown;
 	candidates: number;
 	jobPosting: number;
 };
 
 export type AppliedJobsType = {
-    some(arg0: (savedJob: AppliedJobsType) => boolean): unknown;
+	some(arg0: (savedJob: AppliedJobsType) => boolean): unknown;
 	candidates: number;
 	jobPosting: number;
+};
+
+export type Applicant = {
+    jobId: string;
+    isActive: boolean;
+    jobTitle: string;
+    jobType: string;
+    workType: string;
+    jobLocation: string;
+    postedDate: Date;
+    applicationDeadline: Date;
+    openings: number;
+    applicants: {
+        id: number;
+        status: string;
+        appliedDate: Date;
+        candidate: {
+            username: string;
+            firstname: string;
+            lastname: string;
+            email: string;
+            location: string;
+            resumeLink: string;
+        };
+    }[];
 };

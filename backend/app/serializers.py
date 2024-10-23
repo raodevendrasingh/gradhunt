@@ -187,6 +187,32 @@ class EducationSerializer(serializers.ModelSerializer):
         return instance
 
 
+class CandidateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDetails
+        fields = ['username', 'firstname', 'lastname',
+                  'email', 'location', 'resumeLink']
+
+
+class ApplicantsSerializer(serializers.ModelSerializer):
+    candidate = CandidateSerializer(read_only=True)
+
+    class Meta:
+        model = JobApplication
+        fields = ['id', 'status', 'appliedDate', 'candidate', ]
+        read_only_fields = ['id', 'appliedDate']
+
+
+class JobDetailsSerializer(serializers.ModelSerializer):
+    applicants = ApplicantsSerializer(
+        many=True, read_only=True, source='jobapplication_set')
+
+    class Meta:
+        model = JobPostings
+        fields = ['jobId', 'isActive', 'jobTitle', 'jobType', 'workType', 'jobLocation',
+                  'postedDate', 'applicationDeadline', 'openings', 'applicants']
+
+
 class CompanyProfileSerializer(serializers.ModelSerializer):
     employeeSize = NestedDictField()
     companyType = NestedDictField()

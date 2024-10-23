@@ -99,12 +99,12 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 			{
 				icon: <HiOutlineUsers size={20} />,
 				label: "Manage Applicants",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/manage-applicants`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/applicants`,
 			},
 			{
 				icon: <GoArchive size={20} />,
 				label: "Archived Postings",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/archived-postings`,
+				route: `/company/${companyProfileData?.companyName.toLowerCase()}/archived`,
 			},
 			{
 				icon: <LuLineChart size={20} />,

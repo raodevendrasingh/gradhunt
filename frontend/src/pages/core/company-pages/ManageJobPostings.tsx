@@ -13,7 +13,7 @@ export default function ManageJobPost() {
 	return (
 		<div className="flex h-full">
 			{/* main */}
-			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide border-r p-4">
+			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide border-r p-5">
 				{isSignedIn && (
 					<div className="flex justify-between items-center">
 						<div className="flex items-center gap-2">

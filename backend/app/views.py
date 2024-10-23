@@ -837,7 +837,8 @@ class ListJobPosts(APIView):
             company_profile = CompanyProfile.objects.get(
                 companyName__iexact=companyName)
 
-            job_posts = JobPostings.objects.filter(company=company_profile).order_by('-postedDate')
+            job_posts = JobPostings.objects.filter(
+                company=company_profile).order_by('-postedDate')
             serializer = JobPostingSerializer(job_posts, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
@@ -981,6 +982,26 @@ class GetAppliedJobs(APIView):
         applied_jobs = JobApplication.objects.filter(candidate=candidate)
         serializer = JobApplicationSerializer(applied_jobs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetJobsApplications(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def get(self, request, companyName, jobId):
+        try:
+            company = CompanyProfile.objects.get(
+                companyName__iexact=companyName)
+            job_posting = JobPostings.objects.get(
+                company_id=company.id, jobId__iexact=jobId)
+            serializer = JobDetailsSerializer(job_posting)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except CompanyProfile.DoesNotExist:
+            return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "Job Posting not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class JobListView(APIView):

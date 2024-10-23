@@ -33,6 +33,7 @@ import ManageApplicants from "./company-pages/ManageApplicants";
 import CareerPreferencePage from "./CareerPreferencePage";
 import UserProfileLayout from "./UserProfileLayout";
 import { ManageJobDetails } from "./ManageJobDetails";
+import JobApplicantsPage from "./company-pages/JobApplicants";
 
 export default function AppRoutes(): ReactNode {
 	return (
@@ -75,8 +76,9 @@ export default function AppRoutes(): ReactNode {
 						path="company/:companyname/manage-job/:jobId/edit"
 						element={<ManageJobDetails />}
 					/>
-					<Route path="company/:companyname/manage-applicants" element={<ManageApplicants />} />
-					<Route path="company/:companyname/archived-postings" element={<ArchivedPostings />} />
+					<Route path="company/:companyname/applicants" element={<ManageApplicants />} />
+					<Route path="company/:companyname/applicants/:jobId" element={<JobApplicantsPage />} />
+					<Route path="company/:companyname/archived" element={<ArchivedPostings />} />
 					<Route path="company/:companyname/analytics" element={<AnalyticsPage />} />
 					<Route path="company/:companyname/team" element={<TeamsPage />} />
 					<Route path="company/:companyname/integrations" element={<Integrations />} />
