@@ -1,15 +1,15 @@
-import React, {
+import {
 	Dispatch,
 	SetStateAction,
 	useState,
 	DragEvent as ReactDragEvent,
 	TouchEvent,
 	Fragment,
+    useEffect,
 } from "react";
-import { FiTrash } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
-import { LuCalendar, LuUser, LuMail, LuMapPin, LuDot } from "react-icons/lu";
+import { LuUser, LuMail, LuMapPin, LuDot } from "react-icons/lu";
 import { useFetchJobApplicants } from "@/hooks/useFetchJobApplicants";
 import { timesAgo } from "@/utils/DaysAgo";
 import { Applicant } from "@/types/userTypes";
@@ -42,14 +42,14 @@ export default function JobApplicantsPage() {
 						<div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
 							<div>
 								{applicationData ? (
-									<h1 className="text-2xl font-semibold text-neutral-900">
+									<h1 className="text-2xl font-semibold text-gray-800 whitespace-nowrap">
 										{applicationData.jobTitle}
 									</h1>
 								) : (
 									<div className="h-8 w-44 skeleton" />
 								)}
 							</div>
-							<div className="flex items-center">
+							<div className="flex justify-start sm:items-center w-full">
 								<span className="text-sm text-neutral-500 mr-2">JobId:</span>
 								{applicationData ? (
 									<span className="text-sm font-mono text-neutral-600">
@@ -143,7 +143,7 @@ const Board = ({
 	const [cards, setCards] = useState<CardType[]>([]);
 
 	// Initialize cards when applicationData changes
-	React.useEffect(() => {
+	useEffect(() => {
 		if (applicationData?.applicants) {
 			const initialCards: CardType[] = applicationData.applicants.map(
 				(applicant) => ({

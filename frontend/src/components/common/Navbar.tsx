@@ -1,18 +1,8 @@
-import { useState, useEffect } from "react";
-
-// external packages
-import { Link } from "react-router-dom";
-
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
-
-// assets
-import gradhunt from "@/assets/brand/brandLogoFull.png";
-
-// icons
-import { GoArrowUpRight } from "react-icons/go";
-import { UserMenuDropdown } from "./UserMenuDropdown";
-
-const recruiterUrl = import.meta.env.VITE_BASE_RECRUITER_URL;
+import gradhunt from '@/assets/brand/brandLogoFull.png';
+import { Link } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { useEffect, useState } from 'react';
+import { UserMenuDropdown } from './UserMenuDropdown';
 
 interface NavLink {
 	name: string;
@@ -88,12 +78,6 @@ export default function Navbar() {
 									<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
 										<Link to="/login">Login</Link>
 									</button>
-									<button className="flex justify-center items-center gap-1 whitespace-nowrap px-3 py-2 hover:bg-sky-200 text-slate-800 rounded-lg transition-colors">
-										<Link to={recruiterUrl}>Post Jobs</Link>
-										<span>
-											<GoArrowUpRight className="size-4" />
-										</span>
-									</button>
 								</SignedOut>
 							</div>
 						</>
@@ -165,16 +149,6 @@ export default function Navbar() {
 									<Link to="/login" onClick={() => setIsMenuOpen(false)}>
 										Login
 									</Link>
-									{/* Close menu on click */}
-								</button>
-								<button className="flex justify-center w-1/2 items-center gap-1 whitespace-nowrap px-3 py-2 hover:bg-sky-200 text-slate-800 border border-slate-800 rounded-lg transition-colors">
-									<Link to={recruiterUrl} onClick={() => setIsMenuOpen(false)}>
-										Post Jobs
-									</Link>
-									{/* Close menu on click */}
-									<span>
-										<GoArrowUpRight className="size-4" />
-									</span>
 								</button>
 							</SignedOut>
 						</div>

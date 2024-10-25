@@ -60,6 +60,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 	const { user, isSignedIn } = useUser();
 	const { data: userData, isLoading: isUserDataLoading } =
 		useFetchUserDetails();
+        
 	const isCompanyAdmin = userData?.user_details?.isCompanyAdmin;
 
 	const { data: companyProfileData, error: companyProfileError } =

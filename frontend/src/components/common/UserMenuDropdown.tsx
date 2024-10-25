@@ -3,8 +3,8 @@ import {
 	HiArrowRightOnRectangle,
 	HiUserCircle,
 	HiCog6Tooth,
-    HiMiniBuildingOffice2,
-    HiMiniBuildingOffice
+	HiMiniBuildingOffice2,
+	HiMiniBuildingOffice,
 } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser, SignOutButton } from "@clerk/clerk-react";
@@ -117,7 +117,7 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 							</div>
 						</div>
 					</div>
-                    <Divider />
+					<Divider />
 
 					<div className="py-1.5">
 						<MenuLink
@@ -153,12 +153,12 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 					<div className="py-1.5">
 						<SignOutButton>
 							<MenuLink
-								to="/"
+								to="#"
 								icon={
 									<HiArrowRightOnRectangle className="size-5 text-red-600" />
 								}
 							>
-								Sign out
+								Logout
 							</MenuLink>
 						</SignOutButton>
 					</div>
