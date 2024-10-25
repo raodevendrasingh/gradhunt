@@ -1,8 +1,8 @@
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchJobsList } from "@/hooks/useFetchJobsList";
 import { IoPaperPlaneOutline } from "react-icons/io5";
-import { JobSearchCard } from "./components/layout/JobSearchCard";
-import { JobCardSkeleton } from "./components/ui/JobCardSkeleton2";
+import { JobApplicationCard } from "./components/layout/JobApplicationCard";
+import { JobApplicationCardSkeleton } from "./components/ui/JobApplicationCardSkeleton";
 
 export default function JobApplicationsPage() {
 	const { data: appliedJobs, isLoading: isLoadingApplied } =
@@ -17,7 +17,13 @@ export default function JobApplicationsPage() {
 
 	const renderContent = () => {
 		if (isLoading) {
-			return <JobCardSkeleton />;
+			return (
+				<div className="flex flex-col gap-5">
+					<JobApplicationCardSkeleton />
+					<JobApplicationCardSkeleton />
+					<JobApplicationCardSkeleton />
+				</div>
+			);
 		}
 
 		if (!appliedJobs?.length) {
@@ -38,7 +44,7 @@ export default function JobApplicationsPage() {
 		return (
 			<div className="space-y-4">
 				{appliedJobPosts?.map((jobPost) => (
-					<JobSearchCard key={jobPost.id} jobPost={jobPost} />
+					<JobApplicationCard key={jobPost.id} jobPost={jobPost} />
 				))}
 			</div>
 		);

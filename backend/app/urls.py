@@ -18,6 +18,8 @@ urlpatterns = [
     
     path('api/post-job', JobPostingView.as_view(), name='post-job'),
     path('api/job/<str:jobId>', JobDetailsView.as_view(), name='post-job'),
+    
+    path('api/application/<str:applicationId>', UpdateApplicationStatus.as_view(), name='update-application-status'),
 
     path('api/company/<str:companyName>/jobs', ListJobPosts.as_view(), name='get-job-posts'),
     path('api/company/<str:companyName>/applicants/<str:jobId>', GetJobsApplications.as_view(), name='get-job-applicants'),

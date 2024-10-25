@@ -918,6 +918,7 @@ class JobSearchView(APIView):
 class ApplyJobView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    @transaction.atomic
     def post(self, request, jobId):
         candidate = request.user
 
@@ -943,6 +944,7 @@ class ApplyJobView(APIView):
 class SaveJobView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    @transaction.atomic
     def post(self, request, jobId):
         candidate = request.user
         try:
@@ -967,6 +969,7 @@ class SaveJobView(APIView):
 class GetSavedJobs(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    @transaction.atomic
     def get(self, request):
         candidate = request.user
         saved_jobs = SavedJob.objects.filter(candidate=candidate)
@@ -976,7 +979,8 @@ class GetSavedJobs(APIView):
 
 class GetAppliedJobs(APIView):
     permission_classes = [IsClerkAuthenticated]
-
+    
+    @transaction.atomic
     def get(self, request):
         candidate = request.user
         applied_jobs = JobApplication.objects.filter(candidate=candidate)
@@ -1007,7 +1011,25 @@ class GetJobsApplications(APIView):
 class JobListView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    @transaction.atomic
     def get(self, request):
         jobs = JobPostings.objects.all()
         serializer = JobPostingSerializer(jobs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpdateApplicationStatus(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def patch(self, request, applicationId):
+        data = request.data
+        try:
+            application = JobApplication.objects.get(id=applicationId)
+            application.status = data['newStatus']
+            application.save()
+            return Response({'message': 'Application status updated successfully'}, status=status.HTTP_200_OK)
+        except JobApplication.DoesNotExist:
+            return Response({'error': 'Application not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

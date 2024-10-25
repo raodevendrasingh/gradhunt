@@ -209,12 +209,12 @@ export const JobDetailsPage: React.FC = () => {
 								<GoLightBulb className="h-9 w-9 text-blue-600 bg-blue-100 p-2 rounded-full" />
 							</span>
 							<p className="text-sm text-gray-600 flex items-center flex-wrap">
-								You have already applied for this job, head over to the
+								To see the status of the application, head over to the
 								<span className="inline-flex items-center gap-2 px-1.5">
 									<IoPaperPlaneOutline className="h-5 w-5" />
 									Applications
 								</span>
-								tab to see the status of the application.
+								tab .
 							</p>
 						</div>
 					)}

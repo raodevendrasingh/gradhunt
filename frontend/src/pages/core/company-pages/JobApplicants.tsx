@@ -5,7 +5,7 @@ import {
 	DragEvent as ReactDragEvent,
 	TouchEvent,
 	Fragment,
-    useEffect,
+	useEffect,
 } from "react";
 import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
@@ -16,8 +16,16 @@ import { Applicant } from "@/types/userTypes";
 import { GoArrowUpRight } from "react-icons/go";
 import { FaUserLargeSlash } from "react-icons/fa6";
 import { daysRemaining } from "@/utils/DaysRemaining";
+import { toast } from "sonner";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
 
-type ColumnType = "applied" | "shortlisted" | "interviewed" | "matched";
+type ColumnType =
+	| "applied"
+	| "shortlisted"
+	| "interviewScheduled"
+	| "matched"
+	| "rejected";
 
 type CardType = {
 	id: string;
@@ -25,14 +33,14 @@ type CardType = {
 	applicantData: Applicant["applicants"][0];
 };
 
+export const formatLocation = (location: string) => {
+	const parts = location?.split(",");
+	if (!parts) return "";
+	return `${parts[0]} (${parts[2]?.split(" ")[1]})`;
+};
+
 export default function JobApplicantsPage() {
 	const { data: applicationData, isLoading } = useFetchJobApplicants();
-
-	const formatLocation = (location: string) => {
-		const parts = location?.split(",");
-		if (!parts) return "";
-		return `${parts[0]} (${parts[2]?.split(" ")[1]})`;
-	};
 
 	return (
 		<div className="flex h-full">
@@ -142,7 +150,6 @@ const Board = ({
 }) => {
 	const [cards, setCards] = useState<CardType[]>([]);
 
-	// Initialize cards when applicationData changes
 	useEffect(() => {
 		if (applicationData?.applicants) {
 			const initialCards: CardType[] = applicationData.applicants.map(
@@ -175,8 +182,8 @@ const Board = ({
 				setCards={setCards}
 			/>
 			<Column
-				title="Interviewed"
-				column="interviewed"
+				title="Schedule Interview"
+				column="interviewScheduled"
 				headingColor="text-blue-600"
 				tabColor="bg-blue-100"
 				cards={cards}
@@ -193,6 +200,32 @@ const Board = ({
 			<RejectContainer setCards={setCards} />
 		</div>
 	);
+};
+
+const handleApplicationStatusChange = async (
+	applicantId: number,
+	newStatus: ColumnType,
+	token: string | null
+) => {
+	try {
+		if (!token) {
+			return "User Unauthorized!";
+		}
+		const url = `/api/application/${applicantId}`;
+		await axios.patch(
+			url,
+			{ newStatus },
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+	} catch (error) {
+		console.log(error);
+		toast.error("Failed to update application status");
+	}
 };
 
 type ColumnProps = {
@@ -213,13 +246,15 @@ const Column = ({
 	setCards,
 }: ColumnProps) => {
 	const [active, setActive] = useState(false);
+	const { getToken } = useAuth();
 
 	const handleDragStart = (e: ReactDragEvent, card: CardType) => {
 		e.dataTransfer.setData("cardId", card.id);
 	};
 
-	const handleDragEnd = (e: ReactDragEvent) => {
+	const handleDragEnd = async (e: ReactDragEvent) => {
 		const cardId = e.dataTransfer.getData("cardId");
+		const token = await getToken();
 
 		setActive(false);
 		clearHighlights();
@@ -248,6 +283,12 @@ const Column = ({
 
 				copy.splice(insertAtIndex, 0, cardToTransfer);
 			}
+
+			handleApplicationStatusChange(
+				cardToTransfer.applicantData.id,
+				column,
+				token
+			);
 
 			setCards(copy);
 		}
@@ -508,6 +549,7 @@ const RejectContainer = ({
 	setCards: Dispatch<SetStateAction<CardType[]>>;
 }) => {
 	const [active, setActive] = useState(false);
+	const { getToken } = useAuth();
 
 	const handleDragOver = (e: ReactDragEvent) => {
 		e.preventDefault();
@@ -518,9 +560,12 @@ const RejectContainer = ({
 		setActive(false);
 	};
 
-	const handleDragEnd = (e: ReactDragEvent) => {
+	const handleDragEnd = async (e: ReactDragEvent) => {
 		const cardId = e.dataTransfer.getData("cardId");
+		const token = await getToken();
 		setCards((pv) => pv.filter((c) => c.id !== cardId));
+		handleApplicationStatusChange(parseInt(cardId), "rejected", token);
+        toast.success("Candidate Rejected");
 		setActive(false);
 	};
 

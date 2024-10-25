@@ -344,9 +344,12 @@ export type SavedJobsType = {
 };
 
 export type AppliedJobsType = {
+    id: number;
 	some(arg0: (savedJob: AppliedJobsType) => boolean): unknown;
+    status: string;
 	candidates: number;
 	jobPosting: number;
+    appliedDate: Date;
 };
 
 export type Applicant = {
