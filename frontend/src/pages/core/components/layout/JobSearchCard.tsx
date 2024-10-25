@@ -13,6 +13,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
 import { useState } from "react";
+import { LuCheck } from "react-icons/lu";
 
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);
@@ -124,9 +125,10 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 			return (
 				<Button
 					variant="secondary"
-					className="bg-sky-100 hover:bg-sky-200 font-semibold text-blue-700 border border-blue-600 rounded-lg w-1/2 md:w-fit"
+					className="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 font-semibold text-blue-700 border-2 border-blue-600 rounded-lg w-1/2 md:w-fit"
 				>
 					Applied
+					<LuCheck size={18} />
 				</Button>
 			);
 		}

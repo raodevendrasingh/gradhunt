@@ -1,31 +1,48 @@
-import JobCardMenu from '@/components/layouts/JobCardMenu';
-import NotFound from '../common/NotFound';
-import { BsArrowLeftCircle } from 'react-icons/bs';
-import { Button } from '@/components/ui/Button';
-import { formatDate } from '@/utils/FormatDate';
-import { HiOutlineUsers } from 'react-icons/hi2';
-import { IoPaperPlaneOutline } from 'react-icons/io5';
-import { LiaMoneyBillWaveAltSolid } from 'react-icons/lia';
-import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { timesAgo } from '@/utils/DaysAgo';
-import { useFetchJobDetails } from '@/hooks/useFetchJobDetails';
-import { useParams } from 'react-router-dom';
+import JobCardMenu from "@/components/layouts/JobCardMenu";
+import NotFound from "../common/NotFound";
+import { BsArrowLeftCircle } from "react-icons/bs";
+import { Button } from "@/components/ui/Button";
+import { formatDate } from "@/utils/FormatDate";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { IoPaperPlaneOutline } from "react-icons/io5";
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
+import { LoadingBlock } from "@/components/ui/LoadingBlock";
+import { timesAgo } from "@/utils/DaysAgo";
+import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
+import { useParams } from "react-router-dom";
 import {
 	LuArrowUpRight,
 	LuBriefcase,
 	LuCalendar,
+	LuCheck,
 	LuClock,
 	LuMapPin,
 } from "react-icons/lu";
+import { GoLightBulb } from "react-icons/go";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import Spinner from "@/components/ui/Spinner";
+import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 
 export const JobDetailsPage: React.FC = () => {
+	const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+	const [isAppliying, setIsAppliying] = useState<boolean>(false);
 	const { jobId } = useParams<{ jobId: string }>();
+	const { isSignedIn } = useUser();
+	const { getToken } = useAuth();
 
 	if (!jobId) {
 		return <NotFound />;
 	}
 
 	const { data, isLoading } = useFetchJobDetails({ jobId });
+	const {
+		data: appliedJobs,
+		refetch: refetchAppliedJob,
+		isLoading: isAppliedJobLoading,
+	} = useFetchAppliedJobs();
 
 	if (!data || isLoading) {
 		return (
@@ -38,6 +55,73 @@ export const JobDetailsPage: React.FC = () => {
 	const handleBackClick = () => {
 		localStorage.setItem("selectedTab", "1");
 		window.history.back();
+	};
+
+	const handleJobApplication = async () => {
+		setIsAppliying(true);
+		if (!isSignedIn) {
+			setShowLoginModal(true);
+			return;
+		}
+
+		try {
+			const token = await getToken();
+			if (!token) {
+				return "User Unauthorized!";
+			}
+			const url = `/api/jobs/apply/${data.jobId}`;
+			await axios.post(
+				url,
+				{},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			refetchAppliedJob();
+		} catch (error) {
+			console.log(error);
+			toast.error("An Error Occured While Applying!");
+		}
+	};
+
+	const isApplied = appliedJobs?.some(
+		(appliedJob) => appliedJob.jobPosting == data.id
+	);
+
+	const renderApplyButton = () => {
+		if (isApplied) {
+			return (
+				<Button
+					variant="secondary"
+					className="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 font-semibold text-blue-700 border-2 border-blue-600 rounded-lg w-1/2"
+				>
+					Applied
+					<LuCheck size={18} />
+				</Button>
+			);
+		}
+
+		return (
+			<Button
+				variant="primary"
+				className="flex w-1/2 items-center gap-2 rounded-lg py-2.5"
+				onClick={handleJobApplication}
+			>
+				{isAppliying ? (
+					<Spinner size={16} color="#fff" />
+				) : isApplied ? (
+					"Applied"
+				) : (
+					<span className="flex items-center gap-2">
+						<span>Easy Apply</span>
+						<IoPaperPlaneOutline size={18} />
+					</span>
+				)}
+			</Button>
+		);
 	};
 
 	return (
@@ -78,13 +162,13 @@ export const JobDetailsPage: React.FC = () => {
 							/>
 							<InfoItem
 								icon={<HiOutlineUsers size={20} />}
-								title="Applicants"
-								text={data.applicants.toString()}
+								title="Openings"
+								text={data.openings.toString()}
 							/>
 							<InfoItem
 								icon={<HiOutlineUsers size={20} />}
-								title="Openings"
-								text={data.openings.toString()}
+								title="Applicants"
+								text={data.applicants.toString()}
 							/>
 							<InfoItem
 								icon={<LuMapPin size={20} />}
@@ -118,6 +202,22 @@ export const JobDetailsPage: React.FC = () => {
 							/>
 						</div>
 					</div>
+
+					{isApplied && (
+						<div className="flex items-center mx-3 my-5 p-5 m border border-blue-100 rounded-2xl bg-blue-50">
+							<span className="w-12">
+								<GoLightBulb className="h-9 w-9 text-blue-600 bg-blue-100 p-2 rounded-full" />
+							</span>
+							<p className="text-sm text-gray-600 flex items-center flex-wrap">
+								You have already applied for this job, head over to the
+								<span className="inline-flex items-center gap-2 px-1.5">
+									<IoPaperPlaneOutline className="h-5 w-5" />
+									Applications
+								</span>
+								tab to see the status of the application.
+							</p>
+						</div>
+					)}
 
 					<div className="p-6 bg-slate-50">
 						<h2 className="text-xl font-semibold mb-4 text-gray-800">
@@ -157,55 +257,20 @@ export const JobDetailsPage: React.FC = () => {
 							style={{ lineHeight: "1.6" }}
 						/>
 					</div>
+
 					<div className=" sticky bottom-0 flex items-center justify-end bg-white border-t p-3 space-x-4">
-						{data.applyWithUs && data.applyLink ? (
-							<>
-								<Button
-									variant="primary"
-									className="flex w-full items-center gap-2 rounded-lg py-2.5"
-								>
-									Easy Apply
-									<IoPaperPlaneOutline size={18} />
-								</Button>
-								<Button
-									variant="secondary"
-									className="flex w-full items-center gap-2 rounded-lg py-2.5"
-									onClick={() =>
-										window.open(data.applyLink, "_blank", "noopener,noreferrer")
-									}
-								>
-									Apply
-									<LuArrowUpRight size={18} />
-								</Button>
-							</>
-						) : (
-							<>
-								{data.applyWithUs && (
-									<Button
-										variant="primary"
-										className="flex w-44 items-center gap-2 rounded-lg py-2.5"
-									>
-										Easy Apply
-										<IoPaperPlaneOutline size={18} />
-									</Button>
-								)}
-								{data.applyLink && (
-									<Button
-										variant="secondary"
-										className="flex w-44 items-center gap-2 rounded-lg py-2.5"
-										onClick={() =>
-											window.open(
-												data.applyLink,
-												"_blank",
-												"noopener,noreferrer"
-											)
-										}
-									>
-										Apply
-										<LuArrowUpRight size={18} />
-									</Button>
-								)}
-							</>
+						{data.applyWithUs && renderApplyButton()}
+						{data.applyLink && (
+							<Button
+								variant="secondary"
+								className="flex w-1/2 items-center gap-2 rounded-lg py-2.5"
+								onClick={() =>
+									window.open(data.applyLink, "_blank", "noopener,noreferrer")
+								}
+							>
+								Apply
+								<LuArrowUpRight size={18} />
+							</Button>
 						)}
 					</div>
 				</div>
