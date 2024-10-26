@@ -241,12 +241,13 @@ export const UserOnboardingModal = ({
 					bio: data.bio,
 				};
 
-				await axios.post("/api/users/onboarding", userProfileData, {
+				const response = await axios.post("/api/users/onboarding", userProfileData, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",
 					},
 				});
+                console.log(response.data);
 			}
 			toast.success("Profile Successfully Created");
 			setIsOnboardingModalOpen(false);
