@@ -20,16 +20,12 @@ SECRET_KEY = getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DEBUG', 'True') == 'True'  # Set to True for development
 
-# ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
-
 ALLOWED_HOSTS = [
     'gradhunt-app.onrender.com',
     'api.gradhunt.tech',
     'localhost',
     '127.0.0.1'
 ]
-
-print("DEBUG: Final ALLOWED_HOSTS =", ALLOWED_HOSTS)
 
 APPEND_SLASH = False
 
@@ -65,11 +61,11 @@ if not CLERK_PUBLIC_KEY:
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -78,7 +74,37 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'gradHunt.urls'
 
-CORS_ALLOWED_ORIGINS = getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://admin.localhost:5173').split(',')
+CORS_ALLOWED_ORIGINS = [url.strip() for url in getenv('CORS_ALLOWED_ORIGINS', '').split(',')]
+
+CORS_ALLOW_METHODS = [
+    "POST",
+    "GET",
+    "OPTIONS",
+    "PUT",
+    "DELETE",
+    "PATCH"
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://gradhunt.tech',
+    'https://www.gradhunt.tech',
+    'http://localhost:5173',
+    'http://admin.localhost:5173',
+]
 
 # Security settings
 SECURE_HSTS_SECONDS = int(getenv('SECURE_HSTS_SECONDS', '0'))

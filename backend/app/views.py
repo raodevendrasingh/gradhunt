@@ -1,3 +1,4 @@
+import logging
 from .models import *
 from .serializers import *
 from django.db import transaction
@@ -98,8 +99,23 @@ class GetCompletionPercentage(APIView):
 class OnboardUser(APIView):
     permission_classes = [IsClerkAuthenticated]
 
+    def options(self, request, *args, **kwargs):
+        return Response(
+            status=status.HTTP_200_OK,
+            headers={
+                'Allow': 'POST, OPTIONS',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+            }
+        )
+
     @transaction.atomic
     def post(self, request):
+        logger = logging.getLogger(__name__)
+        logger.info(f"Received request: {request.method} {request.path}")
+        logger.info(f"Request headers: {request.headers}")
+        logger.info(f"Request data: {request.data}")
+
         data = request.data.copy()
 
         if hasattr(request.user, 'clerk_user_id'):
@@ -979,7 +995,7 @@ class GetSavedJobs(APIView):
 
 class GetAppliedJobs(APIView):
     permission_classes = [IsClerkAuthenticated]
-    
+
     @transaction.atomic
     def get(self, request):
         candidate = request.user

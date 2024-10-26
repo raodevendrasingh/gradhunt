@@ -241,7 +241,7 @@ export const UserOnboardingModal = ({
 					bio: data.bio,
 				};
 
-				const response = await axios.post("/api/users/onboarding", userProfileData, {
+				const response = await axios.post("/api/users/onboarding/", userProfileData, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",
@@ -253,10 +253,17 @@ export const UserOnboardingModal = ({
 			setIsOnboardingModalOpen(false);
 			clearLocalStorage();
 		} catch (error: any) {
-			console.error("Failed to update user details:", error);
-			console.error("Response status:", error.response.status);
-			console.error("Error message:", error.message);
-		} finally {
+            console.error("Failed to update user details:", error);
+            if (error.response) {
+                console.error("Response data:", error.response.data);
+                console.error("Response status:", error.response.status);
+                console.error("Response headers:", error.response.headers);
+            } else if (error.request) {
+                console.error("No response received:", error.request);
+            } else {
+                console.error("Error message:", error.message);
+            }
+        } finally {
 			setIsSubmitting(false);
 		}
 	};

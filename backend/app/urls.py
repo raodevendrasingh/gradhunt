@@ -29,7 +29,7 @@ urlpatterns = [
          CheckUsernameView.as_view(), name='check-username'),
 
     path('api/users', AddUserData.as_view(), name='add-user-data'),
-    path('api/users/onboarding', OnboardUser.as_view(), name='onboard-user'),
+    path('api/users/onboarding/', OnboardUser.as_view(), name='onboard-user'),
     path('api/users/profile-image',
          SetImageUrl.as_view(), name='set-profile-image'),
 
