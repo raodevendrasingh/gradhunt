@@ -20,16 +20,14 @@ SECRET_KEY = getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DEBUG', 'True') == 'True'  # Set to True for development
 
-ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
+# ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
-# Temporary debug prints
-print("DEBUG: Raw ALLOWED_HOSTS env var =", os.environ.get('ALLOWED_HOSTS'))
-print("DEBUG: getenv result =", getenv('ALLOWED_HOSTS', 'localhost'))
-print("DEBUG: After split =", getenv('ALLOWED_HOSTS', 'localhost').split(','))
-
-# Your existing settings
-DEBUG = getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = [
+    'gradhunt-app.onrender.com',
+    'api.gradhunt.tech',
+    'localhost',
+    '127.0.0.1'
+]
 
 print("DEBUG: Final ALLOWED_HOSTS =", ALLOWED_HOSTS)
 
