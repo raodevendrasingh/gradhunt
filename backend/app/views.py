@@ -645,7 +645,7 @@ class GetUserDetails(APIView):
 
             return Response(user_data, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
-            raise NotFound('User not found')
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -1,19 +1,21 @@
-import OnboardingPage from './OnboardingPage';
-import ProfileNavbar from './components/layout/ProfileNavbar';
-import { Outlet } from 'react-router-dom';
-import { ProfileSidebar } from './components/layout/ProfileSidebar';
-import { useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import ProfileNavbar from "./components/layout/ProfileNavbar";
+import { Outlet, useNavigate } from "react-router-dom";
+import { ProfileSidebar } from "./components/layout/ProfileSidebar";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 export default function UserProfileLayout(): JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const { user, isSignedIn } = useUser();
+	const navigate = useNavigate();
 
-	if (user && isSignedIn) {
-		if (!user.username || !user.firstName || !user.lastName) {
-			return <OnboardingPage />;
+	useEffect(() => {
+		if (user && isSignedIn) {
+			if (!user.username || !user.firstName || !user.lastName) {
+				navigate(`/onboarding`);
+			}
 		}
-	}
+	}, [user, isSignedIn]);
 
 	return (
 		<div className="flex flex-col h-screen">

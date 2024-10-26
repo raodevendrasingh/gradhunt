@@ -19,6 +19,7 @@ import clsx from "clsx";
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { updateClerkProfileImage } from "@/lib/updateClerkImage";
 import Spinner from "@/components/ui/Spinner";
+import { generateSignature } from "@/utils/CloudinarySignature";
 
 interface FormField {
 	username: string;
@@ -33,6 +34,11 @@ const screensDesc = [
 	"Let's get you started by creating a unique username.",
 	"Tell us a bit about yourself",
 ];
+
+const apiSecret = import.meta.env.VITE_CLOUDINARY_API_SECRET;
+const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
+
+const timestamp = Math.floor(Date.now() / 1000);
 
 export const UserOnboardingModal = ({
 	isOnboardingModalOpen,
@@ -52,8 +58,10 @@ export const UserOnboardingModal = ({
 	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
 		"croppedImage"
 	);
-    const [, , removeCroppedValue] = useLocalStorage<string>("croppedImage", "null");
-
+	const [, , removeCroppedValue] = useLocalStorage<string>(
+		"croppedImage",
+		"null"
+	);
 
 	const { getToken } = useAuth();
 	const { isValidUsername, isCheckingUsername, usernameMsg, checkUsername } =
@@ -166,10 +174,10 @@ export const UserOnboardingModal = ({
 		return null;
 	};
 
-    const clearLocalStorage = () => {
-        removePotentialUser();
-        removeCroppedValue();
-    };
+	const clearLocalStorage = () => {
+		removePotentialUser();
+		removeCroppedValue();
+	};
 
 	const onSubmit: SubmitHandler<FormField> = async (data) => {
 		setIsSubmitting(true);
@@ -189,9 +197,19 @@ export const UserOnboardingModal = ({
 				lastName: data.lastname,
 			};
 
+			const params = {
+				timestamp: timestamp,
+				folder: "gradhunt/profile",
+			};
+
+			const signature = generateSignature(params, apiSecret);
+
 			if (croppedImage) {
 				const cloudinaryPublicId = await uploadToCloudinary(
-					croppedImage as string
+					croppedImage as string,
+					signature,
+					apiKey,
+					params
 				);
 				setPublicId(cloudinaryPublicId);
 				await updateClerkProfileImage(user, croppedImage as string);
@@ -219,23 +237,20 @@ export const UserOnboardingModal = ({
 					lastname: user.lastName,
 					profilePicture: user.imageUrl,
 					email: email,
+                    isOnboarded: true,
 					bio: data.bio,
 				};
 
-				await axios.post(
-					"/api/users/onboarding",
-					userProfileData,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							"Content-Type": "application/json",
-						},
-					}
-				);
+				await axios.post("/api/users/onboarding", userProfileData, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						"Content-Type": "application/json",
+					},
+				});
 			}
 			toast.success("Profile Successfully Created");
 			setIsOnboardingModalOpen(false);
-            clearLocalStorage();
+			clearLocalStorage();
 		} catch (error: any) {
 			console.error("Failed to update user details:", error);
 			console.error("Response status:", error.response.status);

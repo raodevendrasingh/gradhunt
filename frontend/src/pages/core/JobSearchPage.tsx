@@ -1,6 +1,6 @@
 import axios from 'axios';
 import JobSearchNavbar from './components/layout/JobSearchNavbar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import { companyLogo, recentJobs } from '@/utils/dummyData';
 import { encodeSearchParams } from '@/utils/encodeSearchParams';
@@ -18,6 +18,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { useCitySearch } from '@/hooks/useCitySearch';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { useUser } from '@clerk/clerk-react';
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -29,6 +30,16 @@ export default function JobSearchPage(): React.JSX.Element {
 	} = useCitySearch();
 
 	const navigate = useNavigate();
+
+    const { user, isSignedIn } = useUser();
+
+	useEffect(() => {
+		if (user && isSignedIn) {
+			if (!user.username || !user.firstName || !user.lastName) {
+				navigate(`/onboarding`);
+			}
+		}
+	}, [user, isSignedIn]);
 
 	const handleSearch: SubmitHandler<FormData> = async (data) => {
 		const searchParams = encodeSearchParams(data);
