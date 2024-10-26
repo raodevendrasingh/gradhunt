@@ -1,7 +1,6 @@
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
-import { TbLoader } from "react-icons/tb";
 import { useUsernameCheck } from "@/hooks/useUsernameCheck";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

@@ -14,12 +14,12 @@ export const useUsernameCheck = () => {
     const checkUsername = useDebounceCallback(
         async (username: string) => {
             if (username.length > 3 && isValidUsername(username)) {
-                // console.log("Username is valid");
                 setIsCheckingUsername(true);
                 setUsernameMsg("");
                 try {
                     const url = `/api/users/check-username/?username=${username}`;                    
                     const response = await axios.get(url);
+                    console.log(response.data)
                     if (response.data.exists) {
                         setUsernameMsg("This username is already taken, choose something else.😞");
                         setIsFieldValid(false);

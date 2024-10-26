@@ -15,7 +15,7 @@ import {
 
 // local imports
 import { AdminRoutes } from "./pages/admin/AdminRoutes";
-import AppRoutes from "./pages/core/AppRoutes";
+import AppRoutes from "./pages/core/routes/AppRoutes";
 import NotFound from "./pages/common/NotFound";
 
 declare global {
@@ -62,7 +62,6 @@ if (subdomain === host) {
 } else {
 	routes = [{ path: "*", element: <NotFound /> }];
 }
-
 
 const router = createBrowserRouter(routes);
 const queryClient = new QueryClient();
