@@ -22,6 +22,17 @@ DEBUG = getenv('DEBUG', 'True') == 'True'  # Set to True for development
 
 ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
+# Temporary debug prints
+print("DEBUG: Raw ALLOWED_HOSTS env var =", os.environ.get('ALLOWED_HOSTS'))
+print("DEBUG: getenv result =", getenv('ALLOWED_HOSTS', 'localhost'))
+print("DEBUG: After split =", getenv('ALLOWED_HOSTS', 'localhost').split(','))
+
+# Your existing settings
+DEBUG = getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', 'localhost').split(',')
+
+print("DEBUG: Final ALLOWED_HOSTS =", ALLOWED_HOSTS)
+
 APPEND_SLASH = False
 
 # Application definition
