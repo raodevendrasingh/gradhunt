@@ -1,16 +1,25 @@
-import { Outlet } from "react-router-dom";
-import React, { useState } from "react";
-import { RecruiterSidebar } from "./components/layout/RecruiterSidebar";
-import RecruiterNavbar from "./components/layout/RecruiterNavbar";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
-import { ProfileSidebar } from "./components/layout/ProfileSidebar";
-import ProfileNavbar from "./components/layout/ProfileNavbar";
+import OnboardingPage from './OnboardingPage';
+import ProfileNavbar from './components/layout/ProfileNavbar';
+import React, { useState } from 'react';
+import RecruiterNavbar from './components/layout/RecruiterNavbar';
+import { Outlet } from 'react-router-dom';
+import { ProfileSidebar } from './components/layout/ProfileSidebar';
+import { RecruiterSidebar } from './components/layout/RecruiterSidebar';
+import { useFetchUserDetails } from '@/hooks/useFetchUserDetails';
+import { useUser } from '@clerk/clerk-react';
 
 export default function RecruiterLayout(): React.JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-	const { data: userData, isLoading: isUserDataLoading } =
-		useFetchUserDetails();
+	const { user, isSignedIn } = useUser();
+
+	if (user && isSignedIn) {
+		if (!user.username || !user.firstName || !user.lastName) {
+			return <OnboardingPage />;
+		}
+	}
+
+	const { data: userData } = useFetchUserDetails();
 
 	const isCompanyAdmin = userData?.user_details?.isCompanyAdmin;
 

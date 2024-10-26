@@ -11,8 +11,8 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
 	{ name: "Explore Jobs", href: "/job-search" },
-	{ name: "Companies", href: "/companies" },
-	{ name: "Pricing", href: "/pricing" },
+	// { name: "Companies", href: "/companies" },
+	// { name: "Pricing", href: "/pricing" },
 ];
 
 export default function Navbar() {
@@ -43,44 +43,54 @@ export default function Navbar() {
 		<header className="fixed top-0 left-0 right-0 bg-white bg-opacity-70 backdrop-blur-md shadow-sm z-50">
 			<div className="max-w-7xl mx-auto px-4">
 				<div className="flex items-center justify-between h-16">
-					<Link
-						id="ws"
-						aria-label="logo"
-						aria-current="page"
-						className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none"
-						to="/"
-					>
-						<img src={gradhunt} alt="logo" className="aspect-auto w-44 " />
-					</Link>
+					<div className="flex items-center">
+						{/* Logo */}
+						<Link
+							id="ws"
+							aria-label="logo"
+							aria-current="page"
+							className="flex items-center gap-2 whitespace-nowrap py-3 text-lg focus:outline-none"
+							to="/"
+						>
+							<img
+								src={gradhunt}
+								alt="logo"
+								className="aspect-auto h-10 sm:h-12 "
+							/>
+						</Link>
+
+						{!isMobile && (
+							<>
+								<nav className="ml-6">
+									<ul className="flex items-center ">
+										{navLinks.map((link) => (
+											<li key={link.name}>
+												<Link
+													to={link.href}
+													className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg"
+												>
+													{link.name}
+												</Link>
+											</li>
+										))}
+									</ul>
+								</nav>
+							</>
+						)}
+					</div>
 
 					{!isMobile && (
-						<>
-							<nav>
-								<ul className="flex items-center gap-8">
-									{navLinks.map((link) => (
-										<li key={link.name}>
-											<Link
-												to={link.href}
-												className="text-slate-800 hover:text-blue-800 transition-colors duration-200"
-											>
-												{link.name}
-											</Link>
-										</li>
-									))}
-								</ul>
-							</nav>
-							<div className="flex items-center justify-center gap-2 text-sm">
-								<SignedIn>
-									<UserMenuDropdown />
-								</SignedIn>
+						<div className="flex items-center justify-center gap-2 text-sm">
+							<SignedIn>
+								<UserMenuDropdown />
+							</SignedIn>
 
-								<SignedOut>
-									<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
-										<Link to="/login">Login</Link>
-									</button>
-								</SignedOut>
-							</div>
-						</>
+							<SignedOut>
+								<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
+									<Link to="/login">Login</Link>
+								</button>
+							</SignedOut>
+						</div>
 					)}
 
 					{isMobile && (
@@ -133,10 +143,10 @@ export default function Navbar() {
 						<ul className="flex flex-col items-center justify-center space-y-6">
 							{navLinks.map((link) => (
 								<li key={link.name}>
-									<Link // Changed from <a> to <Link>
+									<Link
 										to={link.href}
 										className="block text-gray-600 hover:text-blue-500 transition-colors duration-200"
-										onClick={() => setIsMenuOpen(false)} // Close menu on click
+										onClick={() => setIsMenuOpen(false)}
 									>
 										{link.name}
 									</Link>

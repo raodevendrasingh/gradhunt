@@ -1,7 +1,8 @@
-import { GoBell } from "react-icons/go";
-import brandIcon from "@/assets/brand/brandIcon.png";
-import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
-import { Link } from "react-router-dom";
+import brandIcon from '@/assets/brand/brandIcon.png';
+import { GoBell } from 'react-icons/go';
+import { Link } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { UserMenuDropdown } from '@/components/common/UserMenuDropdown';
 
 interface RecruiterNavbarProps {
 	isSidebarOpen: boolean;
@@ -60,12 +61,20 @@ export default function RecruiterNavbar({
 
 					{/* Navigation Items */}
 					<div className="flex items-center space-x-8">
-						<button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-0">
-							<Link to="notifications">
-								<GoBell className="h-6 w-6" />
-							</Link>
-						</button>
-						<UserMenuDropdown />
+						<SignedIn>
+							<button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-0">
+								<Link to="/notifications">
+									<GoBell className="h-6 w-6" />
+								</Link>
+							</button>
+							<UserMenuDropdown />
+						</SignedIn>
+
+						<SignedOut>
+							<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
+								<Link to="/login">Login</Link>
+							</button>
+						</SignedOut>
 					</div>
 				</div>
 			</div>

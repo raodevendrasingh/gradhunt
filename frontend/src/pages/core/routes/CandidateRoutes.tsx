@@ -1,13 +1,13 @@
-import { Route, Routes } from "react-router-dom";
-import UserProfileLayout from "@/pages/core/UserProfileLayout";
-import StandardUserProfile from "@/pages/core/StandardUserProfile";
-import JobApplicationsPage from "@/pages/core/JobApplicationPage";
-import CareerPreferencePage from "@/pages/core/CareerPreferencePage";
-import SavedJobsPage from "@/pages/core/SavedJobsPage";
-import CompanyProfileForm from "@/pages/core/CompanyProfileForm";
-import SettingsPage from "@/pages/core/SettingsPage";
-import NotificationsPage from "@/pages/core/Notifications";
-import NotFound from "@/pages/common/NotFound";
+import CareerPreferencePage from '@/pages/core/CareerPreferencePage';
+import CompanyProfileForm from '@/pages/core/CompanyProfileForm';
+import JobApplicationsPage from '@/pages/core/JobApplicationPage';
+import NotFound from '@/pages/common/NotFound';
+import NotificationsPage from '@/pages/core/Notifications';
+import SavedJobsPage from '@/pages/core/SavedJobsPage';
+import SettingsPage from '@/pages/core/SettingsPage';
+import StandardUserProfile from '@/pages/core/StandardUserProfile';
+import UserProfileLayout from '@/pages/core/UserProfileLayout';
+import { Route, Routes } from 'react-router-dom';
 
 export default function CandidateRoutes() {
 	return (

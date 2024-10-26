@@ -1,26 +1,23 @@
-import { FaChevronRight } from "react-icons/fa6";
-
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler } from "react-hook-form";
-import { useCitySearch } from "@/hooks/useCitySearch";
-
-import { companyLogo, recentJobs } from "@/utils/dummyData";
-import { jobCardSettings, logoSettings } from "@/utils/carouselSettings";
-
-import { JobCard } from "@/components/layouts/JobCard";
-import { SearchHeader } from "./components/layout/SearchHeader";
-import { JobCategories } from "@/components/common/JobCategory";
-import { JobSearchForm } from "@/components/layouts/JobSearchBar";
-import { ProfileBanner } from "@/components/layouts/ProfileBanner";
-import { FormData } from "@/components/layouts/JobSearchBar";
-import React from "react";
-import { encodeSearchParams } from "@/utils/encodeSearchParams";
-import HomeNavbar from "./components/layout/HomeNavbar";
+import axios from 'axios';
+import JobSearchNavbar from './components/layout/JobSearchNavbar';
+import React from 'react';
+import Slider from 'react-slick';
+import { companyLogo, recentJobs } from '@/utils/dummyData';
+import { encodeSearchParams } from '@/utils/encodeSearchParams';
+import { FaChevronRight } from 'react-icons/fa6';
+import { Footer } from '@/components/common/Footer';
+import { FormData } from '@/components/layouts/JobSearchBar';
+import { JobCard } from '@/components/layouts/JobCard';
+import { jobCardSettings, logoSettings } from '@/utils/carouselSettings';
+import { JobCategories } from '@/components/common/JobCategory';
+import { JobSearchForm } from '@/components/layouts/JobSearchBar';
+import { Link, useNavigate } from 'react-router-dom';
+import { ProfileBanner } from '@/components/layouts/ProfileBanner';
+import { SearchHeader } from './components/layout/SearchHeader';
+import { SubmitHandler } from 'react-hook-form';
+import { useCitySearch } from '@/hooks/useCitySearch';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -46,7 +43,7 @@ export default function JobSearchPage(): React.JSX.Element {
 
 	return (
 		<>
-			<HomeNavbar />
+			<JobSearchNavbar />
 			<main className="max-w-screen-2xl mx-auto overflow-hidden scroll-smooth">
 				<section className="p-10 w-full pb-20">
 					<div className="max-w-6xl mx-auto">
@@ -103,6 +100,7 @@ export default function JobSearchPage(): React.JSX.Element {
 					<ProfileBanner />
 				</section>
 			</main>
+			<Footer />
 		</>
 	);
 }
