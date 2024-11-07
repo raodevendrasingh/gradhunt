@@ -831,7 +831,6 @@ class JobPostingView(APIView):
             user = UserDetails.objects.get(
                 clerk_user_id=request.user.clerk_user_id)
             company_profile = CompanyProfile.objects.get(user=user)
-
             serializer = JobPostingSerializer(data=request.data)
             if serializer.is_valid():
                 job_posting = serializer.save(company=company_profile)
@@ -843,6 +842,44 @@ class JobPostingView(APIView):
             return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UpdateJobView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def patch(self, request, jobId):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            company_profile = CompanyProfile.objects.get(user=user)
+            job_posting = JobPostings.objects.get(jobId__iexact=jobId)
+            serializer = JobPostingSerializer(
+                job_posting, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(company=company_profile)
+                return Response({'message': 'Job updated successfully'}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserDetails.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        except CompanyProfile.DoesNotExist:
+            return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "Job not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ManageJobsView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    @transaction.atomic
+    def patch(self, request, jobId):
+        pass
+
+    @transaction.atomic
+    def delete(self, request, jobId):
+        pass
 
 
 class ListJobPosts(APIView):

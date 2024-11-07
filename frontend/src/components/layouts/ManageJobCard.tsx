@@ -1,6 +1,6 @@
 import React from "react";
 import { JobPosts } from "@/types/userTypes";
-import { FaMapMarkerAlt, FaRegClock, FaRupeeSign } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRegClock } from "react-icons/fa";
 import { timesAgo } from "@/utils/DaysAgo";
 import { Link } from "react-router-dom";
 import JobCardMenu from "./JobCardMenu";
@@ -14,7 +14,7 @@ export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 	return (
 		<div className="border border-gray-200 rounded-2xl p-6 mb-4 bg-gradient-to-br from-gray-50 to-white relative">
 			<div className="absolute top-4 right-4">
-				<JobCardMenu editUrl={`job/${jobPost.jobId}/edit`} />
+				<JobCardMenu editUrl={`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}/edit`} />
 			</div>
 
 			<h2 className="text-2xl font-bold text-gray-800 mb-2">

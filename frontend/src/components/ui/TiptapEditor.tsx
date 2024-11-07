@@ -1,21 +1,9 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import Strike from "@tiptap/extension-strike";
-import Heading from "@tiptap/extension-heading";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import HardBreak from "@tiptap/extension-hard-break";
-import Paragraph from "@tiptap/extension-paragraph";
-import Document from "@tiptap/extension-document";
-import Text from "@tiptap/extension-text";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
-import ListItem from "@tiptap/extension-list-item";
-import Link from "@tiptap/extension-link";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
-import History from "@tiptap/extension-history";
 import {
 	LuList,
 	LuListOrdered,
@@ -28,7 +16,7 @@ import {
 	LuRedo,
 } from "react-icons/lu";
 import { VscHorizontalRule, VscNewline } from "react-icons/vsc";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const MenuBar = ({ editor }: { editor: any }) => {
 	if (!editor) {
@@ -169,10 +157,13 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
 export const TiptapEditor = ({
 	onEditorReady,
+    initialContent,
 }: {
 	onEditorReady: (editor: any) => void;
+    initialContent?: string;
 }) => {
 	const limit = 6000;
+    const [contentSet, setContentSet] = useState(false);
 
 	const editor = useEditor({
 		extensions: [
@@ -197,6 +188,7 @@ export const TiptapEditor = ({
 				types: ["heading", "paragraph"],
 			}),
 		],
+        content: initialContent,
 		editorProps: {
 			attributes: {
 				class:
@@ -210,6 +202,13 @@ export const TiptapEditor = ({
 			onEditorReady(editor);
 		}
 	}, [editor, onEditorReady]);
+
+    useEffect(() => {
+        if (editor && initialContent && !contentSet) {
+            editor.commands.setContent(initialContent);
+            setContentSet(true);
+        }
+    }, [editor, initialContent, contentSet]);
 
 	return (
 		<div className="relative w-full pb-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus-within:ring focus-within:ring-gray-100 transition duration-200">

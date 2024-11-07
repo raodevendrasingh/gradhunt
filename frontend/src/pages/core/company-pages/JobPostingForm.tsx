@@ -85,15 +85,13 @@ export const JobPostingForm = () => {
 				...data,
 				jobDescription: content,
 			};
-            console.log(formData)
-			const url = "/api/post-job";
-			const response = await axios.post(url, formData, {
+			const url = "/api/jobs/post";
+			await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-            console.log(response);
 			navigate("success");
 		} catch (error: any) {
 			if (error.response) {

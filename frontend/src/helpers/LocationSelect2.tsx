@@ -130,7 +130,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 				setSelectedOption({
 					city: cityVal,
 					state: stateVal,
-					// country: countryVal,
+					country: countryVal,
 					value: initialValue,
 					label: initialValue,
 				} as SelectValue<IsMulti>);
