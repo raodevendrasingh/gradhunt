@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
-import { AddSkillModal } from "@/modalForms/AddSkillModal";
+import { AddSkillModal } from "@/modal-forms/AddSkillModal";
 import { toast } from "sonner";
 
 export const SkillSection: React.FC = () => {

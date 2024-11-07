@@ -1,6 +1,6 @@
-import { Overview } from "@/pages/core/standardProfile/Overview";
-import { ExtraCurriculars } from "@/pages/core/standardProfile/ExtraCurriculars";
-import { ProfessionalBackground } from "@/pages/core/standardProfile/ProfessionalBackground";
+import { Overview } from "@/pages/core/user-pages/Overview";
+import { ExtraCurriculars } from "@/pages/core/user-pages/ExtraCurriculars";
+import { ProfessionalBackground } from "@/pages/core/user-pages/ProfessionalBackground";
 
 export const standardTabsData = [
 	{

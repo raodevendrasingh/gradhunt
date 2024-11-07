@@ -1,9 +1,9 @@
-import ProfileNavbar from "./components/layout/ProfileNavbar";
+import ProfileNavbar from "@/pages/core/components/layout/ProfileNavbar";
 import React, { useEffect, useState } from "react";
-import RecruiterNavbar from "./components/layout/RecruiterNavbar";
+import RecruiterNavbar from "@/pages/core/components/layout/RecruiterNavbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { ProfileSidebar } from "./components/layout/ProfileSidebar";
-import { RecruiterSidebar } from "./components/layout/RecruiterSidebar";
+import { ProfileSidebar } from "@/pages/core/components/layout/ProfileSidebar";
+import { RecruiterSidebar } from "@/pages/core/components/layout/RecruiterSidebar";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { useUser } from "@clerk/clerk-react";
 

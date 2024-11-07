@@ -1,16 +1,16 @@
-import { Analytics } from "@/pages/core/company-pages/companyProfile/Analytics";
-import { Opportunities } from "@/pages/core/company-pages/companyProfile/Opportunities";
-import { Overview } from "@/pages/core/company-pages/companyProfile/Overview";
-import { People } from "@/pages/core/company-pages/companyProfile/People";
+import Analytics from "@/pages/core/company-pages/Analytics";
+import { Opportunities } from "@/pages/core/company-pages/profile-sections/Opportunities";
+import { Overview } from "@/pages/core/company-pages/profile-sections/Overview";
+import { People } from "@/pages/core/company-pages/profile-sections/People";
 
 export const CompanyTabs = [
 	{
 		title: "Overview",
-		content: <Overview/>
+		content: <Overview />,
 	},
 	{
 		title: "Opportunities",
-		content: <Opportunities/>,
+		content: <Opportunities />,
 	},
 	{
 		title: "People",

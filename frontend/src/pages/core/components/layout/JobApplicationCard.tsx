@@ -4,7 +4,7 @@ import { timesAgo } from "@/utils/DaysAgo";
 import { useUser } from "@clerk/clerk-react";
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import NotFound from "@/pages/common/NotFound";
-import { formatLocation } from "../../company-pages/JobApplicants";
+import { formatLocation } from "@/pages/core/company-pages/JobApplicants";
 import { LuDot } from "react-icons/lu";
 
 export const JobApplicationCard = ({ jobPost }: JobCardProps) => {

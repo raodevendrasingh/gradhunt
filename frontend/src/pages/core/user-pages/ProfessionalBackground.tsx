@@ -1,6 +1,6 @@
 import ComboboxWork from "@/components/layouts/ComboboxWork";
-import { Education } from "./profileSections/Education";
-import { Experience } from "./profileSections/Experience";
+import { Education } from "@/pages/core/user-pages/profile-sections/Education";
+import { Experience } from "@/pages/core/user-pages/profile-sections/Experience";
 import { useUser } from "@clerk/clerk-react";
 
 export const ProfessionalBackground = () => {

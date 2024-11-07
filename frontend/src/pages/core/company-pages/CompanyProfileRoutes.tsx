@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import RecruiterLayout from "@/pages/core/RecruiterLayout";
+import RecruiterLayout from "@/pages/core/company-pages/CompanyProfileLayout";
 import CompanyProfile from "@/pages/core/company-pages/CompanyProfile";
 import { JobDetailsPage } from "@/pages/core/JobDetailsPage";
 import { JobPostingForm } from "@/pages/core/JobPostingForm";

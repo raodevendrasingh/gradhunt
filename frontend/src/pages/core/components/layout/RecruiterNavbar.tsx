@@ -1,8 +1,8 @@
-import brandIcon from '@/assets/brand/brandIcon.png';
-import { GoBell } from 'react-icons/go';
-import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import { UserMenuDropdown } from '@/components/common/UserMenuDropdown';
+import brandIcon from "@/assets/brand/brandIcon.png";
+import { GoBell } from "react-icons/go";
+import { Link } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 
 interface RecruiterNavbarProps {
 	isSidebarOpen: boolean;

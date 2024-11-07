@@ -1,4 +1,4 @@
-import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { MdModeEdit } from "react-icons/md";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
@@ -8,8 +8,8 @@ import { useState } from "react";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
-import { EditCertificateModal } from "@/modalForms/EditCertificateModal";
-import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
+import { EditCertificateModal } from "@/modal-forms/EditCertificateModal";
+import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
 import { useUser } from "@clerk/clerk-react";
 
 export const Ceritficates = () => {

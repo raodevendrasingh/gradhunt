@@ -1,4 +1,4 @@
-import { EditImageModal } from "@/modalForms/ImageEditModal";
+import { EditImageModal } from "@/modal-forms/ImageEditModal";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import { useRef, useState } from "react";

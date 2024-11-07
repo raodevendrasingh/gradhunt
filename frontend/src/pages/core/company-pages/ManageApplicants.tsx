@@ -1,6 +1,6 @@
 import { JobApplicantCard } from "@/components/layouts/JobApplicantCard";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
-import { JobApplicationCardSkeleton2 } from "../components/ui/JobApplicationCardSkeleton2";
+import { JobApplicationCardSkeleton2 } from "@/pages/core/components/ui/JobApplicationCardSkeleton2";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 
 export default function ManageApplicants() {

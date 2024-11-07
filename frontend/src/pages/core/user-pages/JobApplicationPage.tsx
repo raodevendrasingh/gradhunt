@@ -1,8 +1,8 @@
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchJobsList } from "@/hooks/useFetchJobsList";
 import { IoPaperPlaneOutline } from "react-icons/io5";
-import { JobApplicationCard } from "./components/layout/JobApplicationCard";
-import { JobApplicationCardSkeleton } from "./components/ui/JobApplicationCardSkeleton";
+import { JobApplicationCard } from "@/pages/core/components/layout/JobApplicationCard";
+import { JobApplicationCardSkeleton } from "@/pages/core/components/ui/JobApplicationCardSkeleton";
 
 export default function JobApplicationsPage() {
 	const { data: appliedJobs, isLoading: isLoadingApplied } =

@@ -7,7 +7,7 @@ import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { UserProfileCompletion } from "@/components/ui/UserProgressBar";
-import { AddBasicDetailModal } from "@/modalForms/AddBasicDetailModal";
+import { AddBasicDetailModal } from "@/modal-forms/AddBasicDetailModal";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import NotFound from "@/pages/common/NotFound";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";

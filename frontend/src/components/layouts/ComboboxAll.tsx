@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
-import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
-import { AddEduModal } from "@/modalForms/AddEduModal";
-import { AddExpModal } from "@/modalForms/AddExpModal";
-import { AddProjectModal } from "@/modalForms/AddProjectModal";
-import { AddSkillModal } from "@/modalForms/AddSkillModal";
+import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
+import { AddEduModal } from "@/modal-forms/AddEduModal";
+import { AddExpModal } from "@/modal-forms/AddExpModal";
+import { AddProjectModal } from "@/modal-forms/AddProjectModal";
+import { AddSkillModal } from "@/modal-forms/AddSkillModal";
 import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useFetchProjectData } from "@/hooks/useFetchProjectsData";

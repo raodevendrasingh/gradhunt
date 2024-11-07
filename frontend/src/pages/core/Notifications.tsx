@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import NotFound from "../common/NotFound";
+import NotFound from "@/pages/common/NotFound";
 
 export default function NotificationsPage() {
 	const { isSignedIn } = useUser();

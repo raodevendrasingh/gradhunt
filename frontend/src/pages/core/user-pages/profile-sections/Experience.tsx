@@ -4,8 +4,8 @@ import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { BsBuildingsFill } from "react-icons/bs";
 import { useState } from "react";
-import { EditExpModal } from "@/modalForms/EditExpModal";
-import { AddExpModal } from "@/modalForms/AddExpModal";
+import { EditExpModal } from "@/modal-forms/EditExpModal";
+import { AddExpModal } from "@/modal-forms/AddExpModal";
 import { GoUnverified, GoVerified } from "react-icons/go";
 
 export const Experience = () => {
@@ -19,8 +19,6 @@ export const Experience = () => {
 		isLoading: isExpLoading,
 		refetch: refetchExp,
 	} = useFetchExperienceData();
-
-    console.log(experienceData)
 
 	const handleEditClick = (id: number) => {
 		setEditingExperienceId(id);

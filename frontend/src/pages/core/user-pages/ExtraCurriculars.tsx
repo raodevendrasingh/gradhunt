@@ -1,6 +1,6 @@
 import ComboboxCurriculars from "@/components/layouts/ComboboxCurriculars";
-import { Projects } from "./profileSections/Projects";
-import { Ceritficates } from "./profileSections/Ceritficates";
+import { Projects } from "@/pages/core/user-pages/profile-sections/Projects";
+import { Ceritficates } from "@/pages/core/user-pages/profile-sections/Certificates";
 import { useUser } from "@clerk/clerk-react";
 
 export const ExtraCurriculars = () => {

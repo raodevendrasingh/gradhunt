@@ -14,9 +14,9 @@ import {
 } from "react-router-dom";
 
 // local imports
-import { AdminRoutes } from "./pages/admin/AdminRoutes";
-import AppRoutes from "./pages/core/routes/AppRoutes";
-import NotFound from "./pages/common/NotFound";
+import { AdminRoutes } from "@/pages/admin/AdminRoutes";
+import AppRoutes from "@/pages/core/AppRoutes";
+import NotFound from "@/pages/common/NotFound";
 
 declare global {
 	interface ImportMeta {

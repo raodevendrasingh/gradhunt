@@ -3,9 +3,9 @@ import { useUser } from "@clerk/clerk-react";
 import { FaGraduationCap } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
-import { EditEduModal } from "@/modalForms/EditEduModal";
+import { EditEduModal } from "@/modal-forms/EditEduModal";
 import { useState } from "react";
-import { AddEduModal } from "@/modalForms/AddEduModal";
+import { AddEduModal } from "@/modal-forms/AddEduModal";
 
 export const Education = () => {
 	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);

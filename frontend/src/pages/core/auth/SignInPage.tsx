@@ -35,7 +35,7 @@ export default function SignInPage() {
 								},
 							}}
 							signUpUrl="/signup"
-							forceRedirectUrl="/job-search"
+							forceRedirectUrl="/"
 						/>
 						<div className="flex justify-center items-center gap-2 text-sm max-w-md py-5 border-t-0 rounded-t-none w-[401px]">
 							<span className="text-gray-500">Don&apos;t have an account?</span>

@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import NotFound from "../common/NotFound";
+import NotFound from "./NotFound";
 
 export default function SalariesPage() {
 	const { isSignedIn } = useUser();

@@ -1,8 +1,8 @@
-import brandIcon from '@/assets/brand/brandIcon.png';
-import { GoBell } from 'react-icons/go';
-import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import { UserMenuDropdown } from '@/components/common/UserMenuDropdown';
+import brandIcon from "@/assets/brand/brandIcon.png";
+import { GoBell } from "react-icons/go";
+import { Link } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 
 export default function JobSearchNavbar() {
 	return (
@@ -16,16 +16,6 @@ export default function JobSearchNavbar() {
 							<span className="ml-2 text-2xl font-bold text-gray-800 xs:inline">
 								GradHunt
 							</span>
-						</div>
-
-						{/* Explore Jobs - Only visible on larger screens */}
-						<div className="hidden md:flex ml-6">
-							<Link
-								to="/job-search"
-								className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg"
-							>
-								Explore Jobs
-							</Link>
 						</div>
 					</div>
 

@@ -1,13 +1,13 @@
 import ReorderButton from "@/components/layouts/ReorderButton";
-import { UserAboutModal } from "@/modalForms/UserDescriptionModal";
+import { UserAboutModal } from "@/modal-forms/UserDescriptionModal";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import ComboboxAll from "@/components/layouts/ComboboxAll";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
-import { SkillSection } from "./profileSections/SkillSection";
+import { SkillSection } from "@/pages/core/user-pages/profile-sections/SkillSection";
 import { toast } from "sonner";
-import { ResumeUploadSection } from "./profileSections/ResumeUploadSection";
+import { ResumeUploadSection } from "@/pages/core/user-pages/profile-sections/ResumeUploadSection";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);

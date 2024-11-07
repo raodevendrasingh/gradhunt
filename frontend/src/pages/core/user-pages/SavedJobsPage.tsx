@@ -1,8 +1,8 @@
 import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
 import { GoBookmark } from "react-icons/go";
-import { JobCardSkeleton } from "./components/ui/JobCardSkeleton2";
+import { JobCardSkeleton } from "@/pages/core/components/ui/JobCardSkeleton2";
 import { useFetchJobsList } from "@/hooks/useFetchJobsList";
-import { JobSearchCard } from "./components/layout/JobSearchCard";
+import { JobSearchCard } from "@/pages/core/components/layout/JobSearchCard";
 
 export default function SavedJobsPage() {
 	const { data: savedJobs, isLoading: isLoadingSaved } = useFetchSavedJobs();

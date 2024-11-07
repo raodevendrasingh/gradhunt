@@ -1,8 +1,8 @@
 import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
-import { AddProjectModal } from "@/modalForms/AddProjectModal";
-import { EditProjectModal } from "@/modalForms/EditProjectModal";
+import { AddProjectModal } from "@/modal-forms/AddProjectModal";
+import { EditProjectModal } from "@/modal-forms/EditProjectModal";
 import { useState } from "react";
-import { ContentSkeleton } from "../../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { MdModeEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { GoGlobe } from "react-icons/go";

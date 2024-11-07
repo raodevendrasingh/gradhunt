@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";
-import { AddProjectModal } from "@/modalForms/AddProjectModal";
-import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
+import { AddProjectModal } from "@/modal-forms/AddProjectModal";
+import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
 import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
 import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
 

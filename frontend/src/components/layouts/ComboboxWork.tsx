@@ -1,6 +1,6 @@
-import { AddCertificateModal } from "@/modalForms/AddCertificateModal";
-import { AddEduModal } from "@/modalForms/AddEduModal";
-import { AddExpModal } from "@/modalForms/AddExpModal";
+import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
+import { AddEduModal } from "@/modal-forms/AddEduModal";
+import { AddExpModal } from "@/modal-forms/AddExpModal";
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";

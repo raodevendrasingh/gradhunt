@@ -82,7 +82,7 @@ export const ProfileSidebar = ({
 	const exploreTab = {
 		icon: <BsBriefcase size={20} />,
 		label: "Explore Jobs",
-		route: "/explore-jobs",
+		route: "/",
 	};
 
 	const tabs = isMobile

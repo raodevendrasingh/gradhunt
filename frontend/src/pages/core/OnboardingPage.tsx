@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserOnboardingModal } from '@/modalForms/OnboardingModal';
+import { UserOnboardingModal } from '@/modal-forms/OnboardingModal';
 import { useUser } from '@clerk/clerk-react';
 
 export default function OnboardingPage() {

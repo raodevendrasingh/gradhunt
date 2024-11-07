@@ -1,6 +1,6 @@
-import ProfileNavbar from "./components/layout/ProfileNavbar";
+import ProfileNavbar from "@/pages/core/components/layout/ProfileNavbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { ProfileSidebar } from "./components/layout/ProfileSidebar";
+import { ProfileSidebar } from "@/pages/core/components/layout/ProfileSidebar";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 

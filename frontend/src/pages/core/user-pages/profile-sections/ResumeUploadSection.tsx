@@ -8,7 +8,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { extractFileName } from "@/utils/ExtractFileNames";
 import { BsTrash } from "react-icons/bs";
-import { ResumeDeleteModal } from "@/modalForms/ResumeDeleteModal";
+import { ResumeDeleteModal } from "@/modal-forms/ResumeDeleteModal";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
 
