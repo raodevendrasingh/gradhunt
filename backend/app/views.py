@@ -875,7 +875,15 @@ class ManageJobsView(APIView):
 
     @transaction.atomic
     def patch(self, request, jobId):
-        pass
+        try:
+            job_posting = JobPostings.objects.get(jobId__iexact=jobId)
+            job_posting.isArchived = request.data.get("isArchived")
+            job_posting.save()
+            return Response({"success": "Job post archived successfully"}, status=status.HTTP_200_OK)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "Job not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @transaction.atomic
     def delete(self, request, jobId):

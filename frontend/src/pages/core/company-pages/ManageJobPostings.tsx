@@ -1,7 +1,7 @@
 import { useUser } from "@clerk/clerk-react";
 import { HiPlus } from "react-icons/hi2";
 import { Link } from "react-router-dom";
-import { BiBriefcase, BiSort } from "react-icons/bi";
+import { BiBriefcase } from "react-icons/bi";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
 import { JobCardSkeleton } from "@/pages/core/components/ui/JobCardSkeleton";
 import { ManageJobCard } from "@/components/layouts/ManageJobCard";

@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Option } from "./ComboboxAll";
 import { HiDotsVertical } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import { toast } from "sonner";
+import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
 
 const options: Option[] = [
 	{ id: "edit", label: "Edit" },
@@ -11,15 +15,19 @@ const options: Option[] = [
 
 interface JobCardMenuProps {
 	editUrl: string;
+	archiveUrl: string;
 }
 
-export default function JobCardMenu({ editUrl }: JobCardMenuProps) {
+export default function JobCardMenu({ editUrl, archiveUrl }: JobCardMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [showDeleteDailog, setShowDeleteDailog] = useState<boolean>(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const navigate = useNavigate();
+	const { getToken } = useAuth();
+
+	const { refetch: refetchJobPosts } = useFetchJobPosts();
 
 	const toggleDropdown = (event: React.MouseEvent) => {
 		event.stopPropagation();
@@ -44,6 +52,32 @@ export default function JobCardMenu({ editUrl }: JobCardMenuProps) {
 		};
 	}, []);
 
+	const archiveJobPost = async () => {
+		try {
+			const token = await getToken();
+			if (!token) {
+				throw new Error("User not authorized!");
+			}
+			const response = await axios.patch(
+				archiveUrl,
+				{
+					isArchived: true,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			console.log(response);
+			refetchJobPosts();
+			toast.success("Job post archived successfully!");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const handleOptionClick = (optionId: string) => {
 		setSelectedOptions((prev) =>
 			prev.includes(optionId)
@@ -53,7 +87,7 @@ export default function JobCardMenu({ editUrl }: JobCardMenuProps) {
 		if (optionId === "edit") {
 			navigate(editUrl);
 		} else if (optionId === "archive") {
-			console.log("Archived");
+			archiveJobPost();
 		} else if (optionId === "delete") {
 			setShowDeleteDailog(true);
 		}
