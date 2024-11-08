@@ -5,7 +5,8 @@ urlpatterns = [
     path('api', HomeView.as_view(), name='home'),
 
     path('api/company/', CompanyProfileView.as_view(), name='company'),
-    path('api/company/<str:companyName>', GetCompanyProfile.as_view(), name='company'),
+    path('api/company/<str:companyName>',
+         GetCompanyProfile.as_view(), name='company'),
 
     path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
@@ -15,20 +16,27 @@ urlpatterns = [
 
     path('api/jobs/apply/<str:jobId>', ApplyJobView.as_view(), name='saved-jobs'),
     path('api/jobs/applied', GetAppliedJobs.as_view(), name='applied-jobs'),
-    
-    path('api/jobs/post', JobPostingView.as_view(), name='post-job'),
-    path('api/jobs/update/<str:jobId>', UpdateJobView.as_view(), name='update-job'),
-    path('api/jobs/manage/<str:jobId>', ManageJobsView.as_view(), name='manage-job'),
-    path('api/job/<str:jobId>', JobDetailsView.as_view(), name='show-job'),
-    
-    path('api/application/<str:applicationId>', UpdateApplicationStatus.as_view(), name='update-application-status'),
 
-    path('api/company/<str:companyName>/jobs', ListJobPosts.as_view(), name='get-job-posts'),
-    path('api/company/<str:companyName>/applicants/<str:jobId>', GetJobsApplications.as_view(), name='get-job-applicants'),
+    path('api/jobs/post', JobPostingView.as_view(), name='post-job'),
+    path('api/jobs/update/<str:jobId>',
+         UpdateJobView.as_view(), name='update-job'),
+    path('api/jobs/manage/<str:jobId>',
+         ManageJobsView.as_view(), name='manage-job'),
+    path('api/job/<str:jobId>', JobDetailsView.as_view(), name='show-job'),
+
+    path('api/application/<str:applicationId>',
+         UpdateApplicationStatus.as_view(), name='update-application-status'),
+
+    path('api/company/<str:companyName>/jobs',
+         ListJobPosts.as_view(), name='get-job-posts'),
+    path('api/company/<str:companyName>/applicants/<str:jobId>',
+         GetJobsApplications.as_view(), name='get-job-applicants'),
 
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
     path('api/users/check-username/',
          CheckUsernameView.as_view(), name='check-username'),
+    path('api/users/username',
+         UpdateUsernameView.as_view(), name='update-username'),
 
     path('api/users', AddUserData.as_view(), name='add-user-data'),
     path('api/users/onboarding/', OnboardUser.as_view(), name='onboard-user'),

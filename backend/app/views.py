@@ -44,6 +44,25 @@ class CheckUsernameView(APIView):
         return Response({'exists': exists, 'message': message})
 
 
+class UpdateUsernameView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def patch(self, request):
+        try:
+            new_username = request.data.get('username')
+            if not new_username:
+                return Response({'error': 'Username is required'}, status=status.HTTP_400_BAD_REQUEST)
+            user_details = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            user_details.username = new_username
+            user_details.save()
+            return Response({'message': 'Username updated successfully'}, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class GetCompletionPercentage(APIView):
     permission_classes = [IsClerkAuthenticated]
 

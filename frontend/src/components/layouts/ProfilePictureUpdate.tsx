@@ -23,7 +23,6 @@ export const HandleProfilePictureUpdate = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const [croppedImage, setCroppedImage] = useState<string | null>(null);
-	const [showUpdateButton, setShowUpdateButton] = useState<boolean>(false);
 	const [isCropperOpen, setIsCropperOpen] = useState(false);
 	const ImageUploadRef = useRef<HTMLInputElement | null>(null);
 
