@@ -16,6 +16,8 @@ import {
 	FiDollarSign,
 } from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useUser } from "@clerk/clerk-react";
 
 type FormData = {
 	username: string;
@@ -32,6 +34,8 @@ type FormData = {
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
 
+	const { user } = useUser();
+
 	const {
 		register,
 		control,
@@ -45,34 +49,6 @@ export default function SettingsPage() {
 			element.scrollIntoView({ behavior: "smooth" });
 		}
 	};
-
-	const TextInput: React.FC<{
-		label: string;
-		name: keyof FormData;
-		type?: string;
-		icon: React.ReactNode;
-	}> = ({ label, name, type = "text", icon }) => (
-		<div className="w-full flex flex-col mb-6">
-			<label htmlFor={name} className="text-sm font-medium text-gray-700 pb-1">
-				{label}
-			</label>
-			<div className="flex gap-2">
-				<div className="relative flex-grow">
-					<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-						{icon}
-					</div>
-					<input
-						{...register(name)}
-						type={type}
-						id={name}
-						placeholder={label}
-						className="pl-10 w-full py-2.5 bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 block transition duration-200"
-					/>
-				</div>
-				<Button variant="secondary">Update</Button>
-			</div>
-		</div>
-	);
 
 	const ToggleSwitch: React.FC<{
 		label: string;
@@ -127,8 +103,8 @@ export default function SettingsPage() {
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
 							<FiUser className="mr-2" /> Profile
 						</h2>
-						<div className="flex items-center justify-between mb-6 ">
-							<div className="flex items-center gap-3">
+						<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6">
+							<div className="flex flex-col xs:flex-row items-start xs:items-center gap-3">
 								{/* <img
 									src="/api/"
 									alt="Profile"
@@ -144,28 +120,58 @@ export default function SettingsPage() {
 									</p>
 								</div>
 							</div>
-							<Button icon={<FiUpload />} variant="secondary">
+							<Button
+								icon={<FiUpload />}
+								variant="secondary"
+								className="rounded-lg w-28 py-2"
+							>
 								Upload
 							</Button>
 						</div>
 						<div className="space-y-4">
-							<TextInput
-								icon={<FiUser />}
-								label="Change Username"
-								name="username"
-							/>
-							<TextInput
-								icon={<FiMail />}
-								label="Change Email"
-								name="email"
-								type="email"
-							/>
-							<TextInput
-								icon={<FiLock />}
-								label="Update Password"
-								name="password"
-								type="password"
-							/>
+							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+								<div>
+									<h3 className="text-sm font-medium text-gray-800">
+										Username
+									</h3>
+									<p className="text-sm text-gray-500">{user?.username}</p>
+								</div>
+
+								<Button variant="secondary" className="rounded-lg w-24 py-2">
+									Update
+								</Button>
+							</div>
+							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+								<div>
+									<h3 className="text-sm font-medium text-gray-800">Email</h3>
+									<p className="text-sm text-gray-500">
+										{user?.emailAddresses[0].emailAddress}
+									</p>
+								</div>
+
+								<Button variant="secondary" className="rounded-lg w-24 py-2">
+									Update
+								</Button>
+							</div>
+							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+								<div>
+									<h3 className="text-sm font-medium text-gray-800">
+										Password
+									</h3>
+									<p className="text-sm text-gray-500">
+										{user?.passwordEnabled ? "Enabled" : "Disabled"}
+									</p>
+								</div>
+								{user?.passwordEnabled ? (
+									<Button variant="secondary" className="rounded-lg w-24 py-2">
+										Update
+									</Button>
+								) : (
+									<Button variant="secondary" className="rounded-lg w-24 py-2">
+										Create
+									</Button>
+								)}
+							</div>
 						</div>
 					</section>
 
@@ -181,30 +187,14 @@ export default function SettingsPage() {
 							/>
 							<ToggleSwitch
 								icon={<FiGlobe />}
-								label="Make Special Profile Private"
-								name="makeSpecialProfilePrivate"
-							/>
-							<ToggleSwitch
-								icon={<FiGlobe />}
 								label="Connect Google Account"
 								name="connectGoogleAccount"
 							/>
 
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
-								<div>
-									<h3 className="text-sm font-medium text-gray-800">
-										Career Preferences
-									</h3>
-									<p className="text-sm text-gray-500">
-										Set your job interests, experience, and desired role
-									</p>
-								</div>
-								<Link to="/career-preferences">
-									<Button icon={<FiBriefcase />}>Update Career</Button>
-								</Link>
-							</div>
-
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Company Profile
@@ -214,21 +204,9 @@ export default function SettingsPage() {
 									</p>
 								</div>
 								<Link to="/create-company-profile">
-									<Button icon={<FiBriefcase />}>Create Profile</Button>
-								</Link>
-							</div>
-
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
-								<div>
-									<h3 className="text-sm font-medium text-gray-800">
-										Hiring Preferences
-									</h3>
-									<p className="text-sm text-gray-500">
-										Set your recruitment needs and candidate requirements
-									</p>
-								</div>
-								<Link to="/hiring-preferences">
-									<Button icon={<FiBriefcase />}>Set Preferences</Button>
+									<Button className="rounded-lg w-32 py-2">
+										Create Profile
+									</Button>
 								</Link>
 							</div>
 						</div>
@@ -242,7 +220,10 @@ export default function SettingsPage() {
 							<FiCreditCard className="mr-2" /> Subscription
 						</h2>
 						<div className="space-y-4">
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Upgrade Plan
@@ -251,10 +232,18 @@ export default function SettingsPage() {
 										Get access to premium features and enhanced capabilities
 									</p>
 								</div>
-								<Button icon={<FiDollarSign />}>Upgrade</Button>
+								<Button
+									icon={<FiDollarSign />}
+									className="rounded-lg w-32 py-2"
+								>
+									Upgrade
+								</Button>
 							</div>
 
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Payment Method
@@ -263,7 +252,11 @@ export default function SettingsPage() {
 										Update your billing information and payment details
 									</p>
 								</div>
-								<Button icon={<FiCreditCard />} variant="secondary">
+								<Button
+									icon={<FiCreditCard />}
+									variant="secondary"
+									className="rounded-lg w-32 py-2"
+								>
 									Update
 								</Button>
 							</div>
@@ -301,7 +294,10 @@ export default function SettingsPage() {
 							<FiAlertTriangle className="mr-2" /> Danger Zone
 						</h2>
 						<div className="space-y-4">
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Deactivate Account
@@ -310,12 +306,19 @@ export default function SettingsPage() {
 										Temporarily disable your account and hide your profile
 									</p>
 								</div>
-								<Button icon={<FiPower />} variant="danger">
+								<Button
+									icon={<FiPower />}
+									variant="danger"
+									className="rounded-lg w-32 py-2"
+								>
 									Deactivate
 								</Button>
 							</div>
 
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Delete Account
@@ -324,7 +327,11 @@ export default function SettingsPage() {
 										Permanently remove your account and all associated data
 									</p>
 								</div>
-								<Button icon={<FiTrash2 />} variant="danger">
+								<Button
+									icon={<FiTrash2 />}
+									variant="danger"
+									className="rounded-lg w-32 py-2"
+								>
 									Delete
 								</Button>
 							</div>

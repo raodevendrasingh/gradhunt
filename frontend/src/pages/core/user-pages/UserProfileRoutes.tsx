@@ -4,7 +4,7 @@ import JobApplicationsPage from "@/pages/core/user-pages/JobApplicationPage";
 import NotFound from "@/pages/common/NotFound";
 import NotificationsPage from "@/pages/core/Notifications";
 import SavedJobsPage from "@/pages/core/user-pages/SavedJobsPage";
-import SettingsPage from "@/pages/core/SettingsPage";
+import SettingsPage from "@/pages/core/user-pages/SettingsPage";
 import StandardUserProfile from "@/pages/core/user-pages/UserProfile";
 import UserProfileLayout from "@/pages/core/user-pages/UserProfileLayout";
 import { Route, Routes } from "react-router-dom";
