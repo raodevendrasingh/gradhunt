@@ -3,12 +3,9 @@ import { useForm, Controller } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
 	FiUser,
-	FiLock,
-	FiMail,
 	FiCreditCard,
 	FiBell,
 	FiAlertTriangle,
-	FiUpload,
 	FiBriefcase,
 	FiGlobe,
 	FiTrash2,
@@ -16,8 +13,8 @@ import {
 	FiDollarSign,
 } from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { useUser } from "@clerk/clerk-react";
+import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 
 type FormData = {
 	username: string;
@@ -103,31 +100,7 @@ export default function SettingsPage() {
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
 							<FiUser className="mr-2" /> Profile
 						</h2>
-						<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6">
-							<div className="flex flex-col xs:flex-row items-start xs:items-center gap-3">
-								{/* <img
-									src="/api/"
-									alt="Profile"
-									className="w-24 h-24 rounded-lg object-cover"
-								/> */}
-								<div className="h-24 w-24 rounded-lg border boder-gray-800" />
-								<div className="">
-									<h3 className="font-medium text-gray-800">
-										Change Profile Picture
-									</h3>
-									<p className="text-sm text-gray-500 mt-1">
-										JPG, GIF or PNG. Max size of 800K
-									</p>
-								</div>
-							</div>
-							<Button
-								icon={<FiUpload />}
-								variant="secondary"
-								className="rounded-lg w-28 py-2"
-							>
-								Upload
-							</Button>
-						</div>
+						<HandleProfilePictureUpdate />
 						<div className="space-y-4">
 							<div className="flex items-center justify-between py-4 border-b border-gray-200">
 								<div>
@@ -159,7 +132,7 @@ export default function SettingsPage() {
 										Password
 									</h3>
 									<p className="text-sm text-gray-500">
-										{user?.passwordEnabled ? "Enabled" : "Disabled"}
+										{user?.passwordEnabled ? "Enabled" : "No password set"}
 									</p>
 								</div>
 								{user?.passwordEnabled ? (

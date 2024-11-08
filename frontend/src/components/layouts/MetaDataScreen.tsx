@@ -1,9 +1,6 @@
-import { EditImageModal } from "@/modal-forms/ImageEditModal";
 import { useUser } from "@clerk/clerk-react";
-import axios from "axios";
 import { useRef, useState } from "react";
 import { ImageCropper } from "../common/ImageCropper";
-import { useForm } from "react-hook-form";
 import { useLocalStorage } from "usehooks-ts";
 
 export const MetaDataScreen: React.FC<{

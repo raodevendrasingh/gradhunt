@@ -35,10 +35,10 @@ const screensDesc = [
 	"Tell us a bit about yourself",
 ];
 
-const apiSecret = import.meta.env.VITE_CLOUDINARY_API_SECRET;
-const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
+export const apiSecret = import.meta.env.VITE_CLOUDINARY_API_SECRET;
+export const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
 
-const timestamp = Math.floor(Date.now() / 1000);
+export const timestamp = Math.floor(Date.now() / 1000);
 
 export const UserOnboardingModal = ({
 	isOnboardingModalOpen,
