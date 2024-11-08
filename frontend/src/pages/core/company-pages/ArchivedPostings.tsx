@@ -31,20 +31,22 @@ export default function ArchivedPostings() {
 							<JobCardSkeleton />
 						</>
 					) : jobPosts && jobPosts.length > 0 ? (
-						jobPosts
-							.filter((jobPost) => jobPost.isArchived)
-							.map((jobPost) => (
-								<ManageJobCard key={jobPost.id} jobPost={jobPost} />
-							))
-					) : (
-						<div className="w-full min-h-64">
-							<div className="border rounded-2xl p-5 flex items-center justify-center">
-								<h1 className="text-lg font-semibold text-gray-600">
-									No Job Opportunities Open Yet
-								</h1>
+						jobPosts.filter((jobPost) => jobPost.isArchived).length > 0 ? (
+							jobPosts
+								.filter((jobPost) => jobPost.isArchived)
+								.map((jobPost) => (
+									<ManageJobCard key={jobPost.id} jobPost={jobPost} />
+								))
+						) : (
+							<div className="w-full min-h-64">
+								<div className="border rounded-2xl p-5 flex items-center justify-center">
+									<h1 className="text-lg font-semibold text-gray-600">
+										No Archived Job Posts
+									</h1>
+								</div>
 							</div>
-						</div>
-					)}
+						)
+					) : null}
 				</div>
 			</div>
 		</div>

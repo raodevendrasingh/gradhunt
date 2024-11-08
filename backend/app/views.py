@@ -878,8 +878,13 @@ class ManageJobsView(APIView):
         try:
             job_posting = JobPostings.objects.get(jobId__iexact=jobId)
             job_posting.isArchived = request.data.get("isArchived")
+            job_posting.isActive = request.data.get("isActive")
             job_posting.save()
-            return Response({"success": "Job post archived successfully"}, status=status.HTTP_200_OK)
+            if request.data.get("isArchived"):
+                message = "archived"
+            else:
+                message = "unarchived"
+            return Response({"success": f"Job post {message} successfully"}, status=status.HTTP_200_OK)
         except JobPostings.DoesNotExist:
             return Response({"error": "Job not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

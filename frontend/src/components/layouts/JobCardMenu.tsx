@@ -9,9 +9,10 @@ import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
 import { JobPosts } from "@/types/userTypes";
 import { JobPostDeleteDialog } from "@/modal-forms/JobPostDeleteDialog";
 
-const options: Option[] = [
+const initialOptions: Option[] = [
 	{ id: "edit", label: "Edit" },
 	{ id: "archive", label: "Archive" },
+	// { id: "unarchive", label: "Unarchive" },
 	{ id: "delete", label: "Delete" },
 ];
 
@@ -23,10 +24,24 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [showDeleteDailog, setShowDeleteDailog] = useState<boolean>(false);
+	const [options, setOptions] = useState<Option[]>(initialOptions);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const navigate = useNavigate();
 	const { getToken } = useAuth();
+	const pathname = window.location.pathname;
+
+	useEffect(() => {
+		const updatedOptions = initialOptions.map((option) => {
+			if (pathname.includes("archived") && option.id === "archive") {
+				return { ...option, id: "unarchive", label: "Unarchive" };
+			} else if (!pathname.includes("archived") && option.id === "unarchive") {
+				return { ...option, id: "archive", label: "Archive" };
+			}
+			return option;
+		});
+		setOptions(updatedOptions);
+	}, [pathname]);
 
 	const { refetch: refetchJobPosts } = useFetchJobPosts();
 
@@ -59,11 +74,12 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 			if (!token) {
 				throw new Error("User not authorized!");
 			}
-			const archiveUrl = `/api/jobs/manage/${jobPost.jobId.toLowerCase()}`;
+			const url = `/api/jobs/manage/${jobId.toLowerCase()}`;
 			const response = await axios.patch(
-				archiveUrl,
+				url,
 				{
 					isArchived: true,
+					isActive: false,
 				},
 				{
 					headers: {
@@ -75,6 +91,32 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 			console.log(response);
 			refetchJobPosts();
 			toast.success("Job post archived successfully!");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleUnarchiveJobPost = async (jobId: string) => {
+		try {
+			const token = await getToken();
+			if (!token) {
+				throw new Error("User not authorized!");
+			}
+			const url = `/api/jobs/manage/${jobId.toLowerCase()}`;
+			await axios.patch(
+				url,
+				{
+					isArchived: false,
+					isActive: true,
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+			refetchJobPosts();
+			toast.success("Job post Unarchived successfully!");
 		} catch (error) {
 			console.log(error);
 		}
@@ -92,6 +134,8 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 			);
 		} else if (optionId === "archive") {
 			archiveJobPost(jobPost.jobId);
+		} else if (optionId === "unarchive") {
+			handleUnarchiveJobPost(jobPost.jobId);
 		} else if (optionId === "delete") {
 			setShowDeleteDailog(true);
 		}
