@@ -887,7 +887,14 @@ class ManageJobsView(APIView):
 
     @transaction.atomic
     def delete(self, request, jobId):
-        pass
+        try:
+            job_posting = JobPostings.objects.get(jobId__iexact=jobId)
+            job_posting.delete()
+            return Response({"success": "Job post deleted successfully"}, status=status.HTTP_200_OK)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "Job not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListJobPosts(APIView):

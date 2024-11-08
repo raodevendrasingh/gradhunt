@@ -63,7 +63,7 @@ export const ManageJobDetails: React.FC = () => {
 								</div>
 							</div>
 						</div>
-						<JobCardMenu editUrl="edit" />
+						<JobCardMenu jobPost={data} />
 					</div>
 				</div>
 				<div className="flex-1 overflow-y-auto scrollbar-hide">

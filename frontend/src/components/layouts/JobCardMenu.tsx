@@ -6,6 +6,8 @@ import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
+import { JobPosts } from "@/types/userTypes";
+import { JobPostDeleteDialog } from "@/modal-forms/JobPostDeleteDialog";
 
 const options: Option[] = [
 	{ id: "edit", label: "Edit" },
@@ -14,11 +16,10 @@ const options: Option[] = [
 ];
 
 interface JobCardMenuProps {
-	editUrl: string;
-	archiveUrl: string;
+	jobPost: JobPosts;
 }
 
-export default function JobCardMenu({ editUrl, archiveUrl }: JobCardMenuProps) {
+export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [showDeleteDailog, setShowDeleteDailog] = useState<boolean>(false);
@@ -52,12 +53,13 @@ export default function JobCardMenu({ editUrl, archiveUrl }: JobCardMenuProps) {
 		};
 	}, []);
 
-	const archiveJobPost = async () => {
+	const archiveJobPost = async (jobId: string) => {
 		try {
 			const token = await getToken();
 			if (!token) {
 				throw new Error("User not authorized!");
 			}
+			const archiveUrl = `/api/jobs/manage/${jobPost.jobId.toLowerCase()}`;
 			const response = await axios.patch(
 				archiveUrl,
 				{
@@ -85,9 +87,11 @@ export default function JobCardMenu({ editUrl, archiveUrl }: JobCardMenuProps) {
 				: [...prev, optionId]
 		);
 		if (optionId === "edit") {
-			navigate(editUrl);
+			navigate(
+				`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}/edit`
+			);
 		} else if (optionId === "archive") {
-			archiveJobPost();
+			archiveJobPost(jobPost.jobId);
 		} else if (optionId === "delete") {
 			setShowDeleteDailog(true);
 		}
@@ -123,6 +127,12 @@ export default function JobCardMenu({ editUrl, archiveUrl }: JobCardMenuProps) {
 						))}
 					</div>
 				</div>
+			)}
+			{showDeleteDailog && (
+				<JobPostDeleteDialog
+					jobPost={jobPost}
+					setShowDeleteDailog={setShowDeleteDailog}
+				/>
 			)}
 		</div>
 	);

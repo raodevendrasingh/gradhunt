@@ -14,10 +14,7 @@ export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 	return (
 		<div className="border border-gray-200 rounded-2xl p-6 mb-4 bg-gradient-to-br from-gray-50 to-white relative">
 			<div className="absolute top-4 right-4">
-				<JobCardMenu
-					editUrl={`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}/edit`}
-					archiveUrl={`/api/jobs/manage/${jobPost.jobId.toLowerCase()}`}
-				/>
+				<JobCardMenu jobPost={jobPost} />
 			</div>
 
 			<h2 className="text-2xl font-bold text-gray-800 mb-2">
