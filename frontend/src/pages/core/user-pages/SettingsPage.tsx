@@ -17,6 +17,7 @@ import { useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
 import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
+import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
 
 type FormData = {
 	username: string;
@@ -34,6 +35,7 @@ export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
 	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
 	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
+	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
 	const { user } = useUser();
 
 	const {
@@ -130,6 +132,7 @@ export default function SettingsPage() {
 								</div>
 
 								<Button
+									disabled
 									variant="secondary"
 									className="rounded-lg w-24 py-2"
 									onClick={() => setShowEmailDialog(true)}
@@ -147,11 +150,19 @@ export default function SettingsPage() {
 									</p>
 								</div>
 								{user?.passwordEnabled ? (
-									<Button variant="secondary" className="rounded-lg w-24 py-2">
+									<Button
+										variant="secondary"
+										className="rounded-lg w-24 py-2"
+										onClick={() => setShowPasswordDialog(true)}
+									>
 										Update
 									</Button>
 								) : (
-									<Button variant="secondary" className="rounded-lg w-24 py-2">
+									<Button
+										disabled
+										variant="secondary"
+										className="rounded-lg w-24 py-2"
+									>
 										Create
 									</Button>
 								)}
@@ -351,16 +362,13 @@ export default function SettingsPage() {
 				</div>
 			</div>
 			{showUsernameDialog && (
-				<UsernameUpdateDialog
-					setShowUsernameDialog={setShowUsernameDialog}
-					onSave={() => setShowUsernameDialog(false)}
-				/>
+				<UsernameUpdateDialog setShowUsernameDialog={setShowUsernameDialog} />
 			)}
 			{showEmailDialog && (
-				<EmailUpdateDialog
-					setShowEmailDialog={setShowEmailDialog}
-					onSave={() => setShowEmailDialog(false)}
-				/>
+				<EmailUpdateDialog setShowEmailDialog={setShowEmailDialog} />
+			)}
+			{showPasswordDialog && (
+				<PasswordUpdateDialog setShowPasswordDialog={setShowPasswordDialog} />
 			)}
 		</div>
 	);

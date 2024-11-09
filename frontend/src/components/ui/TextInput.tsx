@@ -66,7 +66,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 		</div>
 
 		{error && (
-			<span className="text-red-500 text-sm mt-1 pl-2" role="alert">
+			<span className="text-red-500 text-xs mt-1 pl-2" role="alert">
 				{error}
 			</span>
 		)}

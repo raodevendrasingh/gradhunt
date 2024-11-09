@@ -20,8 +20,7 @@ type EmailForm = {
 
 export const EmailUpdateDialog: React.FC<{
 	setShowEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	onSave: () => void;
-}> = ({ setShowEmailDialog, onSave }) => {
+}> = ({ setShowEmailDialog }) => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const { getToken } = useAuth();
 	const { user, isSignedIn } = useUser();
@@ -106,12 +105,12 @@ export const EmailUpdateDialog: React.FC<{
 		if (isValid && user) {
 			try {
 				setIsSubmitting(true);
-				
+
 				// Check if email already exists for user
 				const existingEmail = user.emailAddresses.find(
 					(e) => e.emailAddress === email
 				);
-				
+
 				if (existingEmail) {
 					toast.error("This email is already associated with your account");
 					return;
@@ -135,7 +134,7 @@ export const EmailUpdateDialog: React.FC<{
 
 				setSlideDirection(1);
 				setCurrentScreen((prev) => prev + 1);
-				
+
 				toast.success("Verification code sent to your email");
 			} catch (error: any) {
 				if (error.errors?.[0]?.message) {
@@ -178,7 +177,6 @@ export const EmailUpdateDialog: React.FC<{
 
 				toast.success("Email updated successfully");
 				setShowEmailDialog(false);
-				onSave();
 			} else {
 				toast.error("Invalid verification code");
 			}
@@ -238,10 +236,7 @@ export const EmailUpdateDialog: React.FC<{
 												<Button
 													type="button"
 													onClick={handleNext}
-													disabled={
-														isCheckingEmail ||
-														!isValidEmail(email)
-													}
+													disabled={isCheckingEmail || !isValidEmail(email)}
 													className="flex w-full items-center justify-center gap-2 text-sm px-4 py-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 												>
 													Verify Email <HiMiniChevronRight className="size-5" />

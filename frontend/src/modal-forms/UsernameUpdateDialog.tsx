@@ -20,8 +20,8 @@ type UsernameForm = {
 
 export const UsernameUpdateDialog: React.FC<{
 	setShowUsernameDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	onSave: () => void;
-}> = ({ setShowUsernameDialog, onSave }) => {
+
+}> = ({ setShowUsernameDialog }) => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const { getToken } = useAuth();
 	const { user, isSignedIn } = useUser();
@@ -91,10 +91,8 @@ export const UsernameUpdateDialog: React.FC<{
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			// console.log(response.data);
 			toast.success("Username updated successfully");
 			setShowUsernameDialog(false);
-			onSave();
 		} catch (error: any) {
 			toast.error("Error occured while updating username. Try again!");
 			if (error.response) {
