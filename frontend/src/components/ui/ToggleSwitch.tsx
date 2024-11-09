@@ -15,6 +15,7 @@ interface ToggleSwitchProps {
 	defaultValue?: boolean;
     disabled?: boolean;
 	validationRules?: ValidationRules;
+    onChange?: (value: boolean) => void;
 }
 
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
@@ -27,16 +28,16 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 	defaultValue = false,
     disabled = false,
     validationRules,
+    onChange
 }) => {
 	const {
-		field: { onChange, value },
+		field: { onChange: fieldOnChange, value },
 	} = useController({
 		name,
 		control,
 		defaultValue,
 	});
 
-	// Ensure the value reflects the defaultValue when disabled
 	const currentValue = disabled ? defaultValue : value;
 
 	return (
@@ -45,7 +46,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 				<span className="text-gray-500">{icon}</span>
 				<div className="flex flex-col">
 					<span className="text-sm font-medium text-gray-800">{label}</span>
-					<span className="text-xs font-normal text-gray-800">{helptext}</span>
+					<span className="text-xs font-normal text-gray-700">{helptext}</span>
 				</div>
 			</div>
 			<label className="relative inline-flex items-center cursor-pointer ml-3">
@@ -53,12 +54,15 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 					{...register(name, validationRules)}
 					type="checkbox"
 					className="sr-only peer"
-					checked={currentValue} // Use currentValue instead of value
+					checked={currentValue}
 					disabled={disabled}
 					onChange={(e) => {
-						if (!disabled) { // Prevent state change if disabled
+						if (!disabled) {
 							const newValue = e.target.checked;
-							onChange(newValue);
+							fieldOnChange(newValue); 
+							if (onChange) {
+								onChange(newValue);
+							}
 						}
 					}}
 				/>

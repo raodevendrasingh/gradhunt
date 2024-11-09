@@ -13,7 +13,7 @@ class UserDetails(models.Model):
     bio = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=60, null=True, blank=True)
     isProfileActivated = models.BooleanField(default=False)
-    isProfilePublic = models.BooleanField(default=False)
+    isProfilePrivate = models.BooleanField(default=False)
     isVerified = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
     isCompanyAdmin = models.BooleanField(default=False)

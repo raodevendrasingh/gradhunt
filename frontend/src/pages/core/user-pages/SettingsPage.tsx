@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
 	FiUser,
@@ -7,19 +7,21 @@ import {
 	FiBell,
 	FiAlertTriangle,
 	FiBriefcase,
-	FiGlobe,
 	FiTrash2,
 	FiPower,
 	FiDollarSign,
 } from "react-icons/fi";
+import { BsPersonLock } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
 import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
 import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
+import { toast } from "sonner";
+import axios from "axios";
 
 type FormData = {
 	username: string;
@@ -38,7 +40,9 @@ export default function SettingsPage() {
 	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
 	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
 	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
+	const [isToggling, setIsToggling] = useState<boolean>(false);
 	const { user } = useUser();
+	const { getToken } = useAuth();
 
 	const {
 		register,
@@ -67,11 +71,31 @@ export default function SettingsPage() {
 		},
 	];
 
-	console.log(user?.verifiedExternalAccounts);
-	console.log(user?.externalAccounts);
-	console.log(user?.primaryEmailAddress);
-
-	console.log(user?.emailAddresses);
+	const handleToggleProfileVisibility = async (value: boolean) => {
+		setIsToggling(true);
+		try {
+			const token = await getToken();
+			if (!token) {
+				throw new Error("User Unauthorized");
+			}
+			const formData = {
+				isProfilePrivate: value,
+			};
+			const url = "/api/users/visibility";
+			await axios.patch(url, formData, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			toast.success("Profile visibility updated successfully");
+		} catch (error: any) {
+			toast.error("Failed to update profile visibility");
+			console.log(error.response);
+		} finally {
+			setIsToggling(false);
+		}
+	};
 
 	return (
 		<div className="flex h-full bg-gray-50">
@@ -158,9 +182,12 @@ export default function SettingsPage() {
 							<ToggleSwitch
 								control={control}
 								register={register}
-								icon={<FiGlobe />}
+								icon={<BsPersonLock className="h-5 w-5" />}
 								label="Make Profile Private"
 								name="makeProfilePrivate"
+								helptext="Handle profile visibility. If turned on, only you can see your profile"
+								disabled={isToggling}
+								onChange={handleToggleProfileVisibility}
 							/>
 							{user?.passwordEnabled ? (
 								<ToggleSwitch

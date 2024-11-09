@@ -44,6 +44,7 @@ urlpatterns = [
 
     path('api/users', AddUserData.as_view(), name='add-user-data'),
     path('api/users/onboarding/', OnboardUser.as_view(), name='onboard-user'),
+    path('api/users/visibility', SwitchUserVisibility.as_view(), name='switch-user-visibility'),
     path('api/users/profile-image',
          SetImageUrl.as_view(), name='set-profile-image'),
 

@@ -188,6 +188,23 @@ class OnboardUser(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
+class SwitchUserVisibility(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def patch(self, request):
+        user = UserDetails.objects.get(
+            clerk_user_id=request.user.clerk_user_id)
+        isProfilePrivate = request.data.get('isProfilePrivate')
+
+        if not isProfilePrivate:
+            return Response({'error': 'isProfilePrivate field is required'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user.isProfilePrivate = isProfilePrivate
+            user.save()
+
+        return Response({'message': 'User visibility updated successfully'}, status=status.HTTP_200_OK)
+
+
 class SaveUserDescription(APIView):
     @transaction.atomic
     def post(self, request):
