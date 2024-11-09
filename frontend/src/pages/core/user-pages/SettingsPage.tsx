@@ -2,16 +2,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
-	FiUser,
 	FiCreditCard,
 	FiBell,
-	FiAlertTriangle,
-	FiBriefcase,
 	FiTrash2,
-	FiPower,
 	FiDollarSign,
 } from "react-icons/fi";
 import { BsPersonLock } from "react-icons/bs";
+import { HiOutlineUserCircle } from "react-icons/hi2";
+import { MdOutlineDangerous, MdAccountBalance } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -59,13 +57,13 @@ export default function SettingsPage() {
 	};
 
 	const sections = [
-		{ id: "profile", icon: <FiUser />, label: "Profile" },
-		{ id: "career", icon: <FiBriefcase />, label: "Career" },
+		{ id: "profile", icon: <HiOutlineUserCircle className="h-5 w-5" />, label: "Profile" },
+		{ id: "account", icon: <MdAccountBalance />, label: "Account" },
 		{ id: "subscription", icon: <FiCreditCard />, label: "Subscription" },
 		{ id: "notifications", icon: <FiBell />, label: "Notifications" },
 		{
 			id: "danger",
-			icon: <FiAlertTriangle />,
+			icon: <MdOutlineDangerous />,
 			label: "Danger Zone",
 			danger: true,
 		},
@@ -107,7 +105,7 @@ export default function SettingsPage() {
 				<div className="w-full space-y-6">
 					<section id="profile" className="bg-white shadow-sm rounded-lg p-6">
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
-							<FiUser className="mr-2" /> Profile
+							<HiOutlineUserCircle className="mr-2 h-6 w-6" /> Profile
 						</h2>
 						<HandleProfilePictureUpdate />
 						<div className="space-y-4">
@@ -144,7 +142,7 @@ export default function SettingsPage() {
 									Update
 								</Button>
 							</div>
-							<div className="flex items-center justify-between py-4 border-b border-gray-200">
+							<div className="flex items-center justify-between py-4 border-gray-200">
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Password
@@ -176,7 +174,7 @@ export default function SettingsPage() {
 
 					<section id="career" className="bg-white shadow-sm rounded-lg p-6">
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
-							<FiBriefcase className="mr-2" /> Career and Privacy
+							<MdAccountBalance className="mr-2" /> Account
 						</h2>
 						<div className="space-y-4">
 							<ToggleSwitch
@@ -211,10 +209,7 @@ export default function SettingsPage() {
 								/>
 							)}
 
-							<div
-								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
-                                            py-4 border-b border-gray-200"
-							>
+							<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between py-4">
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Company Profile
@@ -260,10 +255,7 @@ export default function SettingsPage() {
 								</Button>
 							</div>
 
-							<div
-								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
-                                            py-4 border-b border-gray-200"
-							>
+							<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between py-4">
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
 										Payment Method
@@ -295,13 +287,6 @@ export default function SettingsPage() {
 								control={control}
 								register={register}
 								icon={<FiBell />}
-								label="Push Notifications"
-								name="pushNotifications"
-							/>
-							<ToggleSwitch
-								control={control}
-								register={register}
-								icon={<FiBell />}
 								label="Web Notifications"
 								name="webNotifications"
 							/>
@@ -317,50 +302,24 @@ export default function SettingsPage() {
 
 					<section id="danger" className="bg-white shadow-sm rounded-lg p-6">
 						<h2 className="text-lg font-semibold mb-6 text-red-500 flex items-center">
-							<FiAlertTriangle className="mr-2" /> Danger Zone
+							<MdOutlineDangerous className="mr-2 h-6 w-6" /> Danger Zone
 						</h2>
-						<div className="space-y-4">
-							<div
-								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
-                                            py-4 border-b border-gray-200"
-							>
-								<div>
-									<h3 className="text-sm font-medium text-gray-800">
-										Deactivate Account
-									</h3>
-									<p className="text-sm text-gray-500">
-										Temporarily disable your account and hide your profile
-									</p>
-								</div>
-								<Button
-									icon={<FiPower />}
-									variant="danger"
-									className="rounded-lg w-32 py-2"
-								>
-									Deactivate
-								</Button>
+						<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between py-4">
+							<div>
+								<h3 className="text-sm font-medium text-gray-800">
+									Delete Account
+								</h3>
+								<p className="text-sm text-gray-500">
+									Permanently remove your account and all associated data
+								</p>
 							</div>
-
-							<div
-								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
-                                            py-4 border-b border-gray-200"
+							<Button
+								icon={<FiTrash2 />}
+								variant="danger"
+								className="rounded-lg w-32 py-2"
 							>
-								<div>
-									<h3 className="text-sm font-medium text-gray-800">
-										Delete Account
-									</h3>
-									<p className="text-sm text-gray-500">
-										Permanently remove your account and all associated data
-									</p>
-								</div>
-								<Button
-									icon={<FiTrash2 />}
-									variant="danger"
-									className="rounded-lg w-32 py-2"
-								>
-									Delete
-								</Button>
-							</div>
+								Delete
+							</Button>
 						</div>
 					</section>
 				</div>
