@@ -13,6 +13,7 @@ interface ToggleSwitchProps {
     register: UseFormRegister<any>;
 	icon: React.ReactNode;
 	defaultValue?: boolean;
+    disabled?: boolean;
 	validationRules?: ValidationRules;
 }
 
@@ -24,6 +25,7 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 	icon,
     register,
 	defaultValue = false,
+    disabled = false,
     validationRules,
 }) => {
 	const {
@@ -33,6 +35,9 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 		control,
 		defaultValue,
 	});
+
+	// Ensure the value reflects the defaultValue when disabled
+	const currentValue = disabled ? defaultValue : value;
 
 	return (
 		<div className="flex items-center justify-between py-4 border-b border-gray-200 last:border-b-0">
@@ -45,16 +50,19 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 			</div>
 			<label className="relative inline-flex items-center cursor-pointer ml-3">
 				<input
-                {...register(name, validationRules)}
+					{...register(name, validationRules)}
 					type="checkbox"
 					className="sr-only peer"
-					checked={value}
+					checked={currentValue} // Use currentValue instead of value
+					disabled={disabled}
 					onChange={(e) => {
-						const newValue = e.target.checked;
-						onChange(newValue);
+						if (!disabled) { // Prevent state change if disabled
+							const newValue = e.target.checked;
+							onChange(newValue);
+						}
 					}}
 				/>
-				<div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-700"></div>
+				<div className={`w-11 h-6 ${disabled ? 'bg-gray-300' : 'bg-gray-200'} rounded-full peer ${currentValue ? 'peer-checked:bg-gray-700' : ''} peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all ${disabled ? 'cursor-not-allowed' : 'peer-checked:after:translate-x-full'}`}></div>
 			</label>
 		</div>
 	);

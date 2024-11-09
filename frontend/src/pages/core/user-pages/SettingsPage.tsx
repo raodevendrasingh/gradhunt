@@ -12,12 +12,14 @@ import {
 	FiPower,
 	FiDollarSign,
 } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
 import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
 import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
+import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 
 type FormData = {
 	username: string;
@@ -52,34 +54,6 @@ export default function SettingsPage() {
 		}
 	};
 
-	const ToggleSwitch: React.FC<{
-		label: string;
-		name: keyof FormData;
-		icon: React.ReactNode;
-	}> = ({ label, name, icon }) => (
-		<div className="flex items-center justify-between py-4 border-b border-gray-200 last:border-b-0">
-			<div className="flex items-center space-x-3">
-				<span className="text-gray-500">{icon}</span>
-				<span className="text-sm font-medium text-gray-800">{label}</span>
-			</div>
-			<Controller
-				name={name}
-				control={control}
-				render={({ field: { value, ...field } }) => (
-					<label className="relative inline-flex items-center cursor-pointer">
-						<input
-							type="checkbox"
-							className="sr-only peer"
-							checked={(value as boolean) || false}
-							{...field}
-						/>
-						<div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gray-700"></div>
-					</label>
-				)}
-			/>
-		</div>
-	);
-
 	const sections = [
 		{ id: "profile", icon: <FiUser />, label: "Profile" },
 		{ id: "career", icon: <FiBriefcase />, label: "Career" },
@@ -92,6 +66,12 @@ export default function SettingsPage() {
 			danger: true,
 		},
 	];
+
+	console.log(user?.verifiedExternalAccounts);
+	console.log(user?.externalAccounts);
+	console.log(user?.primaryEmailAddress);
+
+	console.log(user?.emailAddresses);
 
 	return (
 		<div className="flex h-full bg-gray-50">
@@ -176,15 +156,33 @@ export default function SettingsPage() {
 						</h2>
 						<div className="space-y-4">
 							<ToggleSwitch
+								control={control}
+								register={register}
 								icon={<FiGlobe />}
 								label="Make Profile Private"
 								name="makeProfilePrivate"
 							/>
-							<ToggleSwitch
-								icon={<FiGlobe />}
-								label="Connect Google Account"
-								name="connectGoogleAccount"
-							/>
+							{user?.passwordEnabled ? (
+								<ToggleSwitch
+									disabled={true}
+									defaultValue={false}
+									control={control}
+									register={register}
+									icon={<FcGoogle className="h-5 w-5" />}
+									label="Connect Google Account"
+									name="connectGoogleAccount"
+								/>
+							) : (
+								<ToggleSwitch
+									disabled={true}
+									defaultValue={true}
+									control={control}
+									register={register}
+									icon={<FcGoogle className="h-5 w-5" />}
+									label="Connect Google Account"
+									name="connectGoogleAccount"
+								/>
+							)}
 
 							<div
 								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
@@ -267,16 +265,22 @@ export default function SettingsPage() {
 						</h2>
 						<div className="space-y-2">
 							<ToggleSwitch
+								control={control}
+								register={register}
 								icon={<FiBell />}
 								label="Push Notifications"
 								name="pushNotifications"
 							/>
 							<ToggleSwitch
+								control={control}
+								register={register}
 								icon={<FiBell />}
 								label="Web Notifications"
 								name="webNotifications"
 							/>
 							<ToggleSwitch
+								control={control}
+								register={register}
 								icon={<FiBell />}
 								label="Email Notifications"
 								name="emailNotifications"
