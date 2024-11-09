@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
+import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
 
 type FormData = {
 	username: string;
@@ -32,6 +33,7 @@ type FormData = {
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
 	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
+	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
 	const { user } = useUser();
 
 	const {
@@ -127,7 +129,11 @@ export default function SettingsPage() {
 									</p>
 								</div>
 
-								<Button variant="secondary" className="rounded-lg w-24 py-2">
+								<Button
+									variant="secondary"
+									className="rounded-lg w-24 py-2"
+									onClick={() => setShowEmailDialog(true)}
+								>
 									Update
 								</Button>
 							</div>
@@ -348,6 +354,12 @@ export default function SettingsPage() {
 				<UsernameUpdateDialog
 					setShowUsernameDialog={setShowUsernameDialog}
 					onSave={() => setShowUsernameDialog(false)}
+				/>
+			)}
+			{showEmailDialog && (
+				<EmailUpdateDialog
+					setShowEmailDialog={setShowEmailDialog}
+					onSave={() => setShowEmailDialog(false)}
 				/>
 			)}
 		</div>

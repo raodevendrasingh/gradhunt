@@ -63,6 +63,39 @@ class UpdateUsernameView(APIView):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CheckEmailView(APIView):
+    def get(self, request):
+        email = request.query_params.get('email')
+        if not email:
+            return Response({'error': 'Missing email parameter.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        exists = UserDetails.objects.filter(email__iexact=email).exists()
+        if not exists:
+            message = "This email is available!"
+        else:
+            message = "This email is already registered"
+        return Response({'exists': exists, 'message': message})
+
+
+class UpdateEmailView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def patch(self, request):
+        try:
+            new_email = request.data.get('email')
+            if not new_email:
+                return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
+            user_details = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            user_details.email = new_email
+            user_details.save()
+            return Response({'message': 'Email updated successfully'}, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class GetCompletionPercentage(APIView):
     permission_classes = [IsClerkAuthenticated]
 

@@ -37,6 +37,10 @@ urlpatterns = [
          CheckUsernameView.as_view(), name='check-username'),
     path('api/users/username',
          UpdateUsernameView.as_view(), name='update-username'),
+    path('api/users/check-email/',
+         CheckEmailView.as_view(), name='check-username'),
+    path('api/users/email',
+         UpdateEmailView.as_view(), name='update-username'),
 
     path('api/users', AddUserData.as_view(), name='add-user-data'),
     path('api/users/onboarding/', OnboardUser.as_view(), name='onboard-user'),
