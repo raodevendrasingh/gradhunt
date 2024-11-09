@@ -196,13 +196,37 @@ class SwitchUserVisibility(APIView):
             clerk_user_id=request.user.clerk_user_id)
         isProfilePrivate = request.data.get('isProfilePrivate')
 
-        if isProfilePrivate is None:            
+        if isProfilePrivate is None:
             return Response({'error': 'isProfilePrivate field is required'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             user.isProfilePrivate = isProfilePrivate
             user.save()
 
         return Response({'message': 'User visibility updated successfully'}, status=status.HTTP_200_OK)
+
+
+class ToggleNotifications(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def patch(self, request):
+        user = UserDetails.objects.get(
+            clerk_user_id=request.user.clerk_user_id)
+        notificationType = request.query_params.get('notificationType')
+        isNotificationEnabled = request.data.get('isNotificationEnabled')
+
+        if isNotificationEnabled is None:
+            return Response({'error': 'isNotificationEnabled field is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if notificationType is None:
+            return Response({'error': 'notificationType param is required'}, status=status.HTTP_400_BAD_REQUEST)
+        elif notificationType == 'web':
+            user.isWebNotificationEnabled = isNotificationEnabled
+            user.save()
+        elif notificationType == 'email':
+            user.isEmailNotificationEnabled = isNotificationEnabled
+            user.save()
+
+        return Response({'message': 'Notifications updated successfully'}, status=status.HTTP_200_OK)
 
 
 class SaveUserDescription(APIView):

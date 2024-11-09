@@ -10,12 +10,12 @@ interface ToggleSwitchProps {
 	helptext?: string;
 	control: Control<any>;
 	name: string;
-    register: UseFormRegister<any>;
+	register: UseFormRegister<any>;
 	icon: React.ReactNode;
 	defaultValue?: boolean;
-    disabled?: boolean;
+	disabled?: boolean;
 	validationRules?: ValidationRules;
-    onChange?: (value: boolean) => void;
+	onChange?: (value: boolean) => void;
 }
 
 export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
@@ -24,11 +24,11 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 	name,
 	control,
 	icon,
-    register,
+	register,
 	defaultValue = false,
-    disabled = false,
-    validationRules,
-    onChange
+	disabled = false,
+	validationRules,
+	onChange,
 }) => {
 	const {
 		field: { onChange: fieldOnChange, value },
@@ -59,14 +59,16 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
 					onChange={(e) => {
 						if (!disabled) {
 							const newValue = e.target.checked;
-							fieldOnChange(newValue); 
+							fieldOnChange(newValue);
 							if (onChange) {
 								onChange(newValue);
 							}
 						}
 					}}
 				/>
-				<div className={`w-11 h-6 ${disabled ? 'bg-gray-300' : 'bg-gray-200'} rounded-full peer ${currentValue ? 'peer-checked:bg-gray-700' : ''} peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all ${disabled ? 'cursor-not-allowed' : 'peer-checked:after:translate-x-full'}`}></div>
+				<div
+					className={`w-11 h-6 ${disabled ? "bg-gray-300" : "bg-gray-200"} rounded-full peer ${currentValue ? "peer-checked:bg-gray-700" : ""} peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all ${disabled ? "cursor-not-allowed peer-checked:bg-gray-400" : "peer-checked:after:translate-x-full"}`}
+				></div>
 			</label>
 		</div>
 	);

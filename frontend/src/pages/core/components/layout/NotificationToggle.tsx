@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react";
-import { BsPersonLock } from "react-icons/bs";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
 
-export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
+export const NotificationToggle = ({
+	defaultValue = false,
+	notificationType,
+	label,
+	icon,
+}: {
+	defaultValue?: boolean;
+	notificationType: string;
+	label: string;
+	icon: React.ReactNode;
+}) => {
 	const [isToggling, setIsToggling] = useState<boolean>(false);
 	const [currentValue, setCurrentValue] = useState<boolean>(defaultValue);
 	const { getToken } = useAuth();
 
 	const { control, register } = useForm({
 		defaultValues: {
-			makeProfilePrivate: defaultValue,
+			webNotification: defaultValue,
 		},
 	});
 
@@ -21,7 +30,7 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
 		setCurrentValue(defaultValue);
 	}, [defaultValue]);
 
-	const handleToggleProfileVisibility = async () => {
+	const handleNotificationToggle = async () => {
 		const newValue = !currentValue;
 		setIsToggling(true);
 		try {
@@ -30,9 +39,10 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
 				throw new Error("User Unauthorized");
 			}
 			const formData = {
-				isProfilePrivate: newValue,
+				isNotificationEnabled: newValue,
 			};
-			const url = "/api/users/visibility";
+			const url =
+				"/api/users/notification/?notificationType=" + notificationType;
 			await axios.patch(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -41,9 +51,11 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
 			});
 
 			setCurrentValue(newValue);
-			toast.success("Profile visibility updated successfully");
-		} catch (error: any) {
-			toast.error("Failed to update profile visibility");
+			toast.success(
+				`${notificationType.charAt(0).toUpperCase() + notificationType.slice(1)} Notification settings updated successfully`
+			);
+		} catch (error) {
+			toast.error(`Failed to update ${notificationType} notification settings`);
 		} finally {
 			setIsToggling(false);
 		}
@@ -53,13 +65,12 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
 		<ToggleSwitch
 			control={control}
 			register={register}
-			icon={<BsPersonLock className="h-5 w-5" />}
-			label="Make Profile Private"
-			name="makeProfilePrivate"
-			helptext="Handle profile visibility. If turned on, only you can see your profile"
+			icon={icon}
+			label={label}
+			name="webNotification"
 			disabled={isToggling}
 			defaultValue={currentValue}
-			onChange={handleToggleProfileVisibility}
+			onChange={handleNotificationToggle}
 		/>
 	);
 };

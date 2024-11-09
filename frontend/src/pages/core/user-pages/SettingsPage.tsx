@@ -1,9 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { FiCreditCard, FiBell, FiTrash2, FiDollarSign } from "react-icons/fi";
+import {
+	FiCreditCard,
+	FiBell,
+	FiTrash2,
+	FiDollarSign,
+	FiGlobe,
+} from "react-icons/fi";
 import { HiOutlineUserCircle } from "react-icons/hi2";
-import { MdOutlineDangerous, MdAccountBalance } from "react-icons/md";
+import {
+	MdOutlineDangerous,
+	MdAccountBalance,
+	MdAlternateEmail,
+} from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/clerk-react";
@@ -14,18 +24,7 @@ import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityToggle";
-
-type FormData = {
-	username: string;
-	email: string;
-	password: string;
-	makeProfilePrivate: boolean;
-	makeSpecialProfilePrivate: boolean;
-	connectGoogleAccount: boolean;
-	pushNotifications: boolean;
-	webNotifications: boolean;
-	emailNotifications: boolean;
-};
+import { NotificationToggle } from "../components/layout/NotificationToggle";
 
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
@@ -212,7 +211,7 @@ export default function SettingsPage() {
 								</div>
 								<Button
 									className="rounded-lg bg-sky-100 hover:bg-blue-100 w-32 py-2"
-                                    variant="secondary"
+									variant="secondary"
 								>
 									{userData.plan}
 								</Button>
@@ -265,19 +264,17 @@ export default function SettingsPage() {
 							<FiBell className="mr-2" /> Notifications
 						</h2>
 						<div className="space-y-2">
-							<ToggleSwitch
-								control={control}
-								register={register}
-								icon={<FiBell />}
+							<NotificationToggle
 								label="Web Notifications"
-								name="webNotifications"
+								icon={<FiGlobe />}
+								defaultValue={userData.isWebNotificationEnabled}
+								notificationType="web"
 							/>
-							<ToggleSwitch
-								control={control}
-								register={register}
-								icon={<FiBell />}
+							<NotificationToggle
 								label="Email Notifications"
-								name="emailNotifications"
+								icon={<MdAlternateEmail />}
+								defaultValue={userData.isEmailNotificationEnabled}
+								notificationType="email"
 							/>
 						</div>
 					</section>
@@ -334,7 +331,10 @@ export default function SettingsPage() {
 				</div>
 			</div>
 			{showUsernameDialog && (
-				<UsernameUpdateDialog setShowUsernameDialog={setShowUsernameDialog} currentUsername={userData.username}/>
+				<UsernameUpdateDialog
+					setShowUsernameDialog={setShowUsernameDialog}
+					currentUsername={userData.username}
+				/>
 			)}
 			{showEmailDialog && (
 				<EmailUpdateDialog
