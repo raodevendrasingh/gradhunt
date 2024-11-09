@@ -2,20 +2,18 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FiCreditCard, FiBell, FiTrash2, FiDollarSign } from "react-icons/fi";
-import { BsPersonLock } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { MdOutlineDangerous, MdAccountBalance } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
 import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
 import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
 import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
-import { toast } from "sonner";
-import axios from "axios";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityToggle";
 
 type FormData = {
 	username: string;
@@ -34,17 +32,15 @@ export default function SettingsPage() {
 	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
 	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
 	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
-	const [isToggling, setIsToggling] = useState<boolean>(false);
 	const { user } = useUser();
-	const { getToken } = useAuth();
 
-	const {
-		register,
-		control,
-		formState: { errors },
-	} = useForm<FormData>();
+	const { register, control } = useForm<FormData>();
 
 	const { data: currentUser } = useFetchUserData();
+
+	if (!currentUser) return null;
+
+	console.log(currentUser?.isProfilePrivate);
 
 	const scrollToSection = (sectionId: string) => {
 		setActiveSection(sectionId);
@@ -70,32 +66,6 @@ export default function SettingsPage() {
 			danger: true,
 		},
 	];
-
-	const handleToggleProfileVisibility = async (value: boolean) => {
-		setIsToggling(true);
-		try {
-			const token = await getToken();
-			if (!token) {
-				throw new Error("User Unauthorized");
-			}
-			const formData = {
-				isProfilePrivate: value,
-			};
-			const url = "/api/users/visibility";
-			await axios.patch(url, formData, {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			toast.success("Profile visibility updated successfully");
-		} catch (error: any) {
-			toast.error("Failed to update profile visibility");
-			console.log(error.response);
-		} finally {
-			setIsToggling(false);
-		}
-	};
 
 	return (
 		<div className="flex h-full bg-gray-50">
@@ -179,15 +149,8 @@ export default function SettingsPage() {
 							<MdAccountBalance className="mr-2" /> Account
 						</h2>
 						<div className="space-y-4">
-							<ToggleSwitch
-								control={control}
-								register={register}
-								icon={<BsPersonLock className="h-5 w-5" />}
-								label="Make Profile Private"
-								name="makeProfilePrivate"
-								helptext="Handle profile visibility. If turned on, only you can see your profile"
-								disabled={isToggling}
-								onChange={handleToggleProfileVisibility}
+							<ProfileVisibilityToggle
+								defaultValue={currentUser.isProfilePrivate}
 							/>
 							{user?.passwordEnabled ? (
 								<ToggleSwitch

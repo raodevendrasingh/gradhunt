@@ -196,7 +196,7 @@ class SwitchUserVisibility(APIView):
             clerk_user_id=request.user.clerk_user_id)
         isProfilePrivate = request.data.get('isProfilePrivate')
 
-        if not isProfilePrivate:
+        if isProfilePrivate is None:            
             return Response({'error': 'isProfilePrivate field is required'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             user.isProfilePrivate = isProfilePrivate
