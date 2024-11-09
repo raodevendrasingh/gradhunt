@@ -12,12 +12,14 @@ class UserDetails(models.Model):
     email = models.EmailField(max_length=255)
     bio = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=60, null=True, blank=True)
-    isProfileActivated = models.BooleanField(default=False)
     isProfilePrivate = models.BooleanField(default=False)
     isVerified = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True)
+    isWebNotificationEnabled = models.BooleanField(default=True)
+    isEmailNotificationEnabled = models.BooleanField(default=True)
     isCompanyAdmin = models.BooleanField(default=False)
     resumeLink = models.URLField(max_length=512, null=True, blank=True)
+    plan = models.CharField(default="free")
 
     def __str__(self):
         return self.username

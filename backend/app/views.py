@@ -642,8 +642,8 @@ class AddSkillData(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AddUserData(APIView):
-    permission_classes = [IsClerkAuthenticated]
+class ManageUserData(APIView):
+    # permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def post(self, request):
@@ -679,6 +679,15 @@ class AddUserData(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+
+            return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class SetImageUrl(APIView):

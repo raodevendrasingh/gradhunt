@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import {
-	FiCreditCard,
-	FiBell,
-	FiTrash2,
-	FiDollarSign,
-} from "react-icons/fi";
+import { FiCreditCard, FiBell, FiTrash2, FiDollarSign } from "react-icons/fi";
 import { BsPersonLock } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { MdOutlineDangerous, MdAccountBalance } from "react-icons/md";
@@ -20,6 +15,7 @@ import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { toast } from "sonner";
 import axios from "axios";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 type FormData = {
 	username: string;
@@ -48,6 +44,8 @@ export default function SettingsPage() {
 		formState: { errors },
 	} = useForm<FormData>();
 
+	const { data: currentUser } = useFetchUserData();
+
 	const scrollToSection = (sectionId: string) => {
 		setActiveSection(sectionId);
 		const element = document.getElementById(sectionId);
@@ -57,7 +55,11 @@ export default function SettingsPage() {
 	};
 
 	const sections = [
-		{ id: "profile", icon: <HiOutlineUserCircle className="h-5 w-5" />, label: "Profile" },
+		{
+			id: "profile",
+			icon: <HiOutlineUserCircle className="h-5 w-5" />,
+			label: "Profile",
+		},
 		{ id: "account", icon: <MdAccountBalance />, label: "Account" },
 		{ id: "subscription", icon: <FiCreditCard />, label: "Subscription" },
 		{ id: "notifications", icon: <FiBell />, label: "Notifications" },

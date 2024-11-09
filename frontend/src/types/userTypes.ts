@@ -17,13 +17,13 @@ export type UserDetails = {
 	bio: string;
 	location: string;
 	resumeLink: string;
-	followers: number;
-	following: number;
-	isProfileActivated: boolean;
-	isProfilePublic: boolean;
+	isProfilePrivate: boolean;
 	isVerified: boolean;
 	isCompanyAdmin: boolean;
 	createdAt: string;
+	isWebNotificationEnabled: boolean;
+	isEmailNotificationEnabled: boolean;
+	plan: "free" | "pro";
 };
 
 export type RecruiterDetails = {
@@ -344,35 +344,35 @@ export type SavedJobsType = {
 };
 
 export type AppliedJobsType = {
-    id: number;
+	id: number;
 	some(arg0: (savedJob: AppliedJobsType) => boolean): unknown;
-    status: string;
+	status: string;
 	candidates: number;
 	jobPosting: number;
-    appliedDate: Date;
+	appliedDate: Date;
 };
 
 export type Applicant = {
-    jobId: string;
-    isActive: boolean;
-    jobTitle: string;
-    jobType: string;
-    workType: string;
-    jobLocation: string;
-    postedDate: Date;
-    applicationDeadline: Date;
-    openings: number;
-    applicants: {
-        id: number;
-        status: string;
-        appliedDate: Date;
-        candidate: {
-            username: string;
-            firstname: string;
-            lastname: string;
-            email: string;
-            location: string;
-            resumeLink: string;
-        };
-    }[];
+	jobId: string;
+	isActive: boolean;
+	jobTitle: string;
+	jobType: string;
+	workType: string;
+	jobLocation: string;
+	postedDate: Date;
+	applicationDeadline: Date;
+	openings: number;
+	applicants: {
+		id: number;
+		status: string;
+		appliedDate: Date;
+		candidate: {
+			username: string;
+			firstname: string;
+			lastname: string;
+			email: string;
+			location: string;
+			resumeLink: string;
+		};
+	}[];
 };
