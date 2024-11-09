@@ -20,7 +20,8 @@ type EmailForm = {
 
 export const EmailUpdateDialog: React.FC<{
 	setShowEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setShowEmailDialog }) => {
+    currentEmail: string;
+}> = ({ setShowEmailDialog, currentEmail }) => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const { getToken } = useAuth();
 	const { user, isSignedIn } = useUser();
@@ -39,7 +40,7 @@ export const EmailUpdateDialog: React.FC<{
 		formState: { errors },
 	} = useForm<EmailForm>({
 		defaultValues: {
-			email: user?.emailAddresses[0].emailAddress!,
+			email: currentEmail,
 		},
 	});
 

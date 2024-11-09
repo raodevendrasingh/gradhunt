@@ -23,7 +23,7 @@ export type UserDetails = {
 	createdAt: string;
 	isWebNotificationEnabled: boolean;
 	isEmailNotificationEnabled: boolean;
-	plan: "free" | "pro";
+	plan: "Free" | "Pro";
 };
 
 export type RecruiterDetails = {

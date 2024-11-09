@@ -20,8 +20,8 @@ type UsernameForm = {
 
 export const UsernameUpdateDialog: React.FC<{
 	setShowUsernameDialog: React.Dispatch<React.SetStateAction<boolean>>;
-
-}> = ({ setShowUsernameDialog }) => {
+	currentUsername: string;
+}> = ({ setShowUsernameDialog, currentUsername }) => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const { getToken } = useAuth();
 	const { user, isSignedIn } = useUser();
@@ -36,7 +36,7 @@ export const UsernameUpdateDialog: React.FC<{
 		formState: { errors },
 	} = useForm<UsernameForm>({
 		defaultValues: {
-			username: user?.username!,
+			username: currentUsername,
 		},
 	});
 

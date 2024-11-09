@@ -32,7 +32,6 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
             const formData = {
                 isProfilePrivate: newValue
             };
-            console.log("FormData: ", formData);
 
             await axios.patch(
                 "/api/users/visibility",
@@ -45,12 +44,10 @@ export const ProfileVisibilityToggle = ({ defaultValue = false }) => {
                 }
             );
 
-            setCurrentValue(newValue); // Update the current value after successful API call
+            setCurrentValue(newValue);
             toast.success("Profile visibility updated successfully");
         } catch (error: any) {
             toast.error("Failed to update profile visibility");
-            console.error("Profile visibility update error:", error);
-            console.log(error.response);
         } finally {
             setIsToggling(false);
         }

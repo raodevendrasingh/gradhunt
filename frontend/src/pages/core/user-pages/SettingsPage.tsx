@@ -36,11 +36,9 @@ export default function SettingsPage() {
 
 	const { register, control } = useForm<FormData>();
 
-	const { data: currentUser } = useFetchUserData();
+	const { data: userData } = useFetchUserData();
 
-	if (!currentUser) return null;
-
-	console.log(currentUser?.isProfilePrivate);
+	if (!userData) return null;
 
 	const scrollToSection = (sectionId: string) => {
 		setActiveSection(sectionId);
@@ -150,7 +148,7 @@ export default function SettingsPage() {
 						</h2>
 						<div className="space-y-4">
 							<ProfileVisibilityToggle
-								defaultValue={currentUser.isProfilePrivate}
+								defaultValue={userData.isProfilePrivate}
 							/>
 							{user?.passwordEnabled ? (
 								<ToggleSwitch
@@ -200,6 +198,25 @@ export default function SettingsPage() {
 							<FiCreditCard className="mr-2" /> Subscription
 						</h2>
 						<div className="space-y-4">
+							<div
+								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
+                                            py-4 border-b border-gray-200"
+							>
+								<div>
+									<h3 className="text-sm font-medium text-gray-800">
+										Current Plan
+									</h3>
+									<p className="text-sm text-gray-500">
+										Limited access to features and capabilities
+									</p>
+								</div>
+								<Button
+									className="rounded-lg bg-sky-100 hover:bg-blue-100 w-32 py-2"
+                                    variant="secondary"
+								>
+									{userData.plan}
+								</Button>
+							</div>
 							<div
 								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
                                             py-4 border-b border-gray-200"
@@ -317,10 +334,13 @@ export default function SettingsPage() {
 				</div>
 			</div>
 			{showUsernameDialog && (
-				<UsernameUpdateDialog setShowUsernameDialog={setShowUsernameDialog} />
+				<UsernameUpdateDialog setShowUsernameDialog={setShowUsernameDialog} currentUsername={userData.username}/>
 			)}
 			{showEmailDialog && (
-				<EmailUpdateDialog setShowEmailDialog={setShowEmailDialog} />
+				<EmailUpdateDialog
+					setShowEmailDialog={setShowEmailDialog}
+					currentEmail={userData.email}
+				/>
 			)}
 			{showPasswordDialog && (
 				<PasswordUpdateDialog setShowPasswordDialog={setShowPasswordDialog} />
