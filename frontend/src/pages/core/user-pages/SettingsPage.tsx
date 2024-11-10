@@ -209,15 +209,26 @@ export default function SettingsPage() {
 										Current Plan
 									</h3>
 									<p className="text-sm text-gray-500">
-										Limited access to features and capabilities
+										{userData.plan === "Free"
+											? "Limited access to features and capabilities"
+											: "Access to premium features and enhanced capabilities"}
 									</p>
 								</div>
-								<Button
-									className="rounded-lg bg-sky-100 hover:bg-blue-100 w-32 py-2"
-									variant="secondary"
-								>
-									{userData.plan}
-								</Button>
+								{userData.plan === "Free" ? (
+									<Button
+										className="rounded-lg bg-gradient-to-tr from-green-100 to-teal-100 text-green-500 w-32 py-2"
+										variant="secondary"
+									>
+										{userData.plan}
+									</Button>
+								) : (
+									<Button
+										className="rounded-lg bg-gradient-to-tr from-yellow-100 to-orange-100 text-orange-500 w-32 py-2"
+										variant="secondary"
+									>
+										{userData.plan}
+									</Button>
+								)}
 							</div>
 							<div
 								className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between mb-6
@@ -225,17 +236,17 @@ export default function SettingsPage() {
 							>
 								<div>
 									<h3 className="text-sm font-medium text-gray-800">
-										Upgrade Plan
+										Update Plan
 									</h3>
 									<p className="text-sm text-gray-500">
-										Get access to premium features and enhanced capabilities
+										Choose a plan that fits your needs
 									</p>
 								</div>
 								<Button
 									icon={<FiDollarSign />}
 									className="rounded-lg w-32 py-2"
 								>
-									Upgrade
+									Update
 								</Button>
 							</div>
 

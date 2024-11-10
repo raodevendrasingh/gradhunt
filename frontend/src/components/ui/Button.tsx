@@ -31,7 +31,7 @@ export const Button: React.FC<{
 	return (
 		<button
 			type={type}
-			className={`${baseStyles} ${variantStyles[variant]} ${className} disabled:opacity-50 disabled:cursor-not-allowed`}
+			className={` ${className} ${baseStyles} ${variantStyles[variant]} disabled:opacity-50 disabled:cursor-not-allowed`}
 			onClick={onClick}
             disabled={disabled}
 		>

@@ -19,7 +19,7 @@ class UserDetails(models.Model):
     isEmailNotificationEnabled = models.BooleanField(default=True)
     isCompanyAdmin = models.BooleanField(default=False)
     resumeLink = models.URLField(max_length=512, null=True, blank=True)
-    plan = models.CharField(default="free")
+    plan = models.CharField(default="Free")
 
     def __str__(self):
         return self.username
