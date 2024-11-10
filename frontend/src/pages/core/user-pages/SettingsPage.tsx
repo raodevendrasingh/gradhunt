@@ -25,12 +25,15 @@ import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityToggle";
 import { NotificationToggle } from "../components/layout/NotificationToggle";
+import { AccountDeleteModal } from "@/modal-forms/AccountDeleteModal";
 
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
 	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
 	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
 	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
+	const [showAccountDeleteDialog, setShowAccountDeleteDialog] =
+		useState<boolean>(false);
 	const { user } = useUser();
 
 	const { register, control } = useForm<FormData>();
@@ -296,6 +299,7 @@ export default function SettingsPage() {
 								icon={<FiTrash2 />}
 								variant="danger"
 								className="rounded-lg w-32 py-2"
+								onClick={() => setShowAccountDeleteDialog(true)}
 							>
 								Delete
 							</Button>
@@ -344,6 +348,12 @@ export default function SettingsPage() {
 			)}
 			{showPasswordDialog && (
 				<PasswordUpdateDialog setShowPasswordDialog={setShowPasswordDialog} />
+			)}
+
+			{showAccountDeleteDialog && (
+				<AccountDeleteModal
+					setShowAccountDeleteDialog={setShowAccountDeleteDialog}
+				/>
 			)}
 		</div>
 	);

@@ -216,7 +216,7 @@ class ToggleNotifications(APIView):
 
         if isNotificationEnabled is None:
             return Response({'error': 'isNotificationEnabled field is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         if notificationType is None:
             return Response({'error': 'notificationType param is required'}, status=status.HTTP_400_BAD_REQUEST)
         elif notificationType == 'web':
@@ -667,7 +667,7 @@ class AddSkillData(APIView):
 
 
 class ManageUserData(APIView):
-    # permission_classes = [IsClerkAuthenticated]
+    permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
     def post(self, request):
@@ -708,8 +708,16 @@ class ManageUserData(APIView):
         try:
             user = UserDetails.objects.get(
                 clerk_user_id=request.user.clerk_user_id)
-
             return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        except UserDetails.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            user.delete()
+            return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
