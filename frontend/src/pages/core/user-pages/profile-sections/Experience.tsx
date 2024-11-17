@@ -7,10 +7,12 @@ import { useState } from "react";
 import { EditExpModal } from "@/modal-forms/EditExpModal";
 import { AddExpModal } from "@/modal-forms/AddExpModal";
 import { GoUnverified, GoVerified } from "react-icons/go";
+import { VerifyEmploymentModal } from "@/modal-forms/VerifyEmploymentModal";
 
 export const Experience = () => {
 	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
+	const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
 	const [editingExperienceId, setEditingExperienceId] = useState<number>();
 
 	const { isSignedIn } = useUser();
@@ -23,6 +25,10 @@ export const Experience = () => {
 	const handleEditClick = (id: number) => {
 		setEditingExperienceId(id);
 		setShowEditExpModal(true);
+	};
+
+	const handleVerifyEmployment = () => {
+		setShowVerifyModal(true);
 	};
 
 	return (
@@ -47,17 +53,19 @@ export const Experience = () => {
 									className="w-full flex items-start gap-3 bg-white pt-3 rounded-lg"
 								>
 									<div className="flex flex-col gap-1 w-full">
-										<div className="flex items-center justify-between">
+										<div className="flex items-center justify-between group">
 											<span className="text-xl font-semibold text-gray-800">
 												{data.companyName}
 											</span>
 											{isSignedIn && (
 												<span className="flex items-center gap-2">
-                                                    {data.isVerified ? (
-                                                        <GoVerified className="text-sky-500 size-5" />
-                                                    ) : (
-                                                        <GoUnverified className="text-gray-400 hover:text-sky-600 transition-colors cursor-pointer size-5" />
-                                                    )}
+													{data.isVerified ? (
+														<GoVerified className="text-sky-500 size-5" />
+													) : (
+														<button onClick={handleVerifyEmployment}>
+															<GoUnverified className="text-gray-400 transition-colors cursor-pointer size-5 opacity-0 group-hover:opacity-100" />
+														</button>
+													)}
 													<button
 														type="button"
 														onClick={() => handleEditClick(data.id)}
@@ -117,6 +125,9 @@ export const Experience = () => {
 					experienceId={editingExperienceId as number}
 				/>
 			)}
+            {showVerifyModal && (
+                <VerifyEmploymentModal setShowVerifyModal={setShowVerifyModal}/>
+            )}
 		</div>
 	);
 };

@@ -28,6 +28,7 @@ interface TextInputProps {
 	validationRules?: ValidationRules;
 	error?: string;
     className?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -40,6 +41,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	validationRules,
 	error,
     className,
+    onChange,
 }) => (
 	<div className="w-full flex flex-col">
 		{label && (
@@ -62,6 +64,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 				className={`${icon ? "pl-10" : "pl-3"} ${className} w-full py-2.5 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus:ring focus:ring-gray-100 focus:border-gray-500 block transition duration-200 ${
 					error ? "border-red-500 focus:ring-red-100 focus:border-red-500" : ""
 				}`}
+				onChange={onChange}
 			/>
 		</div>
 

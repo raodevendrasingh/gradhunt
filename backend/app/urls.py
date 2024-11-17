@@ -38,14 +38,22 @@ urlpatterns = [
     path('api/users/username',
          UpdateUsernameView.as_view(), name='update-username'),
     path('api/users/check-email/',
-         CheckEmailView.as_view(), name='check-username'),
+         CheckEmailView.as_view(), name='check-email'),
     path('api/users/email',
-         UpdateEmailView.as_view(), name='update-username'),
+         UpdateEmailView.as_view(), name='update-email'),
+
+    path('api/users/send-verification-email',
+         SendVerifyEmailView.as_view(), name='send-verification-email'),
+
+    path('api/users/verify-email',
+         VerifyEmailView.as_view(), name='verify-email'),
 
     path('api/users', ManageUserData.as_view(), name='manage-user-data'),
     path('api/users/onboarding/', OnboardUser.as_view(), name='onboard-user'),
-    path('api/users/visibility', SwitchUserVisibility.as_view(), name='switch-user-visibility'),
-    path('api/users/notification/', ToggleNotifications.as_view(), name='toggle-notifications'),
+    path('api/users/visibility', SwitchUserVisibility.as_view(),
+         name='switch-user-visibility'),
+    path('api/users/notification/', ToggleNotifications.as_view(),
+         name='toggle-notifications'),
     path('api/users/profile-image',
          SetImageUrl.as_view(), name='set-profile-image'),
 

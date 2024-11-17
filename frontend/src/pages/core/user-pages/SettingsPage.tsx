@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
 	FiCreditCard,
 	FiBell,
@@ -26,6 +26,7 @@ import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityToggle";
 import { NotificationToggle } from "../components/layout/NotificationToggle";
 import { AccountDeleteModal } from "@/modal-forms/AccountDeleteModal";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
@@ -35,8 +36,8 @@ export default function SettingsPage() {
 	const [showAccountDeleteDialog, setShowAccountDeleteDialog] =
 		useState<boolean>(false);
 	const { user } = useUser();
-
 	const { register, control } = useForm<FormData>();
+	const navigate = useNavigate();
 
 	const { data: userData } = useFetchUserData();
 
@@ -66,6 +67,14 @@ export default function SettingsPage() {
 			danger: true,
 		},
 	];
+
+	const handleCompanyProfileCreation = () => {
+		if (userData.isVerified) {
+			navigate("/create-company-profile");
+		} else {
+			toast.error("Please verify your current employment to create a company profile!");
+		}
+	};
 
 	return (
 		<div className="flex h-full bg-gray-50">
@@ -183,11 +192,12 @@ export default function SettingsPage() {
 										Create a profile for your company to attract talent
 									</p>
 								</div>
-								<Link to="/create-company-profile">
-									<Button className="rounded-lg w-32 py-2">
-										Create Profile
-									</Button>
-								</Link>
+								<Button
+									className="rounded-lg w-32 py-2"
+									onClick={handleCompanyProfileCreation}
+								>
+									Create Profile
+								</Button>
 							</div>
 						</div>
 					</section>

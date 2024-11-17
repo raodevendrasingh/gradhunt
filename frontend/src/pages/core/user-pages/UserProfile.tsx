@@ -66,7 +66,9 @@ export default function StandardUserProfile(): React.JSX.Element {
 											<span className="flex items-center gap-1">
 												{userDetails?.user_details.firstname}{" "}
 												{userDetails?.user_details.lastname}
-												<RiVerifiedBadgeFill className="w-5 h-5 text-sky-700" />
+												{userDetails?.user_details?.isVerified && (
+													<RiVerifiedBadgeFill className="w-5 h-5 text-sky-700" />
+												)}
 											</span>
 										) : (
 											<div className="flex items-center gap-2">

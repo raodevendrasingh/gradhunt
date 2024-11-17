@@ -1,14 +1,21 @@
+import re
+import os
+import resend
+import random
 import logging
+import dns.resolver
+import traceback
 from .models import *
 from .serializers import *
+from urllib.parse import urlparse
 from django.db import transaction
 from rest_framework import status
 from rest_framework.views import APIView
 from .permission import IsClerkAuthenticated
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
+from .utils.verify_work_email import verify_work_email
 
 
 class HomeView(APIView):
@@ -94,6 +101,146 @@ class UpdateEmailView(APIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SendVerifyEmailView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def generate_otp(self):
+        return str(random.randint(100000, 999999))
+
+    @transaction.atomic
+    def post(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            name = user.firstname
+            current_employment = Experience.objects.get(user=user)
+
+            work_email = request.data.get('email')
+            company_website = request.data.get('website')
+            if not work_email:
+                return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            otp = self.generate_otp()
+            html_content = verify_work_email(name=name, otp=otp)
+
+            resend.api_key = os.environ["RESEND_API_KEY"]
+            default_email = os.getenv('EMAIL_HOST_USER_DEFAULT')
+
+            params = {
+                "from": default_email,
+                "to": work_email,
+                "subject": "Verify Work Email | Gradhunt",
+                "html": html_content,
+            }
+
+            resend.Emails.send(params)
+
+            current_employment.workEmail = work_email
+            current_employment.verificationCode = otp
+            current_employment.companyWebsite = company_website
+            current_employment.save()
+
+            return Response({'message': 'OTP sent successfully'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            traceback.print_exc()
+            return Response({'error': f'Failed to send email: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class VerifyEmailView(APIView):
+    permission_classes = [IsClerkAuthenticated]
+
+    def extract_domain_from_email(self, email):
+        """Extract domain from email address."""
+        try:
+            return email.split('@')[1].lower()
+        except (IndexError, AttributeError):
+            return None
+
+    def extract_domain_from_url(self, url):
+        """Extract domain from URL."""
+        try:
+            # Add https:// if no scheme is present
+            if not url.startswith(('http://', 'https://')):
+                url = 'https://' + url
+            return urlparse(url).netloc.lower()
+        except Exception:
+            return None
+
+    def is_valid_domain(self, domain):
+        """Verify if domain exists using DNS lookup."""
+        try:
+            # Try to resolve the MX records
+            dns.resolver.resolve(domain, 'MX')
+            return True
+        except dns.resolver.NXDOMAIN:
+            # Try A records if MX records don't exist
+            try:
+                dns.resolver.resolve(domain, 'A')
+                return True
+            except dns.resolver.NXDOMAIN:
+                return False
+        except Exception:
+            return False
+
+    def post(self, request):
+        try:
+            user = UserDetails.objects.get(
+                clerk_user_id=request.user.clerk_user_id)
+            current_employment = Experience.objects.get(user=user)
+
+            # Extract domains
+            website_domain = self.extract_domain_from_url(
+                current_employment.companyWebsite)
+            email_domain = self.extract_domain_from_email(
+                current_employment.workEmail)
+
+            if not website_domain or not email_domain:
+                return Response(
+                    {'error': 'Invalid website URL or email format'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Remove 'www.' prefix if present for consistent comparison
+            website_domain = website_domain.replace('www.', '')
+
+            verification_code_array = request.data.get('verificationCode')
+
+            if isinstance(verification_code_array, list):
+                verification_code = ''.join(verification_code_array)
+            else:
+                verification_code = None
+
+            if not verification_code:
+                return Response({'error': 'Verification code is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if verification_code == current_employment.verificationCode:
+                if website_domain != email_domain:
+                    return Response(
+                        {'error': 'Couldn\'t verify email. Please recheck the organization\'s website URL and email domain'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                if not self.is_valid_domain(website_domain):
+                    return Response(
+                        {'error': 'Couldn\'t verify email. Invalid domain'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                current_employment.verificationCode = None
+                current_employment.isVerified = True
+                current_employment.save()
+
+                user.isVerified = True
+                user.save()
+                
+                return Response({'message': 'Email verified successfully'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Invalid verification code'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            traceback.print_exc()
+            return Response({'error': f'Failed to verify work email: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GetCompletionPercentage(APIView):

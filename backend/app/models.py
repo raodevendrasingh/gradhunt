@@ -185,6 +185,7 @@ class SavedJob(models.Model):
 class Experience(models.Model):
     user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
     companyName = models.CharField(max_length=50)
+    workEmail = models.CharField(max_length=50, null=True, blank=True)
     jobTitle = models.CharField(max_length=50)
     jobType = models.CharField(max_length=50)
     startMonth = models.CharField(max_length=20)

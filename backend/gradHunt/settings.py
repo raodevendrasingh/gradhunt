@@ -197,6 +197,19 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Email settings
+
+EMAIL_BACKEND = getenv('EMAIL_BACKEND')
+EMAIL_HOST = getenv('EMAIL_HOST')
+EMAIL_PORT = getenv('EMAIL_PORT')
+EMAIL_USE_TLS = getenv('EMAIL_USE_TLS')
+
+EMAIL_HOST_USER_DEFAULT = getenv('EMAIL_HOST_USER_DEFAULT')
+EMAIL_PASS_USER_DEFAULT = getenv('EMAIL_PASS_USER_DEFAULT')
+
+EMAIL_HOST_USER_SUPPORT = getenv('EMAIL_HOST_USER_SUPPORT')
+EMAIL_HOST_USER_ADMIN = getenv('EMAIL_HOST_USER_ADMIN')
+
 
 LOGGING = {
     'version': 1,
