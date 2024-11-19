@@ -84,7 +84,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 					<img
 						src={companyProfileData.companyLogo}
 						alt="Company Profile"
-						className="h-10 w-10 rounded-lg object-cover border"
+						className="h-10 w-14 rounded-lg aspect-square object-cover border"
 					/>
 				),
 				label: companyProfileData.companyName,

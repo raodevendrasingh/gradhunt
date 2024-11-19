@@ -1,16 +1,16 @@
-import NotFound from '@/pages/common/NotFound';
-import { BiEditAlt } from 'react-icons/bi';
-import { CompanyTabs } from '@/utils/CompanyTabs';
-import { FaCalendarCheck } from 'react-icons/fa6';
-import { GoPlus } from 'react-icons/go';
-import { Link } from 'react-router-dom';
-import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { MdLocationPin } from 'react-icons/md';
-import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useFetchCompanyProfileByParams } from '@/hooks/useFetchCompanyProfileByParams';
-import { useFetchUserDetails } from '@/hooks/useFetchUserDetails';
-import { useEffect, useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import NotFound from "@/pages/common/NotFound";
+import { BiEditAlt } from "react-icons/bi";
+import { CompanyTabs } from "@/utils/CompanyTabs";
+import { FaCalendarCheck } from "react-icons/fa6";
+import { GoPlus } from "react-icons/go";
+import { Link } from "react-router-dom";
+import { LoadingBlock } from "@/components/ui/LoadingBlock";
+import { MdLocationPin } from "react-icons/md";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { useFetchCompanyProfileByParams } from "@/hooks/useFetchCompanyProfileByParams";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
@@ -21,9 +21,9 @@ export default function CompanyProfile(): React.JSX.Element {
 
 	const { data: currentUser } = useFetchUserDetails();
 
-    useEffect(() => {
+	useEffect(() => {
 		// Retrieve the selected tab from local storage
-		const storedTab = localStorage.getItem('selectedTab');
+		const storedTab = localStorage.getItem("selectedTab");
 		if (storedTab) {
 			setSelected(Number(storedTab));
 		}
@@ -59,7 +59,7 @@ export default function CompanyProfile(): React.JSX.Element {
 					)}
 				</div>
 				<div className="flex flex-col items-center w-full px-5 pt-4 pb-6">
-					<div className="relative -top-16 mb-2 select-none">
+					<div className="relative -top-16 mb-2 select-none bg-white rounded-xl">
 						{companyProfile && companyProfile.companyLogo ? (
 							<img
 								src={companyProfile.companyLogo}

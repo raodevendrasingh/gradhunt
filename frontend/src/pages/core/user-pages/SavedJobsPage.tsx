@@ -16,18 +16,27 @@ export default function SavedJobsPage() {
 
 	const renderContent = () => {
 		if (isLoading) {
-			return <JobCardSkeleton />;
-		}
-		if (!savedJobs?.length) {
-			<div className="relative h-full">
-				<div className="flex flex-col items-center justify-center gap-2 h-full select-none">
-					<GoBookmark className="w-16 h-16 text-gray-500" />
-					<h2 className="text-2xl font-semibold text-gray-600 mb-2">
-						No saved jobs yet
-					</h2>
-					<p className="text-gray-500">Start saving jobs to see them here!</p>
+			return (
+				<div className="flex flex-col gap-5">
+					<JobCardSkeleton />
+					<JobCardSkeleton />
+					<JobCardSkeleton />
 				</div>
-			</div>;
+			);
+		}
+
+		if (!savedJobPosts?.length) {
+			return (
+				<div className="relative h-full">
+					<div className="flex flex-col items-center justify-center gap-2 h-full select-none">
+						<GoBookmark className="w-16 h-16 text-gray-500" />
+						<h2 className="text-2xl font-semibold text-gray-600 mb-2">
+							No saved jobs yet
+						</h2>
+						<p className="text-gray-500">Start saving jobs to see them here!</p>
+					</div>
+				</div>
+			);
 		}
 		return (
 			<div className="space-y-4">
