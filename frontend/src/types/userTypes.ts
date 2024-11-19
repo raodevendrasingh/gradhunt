@@ -84,6 +84,7 @@ export type ExperienceForm = {
 export type CompanyForm = {
 	companyBanner: string;
 	companyLogo: string;
+	companySlug: string;
 	companyName: string;
 	companyWebsite: string;
 	tagline: string;

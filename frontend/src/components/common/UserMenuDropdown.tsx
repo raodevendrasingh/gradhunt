@@ -3,8 +3,6 @@ import {
 	HiArrowRightOnRectangle,
 	HiUserCircle,
 	HiCog6Tooth,
-	HiMiniBuildingOffice2,
-	HiMiniBuildingOffice,
 } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser, SignOutButton } from "@clerk/clerk-react";

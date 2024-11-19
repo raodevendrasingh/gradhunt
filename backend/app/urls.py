@@ -8,6 +8,11 @@ urlpatterns = [
     path('api/company/<str:companyName>',
          GetCompanyProfile.as_view(), name='company'),
 
+    path('api/company/<str:companyName>/jobs',
+         ListJobPosts.as_view(), name='get-job-posts'),
+    path('api/company/<str:companyName>/applicants/<str:jobId>',
+         GetJobsApplications.as_view(), name='get-job-applicants'),
+
     path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
 
@@ -27,10 +32,8 @@ urlpatterns = [
     path('api/application/<str:applicationId>',
          UpdateApplicationStatus.as_view(), name='update-application-status'),
 
-    path('api/company/<str:companyName>/jobs',
-         ListJobPosts.as_view(), name='get-job-posts'),
-    path('api/company/<str:companyName>/applicants/<str:jobId>',
-         GetJobsApplications.as_view(), name='get-job-applicants'),
+    path('api/users/check-company-slug/',
+         CheckCompanySlug.as_view(), name='check-company-slug'),
 
     path('api/users/type', GetUserType.as_view(), name='get-usertype'),
     path('api/users/check-username/',

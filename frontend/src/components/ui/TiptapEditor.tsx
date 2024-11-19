@@ -17,6 +17,7 @@ import {
 } from "react-icons/lu";
 import { VscHorizontalRule, VscNewline } from "react-icons/vsc";
 import { useEffect, useState } from "react";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const MenuBar = ({ editor }: { editor: any }) => {
 	if (!editor) {
@@ -157,13 +158,22 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
 export const TiptapEditor = ({
 	onEditorReady,
-    initialContent,
+	initialContent,
 }: {
 	onEditorReady: (editor: any) => void;
-    initialContent?: string;
+	initialContent?: string;
 }) => {
-	const limit = 6000;
-    const [contentSet, setContentSet] = useState(false);
+	const { data: userData } = useFetchUserData();
+	if (!userData) return null;
+
+	let limit;
+	if (userData.plan === "Free") {
+		limit = 2500;
+	} else if (userData.plan === "Pro") {
+		limit = 6000;
+	}
+
+	const [contentSet, setContentSet] = useState(false);
 
 	const editor = useEditor({
 		extensions: [
@@ -188,7 +198,7 @@ export const TiptapEditor = ({
 				types: ["heading", "paragraph"],
 			}),
 		],
-        content: initialContent,
+		content: initialContent,
 		editorProps: {
 			attributes: {
 				class:
@@ -203,12 +213,12 @@ export const TiptapEditor = ({
 		}
 	}, [editor, onEditorReady]);
 
-    useEffect(() => {
-        if (editor && initialContent && !contentSet) {
-            editor.commands.setContent(initialContent);
-            setContentSet(true);
-        }
-    }, [editor, initialContent, contentSet]);
+	useEffect(() => {
+		if (editor && initialContent && !contentSet) {
+			editor.commands.setContent(initialContent);
+			setContentSet(true);
+		}
+	}, [editor, initialContent, contentSet]);
 
 	return (
 		<div className="relative w-full pb-3 bg-gray-50 border border-gray-300 hover:border-gray-500 text-gray-800 text-sm rounded-lg focus-within:ring focus-within:ring-gray-100 transition duration-200">

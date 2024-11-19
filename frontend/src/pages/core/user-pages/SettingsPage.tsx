@@ -27,6 +27,7 @@ import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityT
 import { NotificationToggle } from "../components/layout/NotificationToggle";
 import { AccountDeleteModal } from "@/modal-forms/AccountDeleteModal";
 import { toast } from "sonner";
+import { CompanyOnboardingModal } from "@/modal-forms/CompanyOnboardingModal";
 
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
@@ -35,9 +36,10 @@ export default function SettingsPage() {
 	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
 	const [showAccountDeleteDialog, setShowAccountDeleteDialog] =
 		useState<boolean>(false);
+	const [showOnboardingModal, setShowOnboardingModal] =
+		useState<boolean>(false);
 	const { user } = useUser();
 	const { register, control } = useForm<FormData>();
-	const navigate = useNavigate();
 
 	const { data: userData } = useFetchUserData();
 
@@ -70,9 +72,15 @@ export default function SettingsPage() {
 
 	const handleCompanyProfileCreation = () => {
 		if (userData.isVerified) {
-			navigate("/create-company-profile");
+			if (userData.isCompanyAdmin) {
+				toast.error("User is already an admin of a company profile!");
+			} else {
+				setShowOnboardingModal(true);
+			}
 		} else {
-			toast.error("Please verify your current employment to create a company profile!");
+			toast.error(
+				"Please verify your current employment to create a company profile!"
+			);
 		}
 	};
 
@@ -369,6 +377,12 @@ export default function SettingsPage() {
 			)}
 			{showPasswordDialog && (
 				<PasswordUpdateDialog setShowPasswordDialog={setShowPasswordDialog} />
+			)}
+
+			{showOnboardingModal && (
+				<CompanyOnboardingModal
+					setShowOnboardingModal={setShowOnboardingModal}
+				/>
 			)}
 
 			{showAccountDeleteDialog && (

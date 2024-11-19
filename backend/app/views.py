@@ -51,6 +51,21 @@ class CheckUsernameView(APIView):
         return Response({'exists': exists, 'message': message})
 
 
+class CheckCompanySlug(APIView):
+    def get(self, request):
+        company_slug = request.query_params.get('companySlug')
+        if not company_slug:
+            return Response({'error': 'Missing companySlug parameter.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        exists = CompanyProfile.objects.filter(
+            companySlug__iexact=company_slug).exists()
+        if not exists:
+            message = "This URL is available!"
+        else:
+            message = "This URL is already taken, choose something else"
+        return Response({'exists': exists, 'message': message})
+
+
 class UpdateUsernameView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
@@ -234,7 +249,7 @@ class VerifyEmailView(APIView):
 
                 user.isVerified = True
                 user.save()
-                
+
                 return Response({'message': 'Email verified successfully'}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Invalid verification code'}, status=status.HTTP_400_BAD_REQUEST)
@@ -1028,8 +1043,10 @@ class CompanyProfileView(APIView):
         except UserDetails.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+            traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @transaction.atomic
     def get(self, request):
         try:
             try:
@@ -1053,6 +1070,7 @@ class CompanyProfileView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            traceback.print_exc()
             return Response(
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -1073,6 +1091,7 @@ class GetCompanyProfile(APIView):
                 {"error": "Company not found!"}, status=status.HTTP_404_NOT_FOUND
             )
         except Exception as e:
+            traceback.print_exc()
             return Response(
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -1176,6 +1195,7 @@ class ListJobPosts(APIView):
         except CompanyProfile.DoesNotExist:
             return Response({"error": "Company profile not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+            traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -1335,6 +1355,7 @@ class GetJobsApplications(APIView):
         except JobPostings.DoesNotExist:
             return Response({"error": "Job Posting not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+            traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

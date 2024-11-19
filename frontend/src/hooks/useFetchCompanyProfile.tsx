@@ -28,6 +28,7 @@ export const useFetchCompanyProfile = (
 			if (error.response && error.response.status === 404) {
 				console.warn("404 Not Found: The requested resource does not exist.");
 				return {
+                    companySlug: "",
 					companyBanner: "",
 					companyLogo: "",
 					companyName: "",

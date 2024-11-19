@@ -34,6 +34,8 @@ import {
 	handleUpload,
 	openFileDialog,
 } from "@/utils/FileUploadMethods";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { useNavigate } from "react-router-dom";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
@@ -48,14 +50,22 @@ export default function CompanyProfileForm() {
 	const logoInputRef = useRef<HTMLInputElement | null>(null);
 	const bannerInputRef = useRef<HTMLInputElement | null>(null);
 
+	const company_slug = useReadLocalStorage<string>("companyslug");
+	const [, , removeCompanySlug] = useLocalStorage<string>("companyslug", "");
+
 	const { getToken } = useAuth();
+	const navigate = useNavigate();
 
 	const {
 		register,
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<CompanyForm>();
+	} = useForm<CompanyForm>({
+        defaultValues: {
+            companySlug: company_slug!,
+        }
+    });
 
 	const openLogoFileDialog = () => openFileDialog(logoInputRef);
 	const openBannerFileDialog = () => openFileDialog(bannerInputRef);
@@ -105,6 +115,7 @@ export default function CompanyProfileForm() {
 
 			const formData = {
 				...data,
+				companySlug: company_slug!,
 				companyLogo: cloudinaryLogoUrl,
 				companyBanner: cloudinaryBannerUrl,
 				description: content,
@@ -120,10 +131,12 @@ export default function CompanyProfileForm() {
 			});
 			console.log(response.data);
 			toast.success("Company profile created successfully");
-		} catch (error) {
-			console.error(error);
+			navigate("/company/" + company_slug!);
+		} catch (error: any) {
+			console.error(error.response);
 			toast.error("Failed to create company profile");
 		} finally {
+			removeCompanySlug();
 			setIsLoading(false);
 		}
 	};
@@ -133,14 +146,14 @@ export default function CompanyProfileForm() {
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
 				<h2 className="text-lg font-semibold pb-5">Create Company Profile </h2>
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 					<div
 						className={clsx(
 							"relative w-full aspect-[4/1] mb-16 rounded-xl",
 							croppedBanner
 								? "bg-transparent"
 								: " bg-slate-200 border-2 border-dashed border-gray-500",
-                            errors.companyBanner && "border-red-500 bg-red-50"
+							errors.companyBanner && "border-red-500 bg-red-50"
 						)}
 					>
 						{/* Cover Image container */}
@@ -371,10 +384,18 @@ export default function CompanyProfileForm() {
 						<TiptapEditor onEditorReady={handleEditorReady} />
 					</div>
 					<div className="flex justify-between pt-5">
-						<Button type="button" variant="secondary" className="px-8">
+						<Button
+							type="button"
+							variant="secondary"
+							className="w-36 py-2.5 rounded-lg"
+						>
 							Save as Draft
 						</Button>
-						<Button type="submit" variant="primary" className="w-36">
+						<Button
+							type="submit"
+							variant="primary"
+							className="w-36 py-2.5 rounded-lg"
+						>
 							{isLoading ? <Spinner /> : "Create Profile"}
 						</Button>
 					</div>

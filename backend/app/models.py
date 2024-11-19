@@ -91,6 +91,7 @@ class HiringPreferences(models.Model):
 
 class CompanyProfile(models.Model):
     user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    companySlug = models.CharField(max_length=64)
     companyLogo = models.URLField(max_length=512, blank=True, null=True)
     companyBanner = models.URLField(max_length=512, blank=True, null=True)
     companyName = models.CharField(max_length=100, blank=True, null=True)
