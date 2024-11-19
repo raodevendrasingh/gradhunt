@@ -1080,10 +1080,10 @@ class CompanyProfileView(APIView):
 class GetCompanyProfile(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    def get(self, request, companyName):
+    def get(self, request, companyslug):
         try:
             company = CompanyProfile.objects.get(
-                companyName__iexact=companyName)
+                companySlug__iexact=companyslug)
             serializer = CompanyProfileSerializer(company)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CompanyProfile.DoesNotExist:
@@ -1181,10 +1181,10 @@ class ManageJobsView(APIView):
 class ListJobPosts(APIView):
 
     @transaction.atomic
-    def get(self, request, companyName):
+    def get(self, request, companyslug):
         try:
             company_profile = CompanyProfile.objects.get(
-                companyName__iexact=companyName)
+                companySlug__iexact=companyslug)
 
             job_posts = JobPostings.objects.filter(
                 company=company_profile).order_by('-postedDate')
@@ -1342,10 +1342,10 @@ class GetJobsApplications(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
-    def get(self, request, companyName, jobId):
+    def get(self, request, companyslug, jobId):
         try:
             company = CompanyProfile.objects.get(
-                companyName__iexact=companyName)
+                companySlug__iexact=companyslug)
             job_posting = JobPostings.objects.get(
                 company_id=company.id, jobId__iexact=jobId)
             serializer = JobDetailsSerializer(job_posting)

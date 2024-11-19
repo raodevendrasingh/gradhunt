@@ -9,7 +9,7 @@ export const useFetchJobPosts = (): UseQueryResult<
 	AxiosError
 > => {
 	const { getToken } = useAuth();
-	const { companyname } = useParams<{ companyname: string }>();
+	const { companyslug } = useParams<{ companyslug: string }>();
 
 	const fetchJobPosts = async (): Promise<JobPosts[]> => {
 		try {
@@ -17,7 +17,7 @@ export const useFetchJobPosts = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/company/${companyname}/jobs`;
+			const url = `/api/company/${companyslug}/jobs`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const useFetchJobPosts = (): UseQueryResult<
 	};
 
 	return useQuery<JobPosts[], AxiosError>({
-		queryKey: ["JobPosts", companyname],
+		queryKey: ["JobPosts", companyslug],
 		queryFn: fetchJobPosts,
 		staleTime: 10000,
 	});

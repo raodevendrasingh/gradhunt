@@ -22,7 +22,7 @@ export default function AppRoutes(): ReactNode {
 				<Route path="job-search/:params" element={<JobsFeedPage />} />
 
 				{/* Modularized Routes */}
-				<Route path="/company/:companyname/*" element={<RecruiterRoutes />} />
+				<Route path="/company/:companyslug/*" element={<RecruiterRoutes />} />
 				<Route path="/*" element={<CandidateRoutes />} />
 
 				<Route path="*" element={<NotFound />} />

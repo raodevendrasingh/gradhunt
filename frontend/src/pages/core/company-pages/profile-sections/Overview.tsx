@@ -4,10 +4,10 @@ import { HiOutlineBuildingOffice2, HiOutlineUsers } from 'react-icons/hi2';
 import { LuCircleDollarSign, LuLineChart, LuWallet } from 'react-icons/lu';
 import { MdEmail } from 'react-icons/md';
 import { TbSeeding } from 'react-icons/tb';
-import { useFetchCompanyProfileByName } from '@/hooks/useFetchCompanyProfileByName';
+import { useFetchCompanyProfileByParams } from '@/hooks/useFetchCompanyProfileByParams';
 
 export const Overview = () => {
-	const { data: companyProfile, isLoading } = useFetchCompanyProfileByName();
+	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
 
 	const gridItems = [
 		{

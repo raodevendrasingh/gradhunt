@@ -11,6 +11,7 @@ import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
 
 interface CompanyProfile {
 	isDraft: boolean;
+    companySlug: string;
 	companyName: string;
 	companyLogo: string;
 }
@@ -28,7 +29,6 @@ interface MenuLinkProps {
 
 interface CompanyLinkProps {
 	company: CompanyProfile;
-	onClick: () => void;
 }
 
 export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
@@ -129,11 +129,9 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 						{companyProfile && !companyProfile.isDraft && (
 							<CompanyLink
 								company={companyProfile}
-								onClick={() =>
-									handleNavigate(
-										`/company/${companyProfile.companyName.toLowerCase()}`
-									)
-								}
+								// onClick={() =>
+								// 	handleNavigate(`/company/${companyProfile.companySlug}`)
+								// }
 							/>
 						)}
 
@@ -177,10 +175,9 @@ const MenuLink: React.FC<MenuLinkProps> = ({ to, icon, onClick, children }) => (
 	</Link>
 );
 
-const CompanyLink: React.FC<CompanyLinkProps> = ({ company, onClick }) => (
+const CompanyLink: React.FC<CompanyLinkProps> = ({ company,}) => (
 	<Link
-		to={`/company/${company.companyName.toLowerCase()}`}
-		onClick={onClick}
+		to={`/company/${company.companySlug}`}
 		className="flex items-center gap-3 mx-1.5 px-3 py-2 rounded-lg text-gray-700  hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150"
 	>
 		<span className="flex items-center justify-center rounded-lg border border-gray-200 bg-white p-1">

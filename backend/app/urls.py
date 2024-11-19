@@ -4,13 +4,13 @@ from .views import *
 urlpatterns = [
     path('api', HomeView.as_view(), name='home'),
 
-    path('api/company/', CompanyProfileView.as_view(), name='company'),
-    path('api/company/<str:companyName>',
+    path('api/company', CompanyProfileView.as_view(), name='company'),
+    path('api/company/<str:companyslug>',
          GetCompanyProfile.as_view(), name='company'),
 
-    path('api/company/<str:companyName>/jobs',
+    path('api/company/<str:companyslug>/jobs',
          ListJobPosts.as_view(), name='get-job-posts'),
-    path('api/company/<str:companyName>/applicants/<str:jobId>',
+    path('api/company/<str:companyslug>/applicants/<str:jobId>',
          GetJobsApplications.as_view(), name='get-job-applicants'),
 
     path('api/jobs/list', JobListView.as_view(), name='list-jobs'),

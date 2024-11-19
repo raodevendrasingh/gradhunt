@@ -9,8 +9,8 @@ export const useFetchJobApplicants = (): UseQueryResult<
 	AxiosError
 > => {
 	const { getToken } = useAuth();
-	const { companyname, jobId } = useParams<{
-		companyname: string;
+	const { companyslug, jobId } = useParams<{
+		companyslug: string;
 		jobId: string;
 	}>();
 
@@ -19,7 +19,7 @@ export const useFetchJobApplicants = (): UseQueryResult<
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/company/${companyname}/applicants/${jobId}`;
+		const url = `/api/company/${companyslug}/applicants/${jobId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -30,7 +30,7 @@ export const useFetchJobApplicants = (): UseQueryResult<
 	};
 
 	return useQuery<Applicant, AxiosError>({
-		queryKey: ["applicantData", companyname, jobId],
+		queryKey: ["applicantData", companyslug, jobId],
 		queryFn: fetchJobApplicantData,
 		staleTime: 10000,
 	});

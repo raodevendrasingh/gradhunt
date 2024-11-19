@@ -57,7 +57,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 	isMobile = false,
 }) => {
 	const [activeTab, setActiveTab] = useState("Manage Jobs");
-	const { user, isSignedIn } = useUser();
+	const { isSignedIn } = useUser();
 	const { data: userData, isLoading: isUserDataLoading } =
 		useFetchUserDetails();
         
@@ -75,6 +75,8 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 
 	const recruiterTabs = [];
 
+    const companyProfileUrl = `/company/${companyProfileData?.companySlug}`;
+
 	if (isSignedIn) {
 		if (companyProfileData && companyProfileData.isDraft === false) {
 			recruiterTabs.push({
@@ -87,7 +89,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 				),
 				label: companyProfileData.companyName,
 				title: "Company Profile",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}`,
+				route: `${companyProfileUrl}`,
 			});
 		}
 
@@ -95,37 +97,37 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 			{
 				icon: <GoBriefcase size={20} />,
 				label: "Manage Postings",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/manage-jobs`,
+				route: `${companyProfileUrl}/manage-jobs`,
 			},
 			{
 				icon: <HiOutlineUsers size={20} />,
 				label: "Manage Applicants",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/applicants`,
+				route: `${companyProfileUrl}/applicants`,
 			},
 			{
 				icon: <GoArchive size={20} />,
 				label: "Archived Postings",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/archived`,
+				route: `${companyProfileUrl}/archived`,
 			},
 			{
 				icon: <LuLineChart size={20} />,
 				label: "Analytics",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/analytics`,
+				route: `${companyProfileUrl}/analytics`,
 			},
 			{
 				icon: <HiOutlineUserGroup size={20} />,
 				label: "Team",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/team`,
+				route: `${companyProfileUrl}/team`,
 			},
 			{
 				icon: <IoExtensionPuzzleOutline size={20} />,
 				label: "Integrations",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/integrations`,
+				route: `${companyProfileUrl}/integrations`,
 			},
 			{
 				icon: <GoGear size={20} />,
 				label: "Settings",
-				route: `/company/${companyProfileData?.companyName.toLowerCase()}/settings`,
+				route: `${companyProfileUrl}/settings`,
 			}
 		);
 	}

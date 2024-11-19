@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { LoadingBlock } from '@/components/ui/LoadingBlock';
 import { MdLocationPin } from 'react-icons/md';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { useFetchCompanyProfileByName } from '@/hooks/useFetchCompanyProfileByName';
+import { useFetchCompanyProfileByParams } from '@/hooks/useFetchCompanyProfileByParams';
 import { useFetchUserDetails } from '@/hooks/useFetchUserDetails';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
@@ -17,7 +17,7 @@ export default function CompanyProfile(): React.JSX.Element {
 
 	const { isSignedIn, user } = useUser();
 
-	const { data: companyProfile, isLoading } = useFetchCompanyProfileByName();
+	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
 
 	const { data: currentUser } = useFetchUserDetails();
 
