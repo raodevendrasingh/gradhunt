@@ -1,24 +1,24 @@
-import axios from 'axios';
-import JobSearchNavbar from './components/layout/JobSearchNavbar';
-import React, { useEffect } from 'react';
-import Slider from 'react-slick';
-import { companyLogo, recentJobs } from '@/utils/dummyData';
-import { encodeSearchParams } from '@/utils/encodeSearchParams';
-import { FaChevronRight } from 'react-icons/fa6';
-import { Footer } from '@/components/common/Footer';
-import { FormData } from '@/components/layouts/JobSearchBar';
-import { JobCard } from '@/components/layouts/JobCard';
-import { jobCardSettings, logoSettings } from '@/utils/carouselSettings';
-import { JobCategories } from '@/components/common/JobCategory';
-import { JobSearchForm } from '@/components/layouts/JobSearchBar';
-import { Link, useNavigate } from 'react-router-dom';
-import { ProfileBanner } from '@/components/layouts/ProfileBanner';
-import { SearchHeader } from './components/layout/SearchHeader';
-import { SubmitHandler } from 'react-hook-form';
-import { useCitySearch } from '@/hooks/useCitySearch';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { useUser } from '@clerk/clerk-react';
+import axios from "axios";
+import JobSearchNavbar from "./components/layout/JobSearchNavbar";
+import React, { useEffect } from "react";
+import Slider from "react-slick";
+import { companyLogo, recentJobs } from "@/utils/dummyData";
+import { encodeSearchParams } from "@/utils/encodeSearchParams";
+import { FaChevronRight } from "react-icons/fa6";
+import { Footer } from "@/components/common/Footer";
+import { FormData } from "@/components/layouts/JobSearchBar";
+import { JobCard } from "@/components/layouts/JobCard";
+import { jobCardSettings, logoSettings } from "@/utils/carouselSettings";
+import { JobCategories } from "@/components/common/JobCategory";
+import { JobSearchForm } from "@/components/layouts/JobSearchBar";
+import { Link, useNavigate } from "react-router-dom";
+import { ProfileBanner } from "@/components/layouts/ProfileBanner";
+import { SearchHeader } from "./components/layout/SearchHeader";
+import { SubmitHandler } from "react-hook-form";
+import { useCitySearch } from "@/hooks/useCitySearch";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useUser } from "@clerk/clerk-react";
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -31,7 +31,7 @@ export default function JobSearchPage(): React.JSX.Element {
 
 	const navigate = useNavigate();
 
-    const { user, isSignedIn } = useUser();
+	const { user, isSignedIn } = useUser();
 
 	useEffect(() => {
 		if (user && isSignedIn) {
@@ -71,15 +71,15 @@ export default function JobSearchPage(): React.JSX.Element {
 				</section>
 				<section className="rounded-t-[40px] border-t h-auto w-full bg-gray-50">
 					{/* logo carousel */}
-					<div className="px-14 pt-10">
+					<div className="px-14 py-10">
 						<Slider {...logoSettings}>
-							{companyLogo.map((logo) => (
-								<div
-									key={logo.company}
-									className="flex justify-center items-center h-32 w-44 text-xl font-bold text-gray-600"
-								>
-									{logo.company}
-								</div>
+							{companyLogo.map((item) => (
+								<img
+									key={item.companyName}
+									src={item.companyLogo}
+                                    alt={item.companyName}
+									className="object-cover w-64"
+								/>
 							))}
 						</Slider>
 					</div>
