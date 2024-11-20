@@ -71,14 +71,14 @@ export default function JobSearchPage(): React.JSX.Element {
 				</section>
 				<section className="rounded-t-[40px] border-t h-auto w-full bg-gray-50">
 					{/* logo carousel */}
-					<div className="px-14 py-10">
+					<div className="px-14 pt-10">
 						<Slider {...logoSettings}>
 							{companyLogo.map((item) => (
 								<img
 									key={item.companyName}
 									src={item.companyLogo}
                                     alt={item.companyName}
-									className="object-cover w-64"
+									className="object-cover h-20 md:h-32 w-64 md:80"
 								/>
 							))}
 						</Slider>

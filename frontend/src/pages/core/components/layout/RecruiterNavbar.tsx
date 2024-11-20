@@ -1,4 +1,5 @@
 import brandIcon from "@/assets/brand/brandIcon.png";
+import brandWordmark from "@/assets/brand/brandLogoFull.png";
 import { GoBell } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
@@ -52,10 +53,18 @@ export default function RecruiterNavbar({
 
 						{/* Logo */}
 						<div className="flex-shrink-0 flex items-center">
-							<img className="h-8 w-auto" src={brandIcon} alt="Logo" />
-							<span className="ml-2 text-2xl font-bold text-gray-800 xs:inline">
-								GradHunt
-							</span>
+							<Link to="/">
+								<img
+									className="hidden sm:block h-12 w-auto"
+									src={brandWordmark}
+									alt="Logo"
+								/>
+								<img
+									className="sm:hidden h-10 w-auto"
+									src={brandIcon}
+									alt="Logo"
+								/>
+							</Link>
 						</div>
 					</div>
 

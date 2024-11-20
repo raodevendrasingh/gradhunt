@@ -1,8 +1,9 @@
-import brandIcon from "@/assets/brand/brandIcon.png";
+import brandWordmark from "@/assets/brand/brandLogoFull.png";
 import { GoBell } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
+import { Button } from "@/components/ui/Button";
 
 export default function JobSearchNavbar() {
 	return (
@@ -12,10 +13,13 @@ export default function JobSearchNavbar() {
 					<div className="flex items-center">
 						{/* Logo */}
 						<div className="flex-shrink-0 flex items-center">
-							<img className="h-10 w-auto" src={brandIcon} alt="Logo" />
-							<span className="ml-2 text-2xl font-bold text-gray-800 xs:inline">
-								GradHunt
-							</span>
+							<Link to="/">
+								<img
+									className="h-10 sm:h-12 w-auto"
+									src={brandWordmark}
+									alt="Logo"
+								/>
+							</Link>
 						</div>
 					</div>
 
@@ -30,11 +34,16 @@ export default function JobSearchNavbar() {
 							<UserMenuDropdown />
 						</SignedIn>
 
-						<SignedOut>
-							<button className="flex justify-center px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors">
-								<Link to="/login">Login</Link>
-							</button>
-						</SignedOut>
+						<div className="flex items-center gap-4">
+							<SignedOut>
+								<Button className="flex justify-center py-2.5 rounded-lg">
+									<Link to="/login">Login</Link>
+								</Button>
+								<Button variant="secondary" className="w-20 py-2.5 rounded-lg">
+									<Link to="/hire">Hire</Link>
+								</Button>
+							</SignedOut>
+						</div>
 					</div>
 				</div>
 			</div>

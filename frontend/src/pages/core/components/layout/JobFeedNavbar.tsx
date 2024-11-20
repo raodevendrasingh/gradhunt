@@ -1,8 +1,9 @@
-import brandIcon from '@/assets/brand/brandIcon.png';
-import { GoBell } from 'react-icons/go';
-import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import { UserMenuDropdown } from '@/components/common/UserMenuDropdown';
+import brandIcon from "@/assets/brand/brandIcon.png";
+import brandWordmark from "@/assets/brand/brandLogoFull.png";
+import { GoBell } from "react-icons/go";
+import { Link } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { UserMenuDropdown } from "@/components/common/UserMenuDropdown";
 
 interface JobFeedNavbarProps {
 	isSidebarOpen: boolean;
@@ -21,12 +22,12 @@ export default function JobFeedNavbar({
 						{/* Menu Button - Only visible on mobile */}
 						<button
 							className={`relative block h-10 w-10 mr-4 md:hidden ${
-                                isSidebarOpen
-                                    ? `visible opacity-100 [&_span:nth-child(1)]:w-6
+								isSidebarOpen
+									? `visible opacity-100 [&_span:nth-child(1)]:w-6
                                      [&_span:nth-child(1)]:translate-y-0 [&_span:nth-child(1)]:rotate-45
                                      [&_span:nth-child(3)]:w-0 [&_span:nth-child(2)]:-rotate-45 `
-                                    : ""
-                            }`}
+									: ""
+							}`}
 							aria-expanded={isSidebarOpen ? "true" : "false"}
 							aria-label="Toggle navigation"
 							onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -52,19 +53,17 @@ export default function JobFeedNavbar({
 
 						{/* Logo */}
 						<div className="flex-shrink-0 flex items-center">
-							<img className="h-10 w-auto" src={brandIcon} alt="Logo" />
-							<span className="ml-2 text-2xl font-bold text-gray-800 xs:inline">
-								GradHunt
-							</span>
-						</div>
-
-						{/* Explore Jobs - Only visible on larger screens */}
-						<div className="hidden md:flex ml-6">
-							<Link
-								to="/job-search"
-								className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg"
-							>
-								Explore Jobs
+							<Link to="/">
+								<img
+									className="hidden sm:block h-12 w-auto"
+									src={brandWordmark}
+									alt="Logo"
+								/>
+								<img
+									className="sm:hidden h-10 w-auto"
+									src={brandIcon}
+									alt="Logo"
+								/>
 							</Link>
 						</div>
 					</div>
