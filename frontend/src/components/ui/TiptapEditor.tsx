@@ -164,12 +164,11 @@ export const TiptapEditor = ({
 	initialContent?: string;
 }) => {
 	const { data: userData } = useFetchUserData();
-	if (!userData) return null;
 
 	let limit;
-	if (userData.plan === "Free") {
+	if (userData?.plan === "Free") {
 		limit = 2500;
-	} else if (userData.plan === "Pro") {
+	} else if (userData?.plan === "Pro") {
 		limit = 6000;
 	}
 

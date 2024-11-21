@@ -4,7 +4,7 @@ import { TextInput } from "@/components/ui/TextInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { JobPosts, SearchParams, SearchQuery } from "@/types/userTypes";
 import { SelectInput, selectStyles } from "@/components/ui/SelectInput";
-import { experience } from "@/utils/selectObjects";
+import { experienceLevels } from "@/utils/selectObjects";
 import { GoBriefcase, GoSearch } from "react-icons/go";
 import { citySelectStyles, LocationSelect } from "@/helpers/LocationSelect2";
 import { Button } from "@/components/ui/Button";
@@ -114,7 +114,7 @@ export default function JobsFeedPage() {
 										<SelectInput
 											placeholder="Experience"
 											name="experience"
-											options={experience}
+											options={experienceLevels}
 											control={control}
 											icon={<GoBriefcase className="h-5 w-5" />}
 											styles={{

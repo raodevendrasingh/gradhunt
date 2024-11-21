@@ -86,6 +86,7 @@ export type CompanyForm = {
 	companyLogo: string;
 	companySlug: string;
 	companyName: string;
+	companyTagline: string;
 	companyWebsite: string;
 	tagline: string;
 	companyEmail: string;
@@ -99,6 +100,29 @@ export type CompanyForm = {
 	industry: string | { value: string; label: string };
 	headquarters: string;
 	branches: [] | { city: string; state: string; country: string }[];
+	description: string;
+	isDraft: boolean;
+};
+
+export type CompanyProfileType = {
+	companyBanner: string;
+	companyLogo: string;
+	companySlug: string;
+	companyName: string;
+	companyTagline: string;
+	companyWebsite: string;
+	tagline: string;
+	companyEmail: string;
+	companyPhone: string;
+	employeeSize: { value: string; label: string };
+	establishedYear: string;
+	marketCap: string;
+	fundingRaised: string;
+	companyType: { value: string; label: string };
+	yearlyRevenue: string;
+	industry: { value: string; label: string };
+	headquarters: string;
+	branches: { city: string; state: string; country: string }[];
 	description: string;
 	isDraft: boolean;
 };

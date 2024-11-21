@@ -221,7 +221,7 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CompanyProfile
-        fields = ['id', 'companyBanner', 'companySlug', 'companyLogo', 'companyName', 'companyEmail', 'tagline',
+        fields = ['id', 'companyBanner', 'companySlug', 'companyLogo', 'tagline', 'companyName', 'companyEmail', 'tagline',
                   'companyPhone', 'establishedYear', 'marketCap', 'fundingRaised',
                   'yearlyRevenue', 'headquarters', 'branches', 'description', 'companyType',
                   'industry', 'branches', 'companyWebsite', 'employeeSize', 'linkedin', 'instagram', 'twitter', 'isDraft', 'user']

@@ -7,7 +7,7 @@ import { CityOption } from "@/hooks/useCitySearch";
 import Select from "react-select";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 
-import { experience } from "@/utils/selectObjects";
+import { experienceLevels } from "@/utils/selectObjects";
 import { inputSearchFieldStyle } from "@/utils/styles";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
@@ -79,7 +79,7 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 									<Select
 										{...field}
 										id="experience"
-										options={experience}
+										options={experienceLevels}
 										placeholder="Experience"
 										className="w-full"
 										classNamePrefix="react-select"
