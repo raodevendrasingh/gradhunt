@@ -1237,17 +1237,20 @@ class JobSearchView(APIView):
     @transaction.atomic
     def get(self, request):
         try:
-            position = request.query_params.get('position')
-            experience = request.query_params.get('experience')
-            location = request.query_params.get('location')
+            position = request.query_params.get(
+                'position', '').replace('+', ' ')
+            experience = request.query_params.get(
+                'experience', '').replace('+', ' ')
+            location = request.query_params.get(
+                'location', '').replace('+', ' ')
 
             if not position:
                 return Response({'error': 'Position is required'}, status=status.HTTP_400_BAD_REQUEST)
 
             exact_match_jobs = JobPostings.objects.filter(
-                jobTitle__icontains=position,
-                experience__icontains=experience,
-                jobLocation__icontains=location
+                jobTitle__icontains=position if position else "",
+                experience__icontains=experience if experience else "",
+                jobLocation__icontains=location if location else ""
             )
 
             individual_jobs_set = set()
@@ -1278,6 +1281,33 @@ class JobSearchView(APIView):
                 'exact_matches': exact_match_serializer.data,
                 'related_matches': individual_jobs_serializer.data
             }, status=status.HTTP_200_OK)
+        except JobPostings.DoesNotExist:
+            return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class JobFilterView(APIView):
+    @transaction.atomic
+    def post(self, request):
+        try:
+            abroad_location = request.data.get("abroadLocation") or ""
+            india_location = request.data.get("indiaLocation") or ""
+            location = abroad_location + india_location
+            experience = request.data.get("experience") or ""
+            jobType = request.data.get("jobType") or ""
+            salary = request.data.get("expectedSalary") or ""
+            workType = request.data.get("workType") or ""
+            category = request.data.get("category") or ""
+
+            print("Location:", location)
+            print("Experience:", experience)
+            print("Job Type:", jobType)
+            print("Salary:", salary)
+            print("Work Type:", workType)
+            print("Category:", category)
+
+            return Response({}, status=status.HTTP_200_OK)
         except JobPostings.DoesNotExist:
             return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

@@ -187,7 +187,6 @@ export const employmentType: SelectOption[] = [
 	{ label: "Contract", value: "Contract" },
 	{ label: "Freelance", value: "Freelance" },
 	{ label: "Internship", value: "Internship" },
-	{ label: "Trainee", value: "Trainee" },
 ];
 
 export const degreeTypes: SelectOption[] = [
@@ -656,6 +655,26 @@ export const sectors: SelectOption[] = [
 	{ label: "Publishing", value: "Publishing" },
 	{ label: "Design Services", value: "Design Services" },
 	{ label: "Creative Arts", value: "Creative Arts" },
+];
+
+export const categories: SelectOption[] = [
+	{
+		label: "Development & Engineering",
+		value: "Development & Engineering",
+	},
+	{ label: "Data & AI", value: "Data & AI" },
+	{ label: "Product & Design", value: "Product & Design" },
+	{
+		label: "Cloud & Infrastructure",
+		value: "Cloud & Infrastructure",
+	},
+	{ label: "Security & Networking", value: "Security & Networking" },
+	{ label: "Emerging Technologies", value: "Emerging Technologies" },
+	{ label: "Testing & QA", value: "Testing & QA" },
+	{ label: "Leadership & Management", value: "Leadership & Management" },
+	{ label: "Support & Training", value: "Support & Training" },
+	{ label: "Creative & Writing", value: "Creative & Writing" },
+	{ label: "Specialized Roles", value: "Specialized Roles" },
 ];
 
 export const functions: SelectOption[] = [

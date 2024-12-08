@@ -1,126 +1,90 @@
 import { useState } from "react";
 
-export const useFilterOptions = () => {
-	const [checkedExpertExp, setCheckedExpertExp] = useState(false);
-	const [checkedMidExp, setCheckedMidExp] = useState(false);
-	const [checkedEntryExp, setCheckedEntryExp] = useState(false);
-
-	const [checkedOnsite, setCheckedOnsite] = useState(false);
-	const [checkedRemote, setCheckedRemote] = useState(false);
-	const [checkedHybrid, setCheckedHybrid] = useState(false);
-
-	const [checkedBengaluru, setCheckedBengaluru] = useState(false);
-	const [checkedMumbai, setCheckedMumbai] = useState(false);
-	const [checkedNewDelhi, setCheckedNewDelhi] = useState(false);
-	const [checkedHyderabad, setCheckedHyderabad] = useState(false);
-	const [checkedChennai, setCheckedChennai] = useState(false);
-	const [checkedPune, setCheckedPune] = useState(false);
-
-	const [checkedBelow3LPA, setCheckedBelow3LPA] = useState(false);
-	const [checked36LPA, setChecked36LPA] = useState(false);
-	const [checked610LPA, setChecked610LPA] = useState(false);
-
-	const experienceLevels = [
-		{
-			id: "expert",
-			label: "Expert",
-			checked: checkedExpertExp,
-			setChecked: setCheckedExpertExp,
-		},
-		{
-			id: "entry",
-			label: "Entry Level",
-			checked: checkedEntryExp,
-			setChecked: setCheckedEntryExp,
-		},
-		{
-			id: "intermediate",
-			label: "Intermediate",
-			checked: checkedMidExp,
-			setChecked: setCheckedMidExp,
-		},
-	];
-
-	const workTypes = [
-		{
-			id: "onsite",
-			label: "Onsite",
-			checked: checkedOnsite,
-			setChecked: setCheckedOnsite,
-		},
-		{
-			id: "remote",
-			label: "Remote",
-			checked: checkedRemote,
-			setChecked: setCheckedRemote,
-		},
-		{
-			id: "hybrid",
-			label: "Hybrid",
-			checked: checkedHybrid,
-			setChecked: setCheckedHybrid,
-		},
-	];
-
-	const salaryTypes = [
-		{
-			id: "below3LPA",
-			label: "Below 3 LPA",
-			checked: checkedBelow3LPA,
-			setChecked: setCheckedBelow3LPA,
-		},
-		{
-			id: "3-6LPA",
-			label: "3-6 LPA",
-			checked: checked36LPA,
-			setChecked: setChecked36LPA,
-		},
-		{
-			id: "6-10LPA",
-			label: "6-10 LPA",
-			checked: checked610LPA,
-			setChecked: setChecked610LPA,
-		},
-	];
-
-	const IndiaLocation = [
-		{
-			id: "Bengaluru",
-			label: "Bengaluru",
-			checked: checkedBengaluru,
-			setChecked: setCheckedBengaluru,
-		},
-		{
-			id: "Pune",
-			label: "Pune",
-			checked: checkedPune,
-			setChecked: setCheckedPune,
-		},
-		{
-			id: "Mumbai",
-			label: "Mumbai",
-			checked: checkedMumbai,
-			setChecked: setCheckedMumbai,
-		},
-		{
-			id: "Chennai",
-			label: "Chennai",
-			checked: checkedChennai,
-			setChecked: setCheckedChennai,
-		},
-		{
-			id: "New Delhi",
-			label: "New Delhi",
-			checked: checkedNewDelhi,
-			setChecked: setCheckedNewDelhi,
-		},
-		{
-			id: "Hyderabad",
-			label: "Hyderabad",
-			checked: checkedHyderabad,
-			setChecked: setCheckedHyderabad,
-		},
-	];
-
-	return { experienceLevels, workTypes, salaryTypes, IndiaLocation };
+interface FilterOption {
+	id: string;
+	label: string;
+	checked: boolean;
 }
+
+export const useFilterOptions = () => {
+	const createFilterGroup = (options: Omit<FilterOption, "checked">[]) => {
+		return options.map((option) => ({
+			...option,
+			checked: useState(false),
+		}));
+	};
+
+	const categoryTypes = createFilterGroup([
+		{
+			id: "Development & Engineering",
+			label: "Development & Engineering",
+		},
+		{ id: "Data & AI", label: "Data & AI" },
+		{ id: "Product & Design", label: "Product & Design" },
+		{
+			id: "Cloud & Infrastructure",
+			label: "Cloud & Infrastructure",
+		},
+		{ id: "Security & Networking", label: "Security & Networking" },
+		{ id: "Emerging Technologies", label: "Emerging Technologies" },
+		{ id: "Testing & QA", label: "Testing & QA" },
+		{ id: "Leadership & Management", label: "Leadership & Management" },
+		{ id: "Support & Training", label: "Support & Training" },
+		{ id: "Creative & Writing", label: "Creative & Writing" },
+		{ id: "Specialized Roles", label: "Specialized Roles" },
+	]);
+
+	const experienceLevels = createFilterGroup([
+		{ id: "Senior", label: "Senior" },
+		{ id: "Entry Level", label: "Entry Level" },
+		{ id: "Mid Level", label: "Mid level" },
+	]);
+
+	const workTypes = createFilterGroup([
+		{ id: "Onsite", label: "Onsite" },
+		{ id: "Remote", label: "Remote" },
+		{ id: "Hybrid", label: "Hybrid" },
+	]);
+
+	const salaryTypes = createFilterGroup([
+		{ id: "below3LPA", label: "Below 3 LPA" },
+		{ id: "3-6LPA", label: "3-6 LPA" },
+		{ id: "6-10LPA", label: "6-10 LPA" },
+	]);
+
+	const IndiaLocations = createFilterGroup([
+		{ id: "Bengaluru", label: "Bengaluru" },
+		{ id: "Pune", label: "Pune" },
+		{ id: "Mumbai", label: "Mumbai" },
+		{ id: "Chennai", label: "Chennai" },
+		{ id: "New Delhi", label: "New Delhi" },
+		{ id: "Hyderabad", label: "Hyderabad" },
+	]);
+
+	const AbroadLocations = createFilterGroup([
+		{ id: "New York", label: "New York" },
+		{ id: "London", label: "London" },
+		{ id: "Singapore", label: "Singapore" },
+		{ id: "Dubai", label: "Dubai" },
+		{ id: "Tokyo", label: "Tokyo" },
+		{ id: "Sydney", label: "Sydney" },
+	]);
+
+	const employmentTypes = createFilterGroup([
+		{ id: "Full Time", label: "Full Time" },
+		{ id: "Part Time", label: "Part Time" },
+		{ id: "Contract", label: "Contract" },
+		{ id: "Freelance", label: "Freelance" },
+		{ id: "Internship", label: "Internship" },
+	]);
+
+	return {
+		categoryTypes,
+		experienceLevels,
+		workTypes,
+		salaryTypes,
+		IndiaLocations,
+		AbroadLocations,
+		employmentTypes,
+	};
+};

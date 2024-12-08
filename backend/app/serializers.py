@@ -245,6 +245,7 @@ class CompanyDataSerializer(serializers.ModelSerializer):
 
 class JobPostingSerializer(serializers.ModelSerializer):
     jobType = NestedDictField()
+    jobCategory = NestedDictField()
     workType = NestedDictField()
     experience = NestedDictField()
     currency = NestedDictField()
@@ -253,7 +254,7 @@ class JobPostingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = JobPostings
-        fields = ['id', 'jobId', 'company', 'companyData', 'jobTitle', 'jobType', 'workType', 'experience', 'postedDate', 'currency', 'lowestSalary', 'highestSalary',
+        fields = ['id', 'jobId', 'company', 'companyData', 'jobTitle', 'jobType', 'jobCategory', 'workType', 'experience', 'postedDate', 'currency', 'lowestSalary', 'highestSalary',
                   'requiredSkills', 'jobLocation', 'jobDescription', 'applicationDeadline', 'openings', 'applicants', 'applyLink', 'applyWithUs', 'isActive', 'isArchived']
         read_only_fields = ['id', 'jobId', 'company']
 

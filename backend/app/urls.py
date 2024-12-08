@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
+    path('api/jobs/filters', JobFilterView.as_view(), name='filter-jobs'),
 
     path('api/jobs/save/<str:jobId>', SaveJobView.as_view(), name='save-jobs'),
     path('api/jobs/saved', GetSavedJobs.as_view(), name='saved-jobs'),

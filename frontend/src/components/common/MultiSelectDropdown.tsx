@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 interface MultiSelectDropdownProps {
 	id: string;
 	options: { value: string; label: string }[];
 	label: string;
 	buttonTitle: string;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
 	helpText: string;
 	maxSelect: number;
 	dropdownName: string;
@@ -18,6 +20,8 @@ export const MultiSelectDropdown = ({
 	id,
 	options,
 	label,
+    isOpen,
+    setIsOpen,
 	buttonTitle,
 	helpText,
 	maxSelect,
@@ -28,7 +32,6 @@ export const MultiSelectDropdown = ({
 	const [selectedOptions, setSelectedOptions] = useState<string[]>(
 		selectedValues || []
 	);
-	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const toggleOption = (option: string) => {
@@ -84,10 +87,14 @@ export const MultiSelectDropdown = ({
 					aria-expanded="true"
 				>
 					{buttonTitle}
-					<FaChevronDown className="h-3.5 w-3.5 text-gray-500" />
+					{isOpen ? (
+						<FaChevronUp className="h-3.5 w-3.5 text-gray-500" />
+					) : (
+						<FaChevronDown className="h-3.5 w-3.5 text-gray-500" />
+					)}
 				</button>
 				{isOpen && (
-					<div className="origin-top-right absolute right-0 border border-gray-300 w-full rounded-md shadow-2xl bg-white overflow-auto max-h-48 z-10">
+					<div className="origin-top-right absolute right-0 border border-gray-300 w-full rounded-md  bg-white overflow-auto max-h-48 z-10">
 						<div className="py-1" role="menu" aria-orientation="vertical">
 							{options.map((option) => (
 								<label
@@ -98,11 +105,11 @@ export const MultiSelectDropdown = ({
 										type="checkbox"
 										name={dropdownName}
 										value={option.value}
-										className="form-checkbox outline-none ring-0 rounded size-4 text-indigo-500 ring-offset-0 "
+										className="form-checkbox outline-none ring-0 rounded size-4 text-indigo-500 ring-offset-0"
 										checked={selectedOptions.includes(option.value)}
 										onChange={() => toggleOption(option.value)}
 									/>
-									<span className="ml-3 block text-xs">{option.label}</span>
+									<span className="ml-3 block text-[13px]">{option.label}</span>
 								</label>
 							))}
 						</div>

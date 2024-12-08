@@ -1,19 +1,14 @@
-import JobCardMenu from '@/components/layouts/JobCardMenu';
-import NotFound from '@/pages/common/NotFound';
-import { BsArrowLeftCircle } from 'react-icons/bs';
-import { formatDate } from '@/utils/FormatDate';
-import { HiOutlineUsers } from 'react-icons/hi2';
-import { LiaMoneyBillWaveAltSolid } from 'react-icons/lia';
-import { LoadingBlock } from '@/components/ui/LoadingBlock';
-import { timesAgo } from '@/utils/DaysAgo';
-import { useFetchJobDetails } from '@/hooks/useFetchJobDetails';
-import { useParams } from 'react-router-dom';
-import {
-	LuBriefcase,
-	LuCalendar,
-	LuClock,
-	LuMapPin,
-} from "react-icons/lu";
+import JobCardMenu from "@/components/layouts/JobCardMenu";
+import NotFound from "@/pages/common/NotFound";
+import { BsArrowLeftCircle } from "react-icons/bs";
+import { formatDate } from "@/utils/FormatDate";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
+import { LoadingBlock } from "@/components/ui/LoadingBlock";
+import { timesAgo } from "@/utils/DaysAgo";
+import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
+import { useParams } from "react-router-dom";
+import { LuBriefcase, LuCalendar, LuClock, LuMapPin } from "react-icons/lu";
 
 export const ManageJobDetails: React.FC = () => {
 	const { jobId } = useParams<{ jobId: string }>();

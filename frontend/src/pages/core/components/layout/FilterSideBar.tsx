@@ -1,258 +1,215 @@
-import { MultiSelectDropdown } from "@/components/common/MultiSelectDropdown";
-import { employmentType, functions } from "@/utils/selectObjects";
-import { Controller, useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaXmark } from "react-icons/fa6";
 import { FilterCheckbox } from "@/pages/core/components/ui/FilterCheckBox";
 import { useFilterOptions } from "@/hooks/useFilterOptions";
+import { Button } from "@/components/ui/Button";
+import { SearchQuery } from "@/types/userTypes";
+import axios from "axios";
+import Spinner from "@/components/ui/Spinner";
+
+type FilterOption = {
+	id: string;
+	label: string;
+	checked: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+};
+
 interface FilterFormData {
 	category: string[];
 	jobType: string[];
-	workType: string[];
 	experience: string[];
 	expectedSalary: string[];
+	workType: string[];
+	indiaLocation: string[];
+	abroadLocation: string[];
 }
-export const FilterSideBar = () => {
-    const { experienceLevels, workTypes, salaryTypes, IndiaLocation } =
-		useFilterOptions();
 
-	const [isExperienceOpen, setIsExperienceOpen] = useState(false);
-	const [isSalaryOpen, setIsSalaryOpen] = useState(false);
-	const [isWorkTypeOpen, setIsWorkTypeOpen] = useState(false);
-	const [isIndiaLocationOpen, setIsIndiaLocationOpen] = useState(false);
+export const FilterSideBar = () => {
+	const [result, setResult] = useState<SearchQuery>();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const {
-		control,
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FilterFormData>();
+		experienceLevels,
+		workTypes,
+		salaryTypes,
+		IndiaLocations,
+		AbroadLocations,
+		categoryTypes,
+		employmentTypes,
+	} = useFilterOptions();
 
-    const handleFilter: SubmitHandler<FilterFormData> = async (data) => {};
+	const [openSections, setOpenSections] = useState({
+		category: false,
+		jobType: false,
+		experience: false,
+		salary: false,
+		workType: false,
+		indiaLocation: false,
+		abroadLocation: false,
+	});
+
+	const { handleSubmit, reset, watch, setValue } = useForm<FilterFormData>({
+		defaultValues: {
+			category: [],
+			jobType: [],
+			experience: [],
+			expectedSalary: [],
+			workType: [],
+			indiaLocation: [],
+			abroadLocation: [],
+		},
+	});
+
+	const handleFilter: SubmitHandler<FilterFormData> = async (data) => {
+		console.log("Applied Filters:", data);
+		setIsLoading(true);
+		try {
+			const url = `/api/jobs/filters`;
+			const response = await axios.post(url, data, {
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+			});
+			setResult(response.data);
+		} catch (error) {
+			console.error("Error Applying Filters: ", error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const handleClearAll = () => {
+		reset();
+		[
+			...categoryTypes,
+			...employmentTypes,
+			...experienceLevels,
+			...salaryTypes,
+			...workTypes,
+			...IndiaLocations,
+			...AbroadLocations,
+		].forEach((item) => item.checked[1](false));
+	};
+
+	const handleCheckboxChange = (
+		field: keyof FilterFormData,
+		value: string,
+		checked: boolean
+	) => {
+		const currentValues = watch(field) || [];
+		setValue(
+			field,
+			checked
+				? [...currentValues, value]
+				: currentValues.filter((v) => v !== value)
+		);
+	};
+
+	const toggleSection = (section: keyof typeof openSections) => {
+		setOpenSections((prev) => ({
+			...prev,
+			[section]: !prev[section],
+		}));
+	};
+
+	const renderFilterSection = (
+		title: string,
+		sectionKey: keyof FilterFormData,
+		items: FilterOption[]
+	) => (
+		<div className="flex flex-col gap-2 py-3 px-4 border-b">
+			<div
+				className="flex items-center justify-between cursor-pointer"
+				onClick={() => toggleSection(sectionKey as keyof typeof openSections)}
+			>
+				<span className="text-gray-800 font-medium text-base select-none">
+					{title}
+				</span>
+
+				{openSections[sectionKey as keyof typeof openSections] ? (
+					<FaChevronUp className="text-gray-500" />
+				) : (
+					<FaChevronDown className="text-gray-500" />
+				)}
+			</div>
+
+			<motion.div
+				initial={false}
+				animate={{
+					height: openSections[sectionKey as keyof typeof openSections]
+						? "auto"
+						: 0,
+					opacity: openSections[sectionKey as keyof typeof openSections]
+						? 1
+						: 0,
+				}}
+				transition={{
+					duration: 0.3,
+					ease: "easeInOut",
+				}}
+				className="overflow-hidden"
+			>
+				<div className="flex flex-col gap-4 p-2">
+					{items.map((item) => (
+						<FilterCheckbox
+							key={item.id}
+							id={item.id}
+							label={item.label}
+							checked={item.checked[0]}
+							setChecked={(checked: boolean) => {
+								item.checked[1](checked);
+								handleCheckboxChange(sectionKey, item.id, checked);
+							}}
+						/>
+					))}
+				</div>
+			</motion.div>
+		</div>
+	);
 
 	return (
 		<div className="border rounded-lg w-64 xl:w-72 ">
-			<form
-				onSubmit={handleSubmit(handleFilter)}
-				className="flex flex-col gap-2"
-			>
+			<form className="flex flex-col gap-2">
 				<div className="flex items-center justify-between border-b p-4">
 					<span className="text-gray-600 font-medium text-lg">Filters</span>
-					<span className="flex items-center gap-1 text-gray-600 text-sm border rounded-lg px-2 py-1 hover:bg-gray-100 hover:text-gray-700 select-none cursor-pointer">
+					<span
+						onClick={handleClearAll}
+						className="flex items-center gap-1 bg-gray-50 text-gray-600 text-sm border rounded-lg px-2 py-1 hover:bg-white hover:text-red-600 select-none cursor-pointer"
+					>
 						Clear All
 						<FaXmark className="text-gray-600" />
 					</span>
 				</div>
-				{/* category */}
-				<div className="flex flex-col gap-2 py-3 px-4 border-b">
-					<div className="flex items-center justify-start cursor-pointer">
-						<span className="text-gray-800 font-medium text-base select-none">
-							Category
-						</span>
-					</div>
-					<Controller
-						control={control}
-						name="category"
-						render={({ field }) => (
-							<MultiSelectDropdown
-								id="function"
-								options={functions as { value: string; label: string }[]}
-								label=""
-								buttonTitle="Categories"
-								helpText=""
-								maxSelect={5}
-								dropdownName="functions"
-								selectedValues={field.value ? field.value.flat() : []}
-								onChange={field.onChange}
-							/>
-						)}
-					/>
-				</div>
-				{/* job type */}
-				<div className="flex flex-col gap-2 py-3 px-4 border-b">
-					<div className="flex items-center justify-start cursor-pointer">
-						<span className="text-gray-800 font-medium text-base select-none">
-							Job Type
-						</span>
-					</div>
-					<Controller
-						control={control}
-						name="jobType"
-						render={({ field }) => (
-							<MultiSelectDropdown
-								id="jobType"
-								options={employmentType as { value: string; label: string }[]}
-								label=""
-								buttonTitle="Job Type"
-								helpText=""
-								maxSelect={5}
-								dropdownName="employmentType"
-								selectedValues={field.value ? field.value.flat() : []}
-								onChange={field.onChange}
-							/>
-						)}
-					/>
-				</div>
-				{/* experience */}
-				<div className="flex flex-col gap-2 py-3 px-4 border-b">
-					<div
-						className="flex items-center justify-between cursor-pointer"
-						onClick={() => setIsExperienceOpen(!isExperienceOpen)}
-					>
-						<span className="text-gray-800 font-medium text-base select-none">
-							Experience Level
-						</span>
+				<Button
+					type="submit"
+					variant="secondary"
+					className="py-2.5 mx-2 rounded-lg text-gray-700"
+					onClick={handleSubmit(handleFilter)}
+				>
+					{isLoading ? <Spinner color="#000" /> : "Apply Filters"}
+				</Button>
 
-						{isExperienceOpen ? (
-							<FaChevronUp className="text-gray-500" />
-						) : (
-							<FaChevronDown className="text-gray-500" />
-						)}
-					</div>
-
-					<motion.div
-						initial={{ height: 0, opacity: 0 }}
-						animate={{
-							height: isExperienceOpen ? "auto" : 0,
-							opacity: isExperienceOpen ? 1 : 0,
-						}}
-						transition={{ duration: 0.3 }}
-						className="overflow-hidden"
-					>
-						{isExperienceOpen && (
-							<div className="flex flex-col gap-4 p-2">
-								{experienceLevels.map((level) => (
-									<FilterCheckbox
-										key={level.id}
-										id={level.id}
-										label={level.label}
-										checked={level.checked}
-										setChecked={level.setChecked}
-									/>
-								))}
-							</div>
-						)}
-					</motion.div>
-				</div>
-				{/* expected salary */}
-				<div className="flex flex-col gap-2 py-3 px-4 border-b">
-					<div
-						className="flex items-center justify-between cursor-pointer"
-						onClick={() => setIsSalaryOpen(!isSalaryOpen)}
-					>
-						<span className="text-gray-800 font-medium text-base select-none">
-							Expected Salary
-						</span>
-
-						{isSalaryOpen ? (
-							<FaChevronUp className="text-gray-500" />
-						) : (
-							<FaChevronDown className="text-gray-500" />
-						)}
-					</div>
-					<motion.div
-						initial={{ height: 0, opacity: 0 }}
-						animate={{
-							height: isSalaryOpen ? "auto" : 0,
-							opacity: isSalaryOpen ? 1 : 0,
-						}}
-						transition={{ duration: 0.3 }}
-						className="overflow-hidden"
-					>
-						{isSalaryOpen && (
-							<div className="flex flex-col gap-4 p-2">
-								{salaryTypes.map((level) => (
-									<FilterCheckbox
-										key={level.id}
-										id={level.id}
-										label={level.label}
-										checked={level.checked}
-										setChecked={level.setChecked}
-									/>
-								))}
-							</div>
-						)}
-					</motion.div>
-				</div>
-				{/* work type */}
-				<div className="flex flex-col gap-2 py-3 px-4 border-b">
-					<div
-						className="flex items-center justify-between cursor-pointer"
-						onClick={() => setIsWorkTypeOpen(!isWorkTypeOpen)}
-					>
-						<span className="text-gray-800 font-medium text-base select-none">
-							Work Type
-						</span>
-						{isWorkTypeOpen ? (
-							<FaChevronUp className="text-gray-500" />
-						) : (
-							<FaChevronDown className="text-gray-500" />
-						)}
-					</div>
-					<motion.div
-						initial={{ height: 0, opacity: 0 }}
-						animate={{
-							height: isWorkTypeOpen ? "auto" : 0,
-							opacity: isWorkTypeOpen ? 1 : 0,
-						}}
-						transition={{ duration: 0.3 }}
-						className="overflow-hidden"
-					>
-						{isWorkTypeOpen && (
-							<div className="flex flex-col gap-4 p-2">
-								{workTypes.map((types) => (
-									<FilterCheckbox
-										key={types.id}
-										id={types.id}
-										label={types.label}
-										checked={types.checked}
-										setChecked={types.setChecked}
-									/>
-								))}
-							</div>
-						)}
-					</motion.div>
-				</div>
-				<div className="flex flex-col gap-2 py-3 px-4">
-					<div
-						className="flex items-center justify-between cursor-pointer"
-						onClick={() => setIsIndiaLocationOpen(!isIndiaLocationOpen)}
-					>
-						<span className="text-gray-800 font-medium text-base select-none">
-							Top Locations in India
-						</span>
-						{isIndiaLocationOpen ? (
-							<FaChevronUp className="text-gray-500" />
-						) : (
-							<FaChevronDown className="text-gray-500" />
-						)}
-					</div>
-
-					<motion.div
-						initial={{ height: 0, opacity: 0 }}
-						animate={{
-							height: isIndiaLocationOpen ? "auto" : 0,
-							opacity: isIndiaLocationOpen ? 1 : 0,
-						}}
-						transition={{ duration: 0.3 }}
-						className="overflow-hidden"
-					>
-						{isIndiaLocationOpen && (
-							<div className="flex flex-col gap-4 p-2">
-								{IndiaLocation.map((types) => (
-									<FilterCheckbox
-										key={types.id}
-										id={types.id}
-										label={types.label}
-										checked={types.checked}
-										setChecked={types.setChecked}
-									/>
-								))}
-							</div>
-						)}
-					</motion.div>
-				</div>
+				{renderFilterSection("Category", "category", categoryTypes)}
+				{renderFilterSection("Employment Type", "jobType", employmentTypes)}
+				{renderFilterSection(
+					"Experience Level",
+					"experience",
+					experienceLevels
+				)}
+				{renderFilterSection("Expected Salary", "expectedSalary", salaryTypes)}
+				{renderFilterSection("Work Type", "workType", workTypes)}
+				{renderFilterSection(
+					"Top Locations — India",
+					"indiaLocation",
+					IndiaLocations
+				)}
+				{renderFilterSection(
+					"Top Locations — Abroad",
+					"abroadLocation",
+					AbroadLocations
+				)}
 			</form>
 		</div>
 	);

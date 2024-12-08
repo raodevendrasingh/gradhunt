@@ -283,6 +283,7 @@ export type JobPosting = {
 	id: number;
 	jobTitle: string;
 	jobType: { value: string; label: string };
+	jobCategory: { value: string; label: string };
 	jobDescription: string;
 	workType: { value: string; label: string };
 	requiredSkills: SkillObject[];
@@ -304,6 +305,7 @@ export type JobPosts = {
 	jobId: string;
 	jobTitle: string;
 	jobType: string;
+    jobCategory: string;
 	jobDescription: string;
 	workType: string;
 	requiredSkills: SkillObject[];

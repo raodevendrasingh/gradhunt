@@ -154,6 +154,7 @@ export default function JobsFeedPage() {
 							</div>
 						</form>
 					</div>
+                    {/* Search bar ends*/}
 					<hr />
 
 					{isLoading ? (

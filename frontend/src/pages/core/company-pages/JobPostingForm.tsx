@@ -14,6 +14,7 @@ import {
 	locationType,
 	experienceLevels,
 	currency,
+    categories,
 } from "@/utils/selectObjects";
 import { FiBriefcase, FiClock, FiDollarSign } from "react-icons/fi";
 import { StyledDatePicker } from "@/components/ui/StyledDatePicker";
@@ -22,6 +23,7 @@ import { LocationSelect } from "@/helpers/LocationSelect2";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
 import { IoPaperPlaneOutline, IoPeopleOutline } from "react-icons/io5";
 import { LuGraduationCap, LuMapPin } from "react-icons/lu";
+import { BiCategoryAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 
@@ -95,7 +97,7 @@ export const JobPostingForm = () => {
 			navigate("success");
 		} catch (error: any) {
 			if (error.response) {
-                toast.error("Failed to create job posting");
+				toast.error("Failed to create job posting");
 				console.log("Error Status: ", error.response.status);
 				console.log("Error Message: ", error.message);
 				console.log("Error Response: ", error.response);
@@ -156,20 +158,15 @@ export const JobPostingForm = () => {
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<div className="">
-							<label className="block text-sm font-medium text-gray-700 mb-1">
-								Job Location
-							</label>
-							<LocationSelect
-								control={control}
-								name="jobLocation"
-								placeholder="Location"
-								error={errors.jobLocation?.message}
-								rules={{
-									required: "Location is required",
-								}}
-							/>
-						</div>
+						<SelectInput
+							label="Job Category"
+							name="jobCategory"
+							options={categories}
+							control={control}
+							icon={<BiCategoryAlt className="h-5 w-5" />}
+							error={errors.jobCategory?.message}
+							isRequired
+						/>
 						<TextInput
 							label="Open Positions"
 							name="openings"
@@ -218,6 +215,21 @@ export const JobPostingForm = () => {
 							control={control}
 							error={errors.applicationDeadline?.message}
 							validationRules={{ required: "Application Deadline is required" }}
+						/>
+					</div>
+
+					<div className="col-span-2">
+						<label className="block text-sm font-medium text-gray-700 mb-1">
+							Job Location
+						</label>
+						<LocationSelect
+							control={control}
+							name="jobLocation"
+							placeholder="Location"
+							error={errors.jobLocation?.message}
+							rules={{
+								required: "Location is required",
+							}}
 						/>
 					</div>
 
@@ -301,9 +313,7 @@ export const JobPostingForm = () => {
 					</div>
 				</form>
 			</div>
-			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
-				
-			</div>
+			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4"></div>
 		</div>
 	);
 };

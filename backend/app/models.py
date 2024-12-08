@@ -131,6 +131,7 @@ class JobPostings(models.Model):
     isArchived = models.BooleanField(default=False)
     jobTitle = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50)
+    jobCategory = models.CharField(max_length=50)
     workType = models.CharField(max_length=50, blank=True, null=True)
     jobDescription = models.TextField()
     currency = models.CharField(max_length=100)
