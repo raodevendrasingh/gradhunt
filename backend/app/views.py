@@ -1,5 +1,5 @@
-import re
 import os
+import re
 import resend
 import random
 import logging
@@ -7,6 +7,7 @@ import dns.resolver
 import traceback
 from .models import *
 from .serializers import *
+from django.db.models import Q
 from urllib.parse import urlparse
 from django.db import transaction
 from rest_framework import status
@@ -1288,30 +1289,120 @@ class JobSearchView(APIView):
 
 
 class JobFilterView(APIView):
+
+    def extract_salary_value(salary_str):
+        # Extracts the first sequence of digits
+        match = re.search(r'(\d+)', salary_str)
+        return int(match.group(0)) if match else None
+
     @transaction.atomic
     def post(self, request):
         try:
-            abroad_location = request.data.get("abroadLocation") or ""
-            india_location = request.data.get("indiaLocation") or ""
-            location = abroad_location + india_location
-            experience = request.data.get("experience") or ""
-            jobType = request.data.get("jobType") or ""
-            salary = request.data.get("expectedSalary") or ""
-            workType = request.data.get("workType") or ""
-            category = request.data.get("category") or ""
+            # Combine locations
+            abroad_location = request.data.get("abroadLocation", [])
+            india_location = request.data.get("indiaLocation", [])
+            locations = abroad_location + india_location
 
-            print("Location:", location)
-            print("Experience:", experience)
-            print("Job Type:", jobType)
-            print("Salary:", salary)
-            print("Work Type:", workType)
-            print("Category:", category)
+            # Extract filter parameters
+            experiences = request.data.get("experience", [])
+            job_types = request.data.get("jobType", [])
+            salary_ranges = request.data.get("expectedSalary", [])
+            work_types = request.data.get("workType", [])
+            categories = request.data.get("category", [])
 
-            return Response({}, status=status.HTTP_200_OK)
-        except JobPostings.DoesNotExist:
-            return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
+            print(salary_ranges)
+
+            # active jobs
+            queryset = JobPostings.objects.filter(isActive=True)
+
+            # Location Filter
+            if locations:
+                queryset = queryset.filter(
+                    jobLocation__startswith=locations[0]
+                )
+
+            # Experience Filter
+            if experiences:
+                min_experience = experiences[0].get("min")
+                max_experience = experiences[0].get("max")
+
+                experience_conditions = Q()
+
+                if min_experience != '':
+                    min_experience = int(min_experience)
+                    experience_conditions &= Q(experience__gte=min_experience)
+
+                if max_experience != '':
+                    max_experience = int(max_experience)
+                    experience_conditions &= Q(experience__lte=max_experience)
+
+                # Combine conditions for experience
+                if min_experience is not None and max_experience is not None:
+                    experience_conditions |= Q(experience__gte=min_experience) & Q(
+                        experience__lte=max_experience)
+
+                queryset = queryset.filter(experience_conditions)
+
+            # Job Type Filter
+            if job_types:
+                queryset = queryset.filter(jobType__in=job_types)
+
+            # Work Type Filter
+            if work_types:
+                queryset = queryset.filter(workType__in=work_types)
+
+            # Category Filter
+            if categories:
+                queryset = queryset.filter(jobCategory__in=categories)
+
+            # Salary Filter
+            if salary_ranges:
+                min_salary = salary_ranges[0].get("min", "").strip()
+                max_salary = salary_ranges[0].get("max", "").strip()
+                currency = salary_ranges[0].get("currency", "")
+
+                salary_conditions = Q()
+
+                # Initialize min_salary and max_salary as None
+                min_salary_value = None
+                max_salary_value = None
+
+                if min_salary != '':
+                    min_salary_value = int(min_salary)
+                    print(min_salary_value, type(min_salary_value))
+
+                if max_salary != '':
+                    max_salary_value = int(max_salary)
+                    print(max_salary_value, type(max_salary_value))
+
+                # Apply conditions based on the extracted values
+                if min_salary_value is not None:
+                    salary_conditions &= Q(highestSalary__gte=min_salary_value)
+
+                if max_salary_value is not None:
+                    salary_conditions &= Q(lowestSalary__lte=max_salary_value)
+
+                if currency:
+                    print(currency, type(currency))
+                    salary_conditions &= Q(currency=currency)
+
+                # Apply the salary conditions to the queryset
+                queryset = queryset.filter(salary_conditions)
+
+            serializer = JobPostingSerializer(queryset, many=True)
+
+            return Response({
+                'exact_matches': serializer.data,
+                'related_matches': [],
+                'total_count': queryset.count()
+            }, status=status.HTTP_200_OK)
+
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            traceback.print_exc()
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class ApplyJobView(APIView):

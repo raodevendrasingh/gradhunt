@@ -151,6 +151,13 @@ class JobPostings(models.Model):
         return f"{self.jobTitle} at {self.company.companyName}"
 
     class Meta:
+        indexes = [
+            models.Index(fields=['jobLocation']),
+            models.Index(fields=['experience']),
+            models.Index(fields=['jobType']),
+            models.Index(fields=['workType']),
+            models.Index(fields=['jobCategory']),
+        ]
         verbose_name = "Job Posting"
         verbose_name_plural = "Job Postings"
 

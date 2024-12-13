@@ -34,22 +34,10 @@ export const useFilterOptions = () => {
 		{ id: "Specialized Roles", label: "Specialized Roles" },
 	]);
 
-	const experienceLevels = createFilterGroup([
-		{ id: "Senior", label: "Senior" },
-		{ id: "Entry Level", label: "Entry Level" },
-		{ id: "Mid Level", label: "Mid level" },
-	]);
-
 	const workTypes = createFilterGroup([
-		{ id: "Onsite", label: "Onsite" },
+		{ id: "On-Site", label: "On-Site" },
 		{ id: "Remote", label: "Remote" },
 		{ id: "Hybrid", label: "Hybrid" },
-	]);
-
-	const salaryTypes = createFilterGroup([
-		{ id: "below3LPA", label: "Below 3 LPA" },
-		{ id: "3-6LPA", label: "3-6 LPA" },
-		{ id: "6-10LPA", label: "6-10 LPA" },
 	]);
 
 	const IndiaLocations = createFilterGroup([
@@ -80,9 +68,7 @@ export const useFilterOptions = () => {
 
 	return {
 		categoryTypes,
-		experienceLevels,
 		workTypes,
-		salaryTypes,
 		IndiaLocations,
 		AbroadLocations,
 		employmentTypes,

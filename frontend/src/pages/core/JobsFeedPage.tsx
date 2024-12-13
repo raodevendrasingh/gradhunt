@@ -1,5 +1,5 @@
 import { FilterSideBar } from "./components/layout/FilterSideBar";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { TextInput } from "@/components/ui/TextInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { JobPosts, SearchParams, SearchQuery } from "@/types/userTypes";
@@ -26,7 +26,6 @@ export default function JobsFeedPage() {
 
 	const { register, control, handleSubmit } = useForm<SearchParams>();
 
-	// Handle body scroll when sidebar is open on mobile
 	useEffect(() => {
 		if (isSidebarOpen) {
 			document.body.style.overflow = "hidden";
@@ -38,10 +37,15 @@ export default function JobsFeedPage() {
 		};
 	}, [isSidebarOpen]);
 
-	const fetchJobs = async (params: string) => {
+	const fetchJobs = async (params: string | Record<string, any>) => {
 		setIsLoading(true);
 		try {
-			const url = `/api/jobs/query?${params}`;
+			const searchParams =
+				typeof params === "string"
+					? params
+					: new URLSearchParams(params).toString();
+
+			const url = `/api/jobs/query?${searchParams}`;
 			const response = await axios.get(url);
 			setResult(response.data);
 		} catch (error) {
@@ -70,7 +74,6 @@ export default function JobsFeedPage() {
 				setIsSidebarOpen={setIsSidebarOpen}
 			/>
 
-			{/* Dark overlay for mobile when sidebar is open */}
 			<div
 				className={`fixed inset-0 bg-black transition-opacity duration-300 md:hidden ${
 					isSidebarOpen ? "opacity-50 z-30" : "opacity-0 -z-10"
@@ -86,7 +89,14 @@ export default function JobsFeedPage() {
                             `}
 				>
 					<div className="flex justify-end p-5">
-						<FilterSideBar />
+						<FilterSideBar
+							onFilterResults={(
+								filteredResults: SetStateAction<SearchQuery | undefined>
+							) => {
+								setResult(filteredResults);
+								setIsLoading(false);
+							}}
+						/>
 					</div>
 				</div>
 
@@ -154,7 +164,7 @@ export default function JobsFeedPage() {
 							</div>
 						</form>
 					</div>
-                    {/* Search bar ends*/}
+					{/* Search bar ends*/}
 					<hr />
 
 					{isLoading ? (

@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaXmark } from "react-icons/fa6";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { SearchQuery } from "@/types/userTypes";
 import axios from "axios";
 import Spinner from "@/components/ui/Spinner";
+import { RangeFilter } from "./RangeFilter";
 
 type FilterOption = {
 	id: string;
@@ -15,24 +16,27 @@ type FilterOption = {
 	checked: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 };
 
+// Interface matches the desired backend format
 interface FilterFormData {
 	category: string[];
 	jobType: string[];
-	experience: string[];
-	expectedSalary: string[];
+	experience: { min: string; max: string }[];
+	expectedSalary: { min: string; max: string; currency: string }[];
 	workType: string[];
 	indiaLocation: string[];
 	abroadLocation: string[];
 }
 
-export const FilterSideBar = () => {
+export const FilterSideBar = ({
+	onFilterResults,
+}: {
+	onFilterResults: (results: SearchQuery) => void;
+}) => {
 	const [result, setResult] = useState<SearchQuery>();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const {
-		experienceLevels,
 		workTypes,
-		salaryTypes,
 		IndiaLocations,
 		AbroadLocations,
 		categoryTypes,
@@ -49,7 +53,7 @@ export const FilterSideBar = () => {
 		abroadLocation: false,
 	});
 
-	const { handleSubmit, reset, watch, setValue } = useForm<FilterFormData>({
+	const { handleSubmit, reset, control } = useForm<FilterFormData>({
 		defaultValues: {
 			category: [],
 			jobType: [],
@@ -72,7 +76,9 @@ export const FilterSideBar = () => {
 					Accept: "application/json",
 				},
 			});
+
 			setResult(response.data);
+			onFilterResults(response.data);
 		} catch (error) {
 			console.error("Error Applying Filters: ", error);
 		} finally {
@@ -85,26 +91,10 @@ export const FilterSideBar = () => {
 		[
 			...categoryTypes,
 			...employmentTypes,
-			...experienceLevels,
-			...salaryTypes,
 			...workTypes,
 			...IndiaLocations,
 			...AbroadLocations,
 		].forEach((item) => item.checked[1](false));
-	};
-
-	const handleCheckboxChange = (
-		field: keyof FilterFormData,
-		value: string,
-		checked: boolean
-	) => {
-		const currentValues = watch(field) || [];
-		setValue(
-			field,
-			checked
-				? [...currentValues, value]
-				: currentValues.filter((v) => v !== value)
-		);
 	};
 
 	const toggleSection = (section: keyof typeof openSections) => {
@@ -152,18 +142,34 @@ export const FilterSideBar = () => {
 				className="overflow-hidden"
 			>
 				<div className="flex flex-col gap-4 p-2">
-					{items.map((item) => (
-						<FilterCheckbox
-							key={item.id}
-							id={item.id}
-							label={item.label}
-							checked={item.checked[0]}
-							setChecked={(checked: boolean) => {
-								item.checked[1](checked);
-								handleCheckboxChange(sectionKey, item.id, checked);
-							}}
-						/>
-					))}
+					<Controller
+						name={sectionKey}
+						control={control}
+						render={({ field }) => (
+							<>
+								{items.map((item) => (
+									<FilterCheckbox
+										key={item.id}
+										id={item.id}
+										label={item.label}
+										checked={item.checked[0]}
+										setChecked={(checked: boolean) => {
+											// Update local state
+											item.checked[1](checked);
+
+											// Update form values
+											const currentValues = field.value as string[];
+											const newValues = checked
+												? [...currentValues, item.id]
+												: currentValues.filter((v) => v !== item.id);
+
+											field.onChange(newValues);
+										}}
+									/>
+								))}
+							</>
+						)}
+					/>
 				</div>
 			</motion.div>
 		</div>
@@ -193,12 +199,20 @@ export const FilterSideBar = () => {
 
 				{renderFilterSection("Category", "category", categoryTypes)}
 				{renderFilterSection("Employment Type", "jobType", employmentTypes)}
-				{renderFilterSection(
-					"Experience Level",
-					"experience",
-					experienceLevels
-				)}
-				{renderFilterSection("Expected Salary", "expectedSalary", salaryTypes)}
+				<RangeFilter
+					control={control}
+					title="Experience Level"
+					type="experience"
+					field="experience"
+				/>
+
+				<RangeFilter
+					control={control}
+					title="Expected Salary"
+					type="salary"
+					field="expectedSalary"
+				/>
+
 				{renderFilterSection("Work Type", "workType", workTypes)}
 				{renderFilterSection(
 					"Top Locations — India",
