@@ -23,8 +23,21 @@ export default function JobsFeedPage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isSearchDisabled, setIsSearchDisabled] = useState(true);
 
-	const { register, control, handleSubmit } = useForm<SearchParams>();
+	const { register, control, handleSubmit, watch } = useForm<SearchParams>({
+		defaultValues: {
+			position: new URLSearchParams(location.search).get("position")?.replace("+", " ") || "",
+			experience: new URLSearchParams(location.search).get("experience") || "",
+			location: new URLSearchParams(location.search).get("location") || "",
+		},
+	});
+
+	const position = watch("position");
+
+	useEffect(() => {
+		setIsSearchDisabled(!position || position.length < 2);
+	}, [position]);
 
 	useEffect(() => {
 		if (isSidebarOpen) {
@@ -116,6 +129,9 @@ export default function JobsFeedPage() {
 										register={register}
 										icon={<GoSearch className="h-5 w-5" />}
 										className="py-3 bg-white focus:ring-0"
+										onChange={(e) => {
+											register("position").onChange(e);
+										}}
 									/>
 								</div>
 
@@ -158,7 +174,11 @@ export default function JobsFeedPage() {
 								</div>
 							</div>
 							<div className="w-full flex justify-end">
-								<Button type="submit" className="w-fit rounded-lg">
+								<Button
+									type="submit"
+									className="w-fit rounded-lg"
+									disabled={isSearchDisabled}
+								>
 									Search
 								</Button>
 							</div>
@@ -168,13 +188,13 @@ export default function JobsFeedPage() {
 					<hr />
 
 					{isLoading ? (
-						<div className="pt-5 w-full space-y-5">
+						<div className="py-5 w-full space-y-5">
 							<JobCardSkeleton />
 							<JobCardSkeleton />
 						</div>
 					) : (
 						<>
-							<div className="flex flex-col w-full items-start gap-3 pt-10 px-5">
+							<div className="flex flex-col w-full items-start gap-3 pt-10 px-5 pb-3">
 								<div className="text-sm text-gray-500">
 									Search Results ({result?.exact_matches?.length || 0})
 								</div>
@@ -194,26 +214,18 @@ export default function JobsFeedPage() {
 									) : null}
 								</div>
 							</div>
-							<div className="flex flex-col w-full items-start gap-3 pt-10 px-5">
-								<div className="text-sm text-gray-500">
-									Related Jobs ({result?.related_matches?.length || 0})
+							{result?.related_matches && result.related_matches.length > 0 && (
+								<div className="flex flex-col w-full items-start gap-3 pt-10 px-5 pb-3">
+									<div className="text-sm text-gray-500">
+										Related Jobs ({result.related_matches.length})
+									</div>
+									<div className="space-y-4 w-full">
+										{result.related_matches.map((jobPost: JobPosts) => (
+											<JobSearchCard key={jobPost.id} jobPost={jobPost} />
+										))}
+									</div>
 								</div>
-								<div className="space-y-4 w-full">
-									{result?.related_matches ? (
-										result.related_matches.length > 0 ? (
-											result.related_matches.map((jobPost: JobPosts) => (
-												<JobSearchCard key={jobPost.id} jobPost={jobPost} />
-											))
-										) : (
-											<div className="min-h-16 border rounded-lg flex items-center justify-center">
-												<span className="text-sm text-gray-600">
-													No Jobs Found
-												</span>
-											</div>
-										)
-									) : null}
-								</div>
-							</div>
+							)}
 						</>
 					)}
 				</div>
