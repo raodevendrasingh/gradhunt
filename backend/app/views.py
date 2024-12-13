@@ -1248,31 +1248,42 @@ class JobSearchView(APIView):
             if not position:
                 return Response({'error': 'Position is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-            exact_match_jobs = JobPostings.objects.filter(
-                jobTitle__icontains=position if position else "",
-                experience__icontains=experience if experience else "",
-                jobLocation__icontains=location if location else ""
+            queryset = JobPostings.objects.filter(isActive=True)
+
+            # Exact Match Jobs
+            exact_match_jobs = queryset.filter(
+                jobTitle__icontains=position,
+                experience__icontains=experience,
+                jobLocation__icontains=location
             )
+
+            # Convert exact matches to a set for easy comparison
+            exact_match_ids = set(
+                exact_match_jobs.values_list('id', flat=True))
 
             individual_jobs_set = set()
 
             if position:
-                position_jobs = JobPostings.objects.filter(
-                    jobTitle__icontains=position)
+                position_jobs = queryset.filter(jobTitle__icontains=position)
                 individual_jobs_set.update(position_jobs)
 
             if experience:
-                experience_jobs = JobPostings.objects.filter(
+                experience_jobs = queryset.filter(
                     experience__icontains=experience)
                 individual_jobs_set.update(experience_jobs)
 
             if location:
-                location_jobs = JobPostings.objects.filter(
+                location_jobs = queryset.filter(
                     jobLocation__icontains=location)
                 individual_jobs_set.update(location_jobs)
 
+            # Remove exact matches from the individual jobs
+            individual_jobs_set = [
+                job for job in individual_jobs_set if job.id not in exact_match_ids]
+
             individual_jobs_list = list(individual_jobs_set)
 
+            # Serialize the results
             exact_match_serializer = JobPostingSerializer(
                 exact_match_jobs, many=True)
             individual_jobs_serializer = JobPostingSerializer(
@@ -1282,9 +1293,9 @@ class JobSearchView(APIView):
                 'exact_matches': exact_match_serializer.data,
                 'related_matches': individual_jobs_serializer.data
             }, status=status.HTTP_200_OK)
-        except JobPostings.DoesNotExist:
-            return Response({"error": "No Jobs found"}, status=status.HTTP_404_NOT_FOUND)
+
         except Exception as e:
+            traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
