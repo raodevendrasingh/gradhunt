@@ -1446,7 +1446,7 @@ class SaveJobView(APIView):
     permission_classes = [IsClerkAuthenticated]
 
     @transaction.atomic
-    def post(self, request, jobId):
+    def patch(self, request, jobId):
         candidate = request.user
         try:
             job_posting = JobPostings.objects.get(jobId=jobId)

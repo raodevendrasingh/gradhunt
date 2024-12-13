@@ -36,14 +36,14 @@ export const JobDetailsPage: React.FC = () => {
 		return <NotFound />;
 	}
 
-	const { data, isLoading } = useFetchJobDetails({ jobId });
+	const { data: jobPost, isLoading } = useFetchJobDetails({ jobId });
 	const {
 		data: appliedJobs,
 		refetch: refetchAppliedJob,
 		isLoading: isAppliedJobLoading,
 	} = useFetchAppliedJobs();
 
-	if (!data || isLoading) {
+	if (!jobPost || isLoading) {
 		return (
 			<div className="w-full lg2:w-[70%] h-screen flex items-center justify-center border-r">
 				<LoadingBlock size={36} color="#475569" />
@@ -68,7 +68,7 @@ export const JobDetailsPage: React.FC = () => {
 			if (!token) {
 				return "User Unauthorized!";
 			}
-			const url = `/api/jobs/apply/${data.jobId}`;
+			const url = `/api/jobs/apply/${jobPost.jobId}`;
 			await axios.post(
 				url,
 				{},
@@ -79,6 +79,10 @@ export const JobDetailsPage: React.FC = () => {
 					},
 				}
 			);
+            toast.success("Applied Successfully", {
+				description:
+					jobPost.jobTitle + " at " + jobPost.companyData.companyName,
+			});
 			refetchAppliedJob();
 		} catch (error) {
 			console.log(error);
@@ -87,7 +91,7 @@ export const JobDetailsPage: React.FC = () => {
 	};
 
 	const isApplied = appliedJobs?.some(
-		(appliedJob) => appliedJob.jobPosting == data.id
+		(appliedJob) => appliedJob.jobPosting == jobPost.id
 	);
 
 	const renderApplyButton = () => {
@@ -140,11 +144,11 @@ export const JobDetailsPage: React.FC = () => {
 							</button>
 							<div className="flex items-center pl-2">
 								<h1 className="text-xl font-bold text-gray-800 pr-4 truncate">
-									{data.jobTitle}
+									{jobPost.jobTitle}
 								</h1>
 								<div className="flex items-center gap-2 ">
 									<span className="px-2.5 py-1 bg-white rounded-md text-gray-600 text-sm border border-gray-100">
-										JobID: {data.jobId}
+										JobID: {jobPost.jobId}
 									</span>
 								</div>
 							</div>
@@ -157,47 +161,47 @@ export const JobDetailsPage: React.FC = () => {
 							<InfoItem
 								icon={<LuClock size={20} />}
 								title="Posted"
-								text={timesAgo(data.postedDate)}
+								text={timesAgo(jobPost.postedDate)}
 							/>
 							<InfoItem
 								icon={<HiOutlineUsers size={20} />}
 								title="Openings"
-								text={data.openings.toString()}
+								text={jobPost.openings.toString()}
 							/>
 							<InfoItem
 								icon={<HiOutlineUsers size={20} />}
 								title="Applicants"
-								text={data.applicants.toString()}
+								text={jobPost.applicants.toString()}
 							/>
 							<InfoItem
 								icon={<LuMapPin size={20} />}
 								title="Location"
-								text={data.jobLocation}
+								text={jobPost.jobLocation}
 							/>
 							<InfoItem
 								icon={<LuBriefcase size={20} />}
 								title="Job Type"
-								text={data.jobType}
+								text={jobPost.jobType}
 							/>
 							<InfoItem
 								icon={<LuMapPin size={20} />}
 								title="Work Type"
-								text={data.workType}
+								text={jobPost.workType}
 							/>
 							<InfoItem
 								icon={<LuClock size={20} />}
 								title="Experience"
-								text={`${data.experience} years`}
+								text={`${jobPost.experience} years`}
 							/>
 							<InfoItem
 								icon={<LiaMoneyBillWaveAltSolid size={20} />}
 								title="Salary"
-								text={`${data.currency} ${data.lowestSalary} - ${data.highestSalary}`}
+								text={`${jobPost.currency} ${jobPost.lowestSalary} - ${jobPost.highestSalary}`}
 							/>
 							<InfoItem
 								icon={<LuCalendar size={20} />}
 								title="Application Deadline"
-								text={formatDate(data.applicationDeadline)}
+								text={formatDate(jobPost.applicationDeadline)}
 							/>
 						</div>
 					</div>
@@ -230,7 +234,7 @@ export const JobDetailsPage: React.FC = () => {
 											className="h-8 w-24 bg-gray-200 rounded-full animate-pulse"
 										/>
 									))
-								: data.requiredSkills.map((skill) => (
+								: jobPost.requiredSkills.map((skill) => (
 										<div
 											key={skill.value}
 											className="flex items-center justify-center text-sm px-4 py-1.5 bg-white text-gray-700 rounded-full border border-gray-200 hover:border-gray-300 transition-colors duration-200"
@@ -251,20 +255,20 @@ export const JobDetailsPage: React.FC = () => {
 							Job Description
 						</h2>
 						<div
-							dangerouslySetInnerHTML={{ __html: data.jobDescription }}
+							dangerouslySetInnerHTML={{ __html: jobPost.jobDescription }}
 							className="text-gray-700 prose max-w-none"
 							style={{ lineHeight: "1.6" }}
 						/>
 					</div>
 
 					<div className=" sticky bottom-0 flex items-center justify-end bg-white border-t p-3 space-x-4">
-						{data.applyWithUs && renderApplyButton()}
-						{data.applyLink && (
+						{jobPost.applyWithUs && renderApplyButton()}
+						{jobPost.applyLink && (
 							<Button
 								variant="secondary"
 								className="flex w-1/2 items-center gap-2 rounded-lg py-2.5"
 								onClick={() =>
-									window.open(data.applyLink, "_blank", "noopener,noreferrer")
+									window.open(jobPost.applyLink, "_blank", "noopener,noreferrer")
 								}
 							>
 								Apply

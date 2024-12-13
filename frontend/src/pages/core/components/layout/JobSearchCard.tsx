@@ -62,7 +62,10 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				}
 			);
 			refetchAppliedJob();
-			console.log("Job Applied");
+			toast.success("Applied Successfully", {
+				description:
+					jobPost.jobTitle + " at " + jobPost.companyData.companyName,
+			});
 		} catch (error) {
 			setOptimisticApplied(false);
 			console.log(error);
@@ -87,7 +90,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				return "User Unauthorized!";
 			}
 			const url = `/api/jobs/save/${jobPost.jobId}`;
-			await axios.post(
+			await axios.patch(
 				url,
 				{},
 				{
@@ -97,11 +100,12 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 					},
 				}
 			);
+            toast.success(isCurrentlySaved ? "Job removed from saved" : "Job saved successfully");
 			refetchSavedJob();
 		} catch (error) {
 			setOptimisticSaved(isCurrentlySaved);
 			console.log(error);
-			toast.error("Error Saving Job");
+            toast.error("Failed to update saved status");
 		}
 	};
 
@@ -205,6 +209,9 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 					</span>
 					<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
 						{jobPost.workType}
+					</span>
+					<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
+						{jobPost.experience} Years
 					</span>
 				</div>
 				<div className="flex flex-col md:flex-row justify-between text-sm text-gray-600">

@@ -23,6 +23,9 @@ export const JobPostCard: React.FC<JobCardProps> = ({ jobPost }) => {
 				<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
 					{jobPost.workType}
 				</span>
+				<span className="text-xs font-medium text-gray-600 px-3 py-1 bg-gray-100 rounded-full">
+					{jobPost.experience} Years
+				</span>
 			</div>
 
 			<p
