@@ -11,6 +11,7 @@ import { useFetchCompanyProfileByParams } from "@/hooks/useFetchCompanyProfileBy
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
+import clsx from "clsx";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
@@ -21,13 +22,13 @@ export default function CompanyProfile(): React.JSX.Element {
 
 	const { data: currentUser } = useFetchUserDetails();
 
-	useEffect(() => {
-		// Retrieve the selected tab from local storage
-		const storedTab = localStorage.getItem("selectedTab");
-		if (storedTab) {
-			setSelected(Number(storedTab));
-		}
-	}, []);
+	// useEffect(() => {
+	// 	// Retrieve the selected tab from local storage
+	// 	const storedTab = localStorage.getItem("selectedTab");
+	// 	if (storedTab) {
+	// 		setSelected(Number(storedTab));
+	// 	}
+	// }, []);
 
 	if (isLoading) {
 		return (
@@ -145,12 +146,18 @@ export default function CompanyProfile(): React.JSX.Element {
 						{CompanyTabs.map((tab, idx) => (
 							<button
 								key={idx}
-								onClick={() => setSelected(idx)}
-								className={`px-2.5 py-1 rounded-md text-sm font-medium transition-colors ${
-									selected === idx
-										? "bg-slate-800 text-white"
-										: "bg-slate-100 text-gray-700 hover:bg-slate-200"
-								}`}
+								onClick={() => !tab.disabled && setSelected(idx)}
+								className={clsx(
+									"px-2.5 py-1 rounded-md text-sm font-medium transition-colors",
+									{
+										"bg-slate-800 text-white":
+											selected === idx && !tab.disabled,
+										"bg-slate-100 text-gray-700 hover:bg-slate-200":
+											selected !== idx && !tab.disabled,
+										"bg-slate-100 text-gray-400 cursor-not-allowed opacity-70":
+											tab.disabled,
+									}
+								)}
 							>
 								{tab.title}
 							</button>

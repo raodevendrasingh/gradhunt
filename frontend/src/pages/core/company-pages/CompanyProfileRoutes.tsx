@@ -32,9 +32,9 @@ export default function RecruiterRoutes() {
 				<Route path="applicants" element={<ManageApplicants />} />
 				<Route path="applicants/:jobId" element={<JobApplicantsPage />} />
 				<Route path="archived" element={<ArchivedPostings />} />
-				<Route path="analytics" element={<AnalyticsPage />} />
-				<Route path="team" element={<TeamsPage />} />
-				<Route path="integrations" element={<Integrations />} />
+				{/* <Route path="analytics" element={<AnalyticsPage />} /> */}
+				{/* <Route path="team" element={<TeamsPage />} /> */}
+				{/* <Route path="integrations" element={<Integrations />} /> */}
 				<Route path="settings" element={<Settings />} />
 				<Route path="*" element={<NotFound />} />
 			</Route>

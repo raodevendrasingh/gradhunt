@@ -15,7 +15,7 @@ export default function CandidateRoutes() {
 			<Route element={<UserProfileLayout />}>
 				<Route path="p/:username" element={<StandardUserProfile />} />
 				<Route path="job-applications" element={<JobApplicationsPage />} />
-				<Route path="career-preferences" element={<CareerPreferencePage />} />
+				{/* <Route path="career-preferences" element={<CareerPreferencePage />} /> */}
 				<Route path="jobs-saved" element={<SavedJobsPage />} />
 				<Route path="create-company-profile" element={<CompanyProfileForm />} />
 				<Route path="settings" element={<SettingsPage />} />

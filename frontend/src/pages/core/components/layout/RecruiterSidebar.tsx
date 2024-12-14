@@ -8,6 +8,7 @@ import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi2";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
 import { LuChartLine } from "react-icons/lu";
+import clsx from "clsx";
 
 interface TabProps {
 	icon: ReactNode;
@@ -15,6 +16,7 @@ interface TabProps {
 	title?: string;
 	isActive: boolean;
 	route: string;
+	disabled?: boolean;
 }
 
 interface RecruiterSidebarProps {
@@ -23,15 +25,22 @@ interface RecruiterSidebarProps {
 	isMobile?: boolean;
 }
 
-const Tab: React.FC<TabProps> = ({ icon, label, title, isActive }) => {
+const Tab: React.FC<TabProps> = ({
+	icon,
+	label,
+	title,
+	isActive,
+	disabled,
+}) => {
 	return (
 		<motion.div
-			className={`flex items-center p-3 mx-2 my-1 rounded-lg cursor-pointer transition-colors select-none ${
-				isActive
-					? "bg-slate-100 text-slate-900"
-					: "text-slate-600 hover:bg-slate-50"
-			}`}
-			whileHover={{ scale: 1.02 }}
+			className={clsx("flex items-center p-3 mx-2 my-1 rounded-lg transition-colors select-none", {
+				"bg-slate-100 text-slate-900": isActive,
+				"text-slate-600 hover:bg-slate-50": !isActive && !disabled,
+				"opacity-70 cursor-not-allowed text-slate-600": disabled,
+				"cursor-pointer": !disabled
+			})}
+			whileHover={{ scale: disabled ? 1 : 1.02 }}
 			transition={{ type: "spring", stiffness: 400, damping: 10 }}
 		>
 			<motion.div
@@ -60,7 +69,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 	const { isSignedIn } = useUser();
 	const { data: userData, isLoading: isUserDataLoading } =
 		useFetchUserDetails();
-        
+
 	const isCompanyAdmin = userData?.user_details?.isCompanyAdmin;
 
 	const { data: companyProfileData, error: companyProfileError } =
@@ -75,7 +84,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 
 	const recruiterTabs = [];
 
-    const companyProfileUrl = `/company/${companyProfileData?.companySlug}`;
+	const companyProfileUrl = `/company/${companyProfileData?.companySlug}`;
 
 	if (isSignedIn) {
 		if (companyProfileData && companyProfileData.isDraft === false) {
@@ -113,16 +122,19 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 				icon: <LuChartLine size={20} />,
 				label: "Analytics",
 				route: `${companyProfileUrl}/analytics`,
+				disabled: true,
 			},
 			{
 				icon: <HiOutlineUserGroup size={20} />,
 				label: "Team",
 				route: `${companyProfileUrl}/team`,
+				disabled: true,
 			},
 			{
 				icon: <IoExtensionPuzzleOutline size={20} />,
 				label: "Integrations",
 				route: `${companyProfileUrl}/integrations`,
+				disabled: true,
 			},
 			{
 				icon: <GoGear size={20} />,
@@ -137,24 +149,38 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 	const sidebarContent = (
 		<nav className="flex flex-col w-full ">
 			{recruiterTabs.map((tab) => (
-				<Link
-					key={tab.label}
-					to={tab.route}
-					onClick={() => {
-						setActiveTab(tab.label);
-						if (isMobile) {
-							onClose?.();
-						}
-					}}
-				>
-					<Tab
-						icon={tab.icon}
-						label={tab.label}
-						title={tab.title}
-						route={tab.route}
-						isActive={activeTab === tab.label}
-					/>
-				</Link>
+				tab.disabled ? (
+					<div key={tab.label}>
+						<Tab
+							icon={tab.icon}
+							label={tab.label}
+							title={tab.title}
+							route={tab.route}
+							disabled={tab.disabled}
+							isActive={activeTab === tab.label}
+						/>
+					</div>
+				) : (
+					<Link
+						key={tab.label}
+						to={tab.route}
+						onClick={() => {
+							setActiveTab(tab.label);
+							if (isMobile) {
+								onClose?.();
+							}
+						}}
+					>
+						<Tab
+							icon={tab.icon}
+							label={tab.label}
+							title={tab.title}
+							route={tab.route}
+							disabled={tab.disabled}
+							isActive={activeTab === tab.label}
+						/>
+					</Link>
+				)
 			))}
 		</nav>
 	);

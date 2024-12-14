@@ -1,4 +1,3 @@
-import Analytics from "@/pages/core/company-pages/Analytics";
 import { Opportunities } from "@/pages/core/company-pages/profile-sections/Opportunities";
 import { Overview } from "@/pages/core/company-pages/profile-sections/Overview";
 import { People } from "@/pages/core/company-pages/profile-sections/People";
@@ -15,10 +14,6 @@ export const CompanyTabs = [
 	{
 		title: "People",
 		content: <People />,
+        disabled: true
 	},
 ];
-
-// {
-//     title: "Analytics",
-//     content: <Analytics />,
-// },
