@@ -1,7 +1,7 @@
 import { BiBriefcase } from 'react-icons/bi';
 import { FiGlobe, FiPhone } from 'react-icons/fi';
 import { HiOutlineBuildingOffice2, HiOutlineUsers } from 'react-icons/hi2';
-import { LuCircleDollarSign, LuLineChart, LuWallet } from 'react-icons/lu';
+import { LuCircleDollarSign, LuChartLine, LuWallet } from 'react-icons/lu';
 import { MdEmail } from 'react-icons/md';
 import { TbSeeding } from 'react-icons/tb';
 import { useFetchCompanyProfileByParams } from '@/hooks/useFetchCompanyProfileByParams';
@@ -38,7 +38,7 @@ export const Overview = () => {
 		{ label: "Industry", icon: BiBriefcase, value: companyProfile?.industry },
 		{
 			label: "Market Cap",
-			icon: LuLineChart,
+			icon: LuChartLine,
 			value: companyProfile?.marketCap,
 		},
 		{

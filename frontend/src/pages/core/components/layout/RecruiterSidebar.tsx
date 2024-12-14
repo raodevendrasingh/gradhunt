@@ -7,7 +7,7 @@ import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi2";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
-import { LuLineChart } from "react-icons/lu";
+import { LuChartLine } from "react-icons/lu";
 
 interface TabProps {
 	icon: ReactNode;
@@ -110,7 +110,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 				route: `${companyProfileUrl}/archived`,
 			},
 			{
-				icon: <LuLineChart size={20} />,
+				icon: <LuChartLine size={20} />,
 				label: "Analytics",
 				route: `${companyProfileUrl}/analytics`,
 			},

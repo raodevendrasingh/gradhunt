@@ -31,7 +31,7 @@ import {
 	LuWallet,
 	LuCircleDollarSign,
 	LuCalendar,
-	LuLineChart,
+	LuChartLine,
 } from "react-icons/lu";
 
 import {
@@ -361,7 +361,7 @@ export default function Settings() {
 							label="Market Capitalization"
 							name="marketCap"
 							register={register}
-							icon={<LuLineChart className="h-5 w-5" />}
+							icon={<LuChartLine className="h-5 w-5" />}
 						/>
 						<TextInput
 							label="Funding Raised"
