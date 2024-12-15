@@ -1,20 +1,16 @@
 import NotFound from "@/pages/common/NotFound";
-import { BiEditAlt } from "react-icons/bi";
 import { CompanyTabs } from "@/utils/CompanyTabs";
 import { FaCalendarCheck } from "react-icons/fa6";
 import { GoPlus } from "react-icons/go";
-import { Link } from "react-router-dom";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import { MdLocationPin } from "react-icons/md";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { useFetchCompanyProfileByParams } from "@/hooks/useFetchCompanyProfileByParams";
 import { useState } from "react";
-import { useUser } from "@clerk/clerk-react";
 import clsx from "clsx";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
-	const { isSignedIn, user } = useUser();
 
 	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
 
@@ -77,19 +73,6 @@ export default function CompanyProfile(): React.JSX.Element {
 										)}
 									</span>
 								</div>
-							</div>
-							<div className="mt-4 sm:mt-0 select-none">
-								{isSignedIn &&
-									user?.username === companyProfile.companyAdmin.username && (
-										<Link to="/edit-company-profile">
-											<button className="flex items-center justify-center hover:bg-slate-100 rounded-lg border border-gray-200 gap-2 px-3 py-1 transition-colors">
-												<span className="text-sm font-medium text-gray-700">
-													Edit
-												</span>
-												<BiEditAlt className="text-gray-700" />
-											</button>
-										</Link>
-									)}
 							</div>
 						</div>
 					</div>

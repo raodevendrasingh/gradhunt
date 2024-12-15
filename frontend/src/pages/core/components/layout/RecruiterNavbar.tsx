@@ -72,7 +72,7 @@ export default function RecruiterNavbar({
 					<div className="flex items-center space-x-8">
 						<SignedIn>
 							<button className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-0">
-								<Link to="/notifications">
+								<Link to="#">
 									<GoBell className="h-6 w-6" />
 								</Link>
 							</button>
