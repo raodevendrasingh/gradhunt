@@ -213,15 +213,22 @@ class JobDetailsSerializer(serializers.ModelSerializer):
                   'postedDate', 'applicationDeadline', 'openings', 'applicants']
 
 
+class CompanyAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDetails
+        fields = ['username', 'firstname', 'lastname', 'email']
+
+
 class CompanyProfileSerializer(serializers.ModelSerializer):
     employeeSize = NestedDictField()
     companyType = NestedDictField()
     industry = NestedDictField()
     branches = NestedDictField(required=False)
+    companyAdmin = CompanyAdminSerializer(source='user', read_only=True)
 
     class Meta:
         model = CompanyProfile
-        fields = ['id', 'companyBanner', 'companySlug', 'companyLogo', 'tagline', 'companyName', 'companyEmail', 'tagline',
+        fields = ['id', 'companyAdmin', 'companyBanner', 'companySlug', 'companyLogo', 'tagline', 'companyName', 'companyEmail', 'tagline',
                   'companyPhone', 'establishedYear', 'marketCap', 'fundingRaised',
                   'yearlyRevenue', 'headquarters', 'branches', 'description', 'companyType',
                   'industry', 'branches', 'companyWebsite', 'employeeSize', 'linkedin', 'instagram', 'twitter', 'isDraft', 'user']

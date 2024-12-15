@@ -81,7 +81,15 @@ export type ExperienceForm = {
 	isCurrentlyWorking: boolean;
 };
 
+export type CompanyAdmin = {
+	username: string;
+	firstname: string;
+	lastname: string;
+	email: string;
+};
+
 export type CompanyForm = {
+	companyAdmin: CompanyAdmin;
 	companyBanner: string;
 	companyLogo: string;
 	companySlug: string;
@@ -305,7 +313,7 @@ export type JobPosts = {
 	jobId: string;
 	jobTitle: string;
 	jobType: string;
-    jobCategory: string;
+	jobCategory: string;
 	jobDescription: string;
 	workType: string;
 	requiredSkills: SkillObject[];

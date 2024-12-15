@@ -8,27 +8,15 @@ import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import { MdLocationPin } from "react-icons/md";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { useFetchCompanyProfileByParams } from "@/hooks/useFetchCompanyProfileByParams";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import clsx from "clsx";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
-
 	const { isSignedIn, user } = useUser();
 
 	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
-
-	const { data: currentUser } = useFetchUserDetails();
-
-	// useEffect(() => {
-	// 	// Retrieve the selected tab from local storage
-	// 	const storedTab = localStorage.getItem("selectedTab");
-	// 	if (storedTab) {
-	// 		setSelected(Number(storedTab));
-	// 	}
-	// }, []);
 
 	if (isLoading) {
 		return (
@@ -92,8 +80,7 @@ export default function CompanyProfile(): React.JSX.Element {
 							</div>
 							<div className="mt-4 sm:mt-0 select-none">
 								{isSignedIn &&
-									currentUser &&
-									user?.username === currentUser.user_details.username && (
+									user?.username === companyProfile.companyAdmin.username && (
 										<Link to="/edit-company-profile">
 											<button className="flex items-center justify-center hover:bg-slate-100 rounded-lg border border-gray-200 gap-2 px-3 py-1 transition-colors">
 												<span className="text-sm font-medium text-gray-700">

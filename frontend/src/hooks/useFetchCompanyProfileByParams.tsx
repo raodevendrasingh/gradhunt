@@ -29,8 +29,15 @@ export const useFetchCompanyProfileByParams = (): UseQueryResult<
 			if (error.response && error.response.status === 404) {
 				console.warn("404 Not Found: The requested resource does not exist.");
 				return {
+					companyAdmin: {
+						username: "",
+						firstname: "",
+						lastname: "",
+						email: "",
+					},
 					companySlug: "",
 					companyBanner: "",
+					companyTagline: "",
 					companyLogo: "",
 					companyName: "",
 					tagline: "",
