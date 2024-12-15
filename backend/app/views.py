@@ -267,6 +267,7 @@ class GetCompletionPercentage(APIView):
             user = get_object_or_404(UserDetails, username=username)
             social = SocialLinks.objects.filter(user=user).first()
             about = UserDescription.objects.filter(user=user).first()
+            resumeLink = user.resumeLink
 
             tasks = [
                 {"label": "Add a Profile Picture", "value": 10,
@@ -292,8 +293,10 @@ class GetCompletionPercentage(APIView):
                         bool(social.twitter) if social else False
                     ])
                 },
-                {"label": "Add About Section", "value": 20, "completed": bool(
+                {"label": "Add About Section", "value": 10, "completed": bool(
                     about.description) if about else False},
+                {"label": "Upload a Resume", "value": 10, "completed": bool(
+                    resumeLink) if resumeLink else False},
             ]
 
             total_value = sum(task['value'] for task in tasks)

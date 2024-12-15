@@ -50,7 +50,13 @@ export const UserProfileCompletion = () => {
 		{
 			id: "9",
 			label: "Add About Section",
-			value: 20,
+			value: 10,
+			completed: false,
+		},
+		{
+			id: "10",
+			label: "Upload a Resume",
+			value: 10,
 			completed: false,
 		},
 	]);

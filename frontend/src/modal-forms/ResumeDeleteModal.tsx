@@ -10,13 +10,12 @@ import Spinner from "@/components/ui/Spinner";
 import { ref, deleteObject } from "firebase/storage";
 import { storage } from "@/firebase";
 import { extractFileName } from "@/utils/ExtractFileNames";
+import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
 
 const deleteFromFirebase = async (filePath: string): Promise<void> => {
 	const fileRef = ref(storage, filePath);
-
 	try {
 		await deleteObject(fileRef);
-		console.log("File deleted successfully");
 	} catch (error) {
 		console.error("Error deleting file:", error);
 		throw error;
@@ -35,6 +34,7 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
+    const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
 
 	const handleDelete = async () => {
 		setIsLoading(true);
@@ -66,12 +66,14 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 			if (response.status === 200) {
 				toast.success("Resume Deleted");
 				onDelete();
+                refetchCompletionPercentage();
 				setShowDeleteModal(false);
 			} else {
 				toast.error("Failed to delete resume. Try again!");
 			}
 		} catch (error: any) {
 			toast.error("Error occurred while deleting resume. Try again!");
+            console.log(error)
 			if (error.response) {
 				console.log("Error Status: ", error.response.status);
 				console.log("Error Message: ", error.message);

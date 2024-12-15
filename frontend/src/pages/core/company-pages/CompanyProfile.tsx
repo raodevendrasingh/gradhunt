@@ -45,7 +45,7 @@ export default function CompanyProfile(): React.JSX.Element {
 	return (
 		<div className="flex h-full">
 			{/* main */}
-			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide">
+			<div className="w-full lg2:w-[70%] overflow-y-auto border-r scrollbar-hide">
 				<div className="w-full">
 					{companyProfile && companyProfile.companyBanner ? (
 						<img
@@ -169,9 +169,9 @@ export default function CompanyProfile(): React.JSX.Element {
 				</main>
 			</div>
 			{/* sidebar */}
-			<div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
-				analytics
-			</div>
+			{/* <div className="hidden lg2:flex flex-col gap-2 w-64 xl:w-[25%] h-full border-l scrollbar-hide overflow-y-auto p-4">
+				
+			</div> */}
 		</div>
 	);
 }

@@ -162,23 +162,38 @@ export const ProfileSidebar = ({
 						className="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg pt-16"
 					>
 						<nav className="flex flex-col mt-4">
-							{tabs.map((tab) => (
-								<Link
-									key={tab.label}
-									to={tab.route}
-									onClick={() => {
-										setActiveTab(tab.label);
-										onClose?.();
-									}}
-								>
-									<Tab
-										icon={tab.icon}
-										label={tab.label}
-										route={tab.route}
-										isActive={activeTab === tab.label}
-									/>
-								</Link>
-							))}
+							{tabs.map((tab) =>
+								tab.disabled ? (
+									<div key={tab.label}>
+										<Tab
+											icon={tab.icon}
+											label={tab.label}
+											route={tab.route}
+											isActive={activeTab === tab.label}
+											disabled={tab.disabled}
+										/>
+									</div>
+								) : (
+									<Link
+										key={tab.label}
+										to={tab.route}
+										onClick={() => {
+											setActiveTab(tab.label);
+											if (isMobile) {
+												onClose?.();
+											}
+										}}
+									>
+										<Tab
+											icon={tab.icon}
+											label={tab.label}
+											route={tab.route}
+											isActive={activeTab === tab.label}
+											disabled={tab.disabled}
+										/>
+									</Link>
+								)
+							)}
 						</nav>
 					</motion.div>
 				</>
