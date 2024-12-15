@@ -11,6 +11,7 @@ import { LuDot } from "react-icons/lu";
 import { EditCertificateModal } from "@/modal-forms/EditCertificateModal";
 import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
 import { useUser } from "@clerk/clerk-react";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 export const Ceritficates = () => {
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
@@ -18,7 +19,8 @@ export const Ceritficates = () => {
 	const [showEditCertifyModal, setShowEditCertifyModal] =
 		useState<boolean>(false);
 
-	const { isSignedIn } = useUser();
+	const { isSignedIn, user } = useUser();
+	const { data: userDetails } = useFetchUserDetails();
 
 	const {
 		data: certificateData,
@@ -58,17 +60,19 @@ export const Ceritficates = () => {
 											<span className="text-xl font-semibold text-gray-800">
 												{data.certificateName}
 											</span>
-											{isSignedIn && (
-												<button
-													type="button"
-													onClick={() =>
-														handleEditCertificate(data.id as number)
-													}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
-												>
-													<MdModeEdit className="size-5" />
-												</button>
-											)}
+											{isSignedIn &&
+												user.username ===
+													userDetails?.user_details?.username && (
+													<button
+														type="button"
+														onClick={() =>
+															handleEditCertificate(data.id as number)
+														}
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
+													>
+														<MdModeEdit className="size-5" />
+													</button>
+												)}
 										</div>
 										<div className="flex items-center justify-start -mt-2 w-full">
 											{data.issuerOrg && (

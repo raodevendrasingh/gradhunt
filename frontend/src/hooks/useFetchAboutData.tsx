@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { AboutSection } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
 
 export const useFetchAboutSection = (): UseQueryResult<
 	AboutSection,
@@ -10,6 +11,7 @@ export const useFetchAboutSection = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
+	const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
 
 	const fetchAboutSection = async (): Promise<AboutSection> => {
 		try {
@@ -24,6 +26,7 @@ export const useFetchAboutSection = (): UseQueryResult<
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			refetchCompletionPercentage();
 			return response.data;
 		} catch (error: AxiosError | any) {
 			return { description: "" };

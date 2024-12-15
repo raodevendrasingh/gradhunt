@@ -8,6 +8,7 @@ import { useUser } from "@clerk/clerk-react";
 import { SkillSection } from "@/pages/core/user-pages/profile-sections/SkillSection";
 import { toast } from "sonner";
 import { ResumeUploadSection } from "@/pages/core/user-pages/profile-sections/ResumeUploadSection";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -18,7 +19,8 @@ export const Overview = () => {
 		refetch: refetchAbout,
 	} = useFetchAboutSection();
 
-	const { isSignedIn } = useUser();
+	const { isSignedIn, user } = useUser();
+	const { data: userDetails } = useFetchUserDetails();
 
 	useEffect(() => {
 		if (error && error.response?.status !== 404) {
@@ -31,21 +33,24 @@ export const Overview = () => {
 			{isSignedIn && (
 				<div className="flex justify-between items-center">
 					<ComboboxAll />
-					<ReorderButton />
+					{/* <ReorderButton /> */}
 				</div>
 			)}
 			<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
 				<div className="flex items-center justify-between w-full pb-2">
-					<span className="text-gray-700 font-medium text-base">About</span>
-					{isSignedIn && (
-						<button
-							type="button"
-							onClick={() => setAboutModal(true)}
-							className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
-						>
-							<MdModeEdit className="size-5" />
-						</button>
-					)}
+					<span className="text-gray-700 font-medium text-base pt-1">
+						About
+					</span>
+					{isSignedIn &&
+						user.username === userDetails?.user_details?.username && (
+							<button
+								type="button"
+								onClick={() => setAboutModal(true)}
+								className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium  cursor-pointer transition-colors"
+							>
+								<MdModeEdit className="size-5" />
+							</button>
+						)}
 				</div>
 				<div className="flex items-center justify-start w-full">
 					{isAboutLoading ? (
@@ -57,7 +62,7 @@ export const Overview = () => {
 							</div>
 						</>
 					) : userDesc &&
-					  userDesc.description as string &&
+					  (userDesc.description as string) &&
 					  userDesc.description.length > 0 ? (
 						<div className="flex flex-wrap text-sm">{userDesc.description}</div>
 					) : (

@@ -6,12 +6,14 @@ import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { EditEduModal } from "@/modal-forms/EditEduModal";
 import { useState } from "react";
 import { AddEduModal } from "@/modal-forms/AddEduModal";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 export const Education = () => {
 	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const [editingEducationId, setEditingEducationId] = useState<number>();
-	const { isSignedIn } = useUser();
+	const { isSignedIn, user } = useUser();
+    const { data: userDetails } = useFetchUserDetails();
 	const {
 		data: educationData,
 		isLoading: isEduLoading,
@@ -51,15 +53,17 @@ export const Education = () => {
 											<span className="text-xl font-semibold text-gray-800">
 												{data.instituteName}
 											</span>
-											{isSignedIn && (
-												<button
-													type="button"
-													onClick={() => handleEditClick(data.id)}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
-												>
-													<MdModeEdit className="size-5" />
-												</button>
-											)}
+											{isSignedIn &&
+												user.username ===
+													userDetails?.user_details?.username && (
+													<button
+														type="button"
+														onClick={() => handleEditClick(data.id)}
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
+													>
+														<MdModeEdit className="size-5" />
+													</button>
+												)}
 										</div>
 										<div className="flex text-sm items-center gap-1 text-gray-800">
 											<span>{data.degreeTitle},</span>

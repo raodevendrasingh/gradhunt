@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { ExperienceData } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
+import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
 
 export const useFetchExperienceData = (): UseQueryResult<
 	ExperienceData[],
@@ -10,6 +11,7 @@ export const useFetchExperienceData = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
+    const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
 
 	const fetchExperienceData = async (): Promise<ExperienceData[]> => {
 		try {
@@ -24,6 +26,7 @@ export const useFetchExperienceData = (): UseQueryResult<
 					Authorization: `Bearer ${token}`,
 				},
 			});
+            refetchCompletionPercentage();
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {

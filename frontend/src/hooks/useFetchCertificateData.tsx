@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { CertificateData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
 
 export const useFetchCertificateData = (): UseQueryResult<
 	CertificateData[],
@@ -10,6 +11,7 @@ export const useFetchCertificateData = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
+	const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
 
 	const fetchCertificateData = async (): Promise<CertificateData[]> => {
 		try {
@@ -24,6 +26,7 @@ export const useFetchCertificateData = (): UseQueryResult<
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			refetchCompletionPercentage();
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
@@ -38,6 +41,6 @@ export const useFetchCertificateData = (): UseQueryResult<
 	return useQuery<CertificateData[], AxiosError>({
 		queryKey: ["certificateData", username],
 		queryFn: fetchCertificateData,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

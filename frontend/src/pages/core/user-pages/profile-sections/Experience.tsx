@@ -8,14 +8,15 @@ import { EditExpModal } from "@/modal-forms/EditExpModal";
 import { AddExpModal } from "@/modal-forms/AddExpModal";
 import { GoUnverified, GoVerified } from "react-icons/go";
 import { VerifyEmploymentModal } from "@/modal-forms/VerifyEmploymentModal";
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 export const Experience = () => {
 	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
 	const [showExpModal, setShowExpModal] = useState<boolean>(false);
 	const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
 	const [editingExperienceId, setEditingExperienceId] = useState<number>();
-
-	const { isSignedIn } = useUser();
+	const { isSignedIn, user } = useUser();
+	const { data: userDetails } = useFetchUserDetails();
 	const {
 		data: experienceData,
 		isLoading: isExpLoading,
@@ -66,13 +67,16 @@ export const Experience = () => {
 															<GoUnverified className="text-gray-400 transition-colors cursor-pointer size-5 opacity-0 group-hover:opacity-100" />
 														</button>
 													)}
-													<button
-														type="button"
-														onClick={() => handleEditClick(data.id)}
-														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
-													>
-														<MdModeEdit className="size-5" />
-													</button>
+													{user.username ===
+														userDetails?.user_details?.username && (
+														<button
+															type="button"
+															onClick={() => handleEditClick(data.id)}
+															className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
+														>
+															<MdModeEdit className="size-5" />
+														</button>
+													)}
 												</span>
 											)}
 										</div>
@@ -125,9 +129,9 @@ export const Experience = () => {
 					experienceId={editingExperienceId as number}
 				/>
 			)}
-            {showVerifyModal && (
-                <VerifyEmploymentModal setShowVerifyModal={setShowVerifyModal}/>
-            )}
+			{showVerifyModal && (
+				<VerifyEmploymentModal setShowVerifyModal={setShowVerifyModal} />
+			)}
 		</div>
 	);
 };

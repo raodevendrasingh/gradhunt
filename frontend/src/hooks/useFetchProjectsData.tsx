@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { ProjectData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
 
 export const useFetchProjectData = (): UseQueryResult<
 	ProjectData[],
@@ -10,6 +11,7 @@ export const useFetchProjectData = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
+	const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
 
 	const fetchProjectData = async (): Promise<ProjectData[]> => {
 		try {
@@ -24,6 +26,7 @@ export const useFetchProjectData = (): UseQueryResult<
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			refetchCompletionPercentage();
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
@@ -38,6 +41,6 @@ export const useFetchProjectData = (): UseQueryResult<
 	return useQuery<ProjectData[], AxiosError>({
 		queryKey: ["projectsData", username],
 		queryFn: fetchProjectData,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

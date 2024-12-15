@@ -9,7 +9,7 @@ import { GoGlobe } from "react-icons/go";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { FaGithub } from "react-icons/fa6";
 import { useUser } from "@clerk/clerk-react";
-
+import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 export const Projects = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
@@ -18,8 +18,8 @@ export const Projects = () => {
 	const [showEditProjectModal, setShowEditProjectModal] =
 		useState<boolean>(false);
 
-    const { isSignedIn } = useUser();
-
+	const { isSignedIn, user } = useUser();
+	const { data: userDetails } = useFetchUserDetails();
 	const {
 		data: projectData,
 		isLoading: isProjectLoading,
@@ -31,12 +31,11 @@ export const Projects = () => {
 		setEditingProjectId(id);
 		setShowEditProjectModal(true);
 	};
-    
+
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-2">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-2">
-					
 					<span className="text-gray-700 font-semibold text-base">
 						Projects
 					</span>
@@ -59,7 +58,9 @@ export const Projects = () => {
 											<span className="text-xl font-semibold text-gray-800">
 												{data.projectName}
 											</span>
-											{isSignedIn && (
+											{isSignedIn &&
+												user.username ===
+													userDetails?.user_details?.username && (
 												<button
 													type="button"
 													onClick={() => handleEditProject(data.id as number)}
@@ -133,7 +134,7 @@ export const Projects = () => {
 					)}
 				</>
 			)}
-            {showProjectModal && (
+			{showProjectModal && (
 				<AddProjectModal
 					setShowProjectModal={setShowProjectModal}
 					onSave={refetchProjects}
