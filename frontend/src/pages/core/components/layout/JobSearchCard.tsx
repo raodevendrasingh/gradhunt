@@ -14,6 +14,7 @@ import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
 import { useState } from "react";
 import { LuCheck } from "react-icons/lu";
+import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
 
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);
@@ -24,6 +25,9 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 
 	const { isSignedIn } = useUser();
 	const { getToken } = useAuth();
+
+	const { data: progressPercentage } = useFetchProfileCompletion();
+	const profilePercentage = progressPercentage?.completion_percentage;
 
 	const {
 		data: savedJobs,
@@ -42,6 +46,14 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 			setShowLoginModal(true);
 			return;
 		}
+
+		if (profilePercentage !== 100) {
+			toast.error("Unable to apply", {
+				description: "Complete your profile to apply for jobs",
+			});
+			return;
+		}
+
 		setOptimisticApplied(true);
 
 		try {
@@ -50,6 +62,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				setOptimisticApplied(false);
 				return "User Unauthorized!";
 			}
+
 			const url = `/api/jobs/apply/${jobPost.jobId}`;
 			await axios.post(
 				url,
@@ -100,12 +113,14 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 					},
 				}
 			);
-            toast.success(isCurrentlySaved ? "Job removed from saved" : "Job saved successfully");
+			toast.success(
+				isCurrentlySaved ? "Job removed from saved" : "Job saved successfully"
+			);
 			refetchSavedJob();
 		} catch (error) {
 			setOptimisticSaved(isCurrentlySaved);
 			console.log(error);
-            toast.error("Failed to update saved status");
+			toast.error("Failed to update saved status");
 		}
 	};
 

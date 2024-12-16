@@ -24,6 +24,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/Spinner";
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
+import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
 
 export const JobDetailsPage: React.FC = () => {
 	const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -32,16 +33,16 @@ export const JobDetailsPage: React.FC = () => {
 	const { isSignedIn } = useUser();
 	const { getToken } = useAuth();
 
+	const { data: progressPercentage } = useFetchProfileCompletion();
+	const profilePercentage = progressPercentage?.completion_percentage;
+
 	if (!jobId) {
 		return <NotFound />;
 	}
 
 	const { data: jobPost, isLoading } = useFetchJobDetails({ jobId });
-	const {
-		data: appliedJobs,
-		refetch: refetchAppliedJob,
-		isLoading: isAppliedJobLoading,
-	} = useFetchAppliedJobs();
+	const { data: appliedJobs, refetch: refetchAppliedJob } =
+		useFetchAppliedJobs();
 
 	if (!jobPost || isLoading) {
 		return (
@@ -57,17 +58,26 @@ export const JobDetailsPage: React.FC = () => {
 	};
 
 	const handleJobApplication = async () => {
-		setIsAppliying(true);
 		if (!isSignedIn) {
 			setShowLoginModal(true);
 			return;
 		}
+
+		if (profilePercentage !== 100) {
+			toast.error("Unable to apply", {
+				description: "Complete your profile to apply for jobs",
+			});
+			return;
+		}
+
+		setIsAppliying(true);
 
 		try {
 			const token = await getToken();
 			if (!token) {
 				return "User Unauthorized!";
 			}
+
 			const url = `/api/jobs/apply/${jobPost.jobId}`;
 			await axios.post(
 				url,
@@ -79,7 +89,7 @@ export const JobDetailsPage: React.FC = () => {
 					},
 				}
 			);
-            toast.success("Applied Successfully", {
+			toast.success("Applied Successfully", {
 				description:
 					jobPost.jobTitle + " at " + jobPost.companyData.companyName,
 			});
@@ -268,7 +278,11 @@ export const JobDetailsPage: React.FC = () => {
 								variant="secondary"
 								className="flex w-1/2 items-center gap-2 rounded-lg py-2.5"
 								onClick={() =>
-									window.open(jobPost.applyLink, "_blank", "noopener,noreferrer")
+									window.open(
+										jobPost.applyLink,
+										"_blank",
+										"noopener,noreferrer"
+									)
 								}
 							>
 								Apply
