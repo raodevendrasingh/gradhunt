@@ -22,6 +22,7 @@ DEBUG = getenv('DEBUG', 'True') == 'True'  # Set to True for development
 
 ALLOWED_HOSTS = [
     'gradhunt-app.onrender.com',
+    'gradhunt.up.railway.app',
     'api.gradhunt.tech',
     'localhost',
     '127.0.0.1'
@@ -101,7 +102,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'https://gradhunt.tech',
-    'https://www.gradhunt.tech',
     'http://localhost:5173',
     'http://admin.localhost:5173',
 ]

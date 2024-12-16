@@ -317,41 +317,52 @@ class GetCompletionPercentage(APIView):
 class OnboardUser(APIView):
     permission_classes = [IsClerkAuthenticated]
 
-    def options(self, request, *args, **kwargs):
-        return Response(
-            status=status.HTTP_200_OK,
-            headers={
-                'Allow': 'POST, OPTIONS',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-            }
-        )
-
     @transaction.atomic
     def post(self, request):
         logger = logging.getLogger(__name__)
-        logger.info(f"Received request: {request.method} {request.path}")
-        logger.info(f"Request headers: {request.headers}")
-        logger.info(f"Request data: {request.data}")
+        try:
+            logger.info(f"Received request: {request.method} {request.path}")
+            logger.info(f"Request headers: {request.headers}")
+            logger.info(f"Request data: {request.data}")
 
-        data = request.data.copy()
+            data = request.data.copy()
 
-        if hasattr(request.user, 'clerk_user_id'):
-            data['clerk_user_id'] = request.user.clerk_user_id
+            if hasattr(request.user, 'clerk_user_id'):
+                data['clerk_user_id'] = request.user.clerk_user_id
+            else:
+                logger.error("User does not have clerk_user_id")
+                return Response(
+                    {'status': 'error', 'message': 'Invalid user authentication'}, 
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
 
-        user_serializer = UserSerializer(data=data)
-        if not user_serializer.is_valid():
-            return Response({'status': 'error', 'errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            user_serializer = UserSerializer(data=data)
+            if not user_serializer.is_valid():
+                logger.error(f"Serializer validation failed: {user_serializer.errors}")
+                return Response(
+                    {'status': 'error', 'errors': user_serializer.errors}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-        user_instance = user_serializer.save()
+            user_instance = user_serializer.save()
 
-        response_data = {
-            'status': 'success',
-            'message': 'Candidate Details Saved Successfully',
-            'id': user_instance.id,
-        }
+            response_data = {
+                'status': 'success',
+                'message': 'Candidate Details Saved Successfully',
+                'id': user_instance.id,
+            }
 
-        return Response(response_data, status=status.HTTP_200_OK)
+            logger.info("User onboarded successfully")
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            logger.error(f"Error in OnboardUser: {str(e)}")
+            logger.error(traceback.format_exc())
+            traceback.print_exc()
+            return Response(
+                {'status': 'error', 'message': 'An unexpected error occurred'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class SwitchUserVisibility(APIView):
