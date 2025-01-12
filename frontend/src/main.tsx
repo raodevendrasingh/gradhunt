@@ -22,13 +22,13 @@ declare global {
 	interface ImportMeta {
 		env: {
 			VITE_CLERK_PUBLISHABLE_KEY: string;
-            VITE_CLOUDINARY_API_SECRET: string;
-            VITE_CLOUDINARY_API_KEY: string;
-            VITE_CLOUDINARY_UPLOAD_PRESET: string;
-            VITE_CLOUDINARY_CLOUD_NAME: string;
+			VITE_CLOUDINARY_API_SECRET: string;
+			VITE_CLOUDINARY_API_KEY: string;
+			VITE_CLOUDINARY_UPLOAD_PRESET: string;
+			VITE_CLOUDINARY_CLOUD_NAME: string;
 			NODE_ENV: string;
-            VITE_API_URL: string;
-            VITE_HOST: string;
+			VITE_API_URL: string;
+			VITE_HOST: string;
 			VITE_BASE_URL: string;
 			VITE_BASE_ADMIN_URL: string;
 			VITE_BASE_RECRUITER_URL: string;
@@ -65,6 +65,8 @@ if (subdomain === host) {
 
 const router = createBrowserRouter(routes);
 const queryClient = new QueryClient();
+
+console.log("API URL:", import.meta.env.VITE_API_URL!);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<StrictMode>
