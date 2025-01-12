@@ -12,7 +12,6 @@
 	"dependencies": {
 		"@clerk/clerk-react": "^5.20.2",
 		"@lottiefiles/react-lottie-player": "^3.5.4",
-		"@tailwindcss/forms": "^0.5.9",
 		"@tanstack/react-query": "^5.62.7",
 		"@tiptap/extension-bullet-list": "^2.10.3",
 		"@tiptap/extension-character-count": "^2.10.3",
@@ -64,12 +63,16 @@
 		"@vitejs/plugin-react": "^4.3.4",
 		"vite-plugin-imagemin": "^0.6.1",
 		"vite-plugin-svgr": "^4.3.0",
-		"tailwindcss": "^3.4.16",
 		"postcss": "^8.4.49",
-		"autoprefixer": "^10.4.20"
+		"autoprefixer": "^10.4.20",
+		"tailwindcss": "^3.4.16",
+		"tailwind-scrollbar": "^3.1.0",
+		"@tailwindcss/forms": "^0.5.9",
+		"@tailwindcss/typography": "^0.5.15",
+		"prettier": "^3.4.2",
+		"prettier-plugin-tailwindcss": "^0.6.9"
 	},
 	"devDependencies": {
-		"@tailwindcss/typography": "^0.5.15",
 		"@types/crypto-js": "^4.2.2",
 		"@types/node": "^22.10.2",
 		"@types/react": "^18.3.16",
@@ -81,9 +84,6 @@
 		"eslint-plugin-react-hooks": "^4.6.2",
 		"eslint-plugin-react-refresh": "^0.4.16",
 		"lodash-move": "^1.1.1",
-		"prettier": "^3.4.2",
-		"prettier-plugin-tailwindcss": "^0.6.9",
-		"tailwind-scrollbar": "^3.1.0",
 		"typescript": "^5.7.2"
 	}
 }
