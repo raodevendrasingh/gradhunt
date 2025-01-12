@@ -15,10 +15,13 @@ import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
 import { useState } from "react";
 import { LuCheck } from "react-icons/lu";
 import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);
-	const [optimisticSaved, setOptimisticSaved] = useState<boolean | null>(null);
+	const [optimisticSaved, setOptimisticSaved] = useState<boolean | null>(
+		null
+	);
 	const [optimisticApplied, setOptimisticApplied] = useState<boolean | null>(
 		null
 	);
@@ -63,7 +66,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				return "User Unauthorized!";
 			}
 
-			const url = `/api/jobs/apply/${jobPost.jobId}`;
+			const url = `${apiUrl}/api/jobs/apply/${jobPost.jobId}`;
 			await axios.post(
 				url,
 				{},
@@ -102,7 +105,7 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 			if (!token) {
 				return "User Unauthorized!";
 			}
-			const url = `/api/jobs/save/${jobPost.jobId}`;
+			const url = `${apiUrl}/api/jobs/save/${jobPost.jobId}`;
 			await axios.patch(
 				url,
 				{},
@@ -114,7 +117,9 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 				}
 			);
 			toast.success(
-				isCurrentlySaved ? "Job removed from saved" : "Job saved successfully"
+				isCurrentlySaved
+					? "Job removed from saved"
+					: "Job saved successfully"
 			);
 			refetchSavedJob();
 		} catch (error) {
@@ -128,12 +133,16 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 		optimisticSaved !== null
 			? optimisticSaved
 			: savedJobs &&
-				savedJobs.some((savedJob) => savedJob.jobPosting === jobPost.id);
+				savedJobs.some(
+					(savedJob) => savedJob.jobPosting === jobPost.id
+				);
 
 	const isApplied =
 		optimisticApplied !== null
 			? optimisticApplied
-			: appliedJobs?.some((appliedJob) => appliedJob.jobPosting === jobPost.id);
+			: appliedJobs?.some(
+					(appliedJob) => appliedJob.jobPosting === jobPost.id
+				);
 
 	const renderApplyButton = () => {
 		if (isAppliedJobLoading) {
@@ -213,8 +222,13 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 						className="text-gray-700 line-clamp-2 text-sm"
 						dangerouslySetInnerHTML={{
 							__html:
-								jobPost.jobDescription.split(" ").slice(0, 15).join(" ") +
-								(jobPost.jobDescription.split(" ").length > 15 ? "..." : ""),
+								jobPost.jobDescription
+									.split(" ")
+									.slice(0, 15)
+									.join(" ") +
+								(jobPost.jobDescription.split(" ").length > 15
+									? "..."
+									: ""),
 						}}
 					></p>
 				</div>
@@ -258,7 +272,9 @@ export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 								<Button
 									variant="secondary"
 									className="rounded-lg text-sm px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-									onClick={() => window.open(jobPost.applyLink, "_blank")}
+									onClick={() =>
+										window.open(jobPost.applyLink, "_blank")
+									}
 								>
 									Apply
 									<HiMiniArrowUpRight className="size-4 ml-1" />

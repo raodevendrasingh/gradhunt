@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { ExperienceData } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 interface ExperienceByIdProps {
 	experienceId: number;
@@ -19,7 +20,7 @@ export const useFetchExperienceById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/experiences/${experienceId}`;
+		const url = `${apiUrl}/api/users/${username}/experiences/${experienceId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -32,6 +33,6 @@ export const useFetchExperienceById = ({
 	return useQuery<ExperienceData, AxiosError>({
 		queryKey: ["experienceIdData", username, experienceId],
 		queryFn: fetchExperienceDataById,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

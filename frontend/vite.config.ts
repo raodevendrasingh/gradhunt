@@ -1,4 +1,3 @@
-// vite.config.js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -10,19 +9,7 @@ dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const apiUrl = process.env.VITE_API_URL!;
-const env = process.env.NODE_ENV!;
-
 export default defineConfig({
-	server: {
-		proxy: {
-			"/api": {
-				target: apiUrl, // Backend URL
-				changeOrigin: true,
-				secure: true,
-			},
-		},
-	},
 	plugins: [
 		react(),
 		viteImagemin({

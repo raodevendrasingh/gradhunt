@@ -20,6 +20,7 @@ import { DurationFields } from "@/helpers/DurationFields";
 import { useEffect, useState } from "react";
 import { useFetchEducationDataById } from "@/hooks/useFetchEducationById";
 import Spinner from "@/components/ui/Spinner";
+import { apiUrl } from "./OnboardingModal";
 
 export const EditEduModal: React.FC<{
 	setShowEditEduModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -50,7 +51,10 @@ export const EditEduModal: React.FC<{
 			const data = educationIdData;
 			reset({
 				instituteName: data.instituteName,
-				degreeTitle: { value: data.degreeTitle, label: data.degreeTitle },
+				degreeTitle: {
+					value: data.degreeTitle,
+					label: data.degreeTitle,
+				},
 				studyField: { value: data.studyField, label: data.studyField },
 				startMonth: { value: data.startMonth, label: data.startMonth },
 				startYear: { value: data.startYear, label: data.startYear },
@@ -76,7 +80,7 @@ export const EditEduModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/education/${educationId}`;
+			const url = `${apiUrl}/api/users/education/${educationId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -103,7 +107,7 @@ export const EditEduModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/education/${educationId}`;
+			const url = `${apiUrl}/api/users/education/${educationId}`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -178,17 +182,23 @@ export const EditEduModal: React.FC<{
 														Institute Name
 													</label>
 													<input
-														{...register("instituteName", {
-															required: "Institute name is required",
-															minLength: {
-																value: 2,
-																message:
-																	"Institute name shoud be alteast 2 characters",
-															},
-															maxLength: 50,
-														})}
+														{...register(
+															"instituteName",
+															{
+																required:
+																	"Institute name is required",
+																minLength: {
+																	value: 2,
+																	message:
+																		"Institute name shoud be alteast 2 characters",
+																},
+																maxLength: 50,
+															}
+														)}
 														aria-invalid={
-															errors.instituteName ? "true" : "false"
+															errors.instituteName
+																? "true"
+																: "false"
 														}
 														type="text"
 														name="instituteName"
@@ -197,8 +207,15 @@ export const EditEduModal: React.FC<{
 														className="border py-2 rounded-md border-gray-200 w-full"
 													/>
 													{errors.instituteName && (
-														<span className="form-error" role="alert">
-															{errors.instituteName.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors
+																	.instituteName
+																	.message as string
+															}
 														</span>
 													)}
 												</div>
@@ -215,23 +232,39 @@ export const EditEduModal: React.FC<{
 															name="degreeTitle"
 															control={control}
 															rules={{
-																required: "Degree is required",
+																required:
+																	"Degree is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="degreeTitle"
-																	options={degreeTypes}
+																	options={
+																		degreeTypes
+																	}
 																	placeholder="Degree"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.degreeTitle && (
-															<span className="form-error" role="alert">
-																{errors.degreeTitle.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.degreeTitle
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -246,23 +279,39 @@ export const EditEduModal: React.FC<{
 															name="studyField"
 															control={control}
 															rules={{
-																required: "Field of study is required",
+																required:
+																	"Field of study is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="studyField"
-																	options={fieldsOfStudy}
+																	options={
+																		fieldsOfStudy
+																	}
 																	placeholder="Field of Study"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.studyField && (
-															<span className="form-error" role="alert">
-																{errors.studyField.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.studyField
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -295,12 +344,18 @@ export const EditEduModal: React.FC<{
 													control={control}
 													name="instituteLocation"
 													placeholder="Location"
-													error={errors.instituteLocation?.message}
+													error={
+														errors.instituteLocation
+															?.message
+													}
 													rules={{
-														required: "Location is required",
+														required:
+															"Location is required",
 													}}
 													menuPlacement="auto"
-													initialValue={initialLocation}
+													initialValue={
+														initialLocation
+													}
 												/>
 											</div>
 											<div className="w-full xs:w-1/3 flex flex-col">
@@ -312,7 +367,11 @@ export const EditEduModal: React.FC<{
 												</label>
 												<input
 													{...register("grade")}
-													aria-invalid={errors.grade ? "true" : "false"}
+													aria-invalid={
+														errors.grade
+															? "true"
+															: "false"
+													}
 													type="text"
 													name="grade"
 													id="grade"
@@ -320,8 +379,14 @@ export const EditEduModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.grade && (
-													<span className="form-error" role="alert">
-														{errors.grade.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.grade
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -340,17 +405,21 @@ export const EditEduModal: React.FC<{
 													</span>
 												</label>
 												<textarea
-													{...register("description", {
-														minLength: {
-															value: 10,
-															message: "Minimum 10 characters are required",
-														},
-														maxLength: {
-															value: 200,
-															message:
-																"Description should not exceed 1500 characters",
-														},
-													})}
+													{...register(
+														"description",
+														{
+															minLength: {
+																value: 10,
+																message:
+																	"Minimum 10 characters are required",
+															},
+															maxLength: {
+																value: 200,
+																message:
+																	"Description should not exceed 1500 characters",
+															},
+														}
+													)}
 													name="description"
 													id="description"
 													placeholder="Activities & Participation"
@@ -358,8 +427,14 @@ export const EditEduModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												{errors.description && (
-													<span className="form-error" role="alert">
-														{errors.description.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.description
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -377,7 +452,11 @@ export const EditEduModal: React.FC<{
 								onClick={handleDelete}
 								disabled={isLoading || isDeleting}
 							>
-								{isDeleting ? <Spinner color="red" /> : "Delete"}
+								{isDeleting ? (
+									<Spinner color="red" />
+								) : (
+									"Delete"
+								)}
 							</button>
 							<button
 								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 disabled:bg-slate-800/50 disabled:cursor-not-allowed disabled:shadow-none shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"

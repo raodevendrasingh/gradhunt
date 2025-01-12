@@ -36,6 +36,7 @@ import {
 } from "@/utils/FileUploadMethods";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);
@@ -62,18 +63,24 @@ export default function CompanyProfileForm() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<CompanyForm>({
-        defaultValues: {
-            companySlug: company_slug!,
-        }
-    });
+		defaultValues: {
+			companySlug: company_slug!,
+		},
+	});
 
 	const openLogoFileDialog = () => openFileDialog(logoInputRef);
 	const openBannerFileDialog = () => openFileDialog(bannerInputRef);
 
 	const handleLogoCrop = handleCrop(setCroppedLogo, setIsLogoCropperOpen);
-	const handleBannerCrop = handleCrop(setCroppedBanner, setIsBannerCropperOpen);
+	const handleBannerCrop = handleCrop(
+		setCroppedBanner,
+		setIsBannerCropperOpen
+	);
 
-	const handleLogoUpload = handleUpload(setUploadedLogo, setIsLogoCropperOpen);
+	const handleLogoUpload = handleUpload(
+		setUploadedLogo,
+		setIsLogoCropperOpen
+	);
 	const handleBannerUpload = handleUpload(
 		setUploadedBanner,
 		setIsBannerCropperOpen
@@ -122,7 +129,7 @@ export default function CompanyProfileForm() {
 			};
 
 			console.log("Form Data: ", formData);
-			const url = "/api/company";
+			const url = `${apiUrl}/api/company`;
 			const response = await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -145,7 +152,9 @@ export default function CompanyProfileForm() {
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
-				<h2 className="text-lg font-semibold pb-5">Create Company Profile </h2>
+				<h2 className="text-lg font-semibold pb-5">
+					Create Company Profile{" "}
+				</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 					<div
 						className={clsx(
@@ -160,7 +169,9 @@ export default function CompanyProfileForm() {
 						<div className="relative aspect-[4/1] w-full rounded-xl overflow-hidden">
 							<input
 								{...register("companyBanner")}
-								aria-invalid={errors.companyBanner ? "true" : "false"}
+								aria-invalid={
+									errors.companyBanner ? "true" : "false"
+								}
 								type="file"
 								name="companyBanner"
 								className="hidden"
@@ -187,7 +198,9 @@ export default function CompanyProfileForm() {
 									{croppedBanner && (
 										<button
 											type="button"
-											onClick={() => setCroppedBanner(null)}
+											onClick={() =>
+												setCroppedBanner(null)
+											}
 											className="bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
 										>
 											<TbX className="size-5 sm:size-7 text-gray-50" />
@@ -208,7 +221,11 @@ export default function CompanyProfileForm() {
 								<div className="absolute inset-0 flex items-center justify-center">
 									<input
 										{...register("companyLogo")}
-										aria-invalid={errors.companyLogo ? "true" : "false"}
+										aria-invalid={
+											errors.companyLogo
+												? "true"
+												: "false"
+										}
 										type="file"
 										name="companyLogo"
 										className="hidden"
@@ -250,9 +267,13 @@ export default function CompanyProfileForm() {
 							label="Company Name"
 							name="companyName"
 							register={register}
-							icon={<HiOutlineBuildingOffice2 className="h-5 w-5" />}
+							icon={
+								<HiOutlineBuildingOffice2 className="h-5 w-5" />
+							}
 							error={errors.companyName?.message}
-							validationRules={{ required: "Company name is required" }}
+							validationRules={{
+								required: "Company name is required",
+							}}
 						/>
 						<TextInput
 							label="Website"
@@ -260,7 +281,9 @@ export default function CompanyProfileForm() {
 							register={register}
 							icon={<FiGlobe className="h-5 w-5" />}
 							error={errors.companyWebsite?.message}
-							validationRules={{ required: "Website is required" }}
+							validationRules={{
+								required: "Website is required",
+							}}
 						/>
 					</div>
 
@@ -271,7 +294,9 @@ export default function CompanyProfileForm() {
 							register={register}
 							icon={<MdAlternateEmail className="h-5 w-5" />}
 							error={errors.companyEmail?.message}
-							validationRules={{ required: "Company email is required" }}
+							validationRules={{
+								required: "Company email is required",
+							}}
 						/>
 						<TextInput
 							label="Company Contact"
@@ -299,9 +324,18 @@ export default function CompanyProfileForm() {
 							error={errors.establishedYear?.message}
 							validationRules={{
 								required: "Established year is required",
-								maxLength: { value: 4, message: "Invalid year" },
-								minLength: { value: 4, message: "Invalid year" },
-								pattern: { value: /^\d+$/, message: "Only digits are allowed" },
+								maxLength: {
+									value: 4,
+									message: "Invalid year",
+								},
+								minLength: {
+									value: 4,
+									message: "Invalid year",
+								},
+								pattern: {
+									value: /^\d+$/,
+									message: "Only digits are allowed",
+								},
 							}}
 						/>
 					</div>

@@ -2,6 +2,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { JobPosts } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 interface JobDataProps {
 	jobId: string;
@@ -17,7 +18,7 @@ export const useFetchJobDetails = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/job/${jobId}`;
+		const url = `${apiUrl}/api/job/${jobId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",

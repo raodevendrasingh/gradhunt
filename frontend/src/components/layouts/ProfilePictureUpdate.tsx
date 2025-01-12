@@ -14,7 +14,12 @@ import { updateClerkProfileImage } from "@/lib/updateClerkImage";
 import Spinner from "../ui/Spinner";
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { generateSignature } from "@/utils/CloudinarySignature";
-import { apiKey, apiSecret, timestamp } from "@/modal-forms/OnboardingModal";
+import {
+	apiKey,
+	apiSecret,
+	apiUrl,
+	timestamp,
+} from "@/modal-forms/OnboardingModal";
 
 type ProfileImageUpload = {
 	profilePicture: string;
@@ -70,7 +75,7 @@ export const HandleProfilePictureUpdate = () => {
 				profilePicture: cloudinaryImageUrl,
 			};
 
-			const url = "/api/users/profile-image";
+			const url = `${apiUrl}/api/users/profile-image`;
 			await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -95,7 +100,9 @@ export const HandleProfilePictureUpdate = () => {
 					<div className="flex flex-col xs:flex-row items-start xs:items-center gap-3">
 						<input
 							{...register("profilePicture")}
-							aria-invalid={errors.profilePicture ? "true" : "false"}
+							aria-invalid={
+								errors.profilePicture ? "true" : "false"
+							}
 							type="file"
 							name="profilePicture"
 							className="hidden"

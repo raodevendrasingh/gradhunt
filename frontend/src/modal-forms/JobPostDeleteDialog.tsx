@@ -10,6 +10,7 @@ import Spinner from "@/components/ui/Spinner";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
 import { useNavigate } from "react-router-dom";
 import { JobPosts } from "@/types/userTypes";
+import { apiUrl } from "./OnboardingModal";
 
 interface JobPostDeleteDialogProps {
 	jobPost: JobPosts;
@@ -34,7 +35,7 @@ export const JobPostDeleteDialog: React.FC<JobPostDeleteDialogProps> = ({
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/jobs/manage/${jobPost.jobId.toLowerCase()}`;
+			const url = `${apiUrl}/api/jobs/manage/${jobPost.jobId.toLowerCase()}`;
 			const response = await axios.delete(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -98,8 +99,10 @@ export const JobPostDeleteDialog: React.FC<JobPostDeleteDialogProps> = ({
 											<div className="flex flex-col">
 												<div className="flex items-center gap-2 w-full">
 													<p className="text-sm">
-														Are you sure you want to delete this Job Post? This
-														action cannot be undone.
+														Are you sure you want to
+														delete this Job Post?
+														This action cannot be
+														undone.
 													</p>
 												</div>
 											</div>

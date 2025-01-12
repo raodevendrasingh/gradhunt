@@ -19,6 +19,7 @@ import { useCitySearch } from "@/hooks/useCitySearch";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useUser } from "@clerk/clerk-react";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -45,7 +46,7 @@ export default function JobSearchPage(): React.JSX.Element {
 		const searchParams = encodeSearchParams(data);
 		try {
 			navigate(`/job-search/query?${searchParams}`);
-			const url = `/api/jobs/query?${searchParams}`;
+			const url = `${apiUrl}/api/jobs/query?${searchParams}`;
 			await axios.get(url);
 		} catch (error) {
 			throw new Error("Error Completing Search, Try Again!");
@@ -77,7 +78,7 @@ export default function JobSearchPage(): React.JSX.Element {
 								<img
 									key={item.companyName}
 									src={item.companyLogo}
-                                    alt={item.companyName}
+									alt={item.companyName}
 									className="object-cover h-20 md:h-32 w-64 md:80"
 								/>
 							))}

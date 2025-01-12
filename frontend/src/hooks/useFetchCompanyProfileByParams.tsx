@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { CompanyForm } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchCompanyProfileByParams = (): UseQueryResult<
 	CompanyForm,
@@ -17,7 +18,7 @@ export const useFetchCompanyProfileByParams = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/company/${companyslug}`;
+			const url = `${apiUrl}/api/company/${companyslug}`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -27,7 +28,9 @@ export const useFetchCompanyProfileByParams = (): UseQueryResult<
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return {
 					companyAdmin: {
 						username: "",

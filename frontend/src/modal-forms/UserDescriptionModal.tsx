@@ -14,6 +14,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 
 import { FormFooter } from "@/components/ui/FormFooter";
 import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
+import { apiUrl } from "./OnboardingModal";
 
 interface FormData {
 	description: string;
@@ -28,7 +29,8 @@ export const UserAboutModal: React.FC<{
 	const maxChars = 2000;
 	const { getToken } = useAuth();
 
-	const { data: userDesc, isLoading: isAboutLoading } = useFetchAboutSection();
+	const { data: userDesc, isLoading: isAboutLoading } =
+		useFetchAboutSection();
 	const {
 		register,
 		handleSubmit,
@@ -44,7 +46,9 @@ export const UserAboutModal: React.FC<{
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		setIsLoading(true);
 		const description: FormData = {
-			description: data.description.replace(/\n/g, "\\n").replace(/\s/g, " "),
+			description: data.description
+				.replace(/\n/g, "\\n")
+				.replace(/\s/g, " "),
 		};
 
 		try {
@@ -53,7 +57,7 @@ export const UserAboutModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/description`;
+			const url = `${apiUrl}/api/users/description`;
 			const response = await axios.post(url, description, {
 				headers: {
 					"Content-Type": "application/json",
@@ -79,7 +83,9 @@ export const UserAboutModal: React.FC<{
 		}
 	};
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
 		setDescription(event.target.value);
 	};
 
@@ -115,7 +121,10 @@ export const UserAboutModal: React.FC<{
 						<div className=" max-h-[70vh] overflow-y-auto">
 							<div className="p-3 pb-6">
 								<div className="flex flex-col gap-3">
-									<form id="aboutDataForm" onSubmit={handleSubmit(onSubmit)}>
+									<form
+										id="aboutDataForm"
+										onSubmit={handleSubmit(onSubmit)}
+									>
 										{/* description section */}
 										<div className="flex flex-col gap-5">
 											<div className="flex items-start gap-2">
@@ -125,13 +134,18 @@ export const UserAboutModal: React.FC<{
 															<FaCircleInfo className="size-5 text-gray-600 " />
 														</span>
 														<p className="text-sm">
-															Describe your years of experience, the industry
-															you are part of, and your skills.
+															Describe your years
+															of experience, the
+															industry you are
+															part of, and your
+															skills.
 														</p>
 													</div>
 													<p className="text-sm">
-														Additionally, sharing your achievements and past job
-														experiences can provide more insight.
+														Additionally, sharing
+														your achievements and
+														past job experiences can
+														provide more insight.
 													</p>
 												</div>
 											</div>
@@ -144,36 +158,56 @@ export const UserAboutModal: React.FC<{
 											) : (
 												<div className="flex flex-col w-full">
 													<textarea
-														{...register("description", {
-															required: "About is required",
-															minLength: {
-																value: 25,
-																message: "Minimum 25 characters are required",
-															},
-															maxLength: {
-																value: 2000,
-																message:
-																	"Description should not exceed 2000 characters",
-															},
-														})}
+														{...register(
+															"description",
+															{
+																required:
+																	"About is required",
+																minLength: {
+																	value: 25,
+																	message:
+																		"Minimum 25 characters are required",
+																},
+																maxLength: {
+																	value: 2000,
+																	message:
+																		"Description should not exceed 2000 characters",
+																},
+															}
+														)}
 														name="description"
 														id="description"
 														value={description}
-														onChange={handleInputChange}
+														onChange={
+															handleInputChange
+														}
 														maxLength={maxChars}
 														placeholder=""
 														rows={8}
-														style={{ whiteSpace: "pre-wrap" }}
+														style={{
+															whiteSpace:
+																"pre-wrap",
+														}}
 														className="border py-2 rounded-md border-gray-200 w-full"
 													></textarea>
 													<div className="flex relative">
 														{errors.description && (
-															<span className="form-error" role="alert">
-																{errors.description.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.description
+																		.message as string
+																}
 															</span>
 														)}
 														<span className="absolute right-0 text-xs text-gray-600">
-															({maxChars - description.length}/{maxChars})
+															(
+															{maxChars -
+																description.length}
+															/{maxChars})
 														</span>
 													</div>
 												</div>
@@ -184,7 +218,10 @@ export const UserAboutModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="aboutDataForm" />
+						<FormFooter
+							isLoading={isLoading}
+							formId="aboutDataForm"
+						/>
 					</div>
 				</motion.div>
 			</motion.div>

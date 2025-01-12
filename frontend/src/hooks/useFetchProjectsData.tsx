@@ -4,6 +4,7 @@ import { ProjectData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchProjectData = (): UseQueryResult<
 	ProjectData[],
@@ -11,7 +12,8 @@ export const useFetchProjectData = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
-	const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
+	const { refetch: refetchCompletionPercentage } =
+		useFetchProfileCompletion();
 
 	const fetchProjectData = async (): Promise<ProjectData[]> => {
 		try {
@@ -19,7 +21,7 @@ export const useFetchProjectData = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/projects`;
+			const url = `${apiUrl}/api/users/${username}/projects`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -30,7 +32,9 @@ export const useFetchProjectData = (): UseQueryResult<
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return [];
 			} else {
 				throw error;

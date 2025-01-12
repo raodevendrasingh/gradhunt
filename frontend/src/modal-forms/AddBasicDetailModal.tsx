@@ -24,6 +24,7 @@ import { LocationSelect } from "@/helpers/LocationSelect";
 import Spinner from "@/components/ui/Spinner";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { UserBasicFormData } from "@/types/userTypes";
+import { apiUrl } from "./OnboardingModal";
 
 const screens = ["Add Basic Info", "Add Social Links", "Add Languages"];
 
@@ -35,7 +36,7 @@ export const AddBasicDetailModal: React.FC<{
 	const [initialLocation, setInitialLocation] = useState<string>("");
 	const [currentScreen, setCurrentScreen] = useState(0);
 	const [slideDirection, setSlideDirection] = useState(0);
-    const [bio, setBio] = useState("");
+	const [bio, setBio] = useState("");
 	const { getToken } = useAuth();
 	const { data: userDetails } = useFetchUserDetails();
 
@@ -79,7 +80,7 @@ export const AddBasicDetailModal: React.FC<{
 				languages: languages,
 			};
 			reset(defaultValues);
-            setBio(data.user_details.bio);
+			setBio(data.user_details.bio);
 			setInitialLocation(data.user_details.location);
 		}
 	}, [userDetails, reset]);
@@ -107,13 +108,15 @@ export const AddBasicDetailModal: React.FC<{
 						register={register}
 						errors={errors}
 						control={control}
-                        setBio={setBio}
-                        bio={bio}
+						setBio={setBio}
+						bio={bio}
 						initialLocation={initialLocation}
 					/>
 				);
 			case 1:
-				return <SocialLinksScreen register={register} errors={errors} />;
+				return (
+					<SocialLinksScreen register={register} errors={errors} />
+				);
 			case 2:
 				return <LanguagesScreen control={control} errors={errors} />;
 			default:
@@ -129,7 +132,7 @@ export const AddBasicDetailModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = "/api/users";
+			const url = `${apiUrl}/api/users`;
 			await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -140,7 +143,9 @@ export const AddBasicDetailModal: React.FC<{
 			setShowBasicDetailModal(false);
 			onSave();
 		} catch (error: any) {
-			toast.error("Error occurred while updating information. Try again!");
+			toast.error(
+				"Error occurred while updating information. Try again!"
+			);
 			console.error("Error:", error);
 		} finally {
 			setIsLoading(false);
@@ -176,7 +181,10 @@ export const AddBasicDetailModal: React.FC<{
 								</span>
 							</button>
 						</div>
-						<form id="basicDetailForm" onSubmit={handleSubmit(onSubmit)}>
+						<form
+							id="basicDetailForm"
+							onSubmit={handleSubmit(onSubmit)}
+						>
 							<motion.div
 								key={currentScreen}
 								initial={{ x: slideDirection * 50, opacity: 0 }}
@@ -186,7 +194,9 @@ export const AddBasicDetailModal: React.FC<{
 								className="h-[365px] overflow-y-auto scroll-smooth"
 							>
 								<div className="p-3">
-									<div className="flex flex-col gap-3">{renderScreen()}</div>
+									<div className="flex flex-col gap-3">
+										{renderScreen()}
+									</div>
 								</div>
 							</motion.div>
 							<div
@@ -202,7 +212,8 @@ export const AddBasicDetailModal: React.FC<{
 										onClick={handlePrevious}
 										className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 									>
-										<HiOutlineArrowLeft className="mr-2" /> Previous
+										<HiOutlineArrowLeft className="mr-2" />{" "}
+										Previous
 									</button>
 								)}
 								{currentScreen < screens.length - 1 ? (
@@ -212,7 +223,8 @@ export const AddBasicDetailModal: React.FC<{
 										disabled={!isValid}
 										className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
 									>
-										Next <HiOutlineArrowRight className="ml-2" />
+										Next{" "}
+										<HiOutlineArrowRight className="ml-2" />
 									</button>
 								) : (
 									<button
@@ -222,7 +234,9 @@ export const AddBasicDetailModal: React.FC<{
 									>
 										{isLoading ? (
 											<span className="flex items-center">
-												<span className="mr-2">Saving</span>
+												<span className="mr-2">
+													Saving
+												</span>
 												<Spinner />
 											</span>
 										) : (
@@ -243,8 +257,8 @@ const BasicInfoScreen: React.FC<{
 	errors: any;
 	control: any;
 	register: any;
-    bio: string;
-    setBio: React.Dispatch<React.SetStateAction<string>>;
+	bio: string;
+	setBio: React.Dispatch<React.SetStateAction<string>>;
 	initialLocation: string;
 }> = ({ errors, control, register, initialLocation, bio, setBio }) => {
 	const maxChars = 250;
@@ -264,7 +278,8 @@ const BasicInfoScreen: React.FC<{
 							required: "First Name is required",
 							minLength: {
 								value: 2,
-								message: "First Name should be at least 2 characters",
+								message:
+									"First Name should be at least 2 characters",
 							},
 							maxLength: 50,
 						})}
@@ -276,7 +291,10 @@ const BasicInfoScreen: React.FC<{
 						className="border py-2 rounded-md border-gray-200 w-full"
 					/>
 					{errors.firstname && (
-						<span className="form-error text-red-500 text-xs mt-1" role="alert">
+						<span
+							className="form-error text-red-500 text-xs mt-1"
+							role="alert"
+						>
 							{errors.firstname.message as string}
 						</span>
 					)}
@@ -293,7 +311,8 @@ const BasicInfoScreen: React.FC<{
 							required: "Last Name is required",
 							minLength: {
 								value: 2,
-								message: "Last Name should be at least 2 characters",
+								message:
+									"Last Name should be at least 2 characters",
 							},
 							maxLength: 50,
 						})}
@@ -305,7 +324,10 @@ const BasicInfoScreen: React.FC<{
 						className="border py-2 rounded-md border-gray-200 w-full"
 					/>
 					{errors.lastname && (
-						<span className="form-error text-red-500 text-xs mt-1" role="alert">
+						<span
+							className="form-error text-red-500 text-xs mt-1"
+							role="alert"
+						>
 							{errors.lastname.message as string}
 						</span>
 					)}
@@ -326,7 +348,8 @@ const BasicInfoScreen: React.FC<{
 						},
 						maxLength: {
 							value: 250,
-							message: "Bio length should not exceed 250 characters",
+							message:
+								"Bio length should not exceed 250 characters",
 						},
 					})}
 					name="bio"
@@ -340,7 +363,10 @@ const BasicInfoScreen: React.FC<{
 				></textarea>
 				<div className="flex relative">
 					{errors.bio && (
-						<span className="form-error text-red-500 text-xs mt-1" role="alert">
+						<span
+							className="form-error text-red-500 text-xs mt-1"
+							role="alert"
+						>
 							{errors.bio.message as string}
 						</span>
 					)}
@@ -388,8 +414,7 @@ const SocialLinksScreen: React.FC<{
 				<input
 					{...register(`socialLinks.${sitename}`, {
 						pattern: {
-							value:
-								/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+							value: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
 							message: "Please enter a valid URL",
 						},
 					})}
@@ -443,13 +468,19 @@ const LanguagesScreen: React.FC<{
 										},
 										index: number
 									) => (
-										<div key={index} className="flex items-center space-x-2">
+										<div
+											key={index}
+											className="flex items-center space-x-2"
+										>
 											<input
 												type="text"
 												value={lang.language}
 												onChange={(e) => {
-													const newLangs = [...field.value];
-													newLangs[index].language = e.target.value;
+													const newLangs = [
+														...field.value,
+													];
+													newLangs[index].language =
+														e.target.value;
 													field.onChange(newLangs);
 												}}
 												placeholder="Language"
@@ -457,13 +488,20 @@ const LanguagesScreen: React.FC<{
 											/>
 											<Select
 												value={languageProficiency.find(
-													(option) => option.value === lang.proficiency
+													(option) =>
+														option.value ===
+														lang.proficiency
 												)}
 												options={languageProficiency}
 												onChange={(selectedOption) => {
-													const newLangs = [...field.value];
-													newLangs[index].proficiency =
-														selectedOption?.value || "";
+													const newLangs = [
+														...field.value,
+													];
+													newLangs[
+														index
+													].proficiency =
+														selectedOption?.value ||
+														"";
 													field.onChange(newLangs);
 												}}
 												styles={selectFieldStyle}
@@ -473,15 +511,25 @@ const LanguagesScreen: React.FC<{
 											<button
 												type="button"
 												onClick={() => {
-													if (field.value.length > 1) {
-														const newLangs = field.value.filter(
-															(_: any, i: number) => i !== index
+													if (
+														field.value.length > 1
+													) {
+														const newLangs =
+															field.value.filter(
+																(
+																	_: any,
+																	i: number
+																) => i !== index
+															);
+														field.onChange(
+															newLangs
 														);
-														field.onChange(newLangs);
 													}
 												}}
 												className="w-1/10 p-2 text-red-500 rounded-lg transition-colors"
-												disabled={field.value.length === 1}
+												disabled={
+													field.value.length === 1
+												}
 											>
 												<HiOutlineTrash />
 											</button>

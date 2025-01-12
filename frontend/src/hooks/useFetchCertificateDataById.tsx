@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { CertificateData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 interface CertificateDataProps {
 	certificateId: number;
@@ -19,7 +20,7 @@ export const useFetchCertificateDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/certificates/${certificateId}`;
+		const url = `${apiUrl}/api/users/${username}/certificates/${certificateId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -31,6 +32,6 @@ export const useFetchCertificateDataById = ({
 	return useQuery<CertificateData, AxiosError>({
 		queryKey: ["certificateIdData", username, certificateId],
 		queryFn: fetchCertificateDataById,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

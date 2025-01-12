@@ -14,7 +14,7 @@ import {
 	locationType,
 	experienceLevels,
 	currency,
-    categories,
+	categories,
 } from "@/utils/selectObjects";
 import { FiBriefcase, FiClock, FiDollarSign } from "react-icons/fi";
 import { StyledDatePicker } from "@/components/ui/StyledDatePicker";
@@ -26,6 +26,7 @@ import { LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { BiCategoryAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const JobPostingForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +88,7 @@ export const JobPostingForm = () => {
 				...data,
 				jobDescription: content,
 			};
-			const url = "/api/jobs/post";
+			const url = `${apiUrl}/api/jobs/post`;
 			await axios.post(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -114,7 +115,9 @@ export const JobPostingForm = () => {
 	return (
 		<div className="flex h-full">
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
-				<h2 className="text-lg font-semibold pb-5">Create Job Posting </h2>
+				<h2 className="text-lg font-semibold pb-5">
+					Create Job Posting{" "}
+				</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<TextInput
@@ -123,7 +126,9 @@ export const JobPostingForm = () => {
 							register={register}
 							icon={<FiBriefcase className="h-5 w-5" />}
 							error={errors.jobTitle?.message}
-							validationRules={{ required: "Job title is required" }}
+							validationRules={{
+								required: "Job title is required",
+							}}
 						/>
 						<SelectInput
 							label="Job Type"
@@ -187,15 +192,21 @@ export const JobPostingForm = () => {
 							label="Lowest Salary"
 							name="lowestSalary"
 							register={register}
-							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+							icon={
+								<LiaMoneyBillWaveAltSolid className="h-5 w-5" />
+							}
 							error={errors.lowestSalary?.message}
-							validationRules={{ required: "Lowest Salary is required" }}
+							validationRules={{
+								required: "Lowest Salary is required",
+							}}
 						/>
 						<TextInput
 							label="Highest Salary"
 							name="highestSalary"
 							register={register}
-							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+							icon={
+								<LiaMoneyBillWaveAltSolid className="h-5 w-5" />
+							}
 						/>
 					</div>
 
@@ -214,7 +225,9 @@ export const JobPostingForm = () => {
 							label="Application Deadline"
 							control={control}
 							error={errors.applicationDeadline?.message}
-							validationRules={{ required: "Application Deadline is required" }}
+							validationRules={{
+								required: "Application Deadline is required",
+							}}
 						/>
 					</div>
 
@@ -243,15 +256,20 @@ export const JobPostingForm = () => {
 							validationRules={{
 								validate: (value) => {
 									return (
-										(!!value || applyWithUs || atLeastOneRequired) &&
+										(!!value ||
+											applyWithUs ||
+											atLeastOneRequired) &&
 										(!value ||
-											/^(http|https):\/\/[^ "]+$/.test(value) ||
+											/^(http|https):\/\/[^ "]+$/.test(
+												value
+											) ||
 											"Must be a valid URL starting with http or https")
 									);
 								},
 								pattern: {
 									value: /^(http|https):\/\/[^ "]+$/,
-									message: "Must be a valid URL starting with http or https",
+									message:
+										"Must be a valid URL starting with http or https",
 								},
 							}}
 						/>
@@ -278,7 +296,11 @@ export const JobPostingForm = () => {
 							defaultValue={true}
 							validationRules={{
 								validate: (value) => {
-									return value || !!applyLink || atLeastOneRequired;
+									return (
+										value ||
+										!!applyLink ||
+										atLeastOneRequired
+									);
 								},
 							}}
 						/>
@@ -290,7 +312,9 @@ export const JobPostingForm = () => {
 						</label>
 						<TiptapEditor onEditorReady={handleEditorReady} />
 						{editorError && (
-							<p className="mt-1 text-sm text-red-600">{editorError}</p>
+							<p className="mt-1 text-sm text-red-600">
+								{editorError}
+							</p>
 						)}
 					</div>
 

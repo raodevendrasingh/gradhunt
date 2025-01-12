@@ -24,6 +24,7 @@ import { ExperienceForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { useFetchExperienceById } from "@/hooks/useFetchExperienceById";
 import Spinner from "@/components/ui/Spinner";
+import { apiUrl } from "./OnboardingModal";
 
 export const EditExpModal: React.FC<{
 	setShowEditExpModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,7 +66,10 @@ export const EditExpModal: React.FC<{
 					? { value: data.endYear, label: data.endYear }
 					: null,
 				jobLocation: data.jobLocation,
-				locationType: { value: data.locationType, label: data.locationType },
+				locationType: {
+					value: data.locationType,
+					label: data.locationType,
+				},
 				description: data.description,
 				isCurrentlyWorking: data.isCurrentlyWorking,
 			});
@@ -82,7 +86,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/experiences/${experienceId}`;
+			const url = `${apiUrl}/api/users/experiences/${experienceId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -109,7 +113,7 @@ export const EditExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/experiences/${experienceId}`;
+			const url = `${apiUrl}/api/users/experiences/${experienceId}`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -183,16 +187,24 @@ export const EditExpModal: React.FC<{
 														Company Name
 													</label>
 													<input
-														{...register("companyName", {
-															required: "Company name is required",
-															minLength: {
-																value: 2,
-																message:
-																	"Company name shoud be alteast 2 characters",
-															},
-															maxLength: 50,
-														})}
-														aria-invalid={errors.companyName ? "true" : "false"}
+														{...register(
+															"companyName",
+															{
+																required:
+																	"Company name is required",
+																minLength: {
+																	value: 2,
+																	message:
+																		"Company name shoud be alteast 2 characters",
+																},
+																maxLength: 50,
+															}
+														)}
+														aria-invalid={
+															errors.companyName
+																? "true"
+																: "false"
+														}
 														type="text"
 														name="companyName"
 														id="companyName"
@@ -200,8 +212,15 @@ export const EditExpModal: React.FC<{
 														className="border py-2 rounded-md border-gray-200 w-full"
 													/>
 													{errors.companyName && (
-														<span className="form-error" role="alert">
-															{errors.companyName.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors
+																	.companyName
+																	.message as string
+															}
 														</span>
 													)}
 												</div>
@@ -217,23 +236,36 @@ export const EditExpModal: React.FC<{
 														name="jobTitle"
 														control={control}
 														rules={{
-															required: "Job Title is required",
+															required:
+																"Job Title is required",
 														}}
 														render={({ field }) => (
 															<Select
 																{...field}
 																id="jobTitle"
-																options={jobTitleOptions}
+																options={
+																	jobTitleOptions
+																}
 																placeholder="Job Title"
-																styles={selectFieldStyle}
-																value={field.value as any}
+																styles={
+																	selectFieldStyle
+																}
+																value={
+																	field.value as any
+																}
 																menuPlacement="auto"
 															/>
 														)}
 													/>
 													{errors.jobTitle && (
-														<span className="form-error" role="alert">
-															{errors.jobTitle.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors.jobTitle
+																	.message as string
+															}
 														</span>
 													)}
 												</div>
@@ -249,23 +281,39 @@ export const EditExpModal: React.FC<{
 															name="jobType"
 															control={control}
 															rules={{
-																required: "Employment Type is required",
+																required:
+																	"Employment Type is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="jobType"
-																	options={employmentType}
+																	options={
+																		employmentType
+																	}
 																	placeholder="Employment Type"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.jobType && (
-															<span className="form-error" role="alert">
-																{errors.jobType.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.jobType
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -280,23 +328,39 @@ export const EditExpModal: React.FC<{
 															name="locationType"
 															control={control}
 															rules={{
-																required: "Work Type is required",
+																required:
+																	"Work Type is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="locationType"
-																	options={locationType}
+																	options={
+																		locationType
+																	}
 																	placeholder="Location Type"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.locationType && (
-															<span className="form-error" role="alert">
-																{errors.locationType.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.locationType
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -331,9 +395,12 @@ export const EditExpModal: React.FC<{
 												control={control}
 												name="jobLocation"
 												placeholder="Location"
-												error={errors.jobLocation?.message}
+												error={
+													errors.jobLocation?.message
+												}
 												rules={{
-													required: "Job Location is required",
+													required:
+														"Job Location is required",
 												}}
 												menuPlacement="auto"
 												initialValue={initialLocation}
@@ -354,17 +421,21 @@ export const EditExpModal: React.FC<{
 													</span>
 												</label>
 												<textarea
-													{...register("description", {
-														minLength: {
-															value: 10,
-															message: "Minimum 10 characters are required",
-														},
-														maxLength: {
-															value: 200,
-															message:
-																"Description should not exceed 1500 characters",
-														},
-													})}
+													{...register(
+														"description",
+														{
+															minLength: {
+																value: 10,
+																message:
+																	"Minimum 10 characters are required",
+															},
+															maxLength: {
+																value: 200,
+																message:
+																	"Description should not exceed 1500 characters",
+															},
+														}
+													)}
 													name="description"
 													id="description"
 													placeholder="Activities & Participation"
@@ -372,8 +443,14 @@ export const EditExpModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												{errors.description && (
-													<span className="form-error" role="alert">
-														{errors.description.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.description
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -391,7 +468,11 @@ export const EditExpModal: React.FC<{
 								onClick={handleDelete}
 								disabled={isLoading || isDeleting}
 							>
-								{isDeleting ? <Spinner color="red" /> : "Delete"}
+								{isDeleting ? (
+									<Spinner color="red" />
+								) : (
+									"Delete"
+								)}
 							</button>
 							<button
 								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"

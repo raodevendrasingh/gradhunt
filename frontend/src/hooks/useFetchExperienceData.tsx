@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { ExperienceData } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
 import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchExperienceData = (): UseQueryResult<
 	ExperienceData[],
@@ -11,7 +12,8 @@ export const useFetchExperienceData = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
-    const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
+	const { refetch: refetchCompletionPercentage } =
+		useFetchProfileCompletion();
 
 	const fetchExperienceData = async (): Promise<ExperienceData[]> => {
 		try {
@@ -19,18 +21,20 @@ export const useFetchExperienceData = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/experiences`;
+			const url = `${apiUrl}/api/users/${username}/experiences`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-            refetchCompletionPercentage();
+			refetchCompletionPercentage();
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return [];
 			} else {
 				throw error;
@@ -41,6 +45,6 @@ export const useFetchExperienceData = (): UseQueryResult<
 	return useQuery<ExperienceData[], AxiosError>({
 		queryKey: ["experienceData", username],
 		queryFn: fetchExperienceData,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

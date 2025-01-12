@@ -9,6 +9,7 @@ import axios from "axios";
 import Spinner from "@/components/ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import { PiSirenFill } from "react-icons/pi";
+import { apiUrl } from "./OnboardingModal";
 
 interface AccountDeleteModalProps {
 	setShowAccountDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,7 +36,7 @@ export const AccountDeleteModal: React.FC<AccountDeleteModalProps> = ({
 
 			user.delete();
 
-			const url = "/api/users";
+			const url = `${apiUrl}/api/users`;
 			const response = await axios.delete(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -88,8 +89,10 @@ export const AccountDeleteModal: React.FC<AccountDeleteModalProps> = ({
 											<div className="flex flex-col">
 												<div className="flex items-center gap-2 w-full">
 													<p className="text-sm">
-														Are you sure you want to delete your account? This
-														action cannot be undone.
+														Are you sure you want to
+														delete your account?
+														This action cannot be
+														undone.
 													</p>
 												</div>
 											</div>
@@ -102,7 +105,9 @@ export const AccountDeleteModal: React.FC<AccountDeleteModalProps> = ({
 						<div className="flex items-center justify-between gap-4 mt-3 rounded-b w-full">
 							<button
 								className="flex items-center justify-center w-1/2 text-gray-700 bg-slate-50 hover:bg-slate-100 font-semibold border rounded-lg text-sm px-4 py-2.5 outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"
-								onClick={() => setShowAccountDeleteDialog(false)}
+								onClick={() =>
+									setShowAccountDeleteDialog(false)
+								}
 							>
 								Cancel
 							</button>

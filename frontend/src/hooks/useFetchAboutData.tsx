@@ -4,6 +4,7 @@ import { AboutSection } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 import { useFetchProfileCompletion } from "./useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchAboutSection = (): UseQueryResult<
 	AboutSection,
@@ -11,7 +12,8 @@ export const useFetchAboutSection = (): UseQueryResult<
 > => {
 	const { getToken } = useAuth();
 	const { username } = useParams<{ username: string }>();
-	const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
+	const { refetch: refetchCompletionPercentage } =
+		useFetchProfileCompletion();
 
 	const fetchAboutSection = async (): Promise<AboutSection> => {
 		try {
@@ -19,7 +21,7 @@ export const useFetchAboutSection = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/description`;
+			const url = `${apiUrl}/api/users/${username}/description`;
 			const response = await axios.get<AboutSection>(url, {
 				headers: {
 					"Content-Type": "application/json",

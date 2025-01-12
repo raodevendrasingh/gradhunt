@@ -15,10 +15,11 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { DurationFields } from "@/helpers/DurationFields";
 import { CertificateData } from "@/types/userTypes";
 import { FormFooter } from "@/components/ui/FormFooter";
+import { apiUrl } from "./OnboardingModal";
 
 export const AddCertificateModal: React.FC<{
 	setShowCertifyModal: React.Dispatch<React.SetStateAction<boolean>>;
-    onSave: () => void;
+	onSave: () => void;
 }> = ({ setShowCertifyModal, onSave }) => {
 	const [isExpired, setIsExpired] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +40,7 @@ export const AddCertificateModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/certificates`;
+			const url = `${apiUrl}/api/users/certificates`;
 			const response = await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -49,7 +50,7 @@ export const AddCertificateModal: React.FC<{
 			// console.log(response.data);
 			toast.success("Certificate Added");
 			setShowCertifyModal(false);
-            onSave();
+			onSave();
 		} catch (error: any) {
 			toast.error("Error occured while adding certificate. Try again!");
 			if (error.response) {
@@ -113,17 +114,23 @@ export const AddCertificateModal: React.FC<{
 													Certificate Title
 												</label>
 												<input
-													{...register("certificateName", {
-														required: "Certificate name is required",
-														minLength: {
-															value: 2,
-															message:
-																"Certificate name shoud be alteast 2 characters",
-														},
-														maxLength: 50,
-													})}
+													{...register(
+														"certificateName",
+														{
+															required:
+																"Certificate name is required",
+															minLength: {
+																value: 2,
+																message:
+																	"Certificate name shoud be alteast 2 characters",
+															},
+															maxLength: 50,
+														}
+													)}
 													aria-invalid={
-														errors.certificateName ? "true" : "false"
+														errors.certificateName
+															? "true"
+															: "false"
 													}
 													type="text"
 													name="certificateName"
@@ -132,8 +139,15 @@ export const AddCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.certificateName && (
-													<span className="form-error" role="alert">
-														{errors.certificateName.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors
+																.certificateName
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -146,7 +160,8 @@ export const AddCertificateModal: React.FC<{
 												</label>
 												<input
 													{...register("issuerOrg", {
-														required: "Organization name is required",
+														required:
+															"Organization name is required",
 														minLength: {
 															value: 2,
 															message:
@@ -154,7 +169,11 @@ export const AddCertificateModal: React.FC<{
 														},
 														maxLength: 50,
 													})}
-													aria-invalid={errors.issuerOrg ? "true" : "false"}
+													aria-invalid={
+														errors.issuerOrg
+															? "true"
+															: "false"
+													}
 													type="text"
 													name="issuerOrg"
 													id="issuerOrg"
@@ -162,8 +181,14 @@ export const AddCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.issuerOrg && (
-													<span className="form-error" role="alert">
-														{errors.issuerOrg.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.issuerOrg
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -194,14 +219,21 @@ export const AddCertificateModal: React.FC<{
 													Credential ID
 												</label>
 												<input
-													{...register("credentialId", {
-														pattern: {
-															value: /^[a-zA-Z0-9]+$/,
-															message:
-																"Please enter a valid credential ID (alphanumeric characters only)",
-														},
-													})}
-													aria-invalid={errors.credentialId ? "true" : "false"}
+													{...register(
+														"credentialId",
+														{
+															pattern: {
+																value: /^[a-zA-Z0-9]+$/,
+																message:
+																	"Please enter a valid credential ID (alphanumeric characters only)",
+															},
+														}
+													)}
+													aria-invalid={
+														errors.credentialId
+															? "true"
+															: "false"
+													}
 													name="credentialId"
 													type="text"
 													id="credentialId"
@@ -209,8 +241,14 @@ export const AddCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialId && (
-													<span className="form-error" role="alert">
-														{errors.credentialId.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.credentialId
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -222,14 +260,21 @@ export const AddCertificateModal: React.FC<{
 													Credential Link
 												</label>
 												<input
-													{...register("credentialUrl", {
-														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
-														},
-													})}
-													aria-invalid={errors.credentialUrl ? "true" : "false"}
+													{...register(
+														"credentialUrl",
+														{
+															pattern: {
+																value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+																message:
+																	"Please enter a valid URL",
+															},
+														}
+													)}
+													aria-invalid={
+														errors.credentialUrl
+															? "true"
+															: "false"
+													}
 													name="credentialUrl"
 													type="text"
 													id="credentialUrl"
@@ -237,8 +282,14 @@ export const AddCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialUrl && (
-													<span className="form-error" role="alert">
-														{errors.credentialUrl.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.credentialUrl
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -248,7 +299,10 @@ export const AddCertificateModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="certificateDataForm" />
+						<FormFooter
+							isLoading={isLoading}
+							formId="certificateDataForm"
+						/>
 					</div>
 				</motion.div>
 			</motion.div>

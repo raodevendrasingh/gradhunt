@@ -12,46 +12,44 @@ import { skillOptions } from "@/utils/skillOptions";
 import { FormFooter } from "@/components/ui/FormFooter";
 import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
 import { Skill, SkillObject } from "@/types/userTypes";
+import { apiUrl } from "./OnboardingModal";
 
 export const AddSkillModal: React.FC<{
 	setShowSkillModal: React.Dispatch<SetStateAction<boolean>>;
-    onUpdate: () => void;
+	onUpdate: () => void;
 }> = ({ setShowSkillModal, onUpdate }) => {
-    const [selectedSkills, setSelectedSkills] = useState<SkillObject[]>([]);
+	const [selectedSkills, setSelectedSkills] = useState<SkillObject[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
 
-    const {
-		data: skillData,
-		isLoading: isSkillLoading
-	} = useFetchSkillData();
-    
-    useEffect(() => {
-        if (skillData && skillData.length > 0) {
-            setSelectedSkills(skillData[0].skills_list);
-        }
-    }, [skillData]);
+	const { data: skillData, isLoading: isSkillLoading } = useFetchSkillData();
+
+	useEffect(() => {
+		if (skillData && skillData.length > 0) {
+			setSelectedSkills(skillData[0].skills_list);
+		}
+	}, [skillData]);
 
 	const {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormData>();
 
-    const loadOptions = (
-        inputValue: string,
-        callback: (options: SkillObject[]) => void
-    ) => {
-        const filteredOptions = skillOptions.filter(
-            (option) =>
-                option.label.toLowerCase().includes(inputValue.toLowerCase()) &&
-                !selectedSkills.some((skill) => skill.value === option.value)
-        );
-        callback(filteredOptions);
-    };
+	const loadOptions = (
+		inputValue: string,
+		callback: (options: SkillObject[]) => void
+	) => {
+		const filteredOptions = skillOptions.filter(
+			(option) =>
+				option.label.toLowerCase().includes(inputValue.toLowerCase()) &&
+				!selectedSkills.some((skill) => skill.value === option.value)
+		);
+		callback(filteredOptions);
+	};
 
 	const [searchInputValue, setSearchInputValue] = useState<string>("");
 
-    const handleSkillSelect = (newSkill: SkillObject | null) => {
+	const handleSkillSelect = (newSkill: SkillObject | null) => {
 		if (selectedSkills.length >= 20) {
 			toast.error("You cannot select more than 20 skills.");
 			return;
@@ -66,7 +64,7 @@ export const AddSkillModal: React.FC<{
 		}
 	};
 
-    const handleSkillRemove = (removedSkill: SkillObject) => {
+	const handleSkillRemove = (removedSkill: SkillObject) => {
 		setSelectedSkills(
 			selectedSkills.filter((skill) => skill.value !== removedSkill.value)
 		);
@@ -74,22 +72,22 @@ export const AddSkillModal: React.FC<{
 
 	const onSubmit: SubmitHandler<FormData> = async (data) => {
 		setIsLoading(true);
-        const skillData = {
-            skills_list: selectedSkills
-        };
+		const skillData = {
+			skills_list: selectedSkills,
+		};
 		try {
 			const token = await getToken();
 			if (!token) {
 				throw new Error("Token is not available");
 			}
-			const url = "/api/users/skills";
+			const url = `${apiUrl}/api/users/skills`;
 			await axios.patch(url, skillData, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-            onUpdate();
+			onUpdate();
 			toast.success("Skills Updated");
 			setShowSkillModal(false);
 		} catch (error: any) {
@@ -140,7 +138,10 @@ export const AddSkillModal: React.FC<{
 						<div className=" h-[400px]">
 							<div className="p-3">
 								<div className="flex flex-col gap-3">
-									<form id="skillDataForm" onSubmit={handleSubmit(onSubmit)}>
+									<form
+										id="skillDataForm"
+										onSubmit={handleSubmit(onSubmit)}
+									>
 										<div className="flex flex-col w-full gap-3">
 											<div className="w-full flex flex-col">
 												<div className="flex border py-1 rounded-md border-gray-200 w-full px-2">
@@ -150,18 +151,32 @@ export const AddSkillModal: React.FC<{
 													<span className="w-[92%]">
 														<AsyncSelect
 															cacheOptions
-															loadOptions={loadOptions}
-															onChange={handleSkillSelect}
+															loadOptions={
+																loadOptions
+															}
+															onChange={
+																handleSkillSelect
+															}
 															isClearable
 															isSearchable
 															value={null}
-															inputValue={searchInputValue}
-															onInputChange={(newValue) =>
-																setSearchInputValue(newValue)
+															inputValue={
+																searchInputValue
 															}
-															styles={skillSearchFieldStyle}
+															onInputChange={(
+																newValue
+															) =>
+																setSearchInputValue(
+																	newValue
+																)
+															}
+															styles={
+																skillSearchFieldStyle
+															}
 															placeholder="Search Skills and Technology"
-															noOptionsMessage={() => "Type to search"}
+															noOptionsMessage={() =>
+																"Type to search"
+															}
 														/>
 													</span>
 												</div>
@@ -169,77 +184,114 @@ export const AddSkillModal: React.FC<{
 											<div className="h-80 border rounded-md border-gray-200 p-3">
 												{isSkillLoading ? (
 													<div className="flex flex-wrap w-full gap-2 p-2">
-														{[...Array(12)].map((_, index) => (
-															<div
-																key={index}
-																className={`h-6 w-${16 + (index % 5) * 4} rounded-full skeleton`}
-															/>
-														))}
+														{[...Array(12)].map(
+															(_, index) => (
+																<div
+																	key={index}
+																	className={`h-6 w-${16 + (index % 5) * 4} rounded-full skeleton`}
+																/>
+															)
+														)}
 													</div>
-												) : selectedSkills.length === 0 ? (
+												) : selectedSkills.length ===
+												  0 ? (
 													<div className="flex items-center justify-center h-full text-gray-700">
 														No skills added yet.
 													</div>
-												) : selectedSkills.length > 0 && (
+												) : selectedSkills.length >
+														0 && (
 														<div className="flex flex-wrap gap-2">
-															{selectedSkills.map((skill) => (
-																<div
-																	key={skill.value}
-																	className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
-																>
-																	{skill.image && (
-																		<span className="inline-block">
-																			<img
-																				src={skill.image}
-																				alt={skill.label}
-																				className="size-3 mr-2"
-																			/>
-																		</span>
-																	)}
-																	<span className="text-xs">{skill.label}</span>
-																	<button
-																		className="text-gray-600 pl-2 hover:text-red-500"
-																		onClick={(e) => {
-																			e.preventDefault();
-																			handleSkillRemove(skill);
-																		}}
+															{selectedSkills.map(
+																(skill) => (
+																	<div
+																		key={
+																			skill.value
+																		}
+																		className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
 																	>
-																		<HiOutlineXMark />
-																	</button>
-																</div>
-															))}
+																		{skill.image && (
+																			<span className="inline-block">
+																				<img
+																					src={
+																						skill.image
+																					}
+																					alt={
+																						skill.label
+																					}
+																					className="size-3 mr-2"
+																				/>
+																			</span>
+																		)}
+																		<span className="text-xs">
+																			{
+																				skill.label
+																			}
+																		</span>
+																		<button
+																			className="text-gray-600 pl-2 hover:text-red-500"
+																			onClick={(
+																				e
+																			) => {
+																				e.preventDefault();
+																				handleSkillRemove(
+																					skill
+																				);
+																			}}
+																		>
+																			<HiOutlineXMark />
+																		</button>
+																	</div>
+																)
+															)}
 														</div>
 												  ) ? (
-													selectedSkills.length > 0 && (
+													selectedSkills.length >
+														0 && (
 														<div className="flex flex-wrap gap-2">
-															{selectedSkills.map((skill) => (
-																<div
-																	key={skill.value}
-																	className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
-																>
-																	{skill.image && (
-																		<span className="inline-block">
-																			<img
-																				src={skill.image}
-																				alt={skill.label}
-																				className="size-3 mr-2"
-																			/>
-																		</span>
-																	)}
-																	<span className="text-xs">{skill.label}</span>
-
-																	{/* {skill.image} */}
-																	<button
-																		className="text-gray-600 pl-2 hover:text-red-500"
-																		onClick={(e) => {
-																			e.preventDefault();
-																			handleSkillRemove(skill);
-																		}}
+															{selectedSkills.map(
+																(skill) => (
+																	<div
+																		key={
+																			skill.value
+																		}
+																		className="flex items-center justify-center px-2.5 py-1 bg-slate-50 text-gray-700 rounded-full border"
 																	>
-																		<HiOutlineXMark />
-																	</button>
-																</div>
-															))}
+																		{skill.image && (
+																			<span className="inline-block">
+																				<img
+																					src={
+																						skill.image
+																					}
+																					alt={
+																						skill.label
+																					}
+																					className="size-3 mr-2"
+																				/>
+																			</span>
+																		)}
+																		<span className="text-xs">
+																			{
+																				skill.label
+																			}
+																		</span>
+
+																		{/* {skill.image} */}
+																		<button
+																			className="text-gray-600 pl-2 hover:text-red-500"
+																			onClick={(
+																				e
+																			) => {
+																				e.preventDefault();
+																				handleSkillRemove(
+																					skill
+																				);
+																			}}
+																		>
+																			<HiOutlineXMark />
+																		</button>
+																	</div>
+																)
+															)}
 														</div>
 													)
 												) : undefined}
@@ -250,7 +302,10 @@ export const AddSkillModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="skillDataForm" />
+						<FormFooter
+							isLoading={isLoading}
+							formId="skillDataForm"
+						/>
 					</div>
 				</motion.div>
 			</motion.div>

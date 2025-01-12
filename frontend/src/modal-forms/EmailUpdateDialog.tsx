@@ -13,6 +13,7 @@ import { useState } from "react";
 import Spinner from "@/components/ui/Spinner";
 import { Button } from "@/components/ui/Button";
 import { useEmailCheck } from "@/hooks/useEmailCheck";
+import { apiUrl } from "./OnboardingModal";
 
 type EmailForm = {
 	email: string;
@@ -20,7 +21,7 @@ type EmailForm = {
 
 export const EmailUpdateDialog: React.FC<{
 	setShowEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
-    currentEmail: string;
+	currentEmail: string;
 }> = ({ setShowEmailDialog, currentEmail }) => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const { getToken } = useAuth();
@@ -113,7 +114,9 @@ export const EmailUpdateDialog: React.FC<{
 				);
 
 				if (existingEmail) {
-					toast.error("This email is already associated with your account");
+					toast.error(
+						"This email is already associated with your account"
+					);
 					return;
 				}
 
@@ -141,7 +144,9 @@ export const EmailUpdateDialog: React.FC<{
 				if (error.errors?.[0]?.message) {
 					toast.error(error.errors[0].message);
 				} else {
-					toast.error(error.message || "Failed to send verification code");
+					toast.error(
+						error.message || "Failed to send verification code"
+					);
 				}
 				console.error(error);
 			} finally {
@@ -164,7 +169,7 @@ export const EmailUpdateDialog: React.FC<{
 
 			if (verificationResult.verification.status === "verified") {
 				const token = await getToken();
-				const url = `/api/users/email`;
+				const url = `${apiUrl}/api/users/email`;
 				await axios.patch(
 					url,
 					{ email },
@@ -224,23 +229,35 @@ export const EmailUpdateDialog: React.FC<{
 									<form onSubmit={handleSubmit(() => {})}>
 										<motion.div
 											key={currentScreen}
-											initial={{ x: slideDirection * 50, opacity: 0 }}
+											initial={{
+												x: slideDirection * 50,
+												opacity: 0,
+											}}
 											animate={{ x: 0, opacity: 1 }}
-											exit={{ x: -slideDirection * 50, opacity: 0 }}
+											exit={{
+												x: -slideDirection * 50,
+												opacity: 0,
+											}}
 											transition={{ duration: 0.3 }}
 											className="h-[140px]"
 										>
-											<div className="p-3">{renderScreen()}</div>
+											<div className="p-3">
+												{renderScreen()}
+											</div>
 										</motion.div>
 										<div className="flex items-center justify-center mt-4">
 											{currentScreen === 0 ? (
 												<Button
 													type="button"
 													onClick={handleNext}
-													disabled={isCheckingEmail || !isValidEmail(email)}
+													disabled={
+														isCheckingEmail ||
+														!isValidEmail(email)
+													}
 													className="flex w-full items-center justify-center gap-2 text-sm px-4 py-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 												>
-													Verify Email <HiMiniChevronRight className="size-5" />
+													Verify Email{" "}
+													<HiMiniChevronRight className="size-5" />
 												</Button>
 											) : null}
 										</div>
@@ -289,7 +306,9 @@ export const EmailScreen: React.FC<{
 					{isCheckingEmail && (
 						<span className="flex items-center gap-2">
 							<Spinner color="black" />
-							<span className="text-xs text-gray-500">Searching...</span>
+							<span className="text-xs text-gray-500">
+								Searching...
+							</span>
 						</span>
 					)}
 					{getDisplayMessage()}

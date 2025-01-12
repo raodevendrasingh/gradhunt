@@ -23,6 +23,7 @@ import { LocationSelect } from "@/helpers/LocationSelect";
 import { ExperienceForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
+import { apiUrl } from "./OnboardingModal";
 
 export const AddExpModal: React.FC<{
 	setShowExpModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,16 +48,16 @@ export const AddExpModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/experiences`;
+			const url = `${apiUrl}/api/users/experiences`;
 			const response = await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 			});
-            if (response.status !== 201) {
-                throw new Error("Error occured while adding experience");
-            }
+			if (response.status !== 201) {
+				throw new Error("Error occured while adding experience");
+			}
 			toast.success("Experience Added");
 			onSave();
 			setShowExpModal(false);
@@ -117,16 +118,24 @@ export const AddExpModal: React.FC<{
 														Company Name
 													</label>
 													<input
-														{...register("companyName", {
-															required: "Company name is required",
-															minLength: {
-																value: 2,
-																message:
-																	"Company name shoud be alteast 2 characters",
-															},
-															maxLength: 50,
-														})}
-														aria-invalid={errors.companyName ? "true" : "false"}
+														{...register(
+															"companyName",
+															{
+																required:
+																	"Company name is required",
+																minLength: {
+																	value: 2,
+																	message:
+																		"Company name shoud be alteast 2 characters",
+																},
+																maxLength: 50,
+															}
+														)}
+														aria-invalid={
+															errors.companyName
+																? "true"
+																: "false"
+														}
 														type="text"
 														name="companyName"
 														id="companyName"
@@ -134,8 +143,15 @@ export const AddExpModal: React.FC<{
 														className="border py-2 rounded-md border-gray-200 w-full"
 													/>
 													{errors.companyName && (
-														<span className="form-error" role="alert">
-															{errors.companyName.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors
+																	.companyName
+																	.message as string
+															}
 														</span>
 													)}
 												</div>
@@ -150,23 +166,36 @@ export const AddExpModal: React.FC<{
 														name="jobTitle"
 														control={control}
 														rules={{
-															required: "Job Title is required",
+															required:
+																"Job Title is required",
 														}}
 														render={({ field }) => (
 															<Select
 																{...field}
 																id="jobTitle"
-																options={jobTitleOptions}
+																options={
+																	jobTitleOptions
+																}
 																placeholder="Job Title"
-																styles={selectFieldStyle}
-																value={field.value as any}
+																styles={
+																	selectFieldStyle
+																}
+																value={
+																	field.value as any
+																}
 																menuPlacement="auto"
 															/>
 														)}
 													/>
 													{errors.jobTitle && (
-														<span className="form-error" role="alert">
-															{errors.jobTitle.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors.jobTitle
+																	.message as string
+															}
 														</span>
 													)}
 												</div>
@@ -183,23 +212,39 @@ export const AddExpModal: React.FC<{
 															name="jobType"
 															control={control}
 															rules={{
-																required: "Employment Type is required",
+																required:
+																	"Employment Type is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="jobType"
-																	options={employmentType}
+																	options={
+																		employmentType
+																	}
 																	placeholder="Employment Type"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.jobType && (
-															<span className="form-error" role="alert">
-																{errors.jobType.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.jobType
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -214,23 +259,39 @@ export const AddExpModal: React.FC<{
 															name="locationType"
 															control={control}
 															rules={{
-																required: "Location Type is required",
+																required:
+																	"Location Type is required",
 															}}
-															render={({ field }) => (
+															render={({
+																field,
+															}) => (
 																<Select
 																	{...field}
 																	id="locationType"
-																	options={locationType}
+																	options={
+																		locationType
+																	}
 																	placeholder="Location Type"
-																	styles={selectFieldStyle}
-																	value={field.value as any}
+																	styles={
+																		selectFieldStyle
+																	}
+																	value={
+																		field.value as any
+																	}
 																	menuPlacement="auto"
 																/>
 															)}
 														/>
 														{errors.locationType && (
-															<span className="form-error" role="alert">
-																{errors.locationType.message as string}
+															<span
+																className="form-error"
+																role="alert"
+															>
+																{
+																	errors
+																		.locationType
+																		.message as string
+																}
 															</span>
 														)}
 													</div>
@@ -265,9 +326,12 @@ export const AddExpModal: React.FC<{
 												control={control}
 												name="jobLocation"
 												placeholder="Location"
-												error={errors.jobLocation?.message}
+												error={
+													errors.jobLocation?.message
+												}
 												rules={{
-													required: "Location is required",
+													required:
+														"Location is required",
 												}}
 												menuPlacement="auto"
 											/>
@@ -287,17 +351,21 @@ export const AddExpModal: React.FC<{
 													</span>
 												</label>
 												<textarea
-													{...register("description", {
-														minLength: {
-															value: 10,
-															message: "Minimum 10 characters are required",
-														},
-														maxLength: {
-															value: 200,
-															message:
-																"Description should not exceed 1500 characters",
-														},
-													})}
+													{...register(
+														"description",
+														{
+															minLength: {
+																value: 10,
+																message:
+																	"Minimum 10 characters are required",
+															},
+															maxLength: {
+																value: 200,
+																message:
+																	"Description should not exceed 1500 characters",
+															},
+														}
+													)}
 													name="description"
 													id="description"
 													placeholder="Activities & Participation"
@@ -305,8 +373,14 @@ export const AddExpModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												></textarea>
 												{errors.description && (
-													<span className="form-error" role="alert">
-														{errors.description.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.description
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -316,7 +390,10 @@ export const AddExpModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="experienceDataForm" />
+						<FormFooter
+							isLoading={isLoading}
+							formId="experienceDataForm"
+						/>
 					</div>
 				</motion.div>
 			</motion.div>

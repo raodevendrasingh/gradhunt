@@ -1,3 +1,4 @@
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 import axios from "axios";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
@@ -17,7 +18,7 @@ export const useEmailCheck = () => {
 			setIsCheckingEmail(true);
 			setEmailMsg("");
 			try {
-				const url = `/api/users/check-email/?email=${email}`;
+				const url = `${apiUrl}/api/users/check-email/?email=${email}`;
 				const response = await axios.get(url);
 				if (response.data.exists) {
 					setEmailMsg("This email is already registered!");
@@ -38,5 +39,11 @@ export const useEmailCheck = () => {
 		}
 	}, 500);
 
-	return { isValidEmail, isCheckingEmail, emailMsg, isFieldValid, checkEmail };
+	return {
+		isValidEmail,
+		isCheckingEmail,
+		emailMsg,
+		isFieldValid,
+		checkEmail,
+	};
 };

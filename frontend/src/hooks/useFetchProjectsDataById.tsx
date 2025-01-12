@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 import { ProjectData } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 interface ProjectDataProps {
 	projectId: number;
@@ -21,7 +22,7 @@ export const useFetchProjectDataById = ({
 		if (!token) {
 			throw new Error("User Unauthorized!");
 		}
-		const url = `/api/users/${username}/projects/${projectId}`;
+		const url = `${apiUrl}/api/users/${username}/projects/${projectId}`;
 		const response = await axios.get(url, {
 			headers: {
 				"Content-Type": "application/json",
@@ -34,6 +35,6 @@ export const useFetchProjectDataById = ({
 	return useQuery<ProjectData, AxiosError>({
 		queryKey: ["projectIdData", username, projectId],
 		queryFn: fetchProjectDataById,
-        staleTime: 30000,
+		staleTime: 30000,
 	});
 };

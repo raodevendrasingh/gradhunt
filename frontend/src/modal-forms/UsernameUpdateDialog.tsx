@@ -13,6 +13,7 @@ import { useState } from "react";
 import Spinner from "@/components/ui/Spinner";
 import { Button } from "@/components/ui/Button";
 import { useUsernameCheck } from "@/hooks/useUsernameCheck";
+import { apiUrl } from "./OnboardingModal";
 
 type UsernameForm = {
 	username: string;
@@ -60,8 +61,8 @@ export const UsernameUpdateDialog: React.FC<{
 		if (username && !isValidUsername(username)) {
 			return (
 				<p className="text-red-500 text-sm">
-					Username can only contain lowercase letters and digits (max 16
-					characters)
+					Username can only contain lowercase letters and digits (max
+					16 characters)
 				</p>
 			);
 		}
@@ -84,7 +85,7 @@ export const UsernameUpdateDialog: React.FC<{
 			}
 
 			await user.update({ username });
-			const url = `/api/users/username`;
+			const url = `${apiUrl}/api/users/username`;
 			await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -154,8 +155,14 @@ export const UsernameUpdateDialog: React.FC<{
 													{...register("username", {
 														required: true,
 														maxLength: 16,
-														onChange: (e: { target: { value: string } }) =>
-															checkUsername(e.target.value),
+														onChange: (e: {
+															target: {
+																value: string;
+															};
+														}) =>
+															checkUsername(
+																e.target.value
+															),
 													})}
 													aria-label="Grab your username"
 													placeholder="username"
@@ -184,7 +191,11 @@ export const UsernameUpdateDialog: React.FC<{
 											disabled={isSubmitting}
 											className="flex w-full items-center justify-center gap-2 text-sm px-4 py-2.5 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 										>
-											{isSubmitting ? <Spinner /> : <>Update</>}
+											{isSubmitting ? (
+												<Spinner />
+											) : (
+												<>Update</>
+											)}
 										</Button>
 									</form>
 								</div>

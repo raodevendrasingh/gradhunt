@@ -2,6 +2,7 @@ import { UserDetails } from "@/types/userTypes";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import axios, { AxiosError } from "axios";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchUserData = (): UseQueryResult<UserDetails, AxiosError> => {
 	const { getToken } = useAuth();
@@ -13,7 +14,7 @@ export const useFetchUserData = (): UseQueryResult<UserDetails, AxiosError> => {
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = "/api/users";
+			const url = `${apiUrl}/api/users`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",

@@ -3,11 +3,9 @@ import axios, { AxiosError } from "axios";
 import { JobPosts } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
-export const useFetchJobPosts = (): UseQueryResult<
-	JobPosts[],
-	AxiosError
-> => {
+export const useFetchJobPosts = (): UseQueryResult<JobPosts[], AxiosError> => {
 	const { getToken } = useAuth();
 	const { companyslug } = useParams<{ companyslug: string }>();
 
@@ -17,7 +15,7 @@ export const useFetchJobPosts = (): UseQueryResult<
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/company/${companyslug}/jobs`;
+			const url = `${apiUrl}/api/company/${companyslug}/jobs`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -27,7 +25,9 @@ export const useFetchJobPosts = (): UseQueryResult<
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return [];
 			} else {
 				throw error;

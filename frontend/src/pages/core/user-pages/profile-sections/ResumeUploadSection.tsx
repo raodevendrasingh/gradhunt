@@ -10,6 +10,7 @@ import { extractFileName } from "@/utils/ExtractFileNames";
 import { ResumeDeleteModal } from "@/modal-forms/ResumeDeleteModal";
 import { PdfDownloadIcon } from "@/components/common/PDFIcon";
 import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
 
@@ -33,7 +34,9 @@ const uploadToFirebase = async (
 				reject(error);
 			},
 			async () => {
-				const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+				const downloadURL = await getDownloadURL(
+					uploadTask.snapshot.ref
+				);
 				resolve(downloadURL);
 			}
 		);
@@ -44,7 +47,7 @@ const sendFileToServer = async (fileUrl: string, token: string) => {
 	if (!token) {
 		throw new Error("Token is not available");
 	}
-	const url = `/api/users/resume`;
+	const url = `${apiUrl}/api/users/resume`;
 	await axios.post(url, fileUrl, {
 		headers: {
 			"Content-Type": "application/json",
@@ -66,8 +69,8 @@ export const ResumeUploadSection = () => {
 	const { isSignedIn, user } = useUser();
 
 	const { data: userDetails, isLoading } = useFetchUserDetails();
-    const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
-
+	const { refetch: refetchCompletionPercentage } =
+		useFetchProfileCompletion();
 
 	useEffect(() => {
 		if (
@@ -134,7 +137,7 @@ export const ResumeUploadSection = () => {
 				try {
 					await sendFileToServer(url, token);
 					setUploadStatus("success");
-                    refetchCompletionPercentage();
+					refetchCompletionPercentage();
 				} catch (sendError) {
 					console.error("Error sending file to server:", sendError);
 					setUploadStatus("error");
@@ -207,7 +210,9 @@ export const ResumeUploadSection = () => {
 	return (
 		<div className="flex flex-col items-center border rounded-lg mt-2 w-full px-3 py-1">
 			<div className="flex items-center justify-between w-full">
-				<span className="text-gray-700 font-medium text-base">Resume</span>
+				<span className="text-gray-700 font-medium text-base">
+					Resume
+				</span>
 			</div>
 
 			{uploadStatus === "completed" ? (
@@ -215,7 +220,9 @@ export const ResumeUploadSection = () => {
 					<div className="flex items-center">
 						<PdfDownloadIcon />
 						<div className="flex flex-col items-start justify-start p-3">
-							<span className={`text-left text-base ${getStatusColor()}`}>
+							<span
+								className={`text-left text-base ${getStatusColor()}`}
+							>
 								{getStatusLabel()}
 							</span>
 							<span className="text-xs">
@@ -225,7 +232,8 @@ export const ResumeUploadSection = () => {
 					</div>
 					<div className="flex items-center gap-2">
 						{isSignedIn &&
-							user.username === userDetails?.user_details?.username && (
+							user.username ===
+								userDetails?.user_details?.username && (
 								<button
 									type="button"
 									onClick={handleDeleteClick}
@@ -276,7 +284,8 @@ export const ResumeUploadSection = () => {
 								</p>
 							</span>
 							<p className="text-center text-sm text-gray-400 pt-2">
-								File should be in .pdf format only and less than 1MB
+								File should be in .pdf format only and less than
+								1MB
 							</p>
 						</div>
 					) : (
@@ -284,7 +293,9 @@ export const ResumeUploadSection = () => {
 							<div className="flex items-center w-full">
 								<PdfDownloadIcon />
 								<div className="flex flex-col items-start justify-start p-3 w-full">
-									<div className={`text-left text-base ${getStatusColor()}`}>
+									<div
+										className={`text-left text-base ${getStatusColor()}`}
+									>
 										{getStatusLabel()}
 									</div>
 									{fileName && fileSize && (
@@ -296,14 +307,21 @@ export const ResumeUploadSection = () => {
 										<div className="overflow-hidden h-1.5 text-xs flex rounded-full bg-gray-100">
 											<motion.div
 												initial={{ width: 0 }}
-												animate={{ width: `${progress}%` }}
-												transition={{ duration: 0.5, ease: "easeInOut" }}
+												animate={{
+													width: `${progress}%`,
+												}}
+												transition={{
+													duration: 0.5,
+													ease: "easeInOut",
+												}}
 												className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${getProgressBarColor()}`}
 											/>
 										</div>
 									</div>
 									{uploadStatus === "error" && (
-										<span className="text-xs text-red-500 mt-1">{errMsg}</span>
+										<span className="text-xs text-red-500 mt-1">
+											{errMsg}
+										</span>
 									)}
 								</div>
 							</div>

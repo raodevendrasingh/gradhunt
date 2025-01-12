@@ -25,6 +25,7 @@ import { LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const EditJobApplication = () => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -62,7 +63,10 @@ export const EditJobApplication = () => {
 				jobTitle: jobPost.jobTitle,
 				jobType: { value: jobPost.jobType, label: jobPost.jobType },
 				workType: { value: jobPost.workType, label: jobPost.workType },
-				experience: { value: jobPost.experience, label: jobPost.experience },
+				experience: {
+					value: jobPost.experience,
+					label: jobPost.experience,
+				},
 				jobLocation: jobPost.jobLocation,
 				openings: jobPost.openings,
 				lowestSalary: jobPost.lowestSalary,
@@ -80,20 +84,20 @@ export const EditJobApplication = () => {
 	}, [isJobLoading, isError, jobPost]);
 
 	const handleEditorReady = useCallback(
-        (editor: any) => {
-            setEditorInstance(editor);
-            if (editor) {
-                editor.on("update", ({ editor }: any) => {
-                    const content = editor.getHTML();
-                    setEditorContent(content);
-                    if (content && editorError) {
-                        setEditorError("");
-                    }
-                });
-            }
-        },
-        [editorError]
-    );
+		(editor: any) => {
+			setEditorInstance(editor);
+			if (editor) {
+				editor.on("update", ({ editor }: any) => {
+					const content = editor.getHTML();
+					setEditorContent(content);
+					if (content && editorError) {
+						setEditorError("");
+					}
+				});
+			}
+		},
+		[editorError]
+	);
 
 	const applyWithUs = watch("applyWithUs");
 	const applyLink = watch("applyLink");
@@ -119,7 +123,7 @@ export const EditJobApplication = () => {
 				...data,
 				jobDescription: content,
 			};
-			const url = `/api/jobs/update/${jobId}`;
+			const url = `${apiUrl}/api/jobs/update/${jobId}`;
 			await axios.patch(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -147,7 +151,9 @@ export const EditJobApplication = () => {
 		<div className="flex h-full">
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
 				<div className="flex justify-between items-center">
-					<h2 className="text-lg font-semibold pb-5">Edit Job Application </h2>
+					<h2 className="text-lg font-semibold pb-5">
+						Edit Job Application{" "}
+					</h2>
 					<span className="mb-1.5 text-sm text-gray-600">
 						JobID : {jobId?.toUpperCase()}
 					</span>
@@ -160,7 +166,9 @@ export const EditJobApplication = () => {
 							register={register}
 							icon={<FiBriefcase className="h-5 w-5" />}
 							error={errors.jobTitle?.message}
-							validationRules={{ required: "Job title is required" }}
+							validationRules={{
+								required: "Job title is required",
+							}}
 						/>
 						<SelectInput
 							label="Job Type"
@@ -230,15 +238,21 @@ export const EditJobApplication = () => {
 							label="Lowest Salary"
 							name="lowestSalary"
 							register={register}
-							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+							icon={
+								<LiaMoneyBillWaveAltSolid className="h-5 w-5" />
+							}
 							error={errors.lowestSalary?.message}
-							validationRules={{ required: "Lowest Salary is required" }}
+							validationRules={{
+								required: "Lowest Salary is required",
+							}}
 						/>
 						<TextInput
 							label="Highest Salary"
 							name="highestSalary"
 							register={register}
-							icon={<LiaMoneyBillWaveAltSolid className="h-5 w-5" />}
+							icon={
+								<LiaMoneyBillWaveAltSolid className="h-5 w-5" />
+							}
 						/>
 					</div>
 
@@ -257,7 +271,9 @@ export const EditJobApplication = () => {
 							label="Application Deadline"
 							control={control}
 							error={errors.applicationDeadline?.message}
-							validationRules={{ required: "Application Deadline is required" }}
+							validationRules={{
+								required: "Application Deadline is required",
+							}}
 						/>
 					</div>
 
@@ -271,15 +287,20 @@ export const EditJobApplication = () => {
 							validationRules={{
 								validate: (value) => {
 									return (
-										(!!value || applyWithUs || atLeastOneRequired) &&
+										(!!value ||
+											applyWithUs ||
+											atLeastOneRequired) &&
 										(!value ||
-											/^(http|https):\/\/[^ "]+$/.test(value) ||
+											/^(http|https):\/\/[^ "]+$/.test(
+												value
+											) ||
 											"Must be a valid URL starting with http or https")
 									);
 								},
 								pattern: {
 									value: /^(http|https):\/\/[^ "]+$/,
-									message: "Must be a valid URL starting with http or https",
+									message:
+										"Must be a valid URL starting with http or https",
 								},
 							}}
 						/>
@@ -306,7 +327,11 @@ export const EditJobApplication = () => {
 							defaultValue={true}
 							validationRules={{
 								validate: (value) => {
-									return value || !!applyLink || atLeastOneRequired;
+									return (
+										value ||
+										!!applyLink ||
+										atLeastOneRequired
+									);
 								},
 							}}
 						/>
@@ -321,7 +346,9 @@ export const EditJobApplication = () => {
 							initialContent={editorContent}
 						/>
 						{editorError && (
-							<p className="mt-1 text-sm text-red-600">{editorError}</p>
+							<p className="mt-1 text-sm text-red-600">
+								{editorError}
+							</p>
 						)}
 					</div>
 

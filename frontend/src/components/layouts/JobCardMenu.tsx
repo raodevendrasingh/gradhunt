@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
 import { JobPosts } from "@/types/userTypes";
 import { JobPostDeleteDialog } from "@/modal-forms/JobPostDeleteDialog";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 const initialOptions: Option[] = [
 	{ id: "edit", label: "Edit" },
@@ -35,7 +36,10 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 		const updatedOptions = initialOptions.map((option) => {
 			if (pathname.includes("archived") && option.id === "archive") {
 				return { ...option, id: "unarchive", label: "Unarchive" };
-			} else if (!pathname.includes("archived") && option.id === "unarchive") {
+			} else if (
+				!pathname.includes("archived") &&
+				option.id === "unarchive"
+			) {
 				return { ...option, id: "archive", label: "Archive" };
 			}
 			return option;
@@ -74,7 +78,7 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 			if (!token) {
 				throw new Error("User not authorized!");
 			}
-			const url = `/api/jobs/manage/${jobId.toLowerCase()}`;
+			const url = `${apiUrl}/api/jobs/manage/${jobId.toLowerCase()}`;
 			const response = await axios.patch(
 				url,
 				{
@@ -101,7 +105,7 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 			if (!token) {
 				throw new Error("User not authorized!");
 			}
-			const url = `/api/jobs/manage/${jobId.toLowerCase()}`;
+			const url = `${apiUrl}/api/jobs/manage/${jobId.toLowerCase()}`;
 			await axios.patch(
 				url,
 				{

@@ -9,6 +9,7 @@ import { SearchQuery } from "@/types/userTypes";
 import axios from "axios";
 import Spinner from "@/components/ui/Spinner";
 import { RangeFilter } from "./RangeFilter";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 type FilterOption = {
 	id: string;
@@ -69,7 +70,7 @@ export const FilterSideBar = ({
 		console.log("Applied Filters:", data);
 		setIsLoading(true);
 		try {
-			const url = `/api/jobs/filters`;
+			const url = `${apiUrl}/api/jobs/filters`;
 			const response = await axios.post(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -112,7 +113,9 @@ export const FilterSideBar = ({
 		<div className="flex flex-col gap-2 py-3 px-4 border-b">
 			<div
 				className="flex items-center justify-between cursor-pointer"
-				onClick={() => toggleSection(sectionKey as keyof typeof openSections)}
+				onClick={() =>
+					toggleSection(sectionKey as keyof typeof openSections)
+				}
 			>
 				<span className="text-gray-800 font-medium text-base select-none">
 					{title}
@@ -128,10 +131,14 @@ export const FilterSideBar = ({
 			<motion.div
 				initial={false}
 				animate={{
-					height: openSections[sectionKey as keyof typeof openSections]
+					height: openSections[
+						sectionKey as keyof typeof openSections
+					]
 						? "auto"
 						: 0,
-					opacity: openSections[sectionKey as keyof typeof openSections]
+					opacity: openSections[
+						sectionKey as keyof typeof openSections
+					]
 						? 1
 						: 0,
 				}}
@@ -158,10 +165,13 @@ export const FilterSideBar = ({
 											item.checked[1](checked);
 
 											// Update form values
-											const currentValues = field.value as string[];
+											const currentValues =
+												field.value as string[];
 											const newValues = checked
 												? [...currentValues, item.id]
-												: currentValues.filter((v) => v !== item.id);
+												: currentValues.filter(
+														(v) => v !== item.id
+													);
 
 											field.onChange(newValues);
 										}}
@@ -179,7 +189,9 @@ export const FilterSideBar = ({
 		<div className="border rounded-lg w-64 xl:w-72 ">
 			<form className="flex flex-col gap-2">
 				<div className="flex items-center justify-between border-b p-4">
-					<span className="text-gray-600 font-medium text-lg">Filters</span>
+					<span className="text-gray-600 font-medium text-lg">
+						Filters
+					</span>
 					<span
 						onClick={handleClearAll}
 						className="flex items-center gap-1 bg-gray-50 text-gray-600 text-sm border rounded-lg px-2 py-1 hover:bg-white hover:text-red-600 select-none cursor-pointer"
@@ -198,7 +210,11 @@ export const FilterSideBar = ({
 				</Button>
 
 				{renderFilterSection("Category", "category", categoryTypes)}
-				{renderFilterSection("Employment Type", "jobType", employmentTypes)}
+				{renderFilterSection(
+					"Employment Type",
+					"jobType",
+					employmentTypes
+				)}
 				<RangeFilter
 					control={control}
 					title="Experience Level"

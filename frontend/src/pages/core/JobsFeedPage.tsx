@@ -17,6 +17,7 @@ import { JobCardSkeleton } from "./components/ui/JobCardSkeleton2";
 import JobFeedNavbar from "./components/layout/JobFeedNavbar";
 import { FaBuilding, FaStar } from "react-icons/fa6";
 import { featuredCompanies, topIndustries } from "@/utils/dummyData";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export default function JobsFeedPage() {
 	const [result, setResult] = useState<SearchQuery>();
@@ -27,9 +28,14 @@ export default function JobsFeedPage() {
 
 	const { register, control, handleSubmit, watch } = useForm<SearchParams>({
 		defaultValues: {
-			position: new URLSearchParams(location.search).get("position")?.replace("+", " ") || "",
-			experience: new URLSearchParams(location.search).get("experience") || "",
-			location: new URLSearchParams(location.search).get("location") || "",
+			position:
+				new URLSearchParams(location.search)
+					.get("position")
+					?.replace("+", " ") || "",
+			experience:
+				new URLSearchParams(location.search).get("experience") || "",
+			location:
+				new URLSearchParams(location.search).get("location") || "",
 		},
 	});
 
@@ -58,7 +64,7 @@ export default function JobsFeedPage() {
 					? params
 					: new URLSearchParams(params).toString();
 
-			const url = `/api/jobs/query?${searchParams}`;
+			const url = `${apiUrl}/api/jobs/query?${searchParams}`;
 			const response = await axios.get(url);
 			setResult(response.data);
 		} catch (error) {
@@ -104,7 +110,9 @@ export default function JobsFeedPage() {
 					<div className="flex justify-end p-5">
 						<FilterSideBar
 							onFilterResults={(
-								filteredResults: SetStateAction<SearchQuery | undefined>
+								filteredResults: SetStateAction<
+									SearchQuery | undefined
+								>
 							) => {
 								setResult(filteredResults);
 								setIsLoading(false);
@@ -142,11 +150,19 @@ export default function JobsFeedPage() {
 											name="experience"
 											options={experienceLevels}
 											control={control}
-											icon={<GoBriefcase className="h-5 w-5" />}
+											icon={
+												<GoBriefcase className="h-5 w-5" />
+											}
 											styles={{
 												...selectStyles,
-												control: (base: CSSObjectWithLabel, state: any) => ({
-													...selectStyles.control?.(base, state),
+												control: (
+													base: CSSObjectWithLabel,
+													state: any
+												) => ({
+													...selectStyles.control?.(
+														base,
+														state
+													),
 													paddingTop: "0.2rem",
 													paddingBottom: "0.2rem",
 													backgroundColor: "white",
@@ -162,8 +178,14 @@ export default function JobsFeedPage() {
 											placeholder="Location"
 											styles={{
 												...selectStyles,
-												control: (base: CSSObjectWithLabel, state: any) => ({
-													...citySelectStyles.control?.(base, state),
+												control: (
+													base: CSSObjectWithLabel,
+													state: any
+												) => ({
+													...citySelectStyles.control?.(
+														base,
+														state
+													),
 													paddingTop: "0.2rem",
 													paddingBottom: "0.2rem",
 													backgroundColor: "white",
@@ -196,14 +218,20 @@ export default function JobsFeedPage() {
 						<>
 							<div className="flex flex-col w-full items-start gap-3 pt-10 px-5 pb-3">
 								<div className="text-sm text-gray-500">
-									Search Results ({result?.exact_matches?.length || 0})
+									Search Results (
+									{result?.exact_matches?.length || 0})
 								</div>
 								<div className="space-y-4 w-full">
 									{result?.exact_matches ? (
 										result.exact_matches.length > 0 ? (
-											result.exact_matches.map((jobPost: JobPosts) => (
-												<JobSearchCard key={jobPost.id} jobPost={jobPost} />
-											))
+											result.exact_matches.map(
+												(jobPost: JobPosts) => (
+													<JobSearchCard
+														key={jobPost.id}
+														jobPost={jobPost}
+													/>
+												)
+											)
 										) : (
 											<div className="min-h-16 border rounded-lg flex items-center justify-center">
 												<span className="text-sm text-gray-600">
@@ -214,18 +242,25 @@ export default function JobsFeedPage() {
 									) : null}
 								</div>
 							</div>
-							{result?.related_matches && result.related_matches.length > 0 && (
-								<div className="flex flex-col w-full items-start gap-3 pt-10 px-5 pb-3">
-									<div className="text-sm text-gray-500">
-										Related Jobs ({result.related_matches.length})
+							{result?.related_matches &&
+								result.related_matches.length > 0 && (
+									<div className="flex flex-col w-full items-start gap-3 pt-10 px-5 pb-3">
+										<div className="text-sm text-gray-500">
+											Related Jobs (
+											{result.related_matches.length})
+										</div>
+										<div className="space-y-4 w-full">
+											{result.related_matches.map(
+												(jobPost: JobPosts) => (
+													<JobSearchCard
+														key={jobPost.id}
+														jobPost={jobPost}
+													/>
+												)
+											)}
+										</div>
 									</div>
-									<div className="space-y-4 w-full">
-										{result.related_matches.map((jobPost: JobPosts) => (
-											<JobSearchCard key={jobPost.id} jobPost={jobPost} />
-										))}
-									</div>
-								</div>
-							)}
+								)}
 						</>
 					)}
 				</div>

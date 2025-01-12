@@ -2,6 +2,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { CompanyForm } from "@/types/userTypes";
 import { useAuth } from "@clerk/clerk-react";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchCompanyProfile = (
 	isCompanyAdmin?: boolean
@@ -14,7 +15,7 @@ export const useFetchCompanyProfile = (
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/company`;
+			const url = `${apiUrl}/api/company`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -24,13 +25,15 @@ export const useFetchCompanyProfile = (
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return {
-                    companySlug: "",
+					companySlug: "",
 					companyBanner: "",
 					companyLogo: "",
 					companyName: "",
-                    tagline: "",
+					tagline: "",
 					companyEmail: "",
 					companyPhone: "",
 					establishedYear: "",

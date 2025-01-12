@@ -16,6 +16,7 @@ import { DurationFields } from "@/helpers/DurationFields";
 import { CertificateForm } from "@/types/userTypes";
 import { useFetchCertificateDataById } from "@/hooks/useFetchCertificateDataById";
 import Spinner from "@/components/ui/Spinner";
+import { apiUrl } from "./OnboardingModal";
 
 export const EditCertificateModal: React.FC<{
 	setShowEditCertifyModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,7 +70,7 @@ export const EditCertificateModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/certificates/${certificateId}`;
+			const url = `${apiUrl}/api/users/certificates/${certificateId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -96,7 +97,7 @@ export const EditCertificateModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/certificates/${certificateId}`;
+			const url = `${apiUrl}/api/users/certificates/${certificateId}`;
 			const response = await axios.patch(url, data, {
 				headers: {
 					"Content-Type": "application/json",
@@ -170,17 +171,23 @@ export const EditCertificateModal: React.FC<{
 													Certificate Title
 												</label>
 												<input
-													{...register("certificateName", {
-														required: "Certificate name is required",
-														minLength: {
-															value: 2,
-															message:
-																"Certificate name shoud be alteast 2 characters",
-														},
-														maxLength: 50,
-													})}
+													{...register(
+														"certificateName",
+														{
+															required:
+																"Certificate name is required",
+															minLength: {
+																value: 2,
+																message:
+																	"Certificate name shoud be alteast 2 characters",
+															},
+															maxLength: 50,
+														}
+													)}
 													aria-invalid={
-														errors.certificateName ? "true" : "false"
+														errors.certificateName
+															? "true"
+															: "false"
 													}
 													type="text"
 													name="certificateName"
@@ -189,8 +196,15 @@ export const EditCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.certificateName && (
-													<span className="form-error" role="alert">
-														{errors.certificateName.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors
+																.certificateName
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -203,7 +217,8 @@ export const EditCertificateModal: React.FC<{
 												</label>
 												<input
 													{...register("issuerOrg", {
-														required: "Organization name is required",
+														required:
+															"Organization name is required",
 														minLength: {
 															value: 2,
 															message:
@@ -211,7 +226,11 @@ export const EditCertificateModal: React.FC<{
 														},
 														maxLength: 50,
 													})}
-													aria-invalid={errors.issuerOrg ? "true" : "false"}
+													aria-invalid={
+														errors.issuerOrg
+															? "true"
+															: "false"
+													}
 													type="text"
 													name="issuerOrg"
 													id="issuerOrg"
@@ -219,8 +238,14 @@ export const EditCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.issuerOrg && (
-													<span className="form-error" role="alert">
-														{errors.issuerOrg.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.issuerOrg
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -251,14 +276,21 @@ export const EditCertificateModal: React.FC<{
 													Credential ID
 												</label>
 												<input
-													{...register("credentialId", {
-														pattern: {
-															value: /^[a-zA-Z0-9]+$/,
-															message:
-																"Please enter a valid credential ID (alphanumeric characters only)",
-														},
-													})}
-													aria-invalid={errors.credentialId ? "true" : "false"}
+													{...register(
+														"credentialId",
+														{
+															pattern: {
+																value: /^[a-zA-Z0-9]+$/,
+																message:
+																	"Please enter a valid credential ID (alphanumeric characters only)",
+															},
+														}
+													)}
+													aria-invalid={
+														errors.credentialId
+															? "true"
+															: "false"
+													}
 													name="credentialId"
 													type="text"
 													id="credentialId"
@@ -266,8 +298,14 @@ export const EditCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialId && (
-													<span className="form-error" role="alert">
-														{errors.credentialId.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.credentialId
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -279,14 +317,21 @@ export const EditCertificateModal: React.FC<{
 													Credential Link
 												</label>
 												<input
-													{...register("credentialUrl", {
-														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
-														},
-													})}
-													aria-invalid={errors.credentialUrl ? "true" : "false"}
+													{...register(
+														"credentialUrl",
+														{
+															pattern: {
+																value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+																message:
+																	"Please enter a valid URL",
+															},
+														}
+													)}
+													aria-invalid={
+														errors.credentialUrl
+															? "true"
+															: "false"
+													}
 													name="credentialUrl"
 													type="text"
 													id="credentialUrl"
@@ -294,8 +339,14 @@ export const EditCertificateModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.credentialUrl && (
-													<span className="form-error" role="alert">
-														{errors.credentialUrl.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.credentialUrl
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -313,7 +364,11 @@ export const EditCertificateModal: React.FC<{
 								onClick={handleDelete}
 								disabled={isLoading || isDeleting}
 							>
-								{isDeleting ? <Spinner color="red" /> : "Delete"}
+								{isDeleting ? (
+									<Spinner color="red" />
+								) : (
+									"Delete"
+								)}
 							</button>
 							<button
 								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 disabled:bg-slate-800/50 disabled:cursor-not-allowed disabled:shadow-none shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"

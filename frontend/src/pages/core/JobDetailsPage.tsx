@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import Spinner from "@/components/ui/Spinner";
 import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
 import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const JobDetailsPage: React.FC = () => {
 	const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
@@ -78,7 +79,7 @@ export const JobDetailsPage: React.FC = () => {
 				return "User Unauthorized!";
 			}
 
-			const url = `/api/jobs/apply/${jobPost.jobId}`;
+			const url = `${apiUrl}/api/jobs/apply/${jobPost.jobId}`;
 			await axios.post(
 				url,
 				{},
@@ -222,7 +223,8 @@ export const JobDetailsPage: React.FC = () => {
 								<GoLightBulb className="h-9 w-9 text-blue-600 bg-blue-100 p-2 rounded-full" />
 							</span>
 							<p className="text-sm text-gray-600 flex items-center flex-wrap">
-								To see the status of the application, head over to the
+								To see the status of the application, head over
+								to the
 								<span className="inline-flex items-center gap-2 px-1.5">
 									<IoPaperPlaneOutline className="h-5 w-5" />
 									Applications
@@ -265,7 +267,9 @@ export const JobDetailsPage: React.FC = () => {
 							Job Description
 						</h2>
 						<div
-							dangerouslySetInnerHTML={{ __html: jobPost.jobDescription }}
+							dangerouslySetInnerHTML={{
+								__html: jobPost.jobDescription,
+							}}
 							className="text-gray-700 prose max-w-none"
 							style={{ lineHeight: "1.6" }}
 						/>
@@ -306,7 +310,9 @@ const InfoItem: React.FC<{
 			<span className="text-gray-600">{icon}</span>
 		</div>
 		<div className="flex flex-col">
-			<span className="text-sm font-medium text-gray-500 mb-1">{title}</span>
+			<span className="text-sm font-medium text-gray-500 mb-1">
+				{title}
+			</span>
 			<span className="text-gray-800 font-medium">{text}</span>
 		</div>
 	</div>

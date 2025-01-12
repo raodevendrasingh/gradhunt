@@ -11,6 +11,7 @@ import { ref, deleteObject } from "firebase/storage";
 import { storage } from "@/firebase";
 import { extractFileName } from "@/utils/ExtractFileNames";
 import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
+import { apiUrl } from "./OnboardingModal";
 
 const deleteFromFirebase = async (filePath: string): Promise<void> => {
 	const fileRef = ref(storage, filePath);
@@ -34,7 +35,8 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { getToken } = useAuth();
-    const { refetch: refetchCompletionPercentage } = useFetchProfileCompletion();
+	const { refetch: refetchCompletionPercentage } =
+		useFetchProfileCompletion();
 
 	const handleDelete = async () => {
 		setIsLoading(true);
@@ -55,7 +57,7 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 				return;
 			}
 
-			const url = `/api/users/resume`;
+			const url = `${apiUrl}/api/users/resume`;
 			const response = await axios.delete(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -66,14 +68,14 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 			if (response.status === 200) {
 				toast.success("Resume Deleted");
 				onDelete();
-                refetchCompletionPercentage();
+				refetchCompletionPercentage();
 				setShowDeleteModal(false);
 			} else {
 				toast.error("Failed to delete resume. Try again!");
 			}
 		} catch (error: any) {
 			toast.error("Error occurred while deleting resume. Try again!");
-            console.log(error)
+			console.log(error);
 			if (error.response) {
 				console.log("Error Status: ", error.response.status);
 				console.log("Error Message: ", error.message);
@@ -118,9 +120,13 @@ export const ResumeDeleteModal: React.FC<ResumeDeleteModalProps> = ({
 											<div className="flex flex-col">
 												<div className="flex items-center gap-2 w-full">
 													<p className="text-sm">
-														Are you sure you want to delete this resume? This
-														action cannot be undone. Deleting your resume will
-														remove it permanently from our records.
+														Are you sure you want to
+														delete this resume? This
+														action cannot be undone.
+														Deleting your resume
+														will remove it
+														permanently from our
+														records.
 													</p>
 												</div>
 											</div>

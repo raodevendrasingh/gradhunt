@@ -3,6 +3,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { Skill } from "@/types/userTypes";
 import { useParams } from "react-router-dom";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 	const { getToken } = useAuth();
@@ -14,7 +15,7 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 			if (!token) {
 				throw new Error("User Unauthorized!");
 			}
-			const url = `/api/users/${username}/skills`;
+			const url = `${apiUrl}/api/users/${username}/skills`;
 			const response = await axios.get(url, {
 				headers: {
 					"Content-Type": "application/json",
@@ -24,7 +25,9 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 			return response.data;
 		} catch (error: AxiosError | any) {
 			if (error.response && error.response.status === 404) {
-				console.warn("404 Not Found: The requested resource does not exist.");
+				console.warn(
+					"404 Not Found: The requested resource does not exist."
+				);
 				return [];
 			} else {
 				throw error;
@@ -35,7 +38,7 @@ export const useFetchSkillData = (): UseQueryResult<Skill[], AxiosError> => {
 	return useQuery<Skill[], AxiosError>({
 		queryKey: ["skillData", username],
 		queryFn: fetchskillData,
-        staleTime: 30000,
-        refetchInterval: 30000,
+		staleTime: 30000,
+		refetchInterval: 30000,
 	});
 };

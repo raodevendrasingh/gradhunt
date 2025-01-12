@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export const NotificationToggle = ({
 	defaultValue = false,
@@ -42,7 +43,8 @@ export const NotificationToggle = ({
 				isNotificationEnabled: newValue,
 			};
 			const url =
-				"/api/users/notification/?notificationType=" + notificationType;
+				`${apiUrl}/api/users/notification/?notificationType=` +
+				notificationType;
 			await axios.patch(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -55,7 +57,9 @@ export const NotificationToggle = ({
 				`${notificationType.charAt(0).toUpperCase() + notificationType.slice(1)} Notification settings updated successfully`
 			);
 		} catch (error) {
-			toast.error(`Failed to update ${notificationType} notification settings`);
+			toast.error(
+				`Failed to update ${notificationType} notification settings`
+			);
 		} finally {
 			setIsToggling(false);
 		}

@@ -14,12 +14,7 @@ import { LocationSelect } from "@/helpers/LocationSelect2";
 import { LogoCropper } from "@/components/common/LogoCropper";
 import { MdAlternateEmail } from "react-icons/md";
 import { SelectInput } from "@/components/ui/SelectInput";
-import {
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TbCameraPlus, TbSeeding, TbX } from "react-icons/tb";
 import { TextInput } from "@/components/ui/TextInput";
@@ -40,11 +35,12 @@ import {
 	openFileDialog,
 } from "@/utils/FileUploadMethods";
 import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 export default function Settings() {
 	const [initialLocation, setInitialLocation] = useState<string>("");
-	
-    const [editorContent, setEditorContent] = useState("");
+
+	const [editorContent, setEditorContent] = useState("");
 	const [editorError, setEditorError] = useState("");
 	const [editorInstance, setEditorInstance] = useState(null);
 
@@ -79,9 +75,15 @@ export default function Settings() {
 	const openBannerFileDialog = () => openFileDialog(bannerInputRef);
 
 	const handleLogoCrop = handleCrop(setCroppedLogo, setIsLogoCropperOpen);
-	const handleBannerCrop = handleCrop(setCroppedBanner, setIsBannerCropperOpen);
+	const handleBannerCrop = handleCrop(
+		setCroppedBanner,
+		setIsBannerCropperOpen
+	);
 
-	const handleLogoUpload = handleUpload(setUploadedLogo, setIsLogoCropperOpen);
+	const handleLogoUpload = handleUpload(
+		setUploadedLogo,
+		setIsLogoCropperOpen
+	);
 	const handleBannerUpload = handleUpload(
 		setUploadedBanner,
 		setIsBannerCropperOpen
@@ -176,7 +178,7 @@ export default function Settings() {
 				description: content,
 			};
 
-			const url = "/api/company";
+			const url = `${apiUrl}/api/company`;
 			await axios.patch(url, formData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -196,7 +198,9 @@ export default function Settings() {
 		<div className="flex h-full">
 			{/* main */}
 			<div className="w-full lg2:w-[70%] overflow-y-auto scrollbar-hide p-4">
-				<h2 className="text-lg font-semibold pb-5">Update Company Profile </h2>
+				<h2 className="text-lg font-semibold pb-5">
+					Update Company Profile{" "}
+				</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 					<div
 						className={clsx(
@@ -211,7 +215,9 @@ export default function Settings() {
 						<div className="relative aspect-[4/1] w-full rounded-xl overflow-hidden">
 							<input
 								{...register("companyBanner")}
-								aria-invalid={errors.companyBanner ? "true" : "false"}
+								aria-invalid={
+									errors.companyBanner ? "true" : "false"
+								}
 								type="file"
 								name="companyBanner"
 								className="hidden"
@@ -238,7 +244,9 @@ export default function Settings() {
 									{croppedBanner && (
 										<button
 											type="button"
-											onClick={() => setCroppedBanner(null)}
+											onClick={() =>
+												setCroppedBanner(null)
+											}
 											className="bg-gray-700 bg-opacity-70 hover:bg-opacity-55 p-3 rounded-full transition-colors duration-200"
 										>
 											<TbX className="size-5 sm:size-7 text-gray-50" />
@@ -254,7 +262,11 @@ export default function Settings() {
 								<div className="absolute inset-0 flex items-center justify-center">
 									<input
 										{...register("companyLogo")}
-										aria-invalid={errors.companyLogo ? "true" : "false"}
+										aria-invalid={
+											errors.companyLogo
+												? "true"
+												: "false"
+										}
 										type="file"
 										name="companyLogo"
 										className="hidden"
@@ -291,9 +303,13 @@ export default function Settings() {
 							label="Company Name"
 							name="companyName"
 							register={register}
-							icon={<HiOutlineBuildingOffice2 className="h-5 w-5" />}
+							icon={
+								<HiOutlineBuildingOffice2 className="h-5 w-5" />
+							}
 							error={errors.companyName?.message}
-							validationRules={{ required: "Company name is required" }}
+							validationRules={{
+								required: "Company name is required",
+							}}
 						/>
 						<TextInput
 							label="Tagline"
@@ -311,7 +327,9 @@ export default function Settings() {
 							register={register}
 							icon={<MdAlternateEmail className="h-5 w-5" />}
 							error={errors.companyEmail?.message}
-							validationRules={{ required: "Company email is required" }}
+							validationRules={{
+								required: "Company email is required",
+							}}
 						/>
 						<TextInput
 							label="Company Contact"
@@ -327,7 +345,9 @@ export default function Settings() {
 							register={register}
 							icon={<FiGlobe className="h-5 w-5" />}
 							error={errors.companyWebsite?.message}
-							validationRules={{ required: "Website is required" }}
+							validationRules={{
+								required: "Website is required",
+							}}
 						/>
 					</div>
 
@@ -349,9 +369,18 @@ export default function Settings() {
 							error={errors.establishedYear?.message}
 							validationRules={{
 								required: "Established year is required",
-								maxLength: { value: 4, message: "Invalid year" },
-								minLength: { value: 4, message: "Invalid year" },
-								pattern: { value: /^\d+$/, message: "Only digits are allowed" },
+								maxLength: {
+									value: 4,
+									message: "Invalid year",
+								},
+								minLength: {
+									value: 4,
+									message: "Invalid year",
+								},
+								pattern: {
+									value: /^\d+$/,
+									message: "Only digits are allowed",
+								},
 							}}
 						/>
 					</div>
@@ -437,7 +466,9 @@ export default function Settings() {
 							initialContent={editorContent}
 						/>
 						{editorError && (
-							<p className="mt-1 text-sm text-red-600">{editorError}</p>
+							<p className="mt-1 text-sm text-red-600">
+								{editorError}
+							</p>
 						)}
 					</div>
 					<div className="flex justify-end pt-5">

@@ -19,6 +19,7 @@ import { daysRemaining } from "@/utils/DaysRemaining";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 
 type ColumnType =
 	| "applied"
@@ -58,7 +59,9 @@ export default function JobApplicantsPage() {
 								)}
 							</div>
 							<div className="flex justify-start sm:items-center w-full">
-								<span className="text-sm text-neutral-500 mr-2">JobId:</span>
+								<span className="text-sm text-neutral-500 mr-2">
+									JobId:
+								</span>
 								{applicationData ? (
 									<span className="text-sm font-mono text-neutral-600">
 										{applicationData.jobId}
@@ -77,7 +80,9 @@ export default function JobApplicantsPage() {
 											: "bg-red-50 text-red-700 border border-red-300"
 									}`}
 								>
-									{applicationData.isActive ? "Active" : "Inactive"}
+									{applicationData.isActive
+										? "Active"
+										: "Inactive"}
 								</span>
 							) : (
 								<div className="h-6 w-20 skeleton rounded-full" />
@@ -101,7 +106,9 @@ export default function JobApplicantsPage() {
 									<LuDot className=" hidden sm:flex size-8 text-slate-600" />
 
 									<span className="text-sm text-neutral-600">
-										{formatLocation(applicationData.jobLocation)}
+										{formatLocation(
+											applicationData.jobLocation
+										)}
 									</span>
 								</div>
 							) : (
@@ -114,19 +121,27 @@ export default function JobApplicantsPage() {
 						</div>
 						<div className="flex h-full flex-col sm:flex-row sm:gap-0 sm:items-center">
 							<div className="flex items-center text-sm text-neutral-600">
-								<span className="text-neutral-500 mr-1">Posted</span>
+								<span className="text-neutral-500 mr-1">
+									Posted
+								</span>
 								{applicationData ? (
-									<span>{timesAgo(applicationData.postedDate)}</span>
+									<span>
+										{timesAgo(applicationData.postedDate)}
+									</span>
 								) : (
 									<div className="h-4 w-20 skeleton" />
 								)}
 							</div>
 							<LuDot className=" hidden sm:flex size-8 text-slate-600" />
 							<div className="flex items-center text-sm text-neutral-600">
-								<span className="text-neutral-500 mr-1">Deadline</span>
+								<span className="text-neutral-500 mr-1">
+									Deadline
+								</span>
 								{applicationData ? (
 									<span>
-										{daysRemaining(applicationData.applicationDeadline)}
+										{daysRemaining(
+											applicationData.applicationDeadline
+										)}
 									</span>
 								) : (
 									<div className="h-4 w-20 skeleton" />
@@ -135,7 +150,10 @@ export default function JobApplicantsPage() {
 						</div>
 					</div>
 				</div>
-				<Board applicationData={applicationData} isLoading={isLoading} />
+				<Board
+					applicationData={applicationData}
+					isLoading={isLoading}
+				/>
 			</div>
 		</div>
 	);
@@ -211,7 +229,7 @@ const handleApplicationStatusChange = async (
 		if (!token) {
 			return "User Unauthorized!";
 		}
-		const url = `/api/application/${applicantId}`;
+		const url = `${apiUrl}/api/application/${applicantId}`;
 		await axios.patch(
 			url,
 			{ newStatus },
@@ -371,7 +389,10 @@ const Column = ({
 					{filteredCards.map((card) => (
 						<Fragment key={card.id}>
 							<DropIndicator beforeId={card.id} column={column} />
-							<CandidateCard {...card} handleDragStart={handleDragStart} />
+							<CandidateCard
+								{...card}
+								handleDragStart={handleDragStart}
+							/>
 						</Fragment>
 					))}
 					<DropIndicator beforeId={null} column={column} />
@@ -382,7 +403,10 @@ const Column = ({
 };
 
 type CardProps = CardType & {
-	handleDragStart: (e: ReactDragEvent<HTMLDivElement>, card: CardType) => void;
+	handleDragStart: (
+		e: ReactDragEvent<HTMLDivElement>,
+		card: CardType
+	) => void;
 };
 
 const CandidateCard = ({
@@ -392,7 +416,9 @@ const CandidateCard = ({
 	handleDragStart,
 }: CardProps) => {
 	const [isDragging, setIsDragging] = useState(false);
-	const [touchTimeout, setTouchTimeout] = useState<NodeJS.Timeout | null>(null);
+	const [touchTimeout, setTouchTimeout] = useState<NodeJS.Timeout | null>(
+		null
+	);
 	const [touchStartPos, setTouchStartPos] = useState({ x: 0, y: 0 });
 
 	const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
@@ -438,12 +464,17 @@ const CandidateCard = ({
 
 			// Get the element under the touch point
 			const touch = e.changedTouches[0];
-			const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+			const elemBelow = document.elementFromPoint(
+				touch.clientX,
+				touch.clientY
+			);
 
 			// Find the nearest column
 			const column = elemBelow?.closest("[data-column]");
 			if (column) {
-				const columnType = column.getAttribute("data-column") as ColumnType;
+				const columnType = column.getAttribute(
+					"data-column"
+				) as ColumnType;
 				// Create a synthetic drag event
 				const syntheticEvent = new DragEvent("drop", {
 					bubbles: true,
@@ -496,12 +527,16 @@ const CandidateCard = ({
 
 				<div className="flex items-center gap-2 text-sm text-gray-600">
 					<LuMail className="shrink-0" />
-					<span className="truncate">{applicantData.candidate.email}</span>
+					<span className="truncate">
+						{applicantData.candidate.email}
+					</span>
 				</div>
 
 				<div className="flex items-center gap-2 text-sm text-gray-600">
 					<LuMapPin className="shrink-0" />
-					<span className="truncate">{applicantData.candidate.location}</span>
+					<span className="truncate">
+						{applicantData.candidate.location}
+					</span>
 				</div>
 
 				<div className="flex gap-2 mt-2 w-full">
@@ -565,7 +600,7 @@ const RejectContainer = ({
 		const token = await getToken();
 		setCards((pv) => pv.filter((c) => c.id !== cardId));
 		handleApplicationStatusChange(parseInt(cardId), "rejected", token);
-        toast.success("Candidate Rejected");
+		toast.success("Candidate Rejected");
 		setActive(false);
 	};
 
@@ -586,7 +621,11 @@ const RejectContainer = ({
 						: "border-rose-300 bg-rose-100 text-neutral-500"
 				}`}
 			>
-				{active ? <FaFire className="animate-bounce" /> : <FaUserLargeSlash />}
+				{active ? (
+					<FaFire className="animate-bounce" />
+				) : (
+					<FaUserLargeSlash />
+				)}
 			</div>
 		</div>
 	);

@@ -19,6 +19,7 @@ import { ProjectForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { useFetchProjectDataById } from "@/hooks/useFetchProjectsDataById";
 import Spinner from "@/components/ui/Spinner";
+import { apiUrl } from "./OnboardingModal";
 
 export const EditProjectModal: React.FC<{
 	setShowEditProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,7 +70,9 @@ export const EditProjectModal: React.FC<{
 		}
 	}, [projectIdData, reset]);
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
 		setDescription(event.target.value);
 	};
 
@@ -81,7 +84,7 @@ export const EditProjectModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/projects/${projectId}`;
+			const url = `${apiUrl}/api/users/projects/${projectId}`;
 			await axios.delete(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -117,7 +120,7 @@ export const EditProjectModal: React.FC<{
 			}
 			console.log("projectData sent to backend", projectData);
 
-			const url = `/api/users/projects/${projectId}`;
+			const url = `${apiUrl}/api/users/projects/${projectId}`;
 			const response = await axios.patch(url, projectData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -192,16 +195,24 @@ export const EditProjectModal: React.FC<{
 													Project Title
 												</label>
 												<input
-													{...register("projectName", {
-														required: "Project title is required",
-														minLength: {
-															value: 2,
-															message:
-																"Project title shoud be alteast 2 characters",
-														},
-														maxLength: 50,
-													})}
-													aria-invalid={errors.projectName ? "true" : "false"}
+													{...register(
+														"projectName",
+														{
+															required:
+																"Project title is required",
+															minLength: {
+																value: 2,
+																message:
+																	"Project title shoud be alteast 2 characters",
+															},
+															maxLength: 50,
+														}
+													)}
+													aria-invalid={
+														errors.projectName
+															? "true"
+															: "false"
+													}
 													type="text"
 													name="projectName"
 													id="projectName"
@@ -209,8 +220,14 @@ export const EditProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.projectName && (
-													<span className="form-error" role="alert">
-														{errors.projectName.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.projectName
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -224,18 +241,23 @@ export const EditProjectModal: React.FC<{
 													Description
 												</label>
 												<textarea
-													{...register("description", {
-														required: "Project Description is Required!",
-														minLength: {
-															value: 50,
-															message: "Minimum 50 characters are required",
-														},
-														maxLength: {
-															value: 1500,
-															message:
-																"Description should not exceed 1500 characters",
-														},
-													})}
+													{...register(
+														"description",
+														{
+															required:
+																"Project Description is Required!",
+															minLength: {
+																value: 50,
+																message:
+																	"Minimum 50 characters are required",
+															},
+															maxLength: {
+																value: 1500,
+																message:
+																	"Description should not exceed 1500 characters",
+															},
+														}
+													)}
 													name="description"
 													id="description"
 													value={description}
@@ -247,12 +269,22 @@ export const EditProjectModal: React.FC<{
 												></textarea>
 												<div className="flex relative">
 													{errors.description && (
-														<span className="form-error" role="alert">
-															{errors.description.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors
+																	.description
+																	.message as string
+															}
 														</span>
 													)}
 													<span className="absolute right-0 text-xs text-gray-600">
-														({maxChars - description.length}/{maxChars})
+														(
+														{maxChars -
+															description.length}
+														/{maxChars})
 													</span>
 												</div>
 											</div>
@@ -272,7 +304,8 @@ export const EditProjectModal: React.FC<{
 												control={control}
 												name="skills"
 												rules={{
-													required: "At least one skill must be selected",
+													required:
+														"At least one skill must be selected",
 												}}
 												render={({ field }) => (
 													<Select
@@ -280,20 +313,33 @@ export const EditProjectModal: React.FC<{
 														isMulti
 														name="skills"
 														options={skills}
-														onChange={(selected) => {
-															if (selected.length <= 10) {
-																field.onChange(selected);
+														onChange={(
+															selected
+														) => {
+															if (
+																selected.length <=
+																10
+															) {
+																field.onChange(
+																	selected
+																);
 															}
 														}}
-														value={field.value as any}
+														value={
+															field.value as any
+														}
 														placeholder="Skills"
-														styles={selectFieldStyle}
+														styles={
+															selectFieldStyle
+														}
 														menuPlacement="auto"
 													/>
 												)}
 											/>
 											{errors.skills && (
-												<p className="form-error">{errors.skills.message}</p>
+												<p className="form-error">
+													{errors.skills.message}
+												</p>
 											)}
 										</div>
 
@@ -321,12 +367,16 @@ export const EditProjectModal: React.FC<{
 												<input
 													{...register("liveLink", {
 														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
+															value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+															message:
+																"Please enter a valid URL",
 														},
 													})}
-													aria-invalid={errors.liveLink ? "true" : "false"}
+													aria-invalid={
+														errors.liveLink
+															? "true"
+															: "false"
+													}
 													name="liveLink"
 													type="text"
 													id="liveLink"
@@ -334,8 +384,14 @@ export const EditProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.liveLink && (
-													<span className="form-error" role="alert">
-														{errors.liveLink.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.liveLink
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -347,15 +403,20 @@ export const EditProjectModal: React.FC<{
 													Source Code
 												</label>
 												<input
-													{...register("sourceCodeLink", {
-														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
-														},
-													})}
+													{...register(
+														"sourceCodeLink",
+														{
+															pattern: {
+																value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+																message:
+																	"Please enter a valid URL",
+															},
+														}
+													)}
 													aria-invalid={
-														errors.sourceCodeLink ? "true" : "false"
+														errors.sourceCodeLink
+															? "true"
+															: "false"
 													}
 													name="sourceCodeLink"
 													type="text"
@@ -364,8 +425,15 @@ export const EditProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.sourceCodeLink && (
-													<span className="form-error" role="alert">
-														{errors.sourceCodeLink.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors
+																.sourceCodeLink
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -383,7 +451,11 @@ export const EditProjectModal: React.FC<{
 								onClick={handleDelete}
 								disabled={isLoading || isDeleting}
 							>
-								{isDeleting ? <Spinner color="red" /> : "Delete"}
+								{isDeleting ? (
+									<Spinner color="red" />
+								) : (
+									"Delete"
+								)}
 							</button>
 							<button
 								className="flex items-center justify-center bg-slate-800 w-28 text-white active:bg-zinc-900 font-semibold border rounded-lg text-sm px-4 py-2.5 disabled:bg-slate-800/50 disabled:cursor-not-allowed disabled:shadow-none shadow hover:shadow-xl outline-none focus:outline-none cursor-pointer ease-linear transition-colors duration-150"

@@ -17,6 +17,7 @@ import Spinner from "@/components/ui/Spinner";
 import { toast } from "sonner";
 import axios from "axios";
 import { Button } from "@/components/ui/Button";
+import { apiUrl } from "./OnboardingModal";
 
 interface VerifyFormField {
 	orgEmail: string;
@@ -118,7 +119,7 @@ export const VerifyEmploymentModal = ({
 				email: orgEmail,
 				website: orgWebsite,
 			};
-			const url = `/api/users/send-verification-email`;
+			const url = `${apiUrl}/api/users/send-verification-email`;
 			await axios.post(url, formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -155,7 +156,7 @@ export const VerifyEmploymentModal = ({
 				verificationCode: verificationCode,
 			};
 			console.log(formData);
-			const url = `/api/users/verify-email`;
+			const url = `${apiUrl}/api/users/verify-email`;
 			const response = await axios.post(url, formData, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -217,14 +218,22 @@ export const VerifyEmploymentModal = ({
 							<form>
 								<motion.div
 									key={currentScreen}
-									initial={{ x: slideDirection * 50, opacity: 0 }}
+									initial={{
+										x: slideDirection * 50,
+										opacity: 0,
+									}}
 									animate={{ x: 0, opacity: 1 }}
-									exit={{ x: -slideDirection * 50, opacity: 0 }}
+									exit={{
+										x: -slideDirection * 50,
+										opacity: 0,
+									}}
 									transition={{ duration: 0.3 }}
 									className="h-[300px]"
 								>
 									<div className="p-3">
-										<div className="flex flex-col gap-3">{renderScreen()}</div>
+										<div className="flex flex-col gap-3">
+											{renderScreen()}
+										</div>
 									</div>
 								</motion.div>
 								<div className="flex items-center justify-center mt-4">
@@ -233,7 +242,9 @@ export const VerifyEmploymentModal = ({
 											type="button"
 											onClick={handleSendEmail}
 											disabled={
-												!isValid || !isFirstScreenValid || isCheckingEmail
+												!isValid ||
+												!isFirstScreenValid ||
+												isCheckingEmail
 											}
 											className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 										>
@@ -246,7 +257,8 @@ export const VerifyEmploymentModal = ({
 												</>
 											)}
 										</button>
-									) : currentScreen < screensDesc.length - 1 ? (
+									) : currentScreen <
+									  screensDesc.length - 1 ? (
 										<div className="flex items-center justify-center w-full gap-2">
 											<Button
 												variant="secondary"
@@ -259,7 +271,9 @@ export const VerifyEmploymentModal = ({
 											<Button
 												variant="primary"
 												onClick={handleVerifyEmail}
-												disabled={!isValid || isVerifying}
+												disabled={
+													!isValid || isVerifying
+												}
 												className="w-1/2 rounded-lg py-2.5 gap-2"
 											>
 												{isVerifying ? (
@@ -276,7 +290,9 @@ export const VerifyEmploymentModal = ({
 										<button
 											type="submit"
 											className="flex w-full items-center justify-center text-sm px-4 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
-											onClick={() => setShowVerifyModal(false)}
+											onClick={() =>
+												setShowVerifyModal(false)
+											}
 										>
 											Close
 										</button>
@@ -320,7 +336,9 @@ export const OrgEmailScreen: React.FC<{
 						{isCheckingEmail && (
 							<span className="flex items-center gap-2">
 								<Spinner color="black" />
-								<span className="text-xs text-gray-500">Searching...</span>
+								<span className="text-xs text-gray-500">
+									Searching...
+								</span>
 							</span>
 						)}
 						{getDisplayMessage()}
@@ -334,8 +352,7 @@ export const OrgEmailScreen: React.FC<{
 					validationRules={{
 						required: "Website is required",
 						pattern: {
-							value:
-								/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w.-](?:\/[\w.-]*)?$/,
+							value: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w.-](?:\/[\w.-]*)?$/,
 							message: "Invalid URL format",
 						},
 					}}
@@ -372,7 +389,11 @@ export const VerifyEmailScreen: React.FC<{
 		e: React.KeyboardEvent<HTMLInputElement>,
 		index: number
 	) => {
-		if (e.key === "Backspace" && index > 0 && e.currentTarget.value === "") {
+		if (
+			e.key === "Backspace" &&
+			index > 0 &&
+			e.currentTarget.value === ""
+		) {
 			document.getElementById(`otp-input-${index - 1}`)?.focus();
 		}
 	};
@@ -397,9 +418,9 @@ export const VerifyEmailScreen: React.FC<{
 							onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
 								handleChange(e, index)
 							}
-							onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-								handleKeyDown(e, index)
-							}
+							onKeyDown={(
+								e: React.KeyboardEvent<HTMLInputElement>
+							) => handleKeyDown(e, index)}
 							{...register(`verificationCode[${index}]`, {
 								required: "Verification code is required",
 								pattern: {

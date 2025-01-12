@@ -18,10 +18,11 @@ import { selectFieldStyle } from "@/utils/styles";
 import { ProjectForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
+import { apiUrl } from "./OnboardingModal";
 
 export const AddProjectModal: React.FC<{
 	setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
-    onSave: () => void;
+	onSave: () => void;
 }> = ({ setShowProjectModal, onSave }) => {
 	const [isCurrWorking, setIsCurrWorking] = useState(false);
 	const [description, setDescription] = useState("");
@@ -36,7 +37,9 @@ export const AddProjectModal: React.FC<{
 		formState: { errors },
 	} = useForm<ProjectForm>();
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
 		setDescription(event.target.value);
 	};
 
@@ -56,7 +59,7 @@ export const AddProjectModal: React.FC<{
 				throw new Error("Token is not available");
 			}
 
-			const url = `/api/users/projects`;
+			const url = `${apiUrl}/api/users/projects`;
 			const response = await axios.post(url, projectData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -66,7 +69,7 @@ export const AddProjectModal: React.FC<{
 			// console.log(response.data);
 			toast.success("Project Added");
 			setShowProjectModal(false);
-            onSave();
+			onSave();
 		} catch (error: any) {
 			toast.error("Error occured while adding project. Try again!");
 			if (error.response) {
@@ -131,16 +134,24 @@ export const AddProjectModal: React.FC<{
 													Project Title
 												</label>
 												<input
-													{...register("projectName", {
-														required: "Project title is required",
-														minLength: {
-															value: 2,
-															message:
-																"Project title shoud be alteast 2 characters",
-														},
-														maxLength: 50,
-													})}
-													aria-invalid={errors.projectName ? "true" : "false"}
+													{...register(
+														"projectName",
+														{
+															required:
+																"Project title is required",
+															minLength: {
+																value: 2,
+																message:
+																	"Project title shoud be alteast 2 characters",
+															},
+															maxLength: 50,
+														}
+													)}
+													aria-invalid={
+														errors.projectName
+															? "true"
+															: "false"
+													}
 													type="text"
 													name="projectName"
 													id="projectName"
@@ -148,8 +159,14 @@ export const AddProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.projectName && (
-													<span className="form-error" role="alert">
-														{errors.projectName.message as string}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.projectName
+																.message as string
+														}
 													</span>
 												)}
 											</div>
@@ -163,18 +180,23 @@ export const AddProjectModal: React.FC<{
 													Description
 												</label>
 												<textarea
-													{...register("description", {
-														required: "Project Description is Required!",
-														minLength: {
-															value: 50,
-															message: "Minimum 50 characters are required",
-														},
-														maxLength: {
-															value: 1500,
-															message:
-																"Description should not exceed 1500 characters",
-														},
-													})}
+													{...register(
+														"description",
+														{
+															required:
+																"Project Description is Required!",
+															minLength: {
+																value: 50,
+																message:
+																	"Minimum 50 characters are required",
+															},
+															maxLength: {
+																value: 1500,
+																message:
+																	"Description should not exceed 1500 characters",
+															},
+														}
+													)}
 													name="description"
 													id="description"
 													value={description}
@@ -186,12 +208,22 @@ export const AddProjectModal: React.FC<{
 												></textarea>
 												<div className="flex relative">
 													{errors.description && (
-														<span className="form-error" role="alert">
-															{errors.description.message as string}
+														<span
+															className="form-error"
+															role="alert"
+														>
+															{
+																errors
+																	.description
+																	.message as string
+															}
 														</span>
 													)}
 													<span className="absolute right-0 text-xs text-gray-600">
-														({maxChars - description.length}/{maxChars})
+														(
+														{maxChars -
+															description.length}
+														/{maxChars})
 													</span>
 												</div>
 											</div>
@@ -211,7 +243,8 @@ export const AddProjectModal: React.FC<{
 												control={control}
 												name="skills"
 												rules={{
-													required: "At least one skill must be selected",
+													required:
+														"At least one skill must be selected",
 												}}
 												render={({ field }) => (
 													<Select
@@ -219,20 +252,33 @@ export const AddProjectModal: React.FC<{
 														isMulti
 														name="skills"
 														options={skills}
-														onChange={(selected) => {
-															if (selected.length <= 10) {
-																field.onChange(selected);
+														onChange={(
+															selected
+														) => {
+															if (
+																selected.length <=
+																10
+															) {
+																field.onChange(
+																	selected
+																);
 															}
 														}}
-														value={field.value as any}
+														value={
+															field.value as any
+														}
 														placeholder="Skills"
-														styles={selectFieldStyle}
+														styles={
+															selectFieldStyle
+														}
 														menuPlacement="auto"
 													/>
 												)}
 											/>
 											{errors.skills && (
-												<p className="form-error">{errors.skills.message}</p>
+												<p className="form-error">
+													{errors.skills.message}
+												</p>
 											)}
 										</div>
 
@@ -260,12 +306,16 @@ export const AddProjectModal: React.FC<{
 												<input
 													{...register("liveLink", {
 														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
+															value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+															message:
+																"Please enter a valid URL",
 														},
 													})}
-													aria-invalid={errors.liveLink ? "true" : "false"}
+													aria-invalid={
+														errors.liveLink
+															? "true"
+															: "false"
+													}
 													name="liveLink"
 													type="text"
 													id="liveLink"
@@ -273,8 +323,14 @@ export const AddProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.liveLink && (
-													<span className="form-error" role="alert">
-														{errors.liveLink.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors.liveLink
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -286,15 +342,20 @@ export const AddProjectModal: React.FC<{
 													Source Code
 												</label>
 												<input
-													{...register("sourceCodeLink", {
-														pattern: {
-															value:
-																/^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
-															message: "Please enter a valid URL",
-														},
-													})}
+													{...register(
+														"sourceCodeLink",
+														{
+															pattern: {
+																value: /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/,
+																message:
+																	"Please enter a valid URL",
+															},
+														}
+													)}
 													aria-invalid={
-														errors.sourceCodeLink ? "true" : "false"
+														errors.sourceCodeLink
+															? "true"
+															: "false"
 													}
 													name="sourceCodeLink"
 													type="text"
@@ -303,8 +364,15 @@ export const AddProjectModal: React.FC<{
 													className="border py-2 rounded-md border-gray-200 w-full"
 												/>
 												{errors.sourceCodeLink && (
-													<span className="form-error" role="alert">
-														{errors.sourceCodeLink.message}
+													<span
+														className="form-error"
+														role="alert"
+													>
+														{
+															errors
+																.sourceCodeLink
+																.message
+														}
 													</span>
 												)}
 											</div>
@@ -314,7 +382,10 @@ export const AddProjectModal: React.FC<{
 							</div>
 						</div>
 						{/*footer*/}
-						<FormFooter isLoading={isLoading} formId="projectDataForm" />
+						<FormFooter
+							isLoading={isLoading}
+							formId="projectDataForm"
+						/>
 					</div>
 				</motion.div>
 			</motion.div>
