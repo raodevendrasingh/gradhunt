@@ -1,3 +1,4 @@
+import { apiUrl } from "@/modal-forms/OnboardingModal";
 import axios from "axios";
 import { useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
@@ -17,7 +18,7 @@ export const useUsernameCheck = () => {
 			setIsCheckingUsername(true);
 			setUsernameMsg("");
 			try {
-				const url = `/api/users/check-username/?username=${username}`;
+				const url = `${apiUrl}/api/users/check-username/?username=${username}`;
 				const response = await axios.get(url);
 				if (response.data.exists) {
 					setUsernameMsg(

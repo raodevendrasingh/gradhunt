@@ -35,6 +35,7 @@ const screensDesc = [
 	"Tell us a bit about yourself",
 ];
 
+export const apiUrl = import.meta.env.VITE_API_URL!;
 export const apiSecret = import.meta.env.VITE_CLOUDINARY_API_SECRET;
 export const apiKey = import.meta.env.VITE_CLOUDINARY_API_KEY;
 
@@ -52,7 +53,9 @@ export const UserOnboardingModal = ({
 	const [currentScreen, setCurrentScreen] = useState<number>(0);
 	const [slideDirection, setSlideDirection] = useState<number>(0);
 	const [publicId, setPublicId] = useState("");
-	const [loadingMsg, setLoadingMsg] = useState<string>("Creating your Profile");
+	const [loadingMsg, setLoadingMsg] = useState<string>(
+		"Creating your Profile"
+	);
 
 	const [, , removePotentialUser] = useLocalStorage("potentialUser", "null");
 	const croppedImage = useReadLocalStorage<string | ArrayBuffer | null>(
@@ -150,7 +153,9 @@ export const UserOnboardingModal = ({
 	const getDisplayMessage = () => {
 		if (!isDirty || username.length < 4) {
 			return (
-				<p className="text-light font-normal text-sm">Grab your username!</p>
+				<p className="text-light font-normal text-sm">
+					Grab your username!
+				</p>
 			);
 		}
 		if (errors.username) {
@@ -163,8 +168,8 @@ export const UserOnboardingModal = ({
 		if (username && !isValidUsername(username)) {
 			return (
 				<p className="text-red-500 text-sm">
-					Username can only contain lowercase letters and digits (max 16
-					characters)
+					Username can only contain lowercase letters and digits (max
+					16 characters)
 				</p>
 			);
 		}
@@ -237,33 +242,35 @@ export const UserOnboardingModal = ({
 					lastname: user.lastName,
 					profilePicture: user.imageUrl,
 					email: email,
-                    isOnboarded: true,
+					isOnboarded: true,
 					bio: data.bio,
 				};
 
-				const response = await axios.post("/api/users/onboarding/", userProfileData, {
+				const url = `${apiUrl}/api/users/onboarding/`;
+
+				const response = await axios.post(url, userProfileData, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",
 					},
 				});
-                console.log(response.data);
+				console.log(response.data);
 			}
 			toast.success("Profile Successfully Created");
 			setIsOnboardingModalOpen(false);
 			clearLocalStorage();
 		} catch (error: any) {
-            console.error("Failed to update user details:", error);
-            if (error.response) {
-                console.error("Response data:", error.response.data);
-                console.error("Response status:", error.response.status);
-                console.error("Response headers:", error.response.headers);
-            } else if (error.request) {
-                console.error("No response received:", error.request);
-            } else {
-                console.error("Error message:", error.message);
-            }
-        } finally {
+			console.error("Failed to update user details:", error);
+			if (error.response) {
+				console.error("Response data:", error.response.data);
+				console.error("Response status:", error.response.status);
+				console.error("Response headers:", error.response.headers);
+			} else if (error.request) {
+				console.error("No response received:", error.request);
+			} else {
+				console.error("Error message:", error.message);
+			}
+		} finally {
 			setIsSubmitting(false);
 		}
 	};
@@ -305,18 +312,30 @@ export const UserOnboardingModal = ({
 									<h3 className="text-2xl font-bold text-center mb-2">
 										Welcome to GradHunt!
 									</h3>
-									<p className="text-center ">{screensDesc[currentScreen]}</p>
+									<p className="text-center ">
+										{screensDesc[currentScreen]}
+									</p>
 								</div>
-								<form id="basicDetailForm" onSubmit={handleSubmit(onSubmit)}>
+								<form
+									id="basicDetailForm"
+									onSubmit={handleSubmit(onSubmit)}
+								>
 									<motion.div
 										key={currentScreen}
-										initial={{ x: slideDirection * 50, opacity: 0 }}
+										initial={{
+											x: slideDirection * 50,
+											opacity: 0,
+										}}
 										animate={{ x: 0, opacity: 1 }}
-										exit={{ x: -slideDirection * 50, opacity: 0 }}
+										exit={{
+											x: -slideDirection * 50,
+											opacity: 0,
+										}}
 										transition={{ duration: 0.3 }}
 										className={clsx({
 											"h-[230px]": currentScreen === 0,
-											"h-[400px] sm:h-[360px]": currentScreen === 1,
+											"h-[400px] sm:h-[360px]":
+												currentScreen === 1,
 										})}
 									>
 										<div className="p-3">
@@ -326,7 +345,8 @@ export const UserOnboardingModal = ({
 										</div>
 									</motion.div>
 									<div className="flex items-center justify-center mt-4">
-										{currentScreen < screensDesc.length - 1 ? (
+										{currentScreen <
+										screensDesc.length - 1 ? (
 											<button
 												type="button"
 												onClick={handleNext}
@@ -338,17 +358,22 @@ export const UserOnboardingModal = ({
 												}
 												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 											>
-												Continue <HiMiniChevronRight className="size-5" />
+												Continue{" "}
+												<HiMiniChevronRight className="size-5" />
 											</button>
 										) : (
 											<button
 												type="submit"
-												disabled={!isValid || isSubmitting}
+												disabled={
+													!isValid || isSubmitting
+												}
 												className="flex w-full items-center justify-center gap-2 text-sm px-4 py-3 bg-slate-800 text-white rounded-lg hover:bg-slate-900 disabled:bg-slate-900/70 disabled:cursor-not-allowed transition-colors ml-auto"
 											>
 												{isSubmitting ? (
 													<>
-														<span>{loadingMsg}</span>
+														<span>
+															{loadingMsg}
+														</span>
 														<Spinner />
 													</>
 												) : (
