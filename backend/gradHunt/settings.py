@@ -102,6 +102,13 @@ ROOT_URLCONF = 'gradHunt.urls'
 
 CORS_ALLOWED_ORIGINS = [url.strip() for url in getenv('CORS_ALLOWED_ORIGINS', '').split(',')]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://gradhunt.tech',
+    'https://admin.gradhunt.tech',
+    'http://localhost:5173',
+    'http://admin.localhost:5173',
+]
+
 CORS_ALLOW_METHODS = [
     "POST",
     "GET",
@@ -124,12 +131,6 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://gradhunt.tech',
-    'http://localhost:5173',
-    'http://admin.localhost:5173',
-]
 
 # Security settings
 SECURE_HSTS_SECONDS = int(getenv('SECURE_HSTS_SECONDS', '0'))

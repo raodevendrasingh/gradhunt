@@ -11,12 +11,16 @@ dotenv.config();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const apiUrl = process.env.VITE_API_URL!;
+const env = process.env.NODE_ENV!;
 
 export default defineConfig({
 	server: {
-		proxy: {
-            "/api": apiUrl!,
-		},
+		proxy:
+			env === "development"
+				? {
+						"/api": apiUrl,
+					}
+				: {},
 	},
 	plugins: [
 		react(),
