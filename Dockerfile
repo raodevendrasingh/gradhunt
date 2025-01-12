@@ -24,8 +24,7 @@ RUN pip install --upgrade pip \
 COPY backend/ /app/backend/
 
 # Run migrations, collect static files, and start the server
-RUN python manage.py makemigrations \
-    && python manage.py migrate \
+RUN python manage.py migrate \
     && python manage.py collectstatic --noinput
 
 # Expose the port the app runs on

@@ -19,6 +19,8 @@ from django.core.exceptions import PermissionDenied
 from .utils.verify_work_email import verify_work_email
 
 
+logger = logging.getLogger('app')
+
 class HomeView(APIView):
     def get(self, request):
         return Response('This is the API home page', status=status.HTTP_200_OK)
@@ -40,16 +42,58 @@ class GetUserType(APIView):
 
 class CheckUsernameView(APIView):
     def get(self, request):
-        username = request.query_params.get('username')
-        if not username:
-            return Response({'error': 'Missing username parameter.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Log incoming request details
+            logger.info(f"Received username check request")
+            logger.debug(f"Request method: {request.method}")
+            logger.debug(f"Request path: {request.path}")
+            logger.debug(f"Request query parameters: {request.query_params}")
 
-        exists = UserDetails.objects.filter(username__iexact=username).exists()
-        if not exists:
-            message = "This username is available! 🎉"
-        else:
-            message = "This username is already taken, choose something else.😞"
-        return Response({'exists': exists, 'message': message})
+            # Extract username
+            username = request.query_params.get('username')
+
+            # Log username being checked
+            logger.info(f"Checking username: {username}")
+
+            # Validate username parameter
+            if not username:
+                logger.warning(
+                    "Username check failed: Missing username parameter")
+                return Response(
+                    {'error': 'Missing username parameter.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Check username existence
+            exists = UserDetails.objects.filter(
+                username__iexact=username).exists()
+
+            # Log check result
+            logger.info(f"Username '{username}' exists: {exists}")
+
+            # Prepare response
+            if not exists:
+                message = "This username is available! 🎉"
+                logger.info(f"Username '{username}' is available")
+            else:
+                message = "This username is already taken, choose something else.😞"
+                logger.info(f"Username '{username}' is already taken")
+
+            return Response({
+                'exists': exists,
+                'message': message
+            })
+
+        except Exception as e:
+            # Log any unexpected errors
+            logger.error(f"Unexpected error in username check: {str(e)}")
+            logger.error(traceback.format_exc())
+
+            return Response(
+                {'error': 'An unexpected error occurred'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 
 class CheckCompanySlug(APIView):
@@ -319,11 +363,17 @@ class OnboardUser(APIView):
 
     @transaction.atomic
     def post(self, request):
-        logger = logging.getLogger(__name__)
         try:
-            logger.info(f"Received request: {request.method} {request.path}")
-            logger.info(f"Request headers: {request.headers}")
-            logger.info(f"Request data: {request.data}")
+           # More detailed request logging
+            logger.info(f"Received POST request to {request.path}")
+            logger.debug(f"Full request headers: {dict(request.headers)}")
+            logger.debug(f"Request content type: {request.content_type}")
+            logger.debug(f"Request method: {request.method}")
+
+            # Log request data, but be careful with sensitive information
+            safe_data = {k: '***' if k in ['password']
+                         else v for k, v in request.data.items()}
+            logger.debug(f"Request data (sensitive info masked): {safe_data}")
 
             data = request.data.copy()
 
@@ -332,15 +382,16 @@ class OnboardUser(APIView):
             else:
                 logger.error("User does not have clerk_user_id")
                 return Response(
-                    {'status': 'error', 'message': 'Invalid user authentication'}, 
+                    {'status': 'error', 'message': 'Invalid user authentication'},
                     status=status.HTTP_401_UNAUTHORIZED
                 )
 
             user_serializer = UserSerializer(data=data)
             if not user_serializer.is_valid():
-                logger.error(f"Serializer validation failed: {user_serializer.errors}")
+                logger.error(f"Serializer validation failed: {
+                             user_serializer.errors}")
                 return Response(
-                    {'status': 'error', 'errors': user_serializer.errors}, 
+                    {'status': 'error', 'errors': user_serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -357,10 +408,13 @@ class OnboardUser(APIView):
 
         except Exception as e:
             logger.error(f"Error in OnboardUser: {str(e)}")
+            logger.error(
+                f"Unexpected error in OnboardUser view", exc_info=True)
             logger.error(traceback.format_exc())
             traceback.print_exc()
+
             return Response(
-                {'status': 'error', 'message': 'An unexpected error occurred'}, 
+                {'status': 'error', 'message': 'An unexpected error occurred'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 

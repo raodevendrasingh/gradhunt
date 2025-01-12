@@ -6,6 +6,9 @@ from urllib.parse import urlparse
 from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
+# load_dotenv('.env.production')
+
+print("DEBUG:", os.getenv('DEBUG'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,6 +22,28 @@ SECRET_KEY = getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv('DEBUG', 'True') == 'True'  # Set to True for development
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 
 ALLOWED_HOSTS = [
     'gradhunt-app.onrender.com',
@@ -211,16 +236,58 @@ EMAIL_HOST_USER_SUPPORT = getenv('EMAIL_HOST_USER_SUPPORT')
 EMAIL_HOST_USER_ADMIN = getenv('EMAIL_HOST_USER_ADMIN')
 
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
+            'level': 'INFO',
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'app': { 
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'app': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     },
     'root': {
         'handlers': ['console'],
         'level': 'WARNING',
     },
 }
+
