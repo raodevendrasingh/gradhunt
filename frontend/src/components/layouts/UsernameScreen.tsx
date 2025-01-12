@@ -12,15 +12,16 @@ export const UsernameScreen: React.FC<{
 				<div className="flex flex-col items-center w-full">
 					<div className="flex items-center justify-center w-full">
 						<span className="px-3 py-2 border-l border-y rounded-l-lg text-base bg-slate-50 text-gray-800">
-							gradhunt.app/
+							gradhunt.tech/
 						</span>
 						<div className="relative">
 							<input
 								{...register("username", {
 									required: true,
 									maxLength: 16,
-									onChange: (e: { target: { value: string } }) =>
-										checkUsername(e.target.value),
+									onChange: (e: {
+										target: { value: string };
+									}) => checkUsername(e.target.value),
 								})}
 								aria-label="Grab your username"
 								placeholder="username"
@@ -34,9 +35,11 @@ export const UsernameScreen: React.FC<{
 						<div className="flex flex-col justify-start overflow-hidden">
 							{isCheckingUsername && (
 								<span className="flex items-center gap-2">
-                                    <Spinner color="black"/>
-                                    <span className="text-xs text-gray-500">Searching...</span>
-                                </span>
+									<Spinner color="black" />
+									<span className="text-xs text-gray-500">
+										Searching...
+									</span>
+								</span>
 							)}
 							{getDisplayMessage()}
 						</div>
