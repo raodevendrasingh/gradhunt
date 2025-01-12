@@ -15,12 +15,9 @@ const env = process.env.NODE_ENV!;
 
 export default defineConfig({
 	server: {
-		proxy:
-			env === "development"
-				? {
-						"/api": apiUrl,
-					}
-				: {},
+		proxy: {
+			"/api": apiUrl,
+		},
 	},
 	plugins: [
 		react(),
