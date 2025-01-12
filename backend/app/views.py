@@ -388,8 +388,7 @@ class OnboardUser(APIView):
 
             user_serializer = UserSerializer(data=data)
             if not user_serializer.is_valid():
-                logger.error(f"Serializer validation failed: {
-                             user_serializer.errors}")
+                logger.error(f"Serializer validation failed: {user_serializer.errors}")
                 return Response(
                     {'status': 'error', 'errors': user_serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST
