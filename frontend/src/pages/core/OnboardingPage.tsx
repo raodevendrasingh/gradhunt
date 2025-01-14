@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserOnboardingModal } from '@/modal-forms/OnboardingModal';
-import { useUser } from '@clerk/clerk-react';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserOnboardingModal } from "@/modal-forms/profile/OnboardingModal";
+import { useUser } from "@clerk/clerk-react";
 
 export default function OnboardingPage() {
 	const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);

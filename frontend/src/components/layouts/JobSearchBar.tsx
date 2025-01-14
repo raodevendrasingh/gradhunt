@@ -2,7 +2,7 @@ import { HiOutlineSearch } from "react-icons/hi";
 import { TfiLocationPin } from "react-icons/tfi";
 import { GoBriefcase } from "react-icons/go";
 import { SingleValue } from "react-select";
-import { CityOption } from "@/hooks/useCitySearch";
+import { CityOption } from "@/hooks/misc/useCitySearch";
 
 import Select from "react-select";
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
@@ -57,11 +57,14 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 									required: "Position / Skill is required",
 									minLength: {
 										value: 2,
-										message: "Position should be at least 2 characters",
+										message:
+											"Position should be at least 2 characters",
 									},
 									maxLength: 50,
 								})}
-								aria-invalid={errors.position ? "true" : "false"}
+								aria-invalid={
+									errors.position ? "true" : "false"
+								}
 								type="text"
 								id="positions"
 								placeholder="Company / Position / Skills"
@@ -103,7 +106,8 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 									useEffect(() => {
 										if (field.value && !selectedOption) {
 											const option = cityOptions.find(
-												(opt) => opt.value === field.value
+												(opt) =>
+													opt.value === field.value
 											);
 											if (option) {
 												setSelectedOption(option);
@@ -115,22 +119,32 @@ export const JobSearchForm: React.FC<JobSearchFormProps> = ({
 										<Select<CityOption, false>
 											{...field}
 											value={selectedOption}
-											onChange={(newValue: SingleValue<CityOption>) => {
+											onChange={(
+												newValue: SingleValue<CityOption>
+											) => {
 												setSelectedOption(newValue);
-												field.onChange(newValue ? newValue.value : null);
+												field.onChange(
+													newValue
+														? newValue.value
+														: null
+												);
 											}}
 											isClearable
 											isSearchable
 											isLoading={isLoading}
 											onInputChange={handleInputChange}
 											options={cityOptions}
-											formatOptionLabel={formatOptionLabel}
+											formatOptionLabel={
+												formatOptionLabel
+											}
 											id="jobLocation"
 											placeholder="Location"
 											className="w-full"
 											classNamePrefix="react-select"
 											styles={inputSearchFieldStyle}
-											noOptionsMessage={({ inputValue }) =>
+											noOptionsMessage={({
+												inputValue,
+											}) =>
 												inputValue.length < 2
 													? "Type to search"
 													: error

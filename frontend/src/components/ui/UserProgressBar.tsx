@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import clsx from "clsx";
-import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
+import { useFetchProfileCompletion } from "@/hooks/profile/useFetchCompletionPercentage";
 interface Task {
 	id: string;
 	label: string;
@@ -14,7 +14,12 @@ export const UserProfileCompletion = () => {
 	const { data: progress } = useFetchProfileCompletion();
 
 	const [tasks, setTasks] = useState<Task[]>([
-		{ id: "1", label: "Add a Profile Picture", value: 10, completed: false },
+		{
+			id: "1",
+			label: "Add a Profile Picture",
+			value: 10,
+			completed: false,
+		},
 		{ id: "2", label: "Add a Bio", value: 10, completed: false },
 		{ id: "3", label: "Add your Location", value: 5, completed: false },
 		{
@@ -66,7 +71,8 @@ export const UserProfileCompletion = () => {
 		progressPerc: number
 	): { label: string; color: string } => {
 		if (progressPerc < 33) return { label: "Weak", color: "text-red-500" };
-		if (progressPerc < 66) return { label: "Medium", color: "text-orange-500" };
+		if (progressPerc < 66)
+			return { label: "Medium", color: "text-orange-500" };
 		return { label: "Strong", color: "text-green-500" };
 	};
 	const strength = getStrength(progress?.completion_percentage as number);
@@ -89,7 +95,12 @@ export const UserProfileCompletion = () => {
 					)}
 					<div className="flex items-center gap-3">
 						{progress ? (
-							<span className={clsx("text-sm font-medium", strength.color)}>
+							<span
+								className={clsx(
+									"text-sm font-medium",
+									strength.color
+								)}
+							>
 								{strength.label}
 							</span>
 						) : (
@@ -115,7 +126,10 @@ export const UserProfileCompletion = () => {
 								animate={{
 									width: `${progress?.completion_percentage as number}%`,
 								}}
-								transition={{ duration: 0.5, ease: "easeInOut" }}
+								transition={{
+									duration: 0.5,
+									ease: "easeInOut",
+								}}
 								className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-800"
 							></motion.div>
 						</div>
@@ -123,7 +137,9 @@ export const UserProfileCompletion = () => {
 						<div className="h-2 w-full rounded-full skeleton" />
 					)}
 				</div>
-				<p className="text-sm font-medium text-gray-600">Profile Strength</p>
+				<p className="text-sm font-medium text-gray-600">
+					Profile Strength
+				</p>
 			</div>
 			<motion.div
 				initial={{ opacity: 0, height: 0 }}
@@ -136,11 +152,16 @@ export const UserProfileCompletion = () => {
 			>
 				<div className="space-y-3 pb-1">
 					{tasks.map((task, index) => (
-						<div key={task.id} className="flex items-center space-x-3 px-1">
+						<div
+							key={task.id}
+							className="flex items-center space-x-3 px-1"
+						>
 							<input
 								type="checkbox"
 								id={task.id}
-								checked={progress?.tasks?.[index]?.completed ?? false}
+								checked={
+									progress?.tasks?.[index]?.completed ?? false
+								}
 								disabled
 								className="form-checkbox size-4 text-slate-800 rounded-full border-gray-300 focus:ring-blue-500 transition duration-150 ease-in-out"
 							/>

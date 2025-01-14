@@ -3,7 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 
 import axios from "axios";
 import { Outlet } from "react-router-dom";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export default function AdminLayout() {
 	const { isSignedIn, user } = useUser();

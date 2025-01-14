@@ -1,14 +1,14 @@
-import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
+import { useFetchExperienceData } from "@/hooks/academia/useFetchExperienceData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { BsBuildingsFill } from "react-icons/bs";
 import { useState } from "react";
-import { EditExpModal } from "@/modal-forms/EditExpModal";
-import { AddExpModal } from "@/modal-forms/AddExpModal";
+import { EditExpModal } from "@/modal-forms/experience/EditExpModal";
+import { AddExpModal } from "@/modal-forms/experience/AddExpModal";
 import { GoUnverified, GoVerified } from "react-icons/go";
-import { VerifyEmploymentModal } from "@/modal-forms/VerifyEmploymentModal";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { VerifyEmploymentModal } from "@/modal-forms/company/VerifyEmploymentModal";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const Experience = () => {
 	const [showEditExpModal, setShowEditExpModal] = useState<boolean>(false);
@@ -63,15 +63,25 @@ export const Experience = () => {
 													{data.isVerified ? (
 														<GoVerified className="text-sky-500 size-5" />
 													) : (
-														<button onClick={handleVerifyEmployment}>
+														<button
+															onClick={
+																handleVerifyEmployment
+															}
+														>
 															<GoUnverified className="text-gray-400 transition-colors cursor-pointer size-5 opacity-0 group-hover:opacity-100" />
 														</button>
 													)}
 													{user.username ===
-														userDetails?.user_details?.username && (
+														userDetails
+															?.user_details
+															?.username && (
 														<button
 															type="button"
-															onClick={() => handleEditClick(data.id)}
+															onClick={() =>
+																handleEditClick(
+																	data.id
+																)
+															}
 															className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 														>
 															<MdModeEdit className="size-5" />
@@ -120,7 +130,10 @@ export const Experience = () => {
 			)}
 
 			{showExpModal && (
-				<AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />
+				<AddExpModal
+					setShowExpModal={setShowExpModal}
+					onSave={refetchExp}
+				/>
 			)}
 			{showEditExpModal && (
 				<EditExpModal
@@ -130,7 +143,9 @@ export const Experience = () => {
 				/>
 			)}
 			{showVerifyModal && (
-				<VerifyEmploymentModal setShowVerifyModal={setShowVerifyModal} />
+				<VerifyEmploymentModal
+					setShowVerifyModal={setShowVerifyModal}
+				/>
 			)}
 		</div>
 	);

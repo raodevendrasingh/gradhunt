@@ -36,7 +36,7 @@ import {
 } from "@/utils/FileUploadMethods";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export default function CompanyProfileForm() {
 	const [editorInstance, setEditorInstance] = useState(null);

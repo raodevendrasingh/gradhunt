@@ -1,13 +1,14 @@
-import { BiBriefcase } from 'react-icons/bi';
-import { FiGlobe, FiPhone } from 'react-icons/fi';
-import { HiOutlineBuildingOffice2, HiOutlineUsers } from 'react-icons/hi2';
-import { LuCircleDollarSign, LuChartLine, LuWallet } from 'react-icons/lu';
-import { MdEmail } from 'react-icons/md';
-import { TbSeeding } from 'react-icons/tb';
-import { useFetchCompanyProfileByParams } from '@/hooks/useFetchCompanyProfileByParams';
+import { BiBriefcase } from "react-icons/bi";
+import { FiGlobe, FiPhone } from "react-icons/fi";
+import { HiOutlineBuildingOffice2, HiOutlineUsers } from "react-icons/hi2";
+import { LuCircleDollarSign, LuChartLine, LuWallet } from "react-icons/lu";
+import { MdEmail } from "react-icons/md";
+import { TbSeeding } from "react-icons/tb";
+import { useFetchCompanyProfileByParams } from "@/hooks/company/useFetchCompanyProfileByParams";
 
 export const Overview = () => {
-	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
+	const { data: companyProfile, isLoading } =
+		useFetchCompanyProfileByParams();
 
 	const gridItems = [
 		{
@@ -35,7 +36,11 @@ export const Overview = () => {
 			icon: TbSeeding,
 			value: companyProfile?.companyType,
 		},
-		{ label: "Industry", icon: BiBriefcase, value: companyProfile?.industry },
+		{
+			label: "Industry",
+			icon: BiBriefcase,
+			value: companyProfile?.industry,
+		},
 		{
 			label: "Market Cap",
 			icon: LuChartLine,
@@ -69,7 +74,8 @@ export const Overview = () => {
 								<div className="font-medium">
 									{item.value === ""
 										? "DID NOT DISCLOSE"
-										: item.value !== undefined && item.value !== null
+										: item.value !== undefined &&
+											  item.value !== null
 											? typeof item.value === "string"
 												? item.value
 												: item.value.value
@@ -94,7 +100,8 @@ export const Overview = () => {
 							className="prose max-w-none"
 							dangerouslySetInnerHTML={{
 								__html:
-									companyProfile?.description || "No description available.",
+									companyProfile?.description ||
+									"No description available.",
 							}}
 						/>
 					)}

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";
-import { AddProjectModal } from "@/modal-forms/AddProjectModal";
-import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
-import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
-import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
+import { AddProjectModal } from "@/modal-forms/project/AddProjectModal";
+import { AddCertificateModal } from "@/modal-forms/certificate/AddCertificateModal";
+import { useFetchProjectData } from "@/hooks/academia/useFetchProjectsData";
+import { useFetchCertificateData } from "@/hooks/academia/useFetchCertificateData";
 
 const options: Option[] = [
 	{ id: "projects", label: "Projects" },
@@ -14,41 +14,46 @@ const options: Option[] = [
 
 export default function ComboboxCurriculars() {
 	const [isOpen, setIsOpen] = useState(false);
-    const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
+	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-    
-    const { refetch: refetchProjects } = useFetchProjectData();
-    const { refetch: refetchCertificates } = useFetchCertificateData();
+
+	const { refetch: refetchProjects } = useFetchProjectData();
+	const { refetch: refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleOptionClick = (optionId: string) => {
-
 		setSelectedOptions((prev) =>
 			prev.includes(optionId)
 				? prev.filter((id) => id !== optionId)
 				: [...prev, optionId]
 		);
 
-        if (optionId === "certifications") {
+		if (optionId === "certifications") {
 			setShowCertifyModal(true);
 		} else if (optionId === "projects") {
 			setShowProjectModal(true);
 		} else if (optionId === "achievements") {
 			setShowAchieveModal(true);
 		}
-        setIsOpen(false);
+		setIsOpen(false);
 	};
 
 	return (
 		<div className="relative inline-block text-left">
 			{showProjectModal && (
-				<AddProjectModal setShowProjectModal={setShowProjectModal} onSave={refetchProjects} />
+				<AddProjectModal
+					setShowProjectModal={setShowProjectModal}
+					onSave={refetchProjects}
+				/>
 			)}
 			{showCertifyModal && (
-				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} onSave={refetchCertificates} />
+				<AddCertificateModal
+					setShowCertifyModal={setShowCertifyModal}
+					onSave={refetchCertificates}
+				/>
 			)}
 			{/* {showAchieveModal && <AddAchievementModal setShowAchieveModal={setShowAchieveModal} />} */}
 			<div>

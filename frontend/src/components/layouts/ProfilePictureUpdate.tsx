@@ -19,7 +19,7 @@ import {
 	apiSecret,
 	apiUrl,
 	timestamp,
-} from "@/modal-forms/OnboardingModal";
+} from "@/modal-forms/profile/OnboardingModal";
 
 type ProfileImageUpload = {
 	profilePicture: string;

@@ -1,6 +1,6 @@
-import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
-import { AddProjectModal } from "@/modal-forms/AddProjectModal";
-import { EditProjectModal } from "@/modal-forms/EditProjectModal";
+import { useFetchProjectData } from "@/hooks/academia/useFetchProjectsData";
+import { AddProjectModal } from "@/modal-forms/project/AddProjectModal";
+import { EditProjectModal } from "@/modal-forms/project/EditProjectModal";
 import { useState } from "react";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
 import { MdModeEdit } from "react-icons/md";
@@ -9,7 +9,7 @@ import { GoGlobe } from "react-icons/go";
 import { HiOutlineArrowUpRight } from "react-icons/hi2";
 import { FaGithub } from "react-icons/fa6";
 import { useUser } from "@clerk/clerk-react";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const Projects = () => {
 	const [showProjectModal, setShowProjectModal] = useState<boolean>(false);
@@ -60,15 +60,20 @@ export const Projects = () => {
 											</span>
 											{isSignedIn &&
 												user.username ===
-													userDetails?.user_details?.username && (
-												<button
-													type="button"
-													onClick={() => handleEditProject(data.id as number)}
-													className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
-												>
-													<MdModeEdit className="size-5" />
-												</button>
-											)}
+													userDetails?.user_details
+														?.username && (
+													<button
+														type="button"
+														onClick={() =>
+															handleEditProject(
+																data.id as number
+															)
+														}
+														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
+													>
+														<MdModeEdit className="size-5" />
+													</button>
+												)}
 										</div>
 
 										<div className="flex items-center justify-start gap-2 w-full text-xs font-medium">
@@ -78,7 +83,8 @@ export const Projects = () => {
 													target="_blank"
 													className="flex items-center justify-center gap-1.5 w-fit px-2 py-1 rounded-full bg-slate-50 border text-gray-600 hover:text-gray-800"
 												>
-													<GoGlobe /> Live Link <HiOutlineArrowUpRight />
+													<GoGlobe /> Live Link{" "}
+													<HiOutlineArrowUpRight />
 												</Link>
 											)}
 											{data.sourceCodeLink && (
@@ -87,13 +93,15 @@ export const Projects = () => {
 													target="_blank"
 													className="flex items-center justify-center gap-1.5 w-fit px-2 py-1 rounded-full bg-slate-50 border text-gray-600 hover:text-gray-800"
 												>
-													<FaGithub /> GitHub <HiOutlineArrowUpRight />
+													<FaGithub /> GitHub{" "}
+													<HiOutlineArrowUpRight />
 												</Link>
 											)}
 										</div>
 
 										<div className="text-xs font-medium text-gray-600">
-											{data.startMonth} {data.startYear} {" - "}{" "}
+											{data.startMonth} {data.startYear}{" "}
+											{" - "}{" "}
 											{!data.isCurrentlyWorking
 												? `${data.endMonth} ${data.endYear}`
 												: "Present"}
@@ -107,14 +115,16 @@ export const Projects = () => {
 
 										{data.skills && (
 											<div className="flex items-center flex-wrap">
-												{data.skills.map((skill, index) => (
-													<span
-														key={index}
-														className="text-xs px-2.5 py-0.5 bg-slate-50 text-gray-700 rounded-full border m-1"
-													>
-														{skill}
-													</span>
-												))}
+												{data.skills.map(
+													(skill, index) => (
+														<span
+															key={index}
+															className="text-xs px-2.5 py-0.5 bg-slate-50 text-gray-700 rounded-full border m-1"
+														>
+															{skill}
+														</span>
+													)
+												)}
 											</div>
 										)}
 									</div>

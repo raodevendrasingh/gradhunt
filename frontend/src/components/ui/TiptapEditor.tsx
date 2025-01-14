@@ -17,7 +17,7 @@ import {
 } from "react-icons/lu";
 import { VscHorizontalRule, VscNewline } from "react-icons/vsc";
 import { useEffect, useState } from "react";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useFetchUserData } from "@/hooks/profile/useFetchUserData";
 
 const MenuBar = ({ editor }: { editor: any }) => {
 	if (!editor) {
@@ -56,21 +56,27 @@ const MenuBar = ({ editor }: { editor: any }) => {
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+				onClick={() =>
+					editor.chain().focus().toggleHeading({ level: 1 }).run()
+				}
 				className={`editor-button ${editor.isActive("heading", { level: 1 }) ? "editor-button-active" : ""}`}
 			>
 				H1
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+				onClick={() =>
+					editor.chain().focus().toggleHeading({ level: 2 }).run()
+				}
 				className={`editor-button ${editor.isActive("heading", { level: 2 }) ? "editor-button-active" : ""}`}
 			>
 				H2
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+				onClick={() =>
+					editor.chain().focus().toggleHeading({ level: 3 }).run()
+				}
 				className={`editor-button ${editor.isActive("heading", { level: 3 }) ? "editor-button-active" : ""}`}
 			>
 				H3
@@ -105,28 +111,36 @@ const MenuBar = ({ editor }: { editor: any }) => {
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().setTextAlign("left").run()}
+				onClick={() =>
+					editor.chain().focus().setTextAlign("left").run()
+				}
 				className={`editor-button ${editor.isActive({ textAlign: "left" }) ? "editor-button-active" : ""}`}
 			>
 				<LuAlignLeft size={20} />
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().setTextAlign("center").run()}
+				onClick={() =>
+					editor.chain().focus().setTextAlign("center").run()
+				}
 				className={`editor-button ${editor.isActive({ textAlign: "center" }) ? "editor-button-active" : ""}`}
 			>
 				<LuAlignCenter size={20} />
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().setTextAlign("right").run()}
+				onClick={() =>
+					editor.chain().focus().setTextAlign("right").run()
+				}
 				className={`editor-button ${editor.isActive({ textAlign: "right" }) ? "editor-button-active" : ""}`}
 			>
 				<LuAlignRight size={20} />
 			</button>
 			<button
 				type="button"
-				onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+				onClick={() =>
+					editor.chain().focus().setTextAlign("justify").run()
+				}
 				className={`editor-button ${editor.isActive({ textAlign: "justify" }) ? "editor-button-active" : ""}`}
 			>
 				<LuAlignJustify size={20} />
@@ -200,8 +214,7 @@ export const TiptapEditor = ({
 		content: initialContent,
 		editorProps: {
 			attributes: {
-				class:
-					"prose prose-sm max-w-none w-full min-h-[200px] focus:outline-none",
+				class: "prose prose-sm max-w-none w-full min-h-[200px] focus:outline-none",
 			},
 		},
 	});

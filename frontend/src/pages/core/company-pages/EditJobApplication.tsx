@@ -24,8 +24,8 @@ import { IoPaperPlaneOutline, IoPeopleOutline } from "react-icons/io5";
 import { LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
-import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { useFetchJobDetails } from "@/hooks/jobs/useFetchJobDetails";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export const EditJobApplication = () => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

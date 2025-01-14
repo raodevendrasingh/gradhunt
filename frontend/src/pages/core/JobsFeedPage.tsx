@@ -17,7 +17,7 @@ import { JobCardSkeleton } from "./components/ui/JobCardSkeleton2";
 import JobFeedNavbar from "./components/layout/JobFeedNavbar";
 import { FaBuilding, FaStar } from "react-icons/fa6";
 import { featuredCompanies, topIndustries } from "@/utils/dummyData";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export default function JobsFeedPage() {
 	const [result, setResult] = useState<SearchQuery>();

@@ -10,7 +10,7 @@ import {
 import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
 import { LuUser, LuMail, LuMapPin, LuDot } from "react-icons/lu";
-import { useFetchJobApplicants } from "@/hooks/useFetchJobApplicants";
+import { useFetchJobApplicants } from "@/hooks/jobs/useFetchJobApplicants";
 import { timesAgo } from "@/utils/DaysAgo";
 import { Applicant } from "@/types/userTypes";
 import { GoArrowUpRight } from "react-icons/go";
@@ -19,7 +19,7 @@ import { daysRemaining } from "@/utils/DaysRemaining";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 type ColumnType =
 	| "applied"

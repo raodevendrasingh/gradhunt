@@ -34,8 +34,8 @@ import {
 	handleUpload,
 	openFileDialog,
 } from "@/utils/FileUploadMethods";
-import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { useFetchCompanyProfile } from "@/hooks/company/useFetchCompanyProfile";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export default function Settings() {
 	const [initialLocation, setInitialLocation] = useState<string>("");

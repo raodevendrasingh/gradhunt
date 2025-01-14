@@ -5,12 +5,12 @@ import { storage } from "@/firebase";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 import { extractFileName } from "@/utils/ExtractFileNames";
-import { ResumeDeleteModal } from "@/modal-forms/ResumeDeleteModal";
+import { ResumeDeleteModal } from "@/modal-forms/profile/ResumeDeleteModal";
 import { PdfDownloadIcon } from "@/components/common/PDFIcon";
-import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { useFetchProfileCompletion } from "@/hooks/profile/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error" | "completed";
 

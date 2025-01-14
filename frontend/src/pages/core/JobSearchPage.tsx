@@ -15,11 +15,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { ProfileBanner } from "@/components/layouts/ProfileBanner";
 import { SearchHeader } from "./components/layout/SearchHeader";
 import { SubmitHandler } from "react-hook-form";
-import { useCitySearch } from "@/hooks/useCitySearch";
+import { useCitySearch } from "@/hooks/misc/useCitySearch";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useUser } from "@clerk/clerk-react";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {

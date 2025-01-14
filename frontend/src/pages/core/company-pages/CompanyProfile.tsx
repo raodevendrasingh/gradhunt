@@ -5,14 +5,15 @@ import { GoPlus } from "react-icons/go";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import { MdLocationPin } from "react-icons/md";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { useFetchCompanyProfileByParams } from "@/hooks/useFetchCompanyProfileByParams";
+import { useFetchCompanyProfileByParams } from "@/hooks/company/useFetchCompanyProfileByParams";
 import { useState } from "react";
 import clsx from "clsx";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
 
-	const { data: companyProfile, isLoading } = useFetchCompanyProfileByParams();
+	const { data: companyProfile, isLoading } =
+		useFetchCompanyProfileByParams();
 
 	if (isLoading) {
 		return (
@@ -104,7 +105,9 @@ export default function CompanyProfile(): React.JSX.Element {
 						<div className="text-sm flex items-center gap-2">
 							<FaCalendarCheck className="w-4 h-4 text-gray-700" />
 							{companyProfile ? (
-								<span>Founded {companyProfile.establishedYear}</span>
+								<span>
+									Founded {companyProfile.establishedYear}
+								</span>
 							) : (
 								<div className="h-5 w-36 skeleton" />
 							)}
@@ -116,7 +119,9 @@ export default function CompanyProfile(): React.JSX.Element {
 						{CompanyTabs.map((tab, idx) => (
 							<button
 								key={idx}
-								onClick={() => !tab.disabled && setSelected(idx)}
+								onClick={() =>
+									!tab.disabled && setSelected(idx)
+								}
 								className={clsx(
 									"px-2.5 py-1 rounded-md text-sm font-medium transition-colors",
 									{

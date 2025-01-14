@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Select, { SingleValue } from "react-select";
 import { Controller } from "react-hook-form";
-import { useCitySearch, CityOption } from "@/hooks/useCitySearch";
+import { useCitySearch, CityOption } from "@/hooks/misc/useCitySearch";
 import { selectFieldStyle } from "@/utils/styles";
 
 interface LocationSelectProps {
@@ -26,7 +26,9 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 	const { isLoading, cityOptions, handleInputChange, formatOptionLabel } =
 		useCitySearch();
 
-	const [selectedOption, setSelectedOption] = useState<CityOption | null>(null);
+	const [selectedOption, setSelectedOption] = useState<CityOption | null>(
+		null
+	);
 
 	useEffect(() => {
 		const cityVal = initialValue?.split(",")[0];
@@ -57,7 +59,9 @@ export const LocationSelect: React.FC<LocationSelectProps> = ({
 							value={selectedOption}
 							onChange={(newValue: SingleValue<CityOption>) => {
 								setSelectedOption(newValue);
-								field.onChange(newValue ? newValue.value : null);
+								field.onChange(
+									newValue ? newValue.value : null
+								);
 							}}
 							isClearable
 							isSearchable

@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
-import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
-import { AddEduModal } from "@/modal-forms/AddEduModal";
-import { AddExpModal } from "@/modal-forms/AddExpModal";
-import { AddProjectModal } from "@/modal-forms/AddProjectModal";
-import { AddSkillModal } from "@/modal-forms/AddSkillModal";
-import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
-import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
-import { useFetchProjectData } from "@/hooks/useFetchProjectsData";
-import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
-import { useFetchEducationData } from "@/hooks/useFetchEducationData";
+import { AddCertificateModal } from "@/modal-forms/certificate/AddCertificateModal";
+import { AddEduModal } from "@/modal-forms/education/AddEduModal";
+import { AddExpModal } from "@/modal-forms/experience/AddExpModal";
+import { AddProjectModal } from "@/modal-forms/project/AddProjectModal";
+import { AddSkillModal } from "@/modal-forms/profile/AddSkillModal";
+import { useFetchExperienceData } from "@/hooks/academia/useFetchExperienceData";
+import { useFetchAboutSection } from "@/hooks/academia/useFetchAboutData";
+import { useFetchProjectData } from "@/hooks/academia/useFetchProjectsData";
+import { useFetchCertificateData } from "@/hooks/academia/useFetchCertificateData";
+import { useFetchEducationData } from "@/hooks/academia/useFetchEducationData";
 
 export interface Option {
 	id: string;
@@ -35,11 +35,11 @@ export default function ComboboxAll() {
 	const [showAchieveModal, setShowAchieveModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-    const { refetch: refetchExp } = useFetchExperienceData();
-    const { refetch: refetchEdu } = useFetchEducationData();
-    const { refetch: refetchAbout } = useFetchAboutSection();
-    const { refetch: refetchProjects } = useFetchProjectData();
-    const { refetch: refetchCertificates } = useFetchCertificateData();
+	const { refetch: refetchExp } = useFetchExperienceData();
+	const { refetch: refetchEdu } = useFetchEducationData();
+	const { refetch: refetchAbout } = useFetchAboutSection();
+	const { refetch: refetchProjects } = useFetchProjectData();
+	const { refetch: refetchCertificates } = useFetchCertificateData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -61,21 +61,40 @@ export default function ComboboxAll() {
 		} else if (optionId === "skills") {
 			setShowSkillModal(true);
 		}
-        setIsOpen(false);
+		setIsOpen(false);
 	};
 
 	return (
 		<div className="relative inline-block text-left">
-			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />}
-			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
+			{showEduModal && (
+				<AddEduModal
+					setShowEduModal={setShowEduModal}
+					onSave={refetchEdu}
+				/>
+			)}
+			{showExpModal && (
+				<AddExpModal
+					setShowExpModal={setShowExpModal}
+					onSave={refetchExp}
+				/>
+			)}
 			{showSkillModal && (
-				<AddSkillModal setShowSkillModal={setShowSkillModal} onUpdate={refetchAbout} />
+				<AddSkillModal
+					setShowSkillModal={setShowSkillModal}
+					onUpdate={refetchAbout}
+				/>
 			)}
 			{showProjectModal && (
-				<AddProjectModal setShowProjectModal={setShowProjectModal} onSave={refetchProjects} />
+				<AddProjectModal
+					setShowProjectModal={setShowProjectModal}
+					onSave={refetchProjects}
+				/>
 			)}
 			{showCertifyModal && (
-				<AddCertificateModal setShowCertifyModal={setShowCertifyModal} onSave={refetchCertificates} />
+				<AddCertificateModal
+					setShowCertifyModal={setShowCertifyModal}
+					onSave={refetchCertificates}
+				/>
 			)}
 			{/* {showAchieveModal && <AddAchievementModal setShowAchieveModal={setShowAchieveModal} />} */}
 			{/* {showPublishModal && <AddPublicationModal setShowPublishModal={setShowPublishModal} />} */}

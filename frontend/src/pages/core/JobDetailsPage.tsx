@@ -7,7 +7,7 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import { timesAgo } from "@/utils/DaysAgo";
-import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
+import { useFetchJobDetails } from "@/hooks/jobs/useFetchJobDetails";
 import { useParams } from "react-router-dom";
 import {
 	LuArrowUpRight,
@@ -23,9 +23,9 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/Spinner";
-import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
-import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { useFetchAppliedJobs } from "@/hooks/jobs/useFetchAppliedJobs";
+import { useFetchProfileCompletion } from "@/hooks/profile/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export const JobDetailsPage: React.FC = () => {
 	const [showLoginModal, setShowLoginModal] = useState<boolean>(false);

@@ -7,10 +7,10 @@ import { standardTabsData } from "@/utils/TabsData";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { UserProfileCompletion } from "@/components/ui/UserProgressBar";
-import { AddBasicDetailModal } from "@/modal-forms/AddBasicDetailModal";
+import { AddBasicDetailModal } from "@/modal-forms/profile/AddBasicDetailModal";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import NotFound from "@/pages/common/NotFound";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 import { getMonthYear } from "@/utils/convertTimeStamps";
 import { GoPlus } from "react-icons/go";
 
@@ -49,7 +49,10 @@ export default function StandardUserProfile(): React.JSX.Element {
 						<div className="relative -top-16 mb-2 select-none">
 							{userDetails?.user_details?.profilePicture ? (
 								<img
-									src={userDetails?.user_details?.profilePicture}
+									src={
+										userDetails?.user_details
+											?.profilePicture
+									}
 									alt="profile"
 									className="h-24 w-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white shadow-md"
 								/>
@@ -62,11 +65,21 @@ export default function StandardUserProfile(): React.JSX.Element {
 								<div className="flex flex-col items-center sm:items-start">
 									<div className="flex items-center gap-2">
 										<span className="text-xl font-bold">
-											{userDetails?.user_details?.firstname ? (
+											{userDetails?.user_details
+												?.firstname ? (
 												<span className="flex items-center gap-1">
-													{userDetails?.user_details.firstname}{" "}
-													{userDetails?.user_details.lastname}
-													{userDetails?.user_details?.isVerified && (
+													{
+														userDetails
+															?.user_details
+															.firstname
+													}{" "}
+													{
+														userDetails
+															?.user_details
+															.lastname
+													}
+													{userDetails?.user_details
+														?.isVerified && (
 														<RiVerifiedBadgeFill className="w-5 h-5 text-sky-700" />
 													)}
 												</span>
@@ -80,7 +93,13 @@ export default function StandardUserProfile(): React.JSX.Element {
 									</div>
 									<span className="text-sm font-light">
 										{userDetails ? (
-											<>@{userDetails?.user_details?.username}</>
+											<>
+												@
+												{
+													userDetails?.user_details
+														?.username
+												}
+											</>
 										) : (
 											<div className="h-4 w-32 mt-1 skeleton" />
 										)}
@@ -88,10 +107,16 @@ export default function StandardUserProfile(): React.JSX.Element {
 								</div>
 								<div className="mt-4 sm:mt-0 select-none">
 									{isSignedIn &&
-										user.username === userDetails?.user_details?.username && (
+										user.username ===
+											userDetails?.user_details
+												?.username && (
 											<>
 												<button
-													onClick={() => setShowBasicDetailModal(true)}
+													onClick={() =>
+														setShowBasicDetailModal(
+															true
+														)
+													}
 													className="flex items-center justify-center hover:bg-slate-100 rounded-lg border border-gray-200 gap-2 px-3 py-1 transition-colors"
 												>
 													<span className="text-sm font-medium text-gray-700">
@@ -119,8 +144,11 @@ export default function StandardUserProfile(): React.JSX.Element {
 						<div className="flex flex-row flex-wrap items-center justify-start gap-5 w-fit">
 							<div className="text-sm flex items-center gap-1">
 								<MdLocationPin className="w-5 h-5 text-gray-700" />
-								{userDetails && userDetails?.user_details?.location ? (
-									<span>{userDetails?.user_details?.location}</span>
+								{userDetails &&
+								userDetails?.user_details?.location ? (
+									<span>
+										{userDetails?.user_details?.location}
+									</span>
 								) : (
 									<div className="flex items-center gap-1 bg-slate-50 text-slate-700 rounded-lg px-2 py-0.5 w-48 cursor-pointer">
 										<GoPlus className="size-5" />
@@ -135,7 +163,8 @@ export default function StandardUserProfile(): React.JSX.Element {
 									<span>
 										Joined{" "}
 										{getMonthYear(
-											userDetails?.user_details?.createdAt as string
+											userDetails?.user_details
+												?.createdAt as string
 										)}
 									</span>
 								) : (
@@ -151,12 +180,19 @@ export default function StandardUserProfile(): React.JSX.Element {
 								userDetails.linguistics &&
 								userDetails.linguistics.length > 0 ? (
 									<>
-										{userDetails.linguistics.map((item, index) => (
-											<div key={index}>
-												<span className="mr-1">{item.language}</span>
-												{index < userDetails.linguistics.length - 1 && "|"}
-											</div>
-										))}
+										{userDetails.linguistics.map(
+											(item, index) => (
+												<div key={index}>
+													<span className="mr-1">
+														{item.language}
+													</span>
+													{index <
+														userDetails.linguistics
+															.length -
+															1 && "|"}
+												</div>
+											)
+										)}
 									</>
 								) : (
 									<div className="flex items-center gap-1 bg-slate-50 text-slate-700 rounded-lg px-2 py-0.5 w-48 cursor-pointer">

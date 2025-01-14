@@ -1,4 +1,5 @@
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
+
 import axios from "axios";
 
 export const IsUserExists = async (username: string) => {

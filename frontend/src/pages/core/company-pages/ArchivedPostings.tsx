@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import { BiBriefcase } from "react-icons/bi";
-import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
+import { useFetchJobPosts } from "@/hooks/jobs/useFetchJobPosts";
 import { JobCardSkeleton } from "@/pages/core/components/ui/JobCardSkeleton";
 import { ManageJobCard } from "@/components/layouts/ManageJobCard";
 import { GoArchive } from "react-icons/go";
@@ -55,7 +55,11 @@ export default function ArchivedPostings() {
 							<button className="inline-flex justify-center items-center gap-2 w-44 rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-0">
 								<BiBriefcase className="size-5" />
 								<span>Archived Jobs: </span>
-								{jobPosts?.filter((jobPost) => jobPost.isArchived).length}
+								{
+									jobPosts?.filter(
+										(jobPost) => jobPost.isArchived
+									).length
+								}
 							</button>
 						</div>
 					</div>

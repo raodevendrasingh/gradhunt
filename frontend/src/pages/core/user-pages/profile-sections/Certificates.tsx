@@ -6,12 +6,12 @@ import { GoGlobe } from "react-icons/go";
 import { useState } from "react";
 
 import { AiFillSafetyCertificate } from "react-icons/ai";
-import { useFetchCertificateData } from "@/hooks/useFetchCertificateData";
+import { useFetchCertificateData } from "@/hooks/academia/useFetchCertificateData";
 import { LuDot } from "react-icons/lu";
-import { EditCertificateModal } from "@/modal-forms/EditCertificateModal";
-import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
+import { EditCertificateModal } from "@/modal-forms/certificate/EditCertificateModal";
+import { AddCertificateModal } from "@/modal-forms/certificate/AddCertificateModal";
 import { useUser } from "@clerk/clerk-react";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const Ceritficates = () => {
 	const [showCertifyModal, setShowCertifyModal] = useState<boolean>(false);
@@ -62,11 +62,14 @@ export const Ceritficates = () => {
 											</span>
 											{isSignedIn &&
 												user.username ===
-													userDetails?.user_details?.username && (
+													userDetails?.user_details
+														?.username && (
 													<button
 														type="button"
 														onClick={() =>
-															handleEditCertificate(data.id as number)
+															handleEditCertificate(
+																data.id as number
+															)
 														}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 													>
@@ -84,12 +87,14 @@ export const Ceritficates = () => {
 										<div className="flex items-center justify-start font-medium w-full">
 											{data.isValid ? (
 												<span className="text-xs text-gray-600">
-													Issued {data.startMonth} {data.startYear}
+													Issued {data.startMonth}{" "}
+													{data.startYear}
 												</span>
 											) : (
 												<span className="flex items-center text-xs text-gray-600">
 													<LuDot />
-													Expires {data.endMonth} {data.endYear}
+													Expires {data.endMonth}{" "}
+													{data.endYear}
 												</span>
 											)}
 										</div>
@@ -100,7 +105,8 @@ export const Ceritficates = () => {
 													target="_blank"
 													className="flex items-center justify-center gap-1.5 w-fit px-2 py-1 rounded-full bg-slate-50 border text-gray-600 hover:text-gray-800"
 												>
-													<GoGlobe /> Credential <HiOutlineArrowUpRight />
+													<GoGlobe /> Credential{" "}
+													<HiOutlineArrowUpRight />
 												</Link>
 											)}
 										</div>

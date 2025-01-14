@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
-import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
+import { useFetchJobPosts } from "@/hooks/jobs/useFetchJobPosts";
 import { JobPosts } from "@/types/userTypes";
-import { JobPostDeleteDialog } from "@/modal-forms/JobPostDeleteDialog";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { JobPostDeleteDialog } from "@/modal-forms/company/JobPostDeleteDialog";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 const initialOptions: Option[] = [
 	{ id: "edit", label: "Edit" },

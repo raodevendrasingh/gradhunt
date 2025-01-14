@@ -26,7 +26,7 @@ import { LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { BiCategoryAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export const JobPostingForm = () => {
 	const [isLoading, setIsLoading] = useState(false);

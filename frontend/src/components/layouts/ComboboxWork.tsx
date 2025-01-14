@@ -1,11 +1,10 @@
-import { AddCertificateModal } from "@/modal-forms/AddCertificateModal";
-import { AddEduModal } from "@/modal-forms/AddEduModal";
-import { AddExpModal } from "@/modal-forms/AddExpModal";
+import { AddEduModal } from "@/modal-forms/education/AddEduModal";
+import { AddExpModal } from "@/modal-forms/experience/AddExpModal";
 import { useState } from "react";
 import { FaPlus, FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { Option } from "./ComboboxAll";
-import { useFetchExperienceData } from "@/hooks/useFetchExperienceData";
-import { useFetchEducationData } from "@/hooks/useFetchEducationData";
+import { useFetchExperienceData } from "@/hooks/academia/useFetchExperienceData";
+import { useFetchEducationData } from "@/hooks/academia/useFetchEducationData";
 
 const options: Option[] = [
 	{ id: "experience", label: "Experience" },
@@ -19,14 +18,13 @@ export default function ComboboxWork() {
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const [showPublishModal, setShowPublishModal] = useState<boolean>(false);
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-    
-    const { refetch: refetchExp } = useFetchExperienceData();
-    const { refetch: refetchEdu } = useFetchEducationData();
+
+	const { refetch: refetchExp } = useFetchExperienceData();
+	const { refetch: refetchEdu } = useFetchEducationData();
 
 	const toggleDropdown = () => setIsOpen(!isOpen);
 
 	const handleOptionClick = (optionId: string) => {
-
 		setSelectedOptions((prev) =>
 			prev.includes(optionId)
 				? prev.filter((id) => id !== optionId)
@@ -40,14 +38,24 @@ export default function ComboboxWork() {
 		} else if (optionId === "publications") {
 			setShowPublishModal(true);
 		}
-        setIsOpen(false);
+		setIsOpen(false);
 	};
 
 	return (
 		<div className="relative inline-block text-left">
-			{showEduModal && <AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />}
-			{showExpModal && <AddExpModal setShowExpModal={setShowExpModal} onSave={refetchExp} />}
-			
+			{showEduModal && (
+				<AddEduModal
+					setShowEduModal={setShowEduModal}
+					onSave={refetchEdu}
+				/>
+			)}
+			{showExpModal && (
+				<AddExpModal
+					setShowExpModal={setShowExpModal}
+					onSave={refetchExp}
+				/>
+			)}
+
 			{/* {showPublishModal && <AddPublishmentModal setShowPublishModal={setShowPublishModal} />} */}
 			<div>
 				<button

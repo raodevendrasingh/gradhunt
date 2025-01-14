@@ -1,19 +1,19 @@
-import { useFetchEducationData } from "@/hooks/useFetchEducationData";
+import { useFetchEducationData } from "@/hooks/academia/useFetchEducationData";
 import { useUser } from "@clerk/clerk-react";
 import { FaGraduationCap } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 import { ContentSkeleton } from "@/pages/core/components/ui/ContentSkeleton";
-import { EditEduModal } from "@/modal-forms/EditEduModal";
+import { EditEduModal } from "@/modal-forms/education/EditEduModal";
 import { useState } from "react";
-import { AddEduModal } from "@/modal-forms/AddEduModal";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { AddEduModal } from "@/modal-forms/education/AddEduModal";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const Education = () => {
 	const [showEditEduModal, setShowEditEduModal] = useState<boolean>(false);
 	const [showEduModal, setShowEduModal] = useState<boolean>(false);
 	const [editingEducationId, setEditingEducationId] = useState<number>();
 	const { isSignedIn, user } = useUser();
-    const { data: userDetails } = useFetchUserDetails();
+	const { data: userDetails } = useFetchUserDetails();
 	const {
 		data: educationData,
 		isLoading: isEduLoading,
@@ -30,7 +30,9 @@ export const Education = () => {
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center gap-2">
 					<FaGraduationCap />
-					<span className="text-gray-700 font-medium text-base">Education</span>
+					<span className="text-gray-700 font-medium text-base">
+						Education
+					</span>
 				</div>
 			</div>
 
@@ -55,10 +57,15 @@ export const Education = () => {
 											</span>
 											{isSignedIn &&
 												user.username ===
-													userDetails?.user_details?.username && (
+													userDetails?.user_details
+														?.username && (
 													<button
 														type="button"
-														onClick={() => handleEditClick(data.id)}
+														onClick={() =>
+															handleEditClick(
+																data.id
+															)
+														}
 														className="p-2 rounded-full text-gray-700 bg-white hover:bg-slate-50 text-sm font-medium cursor-pointer transition-colors"
 													>
 														<MdModeEdit className="size-5" />
@@ -71,8 +78,8 @@ export const Education = () => {
 										</div>
 
 										<div className="text-xs font-medium text-gray-600">
-											{data.startMonth} {data.startYear} - {data.endMonth}{" "}
-											{data.endYear}
+											{data.startMonth} {data.startYear} -{" "}
+											{data.endMonth} {data.endYear}
 										</div>
 
 										<div className="text-xs font-medium text-gray-600">
@@ -102,7 +109,10 @@ export const Education = () => {
 				</>
 			)}
 			{showEduModal && (
-				<AddEduModal setShowEduModal={setShowEduModal} onSave={refetchEdu} />
+				<AddEduModal
+					setShowEduModal={setShowEduModal}
+					onSave={refetchEdu}
+				/>
 			)}
 
 			{showEditEduModal && (

@@ -1,14 +1,13 @@
-import ReorderButton from "@/components/layouts/ReorderButton";
-import { UserAboutModal } from "@/modal-forms/UserDescriptionModal";
+import { UserAboutModal } from "@/modal-forms/profile/UserDescriptionModal";
 import { MdModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import ComboboxAll from "@/components/layouts/ComboboxAll";
-import { useFetchAboutSection } from "@/hooks/useFetchAboutData";
+import { useFetchAboutSection } from "@/hooks/academia/useFetchAboutData";
 import { useUser } from "@clerk/clerk-react";
 import { SkillSection } from "@/pages/core/user-pages/profile-sections/SkillSection";
 import { toast } from "sonner";
 import { ResumeUploadSection } from "@/pages/core/user-pages/profile-sections/ResumeUploadSection";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const Overview = () => {
 	const [showAboutModal, setAboutModal] = useState<boolean>(false);
@@ -42,7 +41,8 @@ export const Overview = () => {
 						About
 					</span>
 					{isSignedIn &&
-						user.username === userDetails?.user_details?.username && (
+						user.username ===
+							userDetails?.user_details?.username && (
 							<button
 								type="button"
 								onClick={() => setAboutModal(true)}
@@ -64,7 +64,9 @@ export const Overview = () => {
 					) : userDesc &&
 					  (userDesc.description as string) &&
 					  userDesc.description.length > 0 ? (
-						<div className="flex flex-wrap text-sm">{userDesc.description}</div>
+						<div className="flex flex-wrap text-sm">
+							{userDesc.description}
+						</div>
 					) : (
 						<div className="flex items-center justify-center w-full min-h-32">
 							<button
@@ -78,7 +80,10 @@ export const Overview = () => {
 					)}
 				</div>
 				{showAboutModal && (
-					<UserAboutModal setAboutModal={setAboutModal} onSave={refetchAbout} />
+					<UserAboutModal
+						setAboutModal={setAboutModal}
+						onSave={refetchAbout}
+					/>
 				)}
 			</div>
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Select, { SingleValue, MultiValue } from "react-select";
 import { Controller } from "react-hook-form";
-import { useCitySearch, CityOption } from "@/hooks/useCitySearch";
+import { useCitySearch, CityOption } from "@/hooks/misc/useCitySearch";
 import { LuMapPin } from "react-icons/lu";
 
 type SelectValue<IsMulti extends boolean> = IsMulti extends true
@@ -17,7 +17,7 @@ interface LocationSelectProps<IsMulti extends boolean> {
 	menuPlacement?: "auto" | "bottom" | "top";
 	initialValue?: IsMulti extends true ? string[] : string;
 	isMulti?: IsMulti;
-    styles?: any;
+	styles?: any;
 }
 
 export const citySelectStyles = {
@@ -98,7 +98,7 @@ export function LocationSelect<IsMulti extends boolean = false>({
 	menuPlacement = "auto",
 	initialValue,
 	isMulti,
-    styles= citySelectStyles,
+	styles = citySelectStyles,
 }: LocationSelectProps<IsMulti>) {
 	const { isLoading, cityOptions, handleInputChange, formatOptionLabel } =
 		useCitySearch();
@@ -122,7 +122,9 @@ export function LocationSelect<IsMulti extends boolean = false>({
 						label: value,
 					};
 				});
-				setSelectedOption(multiValue as unknown as SelectValue<IsMulti>);
+				setSelectedOption(
+					multiValue as unknown as SelectValue<IsMulti>
+				);
 			} else if (!isMulti && typeof initialValue === "string") {
 				const [cityVal, stateVal, countryVal] = initialValue
 					.split(",")
@@ -154,16 +156,20 @@ export function LocationSelect<IsMulti extends boolean = false>({
 								{...field}
 								value={selectedOption}
 								onChange={(newValue) => {
-									setSelectedOption(newValue as SelectValue<IsMulti>);
+									setSelectedOption(
+										newValue as SelectValue<IsMulti>
+									);
 									if (isMulti) {
 										field.onChange(
-											(newValue as MultiValue<CityOption>)?.map(
-												(item) => item.value
-											)
+											(
+												newValue as MultiValue<CityOption>
+											)?.map((item) => item.value)
 										);
 									} else {
 										field.onChange(
-											(newValue as SingleValue<CityOption>)?.value
+											(
+												newValue as SingleValue<CityOption>
+											)?.value
 										);
 									}
 								}}
@@ -195,7 +201,9 @@ export function LocationSelect<IsMulti extends boolean = false>({
 								className={error ? "select-error" : ""}
 								menuPlacement={menuPlacement}
 								noOptionsMessage={({ inputValue }) =>
-									inputValue.length < 2 ? "Type to search" : "No cities found"
+									inputValue.length < 2
+										? "Type to search"
+										: "No cities found"
 								}
 							/>
 						</div>

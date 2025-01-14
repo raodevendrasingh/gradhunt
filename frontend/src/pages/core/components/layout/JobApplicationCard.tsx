@@ -2,7 +2,7 @@ import { JobCardProps } from "@/components/layouts/JobPostCard";
 import { Link } from "react-router-dom";
 import { timesAgo } from "@/utils/DaysAgo";
 import { useUser } from "@clerk/clerk-react";
-import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
+import { useFetchAppliedJobs } from "@/hooks/jobs/useFetchAppliedJobs";
 import NotFound from "@/pages/common/NotFound";
 import { formatLocation } from "@/pages/core/company-pages/JobApplicants";
 import { LuDot } from "react-icons/lu";
@@ -26,11 +26,15 @@ export const JobApplicationCard = ({ jobPost }: JobCardProps) => {
 				switch (currentApplication.status) {
 					case "applied":
 						return (
-							<p className="text-sm font-medium text-slate-600">Applied</p>
+							<p className="text-sm font-medium text-slate-600">
+								Applied
+							</p>
 						);
 					case "shortlisted":
 						return (
-							<p className="text-sm font-medium text-orange-500">Shortlisted</p>
+							<p className="text-sm font-medium text-orange-500">
+								Shortlisted
+							</p>
 						);
 					case "interviewScheduled":
 						return (
@@ -40,11 +44,15 @@ export const JobApplicationCard = ({ jobPost }: JobCardProps) => {
 						);
 					case "matched":
 						return (
-							<p className="text-sm font-medium text-green-500">Matched 🎉</p>
+							<p className="text-sm font-medium text-green-500">
+								Matched 🎉
+							</p>
 						);
 					case "rejected":
 						return (
-							<p className="text-sm font-medium text-gray-600">Not Moving Forward</p>
+							<p className="text-sm font-medium text-gray-600">
+								Not Moving Forward
+							</p>
 						);
 					default:
 						return null;
@@ -88,7 +96,9 @@ export const JobApplicationCard = ({ jobPost }: JobCardProps) => {
 					</div>
 					<div className="hidden xs:flex h-full flex-col sm:flex-row sm:gap-0 sm:items-center">
 						<div className="flex items-center text-sm text-neutral-600">
-							<span className="text-neutral-500 mr-1">Posted</span>
+							<span className="text-neutral-500 mr-1">
+								Posted
+							</span>
 							{jobPost ? (
 								<span>{timesAgo(jobPost.postedDate)}</span>
 							) : (
@@ -97,11 +107,15 @@ export const JobApplicationCard = ({ jobPost }: JobCardProps) => {
 						</div>
 						<LuDot className=" hidden sm:flex size-8 text-slate-600" />
 						<div className="flex items-center text-sm text-neutral-600">
-							<span className="text-neutral-500 mr-1">Applied</span>
+							<span className="text-neutral-500 mr-1">
+								Applied
+							</span>
 							{jobPost ? (
 								appliedJobs &&
 								appliedJobs
-									.filter((job) => job.jobPosting === jobPost.id)
+									.filter(
+										(job) => job.jobPosting === jobPost.id
+									)
 									.map((job) => (
 										<span key={job.id} className="">
 											{timesAgo(job.appliedDate)}

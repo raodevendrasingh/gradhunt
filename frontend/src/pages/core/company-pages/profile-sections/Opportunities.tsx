@@ -1,5 +1,5 @@
 import { JobPostCard } from "@/components/layouts/JobPostCard";
-import { useFetchJobPosts } from "@/hooks/useFetchJobPosts";
+import { useFetchJobPosts } from "@/hooks/jobs/useFetchJobPosts";
 import { JobCardSkeleton } from "@/pages/core//components/ui/JobCardSkeleton";
 
 export const Opportunities = () => {

@@ -6,12 +6,12 @@ import {
 } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser, SignOutButton } from "@clerk/clerk-react";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
-import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
+import { useFetchCompanyProfile } from "@/hooks/company/useFetchCompanyProfile";
 
 interface CompanyProfile {
 	isDraft: boolean;
-    companySlug: string;
+	companySlug: string;
 	companyName: string;
 	companyLogo: string;
 }
@@ -49,7 +49,10 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 
 		const errorStatus = companyProfileError.response?.status;
 		if (errorStatus !== 404 && errorStatus !== 400) {
-			console.error("Failed to fetch company details:", companyProfileError);
+			console.error(
+				"Failed to fetch company details:",
+				companyProfileError
+			);
 		}
 	}, [companyProfileError]);
 
@@ -64,7 +67,8 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 		};
 
 		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
+		return () =>
+			document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
 	const handleNavigate = (path: string) => {
@@ -120,8 +124,12 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 					<div className="py-1.5">
 						<MenuLink
 							to={`/p/${user.username}`}
-							icon={<HiUserCircle className="size-5 text-gray-600" />}
-							onClick={() => handleNavigate(`/p/${user.username}`)}
+							icon={
+								<HiUserCircle className="size-5 text-gray-600" />
+							}
+							onClick={() =>
+								handleNavigate(`/p/${user.username}`)
+							}
 						>
 							Profile
 						</MenuLink>
@@ -137,7 +145,9 @@ export const UserMenuDropdown: React.FC<UserMenuProps> = ({ className }) => {
 
 						<MenuLink
 							to="/settings"
-							icon={<HiCog6Tooth className="size-5 text-gray-600" />}
+							icon={
+								<HiCog6Tooth className="size-5 text-gray-600" />
+							}
 							onClick={() => handleNavigate("/settings")}
 						>
 							Settings
@@ -175,7 +185,7 @@ const MenuLink: React.FC<MenuLinkProps> = ({ to, icon, onClick, children }) => (
 	</Link>
 );
 
-const CompanyLink: React.FC<CompanyLinkProps> = ({ company,}) => (
+const CompanyLink: React.FC<CompanyLinkProps> = ({ company }) => (
 	<Link
 		to={`/company/${company.companySlug}`}
 		className="flex items-center gap-3 mx-1.5 px-3 py-2 rounded-lg text-gray-700  hover:bg-gray-100 active:bg-gray-100 transition-colors duration-150"
@@ -187,7 +197,9 @@ const CompanyLink: React.FC<CompanyLinkProps> = ({ company,}) => (
 				className="h-4 w-4 object-cover"
 			/>
 		</span>
-		<span className="text-sm font-medium truncate">{company.companyName}</span>
+		<span className="text-sm font-medium truncate">
+			{company.companyName}
+		</span>
 	</Link>
 );
 

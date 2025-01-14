@@ -10,12 +10,12 @@ import { SavedJobsType } from "@/types/userTypes";
 import { timesAgo } from "@/utils/DaysAgo";
 import { toast } from "sonner";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
-import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
+import { useFetchAppliedJobs } from "@/hooks/jobs/useFetchAppliedJobs";
+import { useFetchSavedJobs } from "@/hooks/jobs/useFetchSavedJobs";
 import { useState } from "react";
 import { LuCheck } from "react-icons/lu";
-import { useFetchProfileCompletion } from "@/hooks/useFetchCompletionPercentage";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { useFetchProfileCompletion } from "@/hooks/profile/useFetchCompletionPercentage";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 export const JobSearchCard = ({ jobPost }: JobCardProps) => {
 	const [showLoginModal, setShowLoginModal] = useState(false);

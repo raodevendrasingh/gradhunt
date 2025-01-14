@@ -1,5 +1,5 @@
-import { useFetchAppliedJobs } from "@/hooks/useFetchAppliedJobs";
-import { useFetchJobsList } from "@/hooks/useFetchJobsList";
+import { useFetchAppliedJobs } from "@/hooks/jobs/useFetchAppliedJobs";
+import { useFetchJobsList } from "@/hooks/jobs/useFetchJobsList";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { JobApplicationCard } from "@/pages/core/components/layout/JobApplicationCard";
 import { JobApplicationCardSkeleton } from "@/pages/core/components/ui/JobApplicationCardSkeleton";

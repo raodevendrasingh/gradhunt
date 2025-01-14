@@ -4,7 +4,7 @@ import RecruiterNavbar from "@/pages/core/components/layout/RecruiterNavbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ProfileSidebar } from "@/pages/core/components/layout/ProfileSidebar";
 import { RecruiterSidebar } from "@/pages/core/components/layout/RecruiterSidebar";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 import { useUser } from "@clerk/clerk-react";
 
 export default function RecruiterLayout(): React.JSX.Element {

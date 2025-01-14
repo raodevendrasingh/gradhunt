@@ -1,7 +1,7 @@
-import { useFetchSavedJobs } from "@/hooks/useFetchSavedJobs";
+import { useFetchSavedJobs } from "@/hooks/jobs/useFetchSavedJobs";
 import { GoBookmark } from "react-icons/go";
 import { JobCardSkeleton } from "@/pages/core/components/ui/JobCardSkeleton2";
-import { useFetchJobsList } from "@/hooks/useFetchJobsList";
+import { useFetchJobsList } from "@/hooks/jobs/useFetchJobsList";
 import { JobSearchCard } from "@/pages/core/components/layout/JobSearchCard";
 
 export default function SavedJobsPage() {
@@ -33,7 +33,9 @@ export default function SavedJobsPage() {
 						<h2 className="text-2xl font-semibold text-gray-600 mb-2">
 							No saved jobs yet
 						</h2>
-						<p className="text-gray-500">Start saving jobs to see them here!</p>
+						<p className="text-gray-500">
+							Start saving jobs to see them here!
+						</p>
 					</div>
 				</div>
 			);

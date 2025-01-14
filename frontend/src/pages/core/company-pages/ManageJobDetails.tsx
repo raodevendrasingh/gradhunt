@@ -6,7 +6,7 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 import { LoadingBlock } from "@/components/ui/LoadingBlock";
 import { timesAgo } from "@/utils/DaysAgo";
-import { useFetchJobDetails } from "@/hooks/useFetchJobDetails";
+import { useFetchJobDetails } from "@/hooks/jobs/useFetchJobDetails";
 import { useParams } from "react-router-dom";
 import { LuBriefcase, LuCalendar, LuClock, LuMapPin } from "react-icons/lu";
 
@@ -145,7 +145,9 @@ export const ManageJobDetails: React.FC = () => {
 							Job Description
 						</h2>
 						<div
-							dangerouslySetInnerHTML={{ __html: data.jobDescription }}
+							dangerouslySetInnerHTML={{
+								__html: data.jobDescription,
+							}}
 							className="text-gray-700 prose max-w-none"
 							style={{ lineHeight: "1.6" }}
 						/>
@@ -166,7 +168,9 @@ const InfoItem: React.FC<{
 			<span className="text-gray-600">{icon}</span>
 		</div>
 		<div className="flex flex-col">
-			<span className="text-sm font-medium text-gray-500 mb-1">{title}</span>
+			<span className="text-sm font-medium text-gray-500 mb-1">
+				{title}
+			</span>
 			<span className="text-gray-800 font-medium">{text}</span>
 		</div>
 	</div>

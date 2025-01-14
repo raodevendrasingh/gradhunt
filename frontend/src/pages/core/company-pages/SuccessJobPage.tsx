@@ -2,7 +2,7 @@ import React from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
-import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
+import { useFetchCompanyProfile } from "@/hooks/company/useFetchCompanyProfile";
 
 export const SuccessJobPage: React.FC = () => {
 	const { data } = useFetchCompanyProfile();
@@ -22,11 +22,22 @@ export const SuccessJobPage: React.FC = () => {
 						Job successfully published
 					</h2>
 					<div className="flex flex-col xs:flex-row gap-4 mt-6 w-full">
-						<Link to={`/company/${data?.companyName.toLowerCase()}`} className="w-full xs:w-1/2">
-							<Button className="w-full rounded-lg">Go to Profile</Button>
+						<Link
+							to={`/company/${data?.companyName.toLowerCase()}`}
+							className="w-full xs:w-1/2"
+						>
+							<Button className="w-full rounded-lg">
+								Go to Profile
+							</Button>
 						</Link>
-						<Link to={`/company/${data?.companyName.toLowerCase()}/manage-jobs/post`} className="w-full xs:w-1/2">
-							<Button variant="secondary" className="w-full rounded-lg">
+						<Link
+							to={`/company/${data?.companyName.toLowerCase()}/manage-jobs/post`}
+							className="w-full xs:w-1/2"
+						>
+							<Button
+								variant="secondary"
+								className="w-full rounded-lg"
+							>
 								Post Another Job
 							</Button>
 						</Link>

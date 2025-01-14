@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useFetchSkillData } from "@/hooks/useFetchSkillsData";
+import { useFetchSkillData } from "@/hooks/profile/useFetchSkillsData";
 import { useUser } from "@clerk/clerk-react";
 import { MdModeEdit } from "react-icons/md";
-import { AddSkillModal } from "@/modal-forms/AddSkillModal";
+import { AddSkillModal } from "@/modal-forms//profile/AddSkillModal";
 import { toast } from "sonner";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 
 export const SkillSection: React.FC = () => {
 	const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
@@ -31,7 +31,8 @@ export const SkillSection: React.FC = () => {
 						Skills
 					</span>
 					{isSignedIn &&
-						user.username === userDetails?.user_details?.username && (
+						user.username ===
+							userDetails?.user_details?.username && (
 							<button
 								type="button"
 								onClick={() => setShowSkillModal(true)}

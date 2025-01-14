@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { GoArchive, GoBriefcase, GoGear } from "react-icons/go";
 import { useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
-import { useFetchCompanyProfile } from "@/hooks/useFetchCompanyProfile";
-import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useFetchCompanyProfile } from "@/hooks/company/useFetchCompanyProfile";
+import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 import { HiOutlineUserGroup, HiOutlineUsers } from "react-icons/hi2";
 import { IoExtensionPuzzleOutline } from "react-icons/io5";
 import { LuChartLine } from "react-icons/lu";
@@ -34,12 +34,15 @@ const Tab: React.FC<TabProps> = ({
 }) => {
 	return (
 		<motion.div
-			className={clsx("flex items-center p-3 mx-2 my-1 rounded-lg transition-colors select-none", {
-				"bg-slate-100 text-slate-900": isActive,
-				"text-slate-600 hover:bg-slate-50": !isActive && !disabled,
-				"opacity-70 cursor-not-allowed text-slate-600": disabled,
-				"cursor-pointer": !disabled
-			})}
+			className={clsx(
+				"flex items-center p-3 mx-2 my-1 rounded-lg transition-colors select-none",
+				{
+					"bg-slate-100 text-slate-900": isActive,
+					"text-slate-600 hover:bg-slate-50": !isActive && !disabled,
+					"opacity-70 cursor-not-allowed text-slate-600": disabled,
+					"cursor-pointer": !disabled,
+				}
+			)}
 			whileHover={{ scale: disabled ? 1 : 1.02 }}
 			transition={{ type: "spring", stiffness: 400, damping: 10 }}
 		>
@@ -53,7 +56,9 @@ const Tab: React.FC<TabProps> = ({
 			<div className="flex flex-col justify-start w-full">
 				<span className="text-sm font-medium">{label}</span>
 				{title && (
-					<span className="text-xs font-normal text-gray-600">{title}</span>
+					<span className="text-xs font-normal text-gray-600">
+						{title}
+					</span>
 				)}
 			</div>
 		</motion.div>
@@ -148,7 +153,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 
 	const sidebarContent = (
 		<nav className="flex flex-col w-full ">
-			{recruiterTabs.map((tab) => (
+			{recruiterTabs.map((tab) =>
 				tab.disabled ? (
 					<div key={tab.label}>
 						<Tab
@@ -181,7 +186,7 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 						/>
 					</Link>
 				)
-			))}
+			)}
 		</nav>
 	);
 
@@ -201,7 +206,11 @@ export const RecruiterSidebar: React.FC<RecruiterSidebarProps> = ({
 						initial={{ x: -300, opacity: 0 }}
 						animate={{ x: 0, opacity: 1 }}
 						exit={{ x: -300, opacity: 0 }}
-						transition={{ type: "spring", stiffness: 300, damping: 30 }}
+						transition={{
+							type: "spring",
+							stiffness: 300,
+							damping: 30,
+						}}
 						className="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg pt-16"
 					>
 						{sidebarContent}

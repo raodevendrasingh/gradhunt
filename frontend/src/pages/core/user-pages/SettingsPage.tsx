@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import {
 	FiCreditCard,
 	FiBell,
@@ -18,22 +17,24 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { useUser } from "@clerk/clerk-react";
 import { HandleProfilePictureUpdate } from "@/components/layouts/ProfilePictureUpdate";
-import { UsernameUpdateDialog } from "@/modal-forms/UsernameUpdateDialog";
-import { EmailUpdateDialog } from "@/modal-forms/EmailUpdateDialog";
-import { PasswordUpdateDialog } from "@/modal-forms/PasswordUpdateDialog";
+import { UsernameUpdateDialog } from "@/modal-forms/account/UsernameUpdateDialog";
+import { EmailUpdateDialog } from "@/modal-forms/account/EmailUpdateDialog";
+import { PasswordUpdateDialog } from "@/modal-forms/account/PasswordUpdateDialog";
 import { ToggleSwitch } from "@/components/ui/ToggleSwitch";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useFetchUserData } from "@/hooks/profile/useFetchUserData";
 import { ProfileVisibilityToggle } from "../components/layout/ProfileVisibilityToggle";
 import { NotificationToggle } from "../components/layout/NotificationToggle";
-import { AccountDeleteModal } from "@/modal-forms/AccountDeleteModal";
+import { AccountDeleteModal } from "@/modal-forms/account/AccountDeleteModal";
 import { toast } from "sonner";
-import { CompanyOnboardingModal } from "@/modal-forms/CompanyOnboardingModal";
+import { CompanyOnboardingModal } from "@/modal-forms/company/CompanyOnboardingModal";
 
 export default function SettingsPage() {
 	const [activeSection, setActiveSection] = useState("profile");
-	const [showUsernameDialog, setShowUsernameDialog] = useState<boolean>(false);
+	const [showUsernameDialog, setShowUsernameDialog] =
+		useState<boolean>(false);
 	const [showEmailDialog, setShowEmailDialog] = useState<boolean>(false);
-	const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
+	const [showPasswordDialog, setShowPasswordDialog] =
+		useState<boolean>(false);
 	const [showAccountDeleteDialog, setShowAccountDeleteDialog] =
 		useState<boolean>(false);
 	const [showOnboardingModal, setShowOnboardingModal] =
@@ -92,9 +93,13 @@ export default function SettingsPage() {
 					Account Settings
 				</h1>
 				<div className="w-full space-y-6">
-					<section id="profile" className="bg-white shadow-sm rounded-lg p-6">
+					<section
+						id="profile"
+						className="bg-white shadow-sm rounded-lg p-6"
+					>
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
-							<HiOutlineUserCircle className="mr-2 h-6 w-6" /> Profile
+							<HiOutlineUserCircle className="mr-2 h-6 w-6" />{" "}
+							Profile
 						</h2>
 						<HandleProfilePictureUpdate />
 						<div className="space-y-4">
@@ -103,7 +108,9 @@ export default function SettingsPage() {
 									<h3 className="text-sm font-medium text-gray-800">
 										Username
 									</h3>
-									<p className="text-sm text-gray-500">{user?.username}</p>
+									<p className="text-sm text-gray-500">
+										{user?.username}
+									</p>
 								</div>
 
 								<Button
@@ -116,7 +123,9 @@ export default function SettingsPage() {
 							</div>
 							<div className="flex items-center justify-between py-4 border-b border-gray-200">
 								<div>
-									<h3 className="text-sm font-medium text-gray-800">Email</h3>
+									<h3 className="text-sm font-medium text-gray-800">
+										Email
+									</h3>
 									<p className="text-sm text-gray-500">
 										{user?.emailAddresses[0].emailAddress}
 									</p>
@@ -137,14 +146,18 @@ export default function SettingsPage() {
 										Password
 									</h3>
 									<p className="text-sm text-gray-500">
-										{user?.passwordEnabled ? "Enabled" : "No password set"}
+										{user?.passwordEnabled
+											? "Enabled"
+											: "No password set"}
 									</p>
 								</div>
 								{user?.passwordEnabled ? (
 									<Button
 										variant="secondary"
 										className="rounded-lg w-24 py-2"
-										onClick={() => setShowPasswordDialog(true)}
+										onClick={() =>
+											setShowPasswordDialog(true)
+										}
 									>
 										Update
 									</Button>
@@ -161,7 +174,10 @@ export default function SettingsPage() {
 						</div>
 					</section>
 
-					<section id="career" className="bg-white shadow-sm rounded-lg p-6">
+					<section
+						id="career"
+						className="bg-white shadow-sm rounded-lg p-6"
+					>
 						<h2 className="text-lg font-semibold mb-6 text-gray-800 flex items-center">
 							<MdAccountBalance className="mr-2" /> Account
 						</h2>
@@ -197,7 +213,8 @@ export default function SettingsPage() {
 										Company Profile
 									</h3>
 									<p className="text-sm text-gray-500">
-										Create a profile for your company to attract talent
+										Create a profile for your company to
+										attract talent
 									</p>
 								</div>
 								<Button
@@ -274,7 +291,8 @@ export default function SettingsPage() {
 										Payment Method
 									</h3>
 									<p className="text-sm text-gray-500">
-										Update your billing information and payment details
+										Update your billing information and
+										payment details
 									</p>
 								</div>
 								<Button
@@ -305,15 +323,21 @@ export default function SettingsPage() {
 							<NotificationToggle
 								label="Email Notifications"
 								icon={<MdAlternateEmail />}
-								defaultValue={userData.isEmailNotificationEnabled}
+								defaultValue={
+									userData.isEmailNotificationEnabled
+								}
 								notificationType="email"
 							/>
 						</div>
 					</section>
 
-					<section id="danger" className="bg-white shadow-sm rounded-lg p-6">
+					<section
+						id="danger"
+						className="bg-white shadow-sm rounded-lg p-6"
+					>
 						<h2 className="text-lg font-semibold mb-6 text-red-500 flex items-center">
-							<MdOutlineDangerous className="mr-2 h-6 w-6" /> Danger Zone
+							<MdOutlineDangerous className="mr-2 h-6 w-6" />{" "}
+							Danger Zone
 						</h2>
 						<div className="flex flex-col items-start gap-5 justify-start sm:items-center sm:flex-row sm:justify-between py-4">
 							<div>
@@ -321,7 +345,8 @@ export default function SettingsPage() {
 									Delete Account
 								</h3>
 								<p className="text-sm text-gray-500">
-									Permanently remove your account and all associated data
+									Permanently remove your account and all
+									associated data
 								</p>
 							</div>
 							<Button
@@ -357,7 +382,9 @@ export default function SettingsPage() {
 								}`}
 							>
 								<span className="text-lg">{section.icon}</span>
-								<span className="font-medium">{section.label}</span>
+								<span className="font-medium">
+									{section.label}
+								</span>
 							</button>
 						))}
 					</nav>
@@ -376,7 +403,9 @@ export default function SettingsPage() {
 				/>
 			)}
 			{showPasswordDialog && (
-				<PasswordUpdateDialog setShowPasswordDialog={setShowPasswordDialog} />
+				<PasswordUpdateDialog
+					setShowPasswordDialog={setShowPasswordDialog}
+				/>
 			)}
 
 			{showOnboardingModal && (

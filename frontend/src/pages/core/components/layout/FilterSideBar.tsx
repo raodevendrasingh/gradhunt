@@ -3,13 +3,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaXmark } from "react-icons/fa6";
 import { FilterCheckbox } from "@/pages/core/components/ui/FilterCheckBox";
-import { useFilterOptions } from "@/hooks/useFilterOptions";
+import { useFilterOptions } from "@/hooks/misc/useFilterOptions";
 import { Button } from "@/components/ui/Button";
 import { SearchQuery } from "@/types/userTypes";
 import axios from "axios";
 import Spinner from "@/components/ui/Spinner";
 import { RangeFilter } from "./RangeFilter";
-import { apiUrl } from "@/modal-forms/OnboardingModal";
+import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
 
 type FilterOption = {
 	id: string;
