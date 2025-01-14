@@ -13,7 +13,8 @@ import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
-import { skills, SelectOption } from "@/utils/selectObjects";
+import { SelectOption } from "@/utils/selectObjects";
+import { skillOptions } from "@/utils/skillOptions";
 import { selectFieldStyle } from "@/utils/styles";
 import { ProjectForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
@@ -312,7 +313,7 @@ export const EditProjectModal: React.FC<{
 														id="skills"
 														isMulti
 														name="skills"
-														options={skills}
+														options={skillOptions}
 														onChange={(
 															selected
 														) => {

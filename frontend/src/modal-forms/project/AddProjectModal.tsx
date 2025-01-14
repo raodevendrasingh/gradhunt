@@ -13,12 +13,13 @@ import axios from "axios";
 import { HiOutlineXMark } from "react-icons/hi2";
 
 // Local imports
-import { skills, SelectOption } from "@/utils/selectObjects";
+import { SelectOption } from "@/utils/selectObjects";
 import { selectFieldStyle } from "@/utils/styles";
 import { ProjectForm } from "@/types/userTypes";
 import { DurationFields } from "@/helpers/DurationFields";
 import { FormFooter } from "@/components/ui/FormFooter";
 import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
+import { skillOptions } from "@/utils/skillOptions";
 
 export const AddProjectModal: React.FC<{
 	setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -251,7 +252,7 @@ export const AddProjectModal: React.FC<{
 														id="skills"
 														isMulti
 														name="skills"
-														options={skills}
+														options={skillOptions}
 														onChange={(
 															selected
 														) => {

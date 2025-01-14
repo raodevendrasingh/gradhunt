@@ -353,7 +353,7 @@ export type SkillObject = {
 	id?: number;
 	label: string;
 	value: string;
-	image: string;
+	image?: string;
 	category: string;
 };
 
