@@ -8,9 +8,11 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { useFetchCompanyProfileByParams } from "@/hooks/company/useFetchCompanyProfileByParams";
 import { useState } from "react";
 import clsx from "clsx";
+import { useUser } from "@clerk/clerk-react";
 
 export default function CompanyProfile(): React.JSX.Element {
 	const [selected, setSelected] = useState(0);
+	const { isSignedIn } = useUser();
 
 	const { data: companyProfile, isLoading } =
 		useFetchCompanyProfileByParams();
@@ -30,7 +32,12 @@ export default function CompanyProfile(): React.JSX.Element {
 	return (
 		<div className="flex h-full">
 			{/* main */}
-			<div className="w-full lg2:w-[70%] overflow-y-auto border-r scrollbar-hide">
+			<div
+				className={clsx(
+					"w-full lg2:w-[70%] overflow-y-auto border-x scrollbar-hide",
+					isSignedIn ? "ml-0 border-l-0" : "ml-14"
+				)}
+			>
 				<div className="w-full">
 					{companyProfile && companyProfile.companyBanner ? (
 						<img

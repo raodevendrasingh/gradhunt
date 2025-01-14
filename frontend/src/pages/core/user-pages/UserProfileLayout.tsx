@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { ProfileSidebar } from "@/pages/core/components/layout/ProfileSidebar";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
+import { clsx } from "clsx";
 
 export default function UserProfileLayout(): JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -24,7 +25,12 @@ export default function UserProfileLayout(): JSX.Element {
 				setIsSidebarOpen={setIsSidebarOpen}
 			/>
 			<div className="flex flex-1 overflow-hidden">
-				<div className="hidden md:flex sm:w-56 lg:w-64 overflow-y-auto border-r">
+				<div
+					className={clsx(
+						"hidden md:flex sm:w-56 lg:w-64 overflow-y-auto border-r",
+						!isSignedIn && "border-r-0"
+					)}
+				>
 					<ProfileSidebar />
 				</div>
 				<div className="md:hidden">

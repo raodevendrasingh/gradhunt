@@ -30,6 +30,7 @@ export const useFetchCompanyProfile = (
 				);
 				return {
 					companySlug: "",
+					companyTagline: "",
 					companyBanner: "",
 					companyLogo: "",
 					companyName: "",

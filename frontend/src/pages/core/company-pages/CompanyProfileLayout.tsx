@@ -6,6 +6,7 @@ import { ProfileSidebar } from "@/pages/core/components/layout/ProfileSidebar";
 import { RecruiterSidebar } from "@/pages/core/components/layout/RecruiterSidebar";
 import { useFetchUserDetails } from "@/hooks/profile/useFetchUserDetails";
 import { useUser } from "@clerk/clerk-react";
+import clsx from "clsx";
 
 export default function RecruiterLayout(): React.JSX.Element {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -38,7 +39,12 @@ export default function RecruiterLayout(): React.JSX.Element {
 				/>
 			)}
 			<div className="flex flex-1 overflow-hidden">
-				<div className="hidden md:flex sm:w-56 lg:w-64 overflow-y-auto border-r">
+				<div
+					className={clsx(
+						"hidden md:flex sm:w-56 lg:w-64 overflow-y-auto border-r",
+						!isSignedIn && "border-r-0"
+					)}
+				>
 					{isCompanyAdmin ? (
 						<RecruiterSidebar isMobile={false} />
 					) : (

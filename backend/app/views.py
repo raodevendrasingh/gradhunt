@@ -1165,8 +1165,7 @@ class CompanyProfileView(APIView):
 
 
 class GetCompanyProfile(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
+    @transaction.atomic
     def get(self, request, companyslug):
         try:
             company = CompanyProfile.objects.get(
@@ -1287,8 +1286,6 @@ class ListJobPosts(APIView):
 
 
 class JobDetailsView(APIView):
-    permission_classes = [IsClerkAuthenticated]
-
     @transaction.atomic
     def get(self, request, jobId):
         try:
