@@ -2,7 +2,7 @@ import axios from "axios";
 import JobSearchNavbar from "./components/layout/JobSearchNavbar";
 import React, { useEffect } from "react";
 import Slider from "react-slick";
-import { companyLogo, recentJobs } from "@/utils/dummyData";
+import { companyLogo } from "@/utils/dummyData";
 import { encodeSearchParams } from "@/utils/encodeSearchParams";
 import { FaChevronRight } from "react-icons/fa6";
 import { Footer } from "@/components/common/Footer";
@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useUser } from "@clerk/clerk-react";
 import { apiUrl } from "@/modal-forms/profile/OnboardingModal";
+import { useFetchRecentJobs } from "@/hooks/jobs/useFetchRecentJobs";
 
 export default function JobSearchPage(): React.JSX.Element {
 	const {
@@ -33,6 +34,8 @@ export default function JobSearchPage(): React.JSX.Element {
 	const navigate = useNavigate();
 
 	const { user, isSignedIn } = useUser();
+
+	const { data: recentJobPosts } = useFetchRecentJobs();
 
 	useEffect(() => {
 		if (user && isSignedIn) {
@@ -92,7 +95,7 @@ export default function JobSearchPage(): React.JSX.Element {
 							Recently Posted Jobs
 						</div>
 						<Slider {...jobCardSettings}>
-							{recentJobs.map((job) => (
+							{recentJobPosts?.map((job) => (
 								<JobCard key={job.jobId} job={job} />
 							))}
 						</Slider>

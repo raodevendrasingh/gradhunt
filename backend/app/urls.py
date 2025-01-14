@@ -13,6 +13,8 @@ urlpatterns = [
     path('api/company/<str:companyslug>/applicants/<str:jobId>',
          GetJobsApplications.as_view(), name='get-job-applicants'),
 
+    path('api/jobs/recent', RecentJobsView.as_view(), name='recent-jobs'),
+
     path('api/jobs/list', JobListView.as_view(), name='list-jobs'),
     path('api/jobs/query', JobSearchView.as_view(), name='search-jobs'),
     path('api/jobs/filters', JobFilterView.as_view(), name='filter-jobs'),
