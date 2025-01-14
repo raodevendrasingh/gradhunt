@@ -6,9 +6,6 @@ from urllib.parse import urlparse
 from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
-# load_dotenv('.env.production')
-
-print("DEBUG:", os.getenv('DEBUG'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -237,15 +234,10 @@ EMAIL_HOST_USER_SUPPORT = getenv('EMAIL_HOST_USER_SUPPORT')
 EMAIL_HOST_USER_ADMIN = getenv('EMAIL_HOST_USER_ADMIN')
 
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
         'simple': {
             'format': '{levelname} {message}',
             'style': '{',
@@ -253,21 +245,15 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'WARNING',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'django_debug.log',
-            'formatter': 'verbose'
+            'formatter': 'simple'
         },
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'WARNING',
             'propagate': True,
         },
         'django.request': {
@@ -275,14 +261,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'app': { 
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
         'app': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'propagate': True,
         }
     },
@@ -291,4 +272,3 @@ LOGGING = {
         'level': 'WARNING',
     },
 }
-

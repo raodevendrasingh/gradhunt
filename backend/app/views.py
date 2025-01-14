@@ -41,21 +41,11 @@ class GetUserType(APIView):
 
 
 class CheckUsernameView(APIView):
+    @transaction.atomic
     def get(self, request):
         try:
-            # Log incoming request details
-            logger.info(f"Received username check request")
-            logger.debug(f"Request method: {request.method}")
-            logger.debug(f"Request path: {request.path}")
-            logger.debug(f"Request query parameters: {request.query_params}")
-
-            # Extract username
             username = request.query_params.get('username')
 
-            # Log username being checked
-            logger.info(f"Checking username: {username}")
-
-            # Validate username parameter
             if not username:
                 logger.warning(
                     "Username check failed: Missing username parameter")
@@ -64,20 +54,13 @@ class CheckUsernameView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Check username existence
             exists = UserDetails.objects.filter(
                 username__iexact=username).exists()
 
-            # Log check result
-            logger.info(f"Username '{username}' exists: {exists}")
-
-            # Prepare response
             if not exists:
                 message = "This username is available! 🎉"
-                logger.info(f"Username '{username}' is available")
             else:
                 message = "This username is already taken, choose something else.😞"
-                logger.info(f"Username '{username}' is already taken")
 
             return Response({
                 'exists': exists,
@@ -85,10 +68,6 @@ class CheckUsernameView(APIView):
             })
 
         except Exception as e:
-            # Log any unexpected errors
-            logger.error(f"Unexpected error in username check: {str(e)}")
-            logger.error(traceback.format_exc())
-
             return Response(
                 {'error': 'An unexpected error occurred'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -97,6 +76,7 @@ class CheckUsernameView(APIView):
 
 
 class CheckCompanySlug(APIView):
+    @transaction.atomic
     def get(self, request):
         company_slug = request.query_params.get('companySlug')
         if not company_slug:
@@ -113,7 +93,7 @@ class CheckCompanySlug(APIView):
 
 class UpdateUsernameView(APIView):
     permission_classes = [IsClerkAuthenticated]
-
+    @transaction.atomic
     def patch(self, request):
         try:
             new_username = request.data.get('username')
@@ -131,6 +111,7 @@ class UpdateUsernameView(APIView):
 
 
 class CheckEmailView(APIView):
+    @transaction.atomic
     def get(self, request):
         email = request.query_params.get('email')
         if not email:
@@ -146,7 +127,7 @@ class CheckEmailView(APIView):
 
 class UpdateEmailView(APIView):
     permission_classes = [IsClerkAuthenticated]
-
+    @transaction.atomic
     def patch(self, request):
         try:
             new_email = request.data.get('email')
@@ -245,6 +226,7 @@ class VerifyEmailView(APIView):
         except Exception:
             return False
 
+    @transaction.atomic
     def post(self, request):
         try:
             user = UserDetails.objects.get(
@@ -364,23 +346,11 @@ class OnboardUser(APIView):
     @transaction.atomic
     def post(self, request):
         try:
-           # More detailed request logging
-            logger.info(f"Received POST request to {request.path}")
-            logger.debug(f"Full request headers: {dict(request.headers)}")
-            logger.debug(f"Request content type: {request.content_type}")
-            logger.debug(f"Request method: {request.method}")
-
-            # Log request data, but be careful with sensitive information
-            safe_data = {k: '***' if k in ['password']
-                         else v for k, v in request.data.items()}
-            logger.debug(f"Request data (sensitive info masked): {safe_data}")
-
             data = request.data.copy()
 
             if hasattr(request.user, 'clerk_user_id'):
                 data['clerk_user_id'] = request.user.clerk_user_id
             else:
-                logger.error("User does not have clerk_user_id")
                 return Response(
                     {'status': 'error', 'message': 'Invalid user authentication'},
                     status=status.HTTP_401_UNAUTHORIZED
@@ -402,16 +372,10 @@ class OnboardUser(APIView):
                 'id': user_instance.id,
             }
 
-            logger.info("User onboarded successfully")
             return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            logger.error(f"Error in OnboardUser: {str(e)}")
-            logger.error(
-                f"Unexpected error in OnboardUser view", exc_info=True)
-            logger.error(traceback.format_exc())
             traceback.print_exc()
-
             return Response(
                 {'status': 'error', 'message': 'An unexpected error occurred'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
