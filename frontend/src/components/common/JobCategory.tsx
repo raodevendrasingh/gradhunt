@@ -5,8 +5,7 @@ import { TbBuildingSkyscraper } from "react-icons/tb";
 import { GoRocket } from "react-icons/go";
 import { FaCode } from "react-icons/fa";
 import { BsPeople } from "react-icons/bs";
-import { MdOutlinePalette } from "react-icons/md";
-import { PiGraduationCap } from "react-icons/pi";
+import { MdOutlineHealthAndSafety, MdOutlinePalette } from "react-icons/md";
 import { FiTool } from "react-icons/fi";
 import { TfiWorld } from "react-icons/tfi";
 import { IconWrapper } from "@/components/layouts/IconWrapper";
@@ -70,8 +69,8 @@ const categories: Category[] = [
 		href: "#",
 	},
 	{
-		name: "Fresher",
-		Icon: PiGraduationCap,
+		name: "Healthcare",
+		Icon: MdOutlineHealthAndSafety,
 		bgColor: "bg-orange-100",
 		textColor: "text-orange-500",
 		href: "3",
@@ -95,13 +94,14 @@ const categories: Category[] = [
 export const JobCategories = () => (
 	<div className="flex flex-col w-full mx-auto py-10 max-w-7xl">
 		<h2 className="text-2xl font-semibold text-zinc-800 text-center pb-10">
-			Search by Categories
+			Job Categories
 		</h2>
 		<div className="flex flex-wrap w-full mx-auto items-center justify-center p-4 gap-5">
 			{categories.map((category) => (
 				<Link
-					to={category.href} key={category.name}
-					className="flex justify-between items-center bg-white gap-3 rounded-2xl px-3 h-[70px] w-[200px] border hover:shadow-lg transition duration-150 cursor-pointer"
+					to={category.href}
+					key={category.name}
+					className="flex justify-between items-center bg-white gap-3 rounded-2xl px-2 md:px-3 h-[60px] w-[165px] md:h-[70px] md:w-[200px] border hover:shadow-lg transition duration-150 cursor-pointer"
 				>
 					<span className="w-[20%]">
 						<IconWrapper
