@@ -134,7 +134,7 @@ export default function JobCardMenu({ jobPost }: JobCardMenuProps) {
 		);
 		if (optionId === "edit") {
 			navigate(
-				`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}/edit`
+				`/company/${jobPost.companyData.companySlug}/manage-job/${jobPost.jobId.toLowerCase()}/edit`
 			);
 		} else if (optionId === "archive") {
 			archiveJobPost(jobPost.jobId);

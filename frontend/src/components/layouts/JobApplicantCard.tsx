@@ -23,10 +23,14 @@ export const JobApplicantCard: React.FC<JobCardProps> = ({ jobPost }) => {
 				)}
 			</div>
 			<div className="flex items-center gap-5">
-				<h2 className="text-2xl font-bold text-gray-800">{jobPost.jobTitle}</h2>
+				<h2 className="text-2xl font-bold text-gray-800">
+					{jobPost.jobTitle}
+				</h2>
 				<h5 className="text-sm text-gray-600 ">
 					<span className="text-gray-600 pr-1.5">JobId</span>
-					<span className="font-medium font-mono ">{jobPost.jobId}</span>
+					<span className="font-medium font-mono ">
+						{jobPost.jobId}
+					</span>
 				</h5>
 			</div>
 
@@ -45,7 +49,7 @@ export const JobApplicantCard: React.FC<JobCardProps> = ({ jobPost }) => {
 					<span>Posted {timesAgo(jobPost.postedDate)}</span>
 				</div>
 				<Link
-					to={`/company/${jobPost.companyData.companyName.toLowerCase()}/applicants/${jobPost.jobId.toLowerCase()}`}
+					to={`/company/${jobPost.companyData.companySlug}/applicants/${jobPost.jobId.toLowerCase()}`}
 				>
 					<button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
 						View Applicants

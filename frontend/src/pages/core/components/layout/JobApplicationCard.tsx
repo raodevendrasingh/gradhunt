@@ -79,14 +79,14 @@ export const JobApplicationCard = ({ jobPost }: JobCardProps) => {
 						</div>
 						<div>
 							<Link
-								to={`/company/${jobPost.companyData.companyName.toLowerCase()}/job/${jobPost.jobId.toLowerCase()}`}
+								to={`/company/${jobPost.companyData.companySlug}/job/${jobPost.jobId.toLowerCase()}`}
 							>
 								<h2 className="text-lg font-bold text-gray-800 hover:text-gray-600 transition-colors duration-300">
 									{jobPost.jobTitle}
 								</h2>
 							</Link>
 							<Link
-								to={`/company/${jobPost.companyData.companyName.toLowerCase()}`}
+								to={`/company/${jobPost.companyData.companySlug}`}
 							>
 								<p className="text-gray-600 hover:text-gray-500 transition-colors duration-300">
 									{jobPost.companyData.companyName}

@@ -46,7 +46,7 @@ export const JobPostDeleteDialog: React.FC<JobPostDeleteDialogProps> = ({
 			if (response.status === 200) {
 				toast.success("Job Post Deleted");
 				navigate(
-					`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-jobs`
+					`/company/${jobPost.companyData.companySlug}/manage-jobs`
 				);
 				refetchJobPosts();
 				setShowDeleteDailog(false);

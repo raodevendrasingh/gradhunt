@@ -139,6 +139,7 @@ export type CompanyData = {
 	companyBanner: string;
 	companyLogo: string;
 	companyName: string;
+	companySlug: string;
 	companyWebsite: string;
 	tagline: string;
 	companyEmail: string;

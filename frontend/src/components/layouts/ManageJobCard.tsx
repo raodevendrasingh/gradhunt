@@ -37,8 +37,13 @@ export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 				className="text-gray-700 text-sm mb-4 line-clamp-2"
 				dangerouslySetInnerHTML={{
 					__html:
-						jobPost.jobDescription.split(" ").slice(0, 15).join(" ") +
-						(jobPost.jobDescription.split(" ").length > 15 ? "..." : ""),
+						jobPost.jobDescription
+							.split(" ")
+							.slice(0, 15)
+							.join(" ") +
+						(jobPost.jobDescription.split(" ").length > 15
+							? "..."
+							: ""),
 				}}
 			/>
 
@@ -50,7 +55,8 @@ export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 				<div className="flex items-center text-gray-600">
 					<FaMoneyBill1Wave className="mr-2 text-gray-400" />
 					<span>
-						{jobPost.currency} {jobPost.lowestSalary} - {jobPost.highestSalary}
+						{jobPost.currency} {jobPost.lowestSalary} -{" "}
+						{jobPost.highestSalary}
 					</span>
 				</div>
 			</div>
@@ -61,7 +67,7 @@ export const ManageJobCard: React.FC<JobCardProps> = ({ jobPost }) => {
 					<span>Posted {timesAgo(jobPost.postedDate)}</span>
 				</div>
 				<Link
-					to={`/company/${jobPost.companyData.companyName.toLowerCase()}/manage-job/${jobPost.jobId.toLowerCase()}`}
+					to={`/company/${jobPost.companyData.companySlug}/manage-job/${jobPost.jobId.toLowerCase()}`}
 				>
 					<button className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
 						View Details

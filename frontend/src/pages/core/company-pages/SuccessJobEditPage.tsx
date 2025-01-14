@@ -23,7 +23,7 @@ export const SuccessJobEditPage: React.FC = () => {
 					</h2>
 					<div className="flex flex-col xs:flex-row gap-4 mt-6 w-full">
 						<Link
-							to={`/company/${data?.companyName.toLowerCase()}`}
+							to={`/company/${data?.companySlug}`}
 							className="w-full xs:w-1/2"
 						>
 							<Button className="w-full rounded-lg">
@@ -31,7 +31,7 @@ export const SuccessJobEditPage: React.FC = () => {
 							</Button>
 						</Link>
 						<Link
-							to={`/company/${data?.companyName.toLowerCase()}/manage-jobs`}
+							to={`/company/${data?.companySlug}/manage-jobs`}
 							className="w-full xs:w-1/2"
 						>
 							<Button
