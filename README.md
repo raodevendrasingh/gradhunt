@@ -99,7 +99,7 @@ Make sure you have following software installed in your system:
 
 First, we need to clone the repository
 ```
-https://github.com/raodevendrasingh/gradhunt-app.git
+https://github.com/raodevendrasingh/gradhunt.git
 ```
 ```
 cd gradhunt
