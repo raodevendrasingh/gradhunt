@@ -17,6 +17,9 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
+      '@tailwindcss/typography':
+        specifier: ^0.5.15
+        version: 0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
       '@tanstack/react-query':
         specifier: ^5.62.7
         version: 5.62.7(react@18.3.1)
@@ -77,6 +80,12 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^2.10.3
         version: 2.10.3
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.2))
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.49)
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -98,6 +107,15 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      postcss:
+        specifier: ^8.4.49
+        version: 8.4.49
+      prettier:
+        specifier: ^3.4.2
+        version: 3.4.2
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.9
+        version: 0.6.9(prettier@3.4.2)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -152,16 +170,28 @@ importers:
       tailwind-merge:
         specifier: ^2.5.5
         version: 2.5.5
+      tailwind-scrollbar:
+        specifier: ^3.1.0
+        version: 3.1.0(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
+      tailwindcss:
+        specifier: ^3.4.16
+        version: 3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))
       usehooks-ts:
         specifier: ^3.1.0
         version: 3.1.0(react@18.3.1)
+      vite:
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.10.2)
+      vite-plugin-imagemin:
+        specifier: ^0.6.1
+        version: 0.6.1(vite@5.4.11(@types/node@22.10.2))
+      vite-plugin-svgr:
+        specifier: ^4.3.0
+        version: 4.3.0(rollup@4.28.1)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2))
       zustand:
         specifier: ^4.5.5
         version: 4.5.5(@types/react@18.3.16)(react@18.3.1)
     devDependencies:
-      '@tailwindcss/typography':
-        specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -180,12 +210,6 @@ importers:
       '@types/react-slick':
         specifier: ^0.23.13
         version: 0.23.13
-      '@vitejs/plugin-react':
-        specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.2))
-      autoprefixer:
-        specifier: ^10.4.20
-        version: 10.4.20(postcss@8.4.49)
       eslint:
         specifier: ^8.57.1
         version: 8.57.1
@@ -201,33 +225,9 @@ importers:
       lodash-move:
         specifier: ^1.1.1
         version: 1.1.1
-      postcss:
-        specifier: ^8.4.49
-        version: 8.4.49
-      prettier:
-        specifier: ^3.4.2
-        version: 3.4.2
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.9
-        version: 0.6.9(prettier@3.4.2)
-      tailwind-scrollbar:
-        specifier: ^3.1.0
-        version: 3.1.0(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2)))
-      tailwindcss:
-        specifier: ^3.4.16
-        version: 3.4.16(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.7.2))
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
-      vite:
-        specifier: ^5.4.11
-        version: 5.4.11(@types/node@22.10.2)
-      vite-plugin-imagemin:
-        specifier: ^0.6.1
-        version: 0.6.1(vite@5.4.11(@types/node@22.10.2))
-      vite-plugin-svgr:
-        specifier: ^4.3.0
-        version: 4.3.0(rollup@4.28.1)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2))
 
 packages:
 
