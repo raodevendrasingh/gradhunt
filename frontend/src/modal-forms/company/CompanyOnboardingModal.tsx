@@ -138,7 +138,7 @@ export const CompanyOnboardingModal = ({
 												<div className="flex flex-col items-center w-full">
 													<div className="flex items-center justify-center w-full">
 														<span className="px-3 py-2 border-l border-y rounded-l-lg text-base bg-slate-50 text-gray-800">
-															gradhunt.tech/
+															gradhunt.cc/
 														</span>
 														<div className="relative">
 															<input

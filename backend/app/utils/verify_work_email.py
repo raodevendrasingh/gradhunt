@@ -114,7 +114,7 @@ def verify_work_email(name, otp):
                 <p>This is an automated message, please do not reply to this email.</p>
                 <p>
                     To ensure delivery to your inbox, please add
-                    <a href="mailto:no-reply@gradhunt.tech">no-reply@gradhunt.tech</a> to your
+                    <a href="mailto:no-reply@gradhunt.cc">no-reply@gradhunt.cc</a> to your
                     contacts.
                 </p>
             </div>

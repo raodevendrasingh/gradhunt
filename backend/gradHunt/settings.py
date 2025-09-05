@@ -97,8 +97,8 @@ ROOT_URLCONF = 'gradHunt.urls'
 CORS_ALLOWED_ORIGINS = [url.strip() for url in getenv('CORS_ALLOWED_ORIGINS', '').split(',')]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://gradhunt.tech',
-    'https://admin.gradhunt.tech',
+    'https://gradhunt.cc',
+    'https://admin.gradhunt.cc',
     'http://localhost:5173',
     'http://admin.localhost:5173',
 ]

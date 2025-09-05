@@ -18,7 +18,7 @@ export default function SignUpPage() {
 									We've saved{" "}
 									<span className="text-gray-800 font-medium">
 										{" "}
-										gradhunt.tech/{username}{" "}
+										gradhunt.cc/{username}{" "}
 									</span>
 									for you
 								</span>
