@@ -43,11 +43,8 @@ CORS_ALLOW_HEADERS = [
 
 
 ALLOWED_HOSTS = [
-    'gradhunt-app.onrender.com',
-    'gradhunt.up.railway.app',
-    'api.gradhunt.tech',
+    'api.gradhunt.cc',
     'localhost',
-    '127.0.0.1'
 ]
 
 APPEND_SLASH = False

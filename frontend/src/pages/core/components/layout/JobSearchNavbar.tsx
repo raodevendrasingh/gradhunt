@@ -39,9 +39,6 @@ export default function JobSearchNavbar() {
 								<Button className="flex justify-center py-2.5 rounded-lg">
 									<Link to="/login">Login</Link>
 								</Button>
-								<Button variant="secondary" className="w-20 py-2.5 rounded-lg">
-									<Link to="/hire">Hire</Link>
-								</Button>
 							</SignedOut>
 						</div>
 					</div>

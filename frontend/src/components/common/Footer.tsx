@@ -126,7 +126,7 @@ export function Footer() {
 				</div>
 				<div className="mt-12 border-t border-gray-200 pt-8 flex flex-col sm:flex-row justify-between items-center">
 					<p className="text-base text-gray-400">
-						&copy; 2024 GradHunt Inc. All rights reserved
+						&copy; {new Date().getFullYear()} GradHunt Inc. All rights reserved
 					</p>
 					<div className="mt-4 sm:mt-0">
 						<AnimatedLink href="#">Privacy Policy</AnimatedLink>
